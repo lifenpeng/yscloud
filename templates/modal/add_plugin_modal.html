@@ -1,0 +1,120 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-if="!control.is_update">新增插件</h3>
+    <h3 class="modal-title" ng-if="control.is_update">修改插件</h3>
+    <div ng-click="back()"></div>
+</div>
+<div class="modal-body plugin-common">
+    <form name="config.add_plugin_form"  novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div ng-show="control.get_path_loading">
+            <div class="row">
+                <div class="col-sm-12 text-center loading-center">
+                    <div class="get-loading-border">
+                        <span class="loading-font-color">正在获取信息&nbsp;&nbsp;<i style="font-size: 24px;" class="fa fa-spinner fa-pulse plugin-loading-font-color"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="control.error_message">
+            <div class="loading-center">
+                <div class="get-error-border">
+                    <span class="error-font-color">获取信息异常</span>
+                    <div class="common-error" ng-bind="control.error_message"></div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="!control.get_path_loading && !control.error_message">
+            <!--插件名称-->
+            <div class="row form-style run-env-row">
+                <label class="col-sm-3 control-label label-font label-key">插件名称</label>
+                <div class="col-sm-7 label-value">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="plugin_info.plugin_name"
+                           name="plugin_name"
+                           placeholder="英文,不超过20个字符"
+                           ng-pattern="/^[\.A-Za-z0-9_-]*$/"
+                           ng-maxlength=20
+                           ng-disabled="control.is_update"
+                           required/>
+                    <validate-msg tag-cn-name="插件名称"  name="plugin_name"></validate-msg>
+                </div>
+            </div>
+            <!--插件上传文件-->
+            <div class="row form-style" >
+                <label class="col-sm-3 control-label label-font label-key">插件文件</label>
+                <div class="col-sm-7" style="margin-bottom: 10px;">
+                    <file-upload fileupload="config.lib_fileupload" deletefile="removePluginFile();" downfile="downloadPluginFile();" successthen="fileUploadSuccessThen();"></file-upload>
+                </div>
+            </div>
+            <!--插件类型-->
+            <div class="row form-style run-env-row">
+                <label class="col-sm-3 control-label label-font label-key">插件类型</label>
+                <div class="col-sm-7">
+                    <bs-select width=150
+                               name="plugin_type"
+                               class="label-value"
+                               items="data.plugin_type_list"
+                               my-select="plugin_info.plugin_type"
+                               select-val="changePluginType(selectKey)"
+                               required></bs-select>
+                    <validate-msg tag-cn-name="插件类型" type="select" name="plugin_type" model="plugin_info.plugin_type"></validate-msg>
+                </div>
+            </div>
+            <!--插件描述-->
+            <div class="row form-style run-env-row">
+                <label class="col-sm-3 control-label label-font label-key">插件描述</label>
+                <div class="col-sm-7">
+                   <textarea name="plugin_desc"
+                             ng-model="plugin_info.plugin_bk_desc"
+                             class="form-control label-value"
+                             placeholder="输入不超过250个字符或汉字"
+                             style="min-width: 260px; resize:none;"
+                             required
+                             ng-maxlength=250
+                             ng-model-options="{updateOn: 'blur'}">
+                    </textarea>
+                    <validate-msg tag-cn-name="描述" name="plugin_desc"></validate-msg>
+                </div>
+            </div>
+            <!--安装命令-->
+            <div class="row form-style run-env-row">
+                <label class="col-sm-3 control-label label-font label-key">安装命令</label>
+                <div class="col-sm-7 label-value">
+                     <textarea name="install_command"
+                               ui-codemirror="editOptions"
+                               ui-refresh="control.change_type"
+                               ng-model="plugin_info.install_command"
+                               class="form-control"
+                               placeholder="输入安装命令"
+                               ng-pattern="/[^\u4e00-\u9fa5]+$/"
+                               ng-maxlength=500>
+
+                     </textarea>
+                    <validate-msg tag-cn-name="安装命令" name="install_command"></validate-msg>
+                </div>
+            </div>
+            <!--安装命令-->
+            <div class="row form-style run-env-row">
+                <label class="col-sm-3 control-label label-font label-key">卸载命令</label>
+                <div class="col-sm-7 label-value">
+                     <textarea name="uninstall_command"
+                               ui-codemirror="editOptions"
+                               ui-refresh="control.change_type"
+                               ng-model="plugin_info.uninstall_command"
+                               class="form-control"
+                               placeholder="输入卸载命令"
+                               ng-pattern="/[^\u4e00-\u9fa5]+$/"
+                               ng-maxlength=500>
+                     </textarea>
+                    <validate-msg tag-cn-name="卸载命令" name="uninstall_command"></validate-msg>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="common-btn-center">
+        <div class="text-center">
+            <button ng-class="(control.btn_loading || control.get_path_loading) ? 'disabled-btn cancel-btn btn-xl': 'cancel-btn btn-xl'" type="button" ng-click="back()" ng-if="!control.btn_loading || !control.get_path_loading">取消</button>
+            <button ng-class="(control.btn_loading || control.get_path_loading) ? 'disabled-btn save-btn btn-xl': 'save-btn btn-xl'" ng-click="save()" ng-if="!control.error_message">保存</button>
+        </div>
+    </div>
+</div>

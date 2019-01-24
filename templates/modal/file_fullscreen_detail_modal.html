@@ -1,0 +1,47 @@
+<style>
+    .modal-lg{
+        width: auto;
+        height: auto;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+    }
+    .modal-content{
+        position: fixed;
+        top: 10px; left: 10px; right: 20px; bottom: 10px;
+        height: auto;
+    }
+    .modal-dialog{
+        margin: 0;
+        background: #0a131b;
+    }
+    .modal .modal-dialog .modal-content{
+        margin-top: 0 !important;
+    }
+</style>
+<div class="modal-header fullscreen-header">
+    <span class="file-icon" ng-class="formatFileIconStyle()" ng-if="has_file_icon"></span>
+    <span class="fa fa-file-text-o default-txt-icon" ng-if="!has_file_icon"></span>
+    <span class="file-name-color" ng-bind="file_info.file_name ? file_info.file_name : '--'"></span>
+    <span class="file-name-color" ng-bind="file_info.version_num ? '(' + file_info.version_num + ')':''"></span>
+    <span class="font-12 file-size-color" style="padding-left: 20px" ng-bind="file_info.file_size ? file_info.file_size : '0kb'"></span>
+    <span class="font-12 file-size-color" style="padding:0 5px">|</span>
+    <span class="font-12 file-size-color" ng-bind="file_info.file_update_time ? file_info.file_update_time : '--'"></span>
+    <span class="code_method" title="切换编码方式" ng-click="codemethod_loading || changeCodeMethod()" ng-if="file_info.file_content">
+        {{file_post_header.encoding_type}}
+    </span>
+    <span class="download-file" ng-click="downloadFile()" title="下载"></span>
+    <span class="shrink" ng-click="formCancel()" title="缩小"></span>
+</div>
+<div class="modal-body fullscreen-detail">
+    <div class="row codemirror-container">
+        <span class="fa fa-spinner code-loading" ng-show="codemethod_loading" ng-class="{'fa-spin':codemethod_loading}"></span>
+        <div class="col-sm-12 file-content" id="modal-codemirror">
+            <textarea  ui-codemirror="detailFileOptions"
+                       ui-refresh="detailFileOptions.refresh"
+                       ng-model="file_info.file_content"
+                       class="form-control"
+            ></textarea>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,22 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">提示信息</h3>
+    <div ng-click="cancelWorkOrder()"></div>
+</div>
+<!-- 工单退回信息-->
+<div class="modal-body">
+    <div class="row" style="">
+        <div class="col-sm-2 col-sm-offset-2" style="margin-top: 16px;color:#4cae4c;padding-right: 0px;">
+            <i style="fonr-weight: holder; font-size: 32px;" class="fa  fa-check"></i>
+        </div>
+        <label class="col-sm-6" style="text-align: center; margin-top: 20px;padding-right: 0px;padding-left: 0px; font-size: 16px;" >工单【{{info.workorder_info.order_seq}}】录入完成</label>
+    </div>
+    <div class="row" style="margin: 40px 0 20px">
+        <div class="col-sm-12 text-center">
+            <button  class=" save-btn btn-xl" type="button" ng-click="continueWorkOrder()">录入工单</button>
+            <button  class=" save-btn btn-xl" type="button" ng-click="dealWorkOrder()" style="margin-left: 20px;">处理工单</button>
+            <button  class=" save-btn btn-xl" type="button" ng-click="cancelWorkOrder()" style="margin-left: 20px;">返回列表</button>
+        </div>
+    </div>
+</div>
+

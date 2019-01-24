@@ -1,0 +1,75 @@
+<form name="info.form.newDppForm" ng-submit="prodPacSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 ng-show="!control.package_list_flag" class="modal-title">添加发布包</h3>
+        <h3 ng-show="control.package_list_flag" class="modal-title">添加清单</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body">
+        <div style="margin-top: 10px; padding-top: 20px;margin-left: 5px;padding-bottom: 5px">
+            <div class="form-group form-style" ng-if="!control.package_list_flag" style="margin-bottom: 15px;">
+                <label class="col-sm-2 control-label label-key">发布包</label>
+                <div class="col-sm-9 text-left" ng-if="info.packlist_info.upload_flag == 2">
+                    <div ng-if="info.version_info.checked_files.length !=0">
+                        <div  class="row" ng-repeat="file in info.version_info.checked_files" style="height: 40px;width: 100%;color: #808080;margin-top: 0px;position: relative">
+                            <div class="col-sm-10" style="padding:5px 0;">
+                                <span style="float: left;"><i class="fa fa-file-text-o"></i></span>
+                                <span style="display: inline-block; width: 300px;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;margin-left: 10px;" title="{{file.file}}">{{file.path}}/{{file.file}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9 text-left" ng-if="info.packlist_info.upload_flag == 1" style="margin-bottom: -10px;margin-top: -5px">
+                    <file-upload package="true" fileupload="config.prodpackage_fileupload" deletefile="removeProdPackage()" downfile="downloadProdPackage()"></file-upload>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="control.package_list_flag">
+                <label class="col-sm-2 control-label label-key">清单</label>
+                <div class="col-sm-9" ng-if="info.packlist_info.upload_flag == 2">
+                    <div  ng-if="info.version_info.checked_files.length !=0">
+                        <div class="row" ng-repeat="file in info.version_info.checked_files" style="height: 40px;width: 100%;color: #808080;margin-top: 0px;position: relative">
+                            <div class="col-sm-10" style="padding:5px 0;">
+                                <span style="float: left;"><i class="fa fa-file-text-o"></i></span>
+                                <span style="display: inline-block; width: 300px;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;margin-left: 10px;" title="{{file.file}}">{{file.path}}/{{file.file}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9 text-left" ng-if="info.packlist_info.upload_flag == 1" style="margin-bottom: -10px;margin-top: -5px">
+                    <file-upload fileupload="config.prodlist_fileupload" deletefile="removeProdListFile();" downfile="downloadProdListFile();" successthen="uploadProdListSuccessThen();"></file-upload>
+                </div>
+            </div>
+            <div ng-if="info.packlist_info.upload_flag == 2">
+                <div ng-if="!control.show_real" style="min-height:300px;line-height: 300px;">
+                    <div class="row"  style="position: relative;margin-left: 0">
+                        <div  class="col-sm-12" style="padding-left: 0px;padding-right: 0px;text-align: center;border-top:0px;position: relative;">
+                            <div style="height: 18px;">
+                                <span><i class="fa fa-spinner fa-spin" style="font-weight: bolder; font-size: 30px;color:#44dcfd;"></i></span>
+                            </div>
+                            <div style="margin-top: 10px;height: 18px;">
+                                <span style="color:#44dcfd;">正在获取信息&nbsp;&nbsp;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="control.show_real" style="min-height:300px;margin:15px;">
+                    <div class="row">
+                        <div class="col-sm-12" ng-if="!control.package_list_flag">
+                            <file-browse node="info.version_info" change-path="changePath(info.version_info);" check="2"></file-browse>
+                        </div>
+                        <div class="col-sm-12" ng-if="control.package_list_flag">
+                            <file-browse node="info.version_info" change-path="changePath(info.version_info);" radiocheck="1"></file-browse>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-center" style="margin-top:20px;">
+                <button  class="cancel-btn btn-xl" type="button" ng-click="cancel()" style="margin-left: 20px;width: 70px;">取消</button>
+                <button type="button" class="cancel-btn btn-xl" style="width: 70px" ng-click="resetDpp();">重置</button>
+                <button ng-if="!control.propackage_btn_loading" type="submit" class="save-btn btn-xl" style="width: 70px;">确认</button>
+                <button ng-if="control.propackage_btn_loading" type="button" class="save-btn btn-xl" style="width: 70px"><i style="color: white" class="fa fa-spinner fa-spin"></i></button>
+            </div>
+        </div>
+    </div>
+</form>

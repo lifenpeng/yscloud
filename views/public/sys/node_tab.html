@@ -1,0 +1,21 @@
+<!-- 节点编辑&查看页面--节点TABS -->
+<div class="node-tabs">
+    <!-- 新增节点TAB -->
+    <div class="node-tab" ng-class="control.active_node_i == -1 ? 'tab-checked' : 'normal'"  ng-click="changeCurNode(1);" ng-if="control.modify_type != 3">
+        <div ng-class="control.active_node_i == -1 ? 'checked-cover' : 'normal-cover'">
+            <div class="add-img new-img"></div>
+            <div class="new-text" >新增节点</div>
+        </div>
+    </div>
+    <!-- 已有节点TAB -->
+    <div class="node-tab" ng-class="node.active ? 'tab-checked' : 'normal'" ng-repeat="node in data.nodes" ng-click="changeCurNode(control.modify_type,node);">
+        <div ng-class="node.active ? 'checked-cover' : 'normal-cover'">
+            <div class="add-img node-img"></div>
+            <div class="node-ip" ng-bind="node.node_soc_ip"></div>
+        </div>
+    </div>
+</div>
+<!-- 节点编辑&查看页面--节点内容 -->
+<div class="node-content" ng-style="{'min-height' : (data.nodes.length + 1) * 128}">
+    <div ui-view></div>
+</div>

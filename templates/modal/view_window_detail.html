@@ -1,0 +1,42 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">发布申请详情</h3>
+    <div ng-click="close()"></div>
+</div>
+<div class="modal-body">
+    <div ng-if="!control.get_project_loading && !info.error_message">
+        <div class="row form-style margin-bottom-15" ng-if="info.close_reason">
+            <div class="col-sm-3 label-key">窗口关闭原因</div>
+            <div class="col-sm-6 label-value">{{info.close_reason}}</div>
+        </div>
+        <div class="row form-style margin-bottom-15">
+            <div class="col-sm-3 label-key">申请编号</div>
+            <div class="col-sm-6 label-value">{{info.pjpublish_id || '--'}}</div>
+        </div>
+        <div class="row form-style margin-bottom-15">
+            <div class="col-sm-3 label-key">发布说明</div>
+            <div class="col-sm-6 label-value">{{info.publish_info.pjpublish_desc || '--'}}</div>
+        </div>
+        <div class="row project-application" custom-scroll custom-config="config.scroll" style="padding: 0 15px;height: 260px">
+            <div class="row proj-block-style" ng-repeat="proj in info.publish_info.pjpublish_project_list">
+                <div class="proj-block-head">
+                    <p class="proj-block-name" ng-bind="proj.project_name"></p>
+                    <p class="proj-block-number" ng-bind="proj.project_id"></p>
+                </div>
+                <div class="proj-sys-content col-sm-6" ng-repeat="sys in proj.business_sys_list">
+                    <div class="sys-item" ng-bind="sys.business_cn_name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="control.get_project_loading" class="loading-font-color font-14" style="height: 300px;line-height: 300px;text-align: center;">
+        正在加载数据...
+    </div>
+    <div ng-if="info.error_message" class="error-font-color font-14" style="padding-top:70px;height: 300px;text-align: center;">
+        {{info.error_message}}
+    </div>
+    <div style="text-align: center;margin: 15px 0;">
+        <button class="cancel-btn btn-xl" ng-click="close()">关闭</button>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="container-fluid no-padding sys-config">
+    <div class="sys-info form-style">
+        <div>
+            <span style="font-size: 16px;color: #44Dcfd;" ng-bind="sys_info.business_cn_name"></span>
+           <!-- <label class="col-sm-2 label-key">应用系统名称</label><span class="col-sm-2 label-value" ng-bind="sys_info.business_sys_name"></span>
+            <label class="col-sm-2 label-key">应用系统中文名</label>
+            <span class="col-sm-2 label-value text-ellipse" ng-bind="sys_info.business_cn_name" title="{{sys_info.business_cn_name}}"></span>
+            <label class="col-sm-2 label-key">责任人</label>
+            <span class="col-sm-2 label-value text-ellipse" ng-bind="sys_info.user_cn_name ? sys_info.user_cn_name : '&#45;&#45;'" title="{{sys_info.user_cn_name}}"></span>-->
+        </div>
+    </div>
+    <div class="custom-tab row">
+        <ul>
+            <li ng-class="{active:control.active_tab == 'struct_config'}" ng-click="switchTab('struct_config')"><a>架构配置</a></li>
+            <li ng-class="{active:control.active_tab == 'env_config'}" ng-click="switchTab('env_config')"><a>环境配置</a></li>
+            <!--<li ng-class="{active:control.active_tab == 'node_list'}" ng-click="switchTab('node_list')"><a>节点配置</a></li>-->
+            <li ng-class="{active:control.active_tab == 'program_list'}" ng-click="switchTab('program_list')"><a>方案配置</a></li>
+            <!--<li ng-class="{active:control.active_tab == 'pub_version'}" ng-click="switchTab('pub_version')"><a>发布版本</a></li>-->
+            <li ng-class="{active:control.active_tab == 'log_list'}" ng-click="switchTab('log_list')"><a>日志管理</a></li>
+            <!--<li ng-class="{active:control.active_tab == 'agent_manage'}" ng-click="switchTab('agent_manage')"><a>Agent管理</a></li>-->
+        </ul>
+    </div>
+    <div ui-view></div>
+</div>

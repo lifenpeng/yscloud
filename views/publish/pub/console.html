@@ -1,0 +1,37 @@
+<!--控制台-->
+<div id="consoleDesk" class="proj_exec_control" ng-style="caculateConsoleWidth()" style="margin-right: 320px;overflow: hidden" resize-height="25">
+    <div class="proj_exec_node" >
+        <div class="col-sm-1 text-center">日志</div>
+        <div class="col-sm-10 text-left"></div>
+        <div class="col-sm-1 text-center proj_exec_log">
+            <i ng-show="!control.is_log_minisize" class="fa fa-compress  proj_exec_log_i"  ng-click="toggleMinimize()"></i>
+            <i ng-show="control.is_log_minisize" class="fa fa-expand  proj_exec_log_i"  ng-click="toggleMinimize()"></i>
+        </div>
+    </div>
+    <!--ng-show="!control.is_log_minisize"-->
+    <div class="proj-exe-log-container">
+        <div class="col-sm-12 proj_exec_content" id="content" custom-scroll custom-config="config.scroll_console_info" func="{scroll:'inscrollToBottom'}">
+            <div id="phaseMsg">
+                <div ng-repeat="phase in info.console_msg track by $index" style="padding-bottom: 5px;">  <!-- 阶段 -->
+                    <div>阶段：{{phase.phase_no}} &nbsp;#{{phase.phase_bk_desc}}</div>
+                    <div  style="margin-left: 20px;padding-bottom: 3px;" ng-repeat="node in phase.node_list track by $index">   <!-- 节点 -->
+                        <div ng-class="node.node_status ==3 || node.node_status ==4 ? 'cmdRedColor':'cmdGreenColor'">
+                            {{node.exec_node_ip}} &nbsp;
+                            <span>[&nbsp;{{node.cmd_status_cn}}&nbsp;]</span>
+                            &nbsp;  {{node.start_bk_tm.substring(0,node.start_bk_tm.length-4)}}--{{node.end_bk_tm.substring(0,node.end_bk_tm.length-4)}}  &nbsp;
+                            {{node.time_used < 1 ? '<1' : node.time_used}}(s) &nbsp; MSG:<div style="padding-left: 20px;">
+                            <div ng-bind-html="node.exec_msg_detail"></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-left: 10px;padding-bottom: 5px;"><img src="../app/img/publish/Prod_DOS_cursor.gif"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,45 @@
+<form name="info.form.changeTypeform" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">工单处理方式</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body wo-change-handle-modal">
+        <div class="row form-style">
+            <div class="col-sm-3 control-label">
+                <label class="label-key">工单标题</label>
+            </div>
+            <label class="col-md-9 control-label label-value" style="text-align: left;" ng-bind="info.sub_tab.order_bk_title"></label>
+        </div>
+        <div class="row form-style" style="margin-top: 20px;">
+            <div class="col-sm-3 control-label">
+                <label class="label-key">处理方式</label>
+            </div>
+            <div class="col-sm-9" style="padding-top: 4px;">
+                <div class="wo-handle-type label-value">
+                    <input type="radio" name="handle_type" i-check ng-model="info.sub_tab.temp_handle_type"  value=2 /><span>&nbsp;固化方案</span>
+                </div>
+                <div class="wo-handle-type label-value">
+                    <input type="radio" name="handle_type" i-check ng-model="info.sub_tab.temp_handle_type"  value=1 /><span>&nbsp;手工SQL</span>
+                </div>
+                <div class="wo-handle-type label-value">
+                    <input type="radio" name="handle_type" i-check ng-model="info.sub_tab.temp_handle_type"  value=4 /><span>&nbsp;批量SQL</span>
+                </div>
+                <div class="wo-handle-type label-value">
+                    <input type="radio" name="handle_type" i-check ng-model="info.sub_tab.temp_handle_type"  value=3 /><span>&nbsp;脚本处理</span>
+                </div>
+                <div class="wo-handle-type label-value" style="margin-top: 10px;">
+                    <input type="radio" name="handle_type" i-check ng-model="info.sub_tab.temp_handle_type"  value=5 /><span>&nbsp;数据导出</span>
+                </div>
+            </div>
+            <div class="col-sm-offset-3 col-sm-9">
+                <validate-msg tag-cn-name="处理方式" type="radio" name="handle_type" model="info.sub_tab.temp_handle_type"></validate-msg>
+            </div>
+
+        </div>
+        <!-- 表单提交按钮-->
+        <div class="text-center" style="margin: 40px 0 20px 0">
+            <button  class="cancel-btn btn-xl"  type="button" ng-click="cancel()">取消</button>
+            <button  class="save-btn btn-xl" type="submit">确认</button>
+        </div>
+    </div>
+</form>

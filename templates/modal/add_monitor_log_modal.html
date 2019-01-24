@@ -1,0 +1,83 @@
+<style>
+	.breadcrumb > li + li::before{
+        color: #ccc;
+        content: "";
+        padding: 0 0px;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">节点</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body">
+    <!--选择节点-->
+    <div class="row form-horizontal form_style">
+        <label class="col-sm-2 control-label label_key">选择节点</label>
+        <div class="col-sm-4 label_value">
+            <bs-select name="prog_name"
+                       items="data.node_list"
+                       width="200"
+                       my-select="monitor_log_info.node_ip"
+                       select-val="getFileList(selectKey)"
+                       option-labal="lable"
+                       option-key="index"
+                       loading="control.node_loading"
+                       disable="control.is_update"
+                       required></bs-select>
+        </div>
+    </div>
+    <!--中间区域-->
+    <div class="row" style="margin-top: 20px;">
+        <!--选择文件-->
+        <div class="col-sm-6">
+            <div ng-if="node.paths.length == 0 && !node.err_msg" style="width: 100%;height:350px;background: url('./img/publish/choose_monitor_node.png') no-repeat 50% 52% ;position: relative;">
+                <div style="width: 100%;height: 36px;background: #091118;line-height: 36px;color: #d2f1fe;padding-left: 20px;font-size: 12px;">
+                    文件路径:&nbsp;&nbsp;暂无
+                </div>
+                <div style="position: absolute;color: #ccc;top: 64%;left: 42%;font-size: 12px;">请先选择节点</div>
+            </div>
+            <div ng-if="node.paths.length != 0 || node.err_msg">
+                <file-browse node="node" change-path="changePath(node)" check="2"></file-browse>
+            </div>
+        </div>
+        <!--已选择的文件-->
+        <div class="col-sm-6">
+            <div style="width: 100%;height:400px;">
+                <div style="width: 100%;height: 36px;background: #091118;line-height: 36px;color: #d2f1fe;padding-left: 20px;font-size: 12px;">
+                    已选文件&nbsp;&nbsp;
+                </div>
+                <div style="height:90%;overflow-y: auto;">
+                    <div ng-if="data.all_checked_list.length ==0" style="width: 100%;height:290px;background: url('./img/publish/no_monitor_log.png') no-repeat 50% 50% ;position: relative;">
+                        <div  style="position: absolute;color: #ccc;top: 65%;left: 44%;font-size: 12px;">暂无文件</div>
+                    </div>
+                    <div ng-if="data.all_checked_list.length !=0">
+                        <div ng-repeat="node in data.all_checked_list">
+                            <div ng-if="node.checked_files.length !=0">{{node.label}}</div>
+                            <div ng-repeat="file in node.checked_files" style="height: 40px;width: 100%;color: #44dcfd;margin-top: 5px">
+                                <div class="col-sm-5" style="padding:5px 0;">
+                                    <span style="float: left;"><i class="fa fa-file-text-o"></i></span>
+                                    <span style="display: inline-block; width: 140px;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;margin-left: 10px;" title="{{file.file}}">{{file.file}}</span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <bs-select width=200 name="encode_type"
+                                               items="data.encode_type_list"
+                                               my-select="file.word_coding"
+                                               required></bs-select>
+                                    <!-- <span style=";position: absolute;top:7px;right: 5px" ng-click="deleteSingleFile($index)"><i class="fa fa-times"></i></span>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--按钮-->
+    <div style="margin-top:30px;margin-bottom: 40px;text-align: center;">
+        <button  class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+        <button ng-show="!btnBus_loading" class="save-btn btn-xl" ng-click="saveMonitorNode()">确认</button>
+        <button ng-show="btnBus_loading" disabled="disabled" class="save-btn btn-xl">
+            <i style="color: white" class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>

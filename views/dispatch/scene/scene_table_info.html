@@ -1,0 +1,43 @@
+<div class="row" ng-if="info.basic_info.scene_id">
+    <div class="col-sm-3" style="padding-right: 0">
+        <div class="scene_img"></div>
+    </div>
+    <div class="col-sm-5" style="font-size: 12px;padding-top: 10px;padding-left: 0">
+        <div class="scene_icon scene_name_icon" ng-bind="info.basic_info.scene_name ? info.basic_info.scene_name : '--'" title="{{info.basic_info.scene_name}}"></div>
+        <div class="scene_icon scene_user_icon" ng-bind="info.basic_info.crt_user_name ? info.basic_info.crt_user_name : '--'" title="{{info.basic_info.crt_user_name}}"></div>
+    </div>
+    <div class="col-sm-4" style="font-size: 12px;padding-top: 10px;padding-left: 0">
+        <div class="scene_icon scene_time_icon" ng-bind="info.basic_info.crt_bk_date ? info.basic_info.crt_bk_date : '--'"></div>
+    </div>
+</div>
+<div ng-if="info.basic_info.scene_id" style="border-bottom: 1px solid #000;margin-left: 0;"></div>
+<!--场景元素列表-->
+<div class="row scene-ele-container" ng-if="info.basic_info.scene_id">
+    <ul class="list-unstyled scene-ele-list" ng-repeat="category in info.scene_ele_list">
+        <li ng-show="category.element_list.length">
+            <span class="ele-category" ng-bind="category.category ? categoryTOCn(category.category) : '--'"></span>
+        </li>
+        <li>
+            <span class="single-element" ng-repeat="ele in category.element_list">
+                <span class="element-icon" ng-style="elementHightIcon(ele.type)"></span>
+                <span class="element-text-name" ng-bind="ele.element_info.sdwork_cn_name ? ele.element_info.sdwork_cn_name : eleTypeTOCn(ele.type)" title="{{ele.element_info.sdwork_cn_name}}"></span>
+            </span>
+        </li>
+    </ul>
+</div>
+<!--无场景元素-->
+<div class="row no_data_height" ng-if="info.basic_info.scene_id && !info.scene_ele_list.length">
+    <div style="color: #6d7183;width: 100px;padding-left:20px;margin:0 auto">暂无元素</div>
+</div>
+<!--未选择场景-->
+<div class="row no_data_height" ng-if="!info.basic_info.scene_id && !control.single_scene_loading">
+    <div class="col-sm-12" style="color: #6d7183">
+        <span class="no_scene_picture"></span>
+        <div>未选择场景</div>
+    </div>
+</div>
+<!--loading-->
+<div class="row no_data_height" ng-if="control.single_scene_loading">
+    <span class="loading-font-color font-14">数据加载中</span>
+    <span class="fa fa-spinner fa-spin loading-font-color font-18"></span>
+</div>

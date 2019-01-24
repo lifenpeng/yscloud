@@ -1,0 +1,52 @@
+<style>
+    .modal-content{
+        border: none;
+    }
+    .alert-info{
+        position: relative;
+        /*width: 400px;*/
+        padding: 40px 15px;
+        text-align: center;
+        color: #31708F;
+        background-color: #1d2a3a;
+        opacity: 0.95;
+        word-break: break-all;
+    }
+    @keyframes auto-height {
+        from {height: 0px}
+        to {height: 80px}
+    }
+    @-moz-keyframes auto-height {
+        from {height: 0px}
+        to {height: 80px}
+    }
+    @-webkit-keyframes auto-height {
+        from {height: 0px}
+        to {height: 80px}
+    }
+    @-o-keyframes auto-height {
+        from {height: 0px}
+        to {height: 80px}
+    }
+    .modal-cancel-icon{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: #44dcfb;
+        cursor: pointer;
+    }
+    .modal-cancel-icon:hover{
+        color: #19b7ec;
+    }
+</style>
+<div class="alert-info">
+    <i class="fa fa-times modal-cancel-icon" ng-click="ok()"></i>
+    <i ng-if="status == 1" class="fa fa-eye" style="font-size: 40px; color: #31708F;position: relative; margin-bottom: 10px;display: block;"></i>
+    <i ng-if="status == 2" class="fa fa-check" style="font-size: 40px; color: #5cb85c;position: relative; margin-bottom: 10px;display: block;"></i>
+    <i ng-if="status == 3" class="fa fa-exclamation-triangle" style="font-size: 40px; color: #FF0000;position: relative; margin-bottom: 10px;display: block;"></i>
+    <span ng-if="status == 1" style="position: relative; font-size: 14px;color:#31708F">{{ message }}</span>
+    <span ng-if="status == 2" style="position: relative; font-size: 14px;color:#5cb85c">{{ message }}</span>
+    <span ng-if="status == 3" style="position: relative; font-size: 14px;color:#FF0000">{{ message }}</span>
+    <!--<div class="alert-message"><div class="alert-bg" ng-class="modalIcon()"></div></div>-->
+</div>
+

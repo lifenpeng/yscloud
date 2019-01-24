@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <h3 class="modal-title">请确认要执行的SQL语句</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body wo-sql-handle-confirm-sql-modal wo-handle">
+    <!-- 单个sql步骤-->
+    <div class="row sql-content-wrap"  ng-if="info.sql_step">
+        <div class="col-sm-11">
+            <div class="row sys-cn-name">
+                <label >{{info.sql_step.sys_cn_name}}</label>
+            </div>
+            <div class="row form-style sql-text-content">
+                <span class="label-value">{{info.sql_step.sql_text}}</span>
+            </div>
+        </div>
+        <div class="col-sm-1 detail-btn view-detail-a">
+            <a href="javascript:void(0);" ng-click="viewSqlStepModal(info.sql_step.sql_work_seq)" >详细>></a>
+        </div>
+    </div>
+    <!-- 所有未提交的sql步骤-->
+    <div class="row sql-content-wrap" ng-if="info.unsubmit_sql_steps" ng-repeat="sql_step in info.unsubmit_sql_steps">
+        <div class="col-sm-11">
+            <div class="row sys-cn-name" >
+                <label>{{sql_step.sys_cn_name}}</label>
+            </div>
+            <div class="row sql-text-content" style="color:#D10F0F;">
+                <span>{{sql_step.sql_text}}</span>
+            </div>
+        </div>
+        <div class="col-sm-1 detail-btn view-detail-a" >
+            <a href="javascript:void(0);" ng-click="viewSqlStepModal(info.sql_step.sql_work_seq)" >详细>></a>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top: 20px;margin-bottom: 40px;">
+    <div class="col-sm-12 text-center">
+        <button ng-show="!control.confirm_btn_loading" class="cancel-btn btn-md" ng-click="cancel()">取消</button>
+        <button ng-show="!control.confirm_btn_loading" class="save-btn btn-md" ng-click="confirm()">确定</button>
+        <button ng-show="control.confirm_btn_loading" disabled="disabled" class="save-btn bt-_md" style="text-align:center;">
+            <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>

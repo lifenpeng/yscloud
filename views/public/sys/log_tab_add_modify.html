@@ -1,0 +1,235 @@
+<div class="container-fluid no-padding log-add-modify">
+    <div class="row">
+        <div class="col-sm-1  col-sm-offset-10 delete-common">
+            <div class="delete-log" style="z-index: 999" ng-click="returnLogList()"></div>
+        </div>
+    </div>
+    <form name="info.log_form" ng-submit="saveLog()" class="form-horizontal" novalidate autocomplete="off">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group form-style">
+                    <label class="col-sm-3 control-label label-key" style="padding-right:0;">日志名</label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               style="width: 216px;"
+                               name="log_name"
+                               ng-model="info.log.log_name"
+                               class="form-control label-value"
+                               ng-disabled="info.log.modify"
+                               placeholder="例:*2017*.log"
+                               ng-blur="judgeLogName(info.log)"
+                               required
+                               ng-maxlength=50
+                                >
+                        <validate-msg tag-cn-name="日志名" name="log_name"></validate-msg>
+                    </div>
+                </div>
+                <div class="form-group form-style">
+                    <label class="control-label col-sm-3 label-key" style="padding-right:0;">日志分类</label>
+                    <div class="col-sm-8 label-value">
+                        <bs-select width=220 name="log_type"
+                                   items="data.log_sort_list"
+                                   my-select="info.log.log_type"
+                                   required></bs-select>
+                        <validate-msg tag-cn-name="日志分类" type="select" name="log_type" model="info.log.log_type"></validate-msg>
+                    </div>
+                </div>
+                <div class="form-group form-style">
+                    <label class="control-label col-sm-3 label-key" style="padding-right:0;">字符编码</label>
+                    <div class="col-sm-8 label-value">
+                        <bs-select
+                                width="220"
+                                name="file_encoding"
+                                items="data.log_encod_list"
+                                my-select="info.log.file_encoding"
+                                required
+                                ></bs-select>
+                        <validate-msg tag-cn-name="字符编码" type="select" name=" file_encoding" model="info.log.file_encoding"></validate-msg>
+                    </div>
+                </div>
+                <div class="form-group form-style">
+                    <label class="col-sm-3 control-label label-key" style="padding-right:0;">定时获取</label>
+                    <div class="col-sm-8 log-time" style="margin-left: 15px;">
+                        <div class="row" style="color: #61a1b8">
+                            <input ng-blur="timeInputBlur(info.log.log_pick_info.start_hour,1,info.log.log_pick_info)" type="text" name="start_hour" class="form-control log-input-time" onkeydown="return ((((event.keyCode>47 && event.keyCode<58)|| (event.keyCode>95 && event.keyCode<106))||(event.keyCode == 8))? true : false)"
+                                   ng-model="info.log.log_pick_info.start_hour"/>&nbsp;时
+                            <input ng-blur="timeInputBlur(info.log.log_pick_info.start_minutes,2,info.log.log_pick_info)" name="start_minutes" class="form-control log-input-time"  onkeydown="return ((((event.keyCode>47 && event.keyCode<58)|| (event.keyCode>95 && event.keyCode<106))||(event.keyCode == 8))? true : false)" type="text"
+                                   ng-model="info.log.log_pick_info.start_minutes"/>&nbsp;分
+                            <input ng-blur="timeInputBlur(info.log.log_pick_info.start_second,3,info.log.log_pick_info)" name="start_second" class="form-control log-input-time"  onkeydown="return ((((event.keyCode>47 && event.keyCode<58)|| (event.keyCode>95 && event.keyCode<106))||(event.keyCode == 8))? true : false)" type="text"
+                                   ng-model="info.log.log_pick_info.start_second"/>&nbsp;秒
+                        </div>
+                        <div class="row" ng-show="info.log.log_pick_info.show_img">
+                            <label style="color:#a40000;font-size: 12px;">{{info.log.log_pick_info.show_img}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row form-style">
+                    <label class="col-sm-3 control-label label-key">描述</label>
+                    <div class="col-sm-7">
+                        <textarea name="log_desc"
+                                  ng-model="info.log.log_desc"
+                                  class="form-control label-value"
+                                  placeholder="输入不超过50个字符或汉字"
+                                  style=" min-height: 173px; resize:none;"
+                                  required
+                                  ng-minlength=2
+                                  ng-maxlength=50
+                                  ng-model-options="{updateOn: 'blur'}">
+                        </textarea>
+                        <validate-msg tag-cn-name="描述" name="log_desc"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--分割一行-->
+        <div class="log-line-horizon"></div>
+        <!--节点数据源-->
+        <div class="row form-style">
+            <label class="col-sm-3 control-label label-key" style="padding-right:2px;width:12.4%;margin-left: 3px;">日志来源</label>
+            <div class="col-sm-8 label-value" style="width:86%">
+                <table class="sub-table  text-center" style="background: rgba(0, 0, 0, 0.298);" row-plus="addLogSource()">
+                    <thead>
+                    <tr>
+                        <td class="log-text-type" style="width: 170px;">节点</td>
+                        <td class="log-text-type" style="width:170px;">数据源</td>
+                        <td class="log-text-type">存储路径</td>
+                        <td style="min-width: 60px;">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="tr in info.log.log_configs">
+                        <td class="text-center">
+                            <bs-select  items="data.node_ip_list" my-select="tr.node_ip"
+                                        select-val="getSocByip(node_ip,tr)"
+                                        option-labal="node_ip,node_name"
+                                        option-key = "node_ip"
+                                        no-border
+                                        width="180"
+                                    >
+                            </bs-select>
+                            <validate-msg tag-cn-name="执行节点" type="select" name="node_ip{{$index}}" model="tr.node_ip"></validate-msg>
+                        </td>
+                        <td style="width: 170px">
+                            <div ng-if="tr.exe_soc_list">
+                                <bs-select items="tr.exe_soc_list" width="140" my-select="tr.soc_name"  no-border init-label ></bs-select>
+                                <validate-msg tag-cn-name="数据源" type="select" name="soc_name{{$index}}" model="tr.soc_name"></validate-msg>
+                            </div>
+                            <div ng-if="!tr.exe_soc_list">
+                                <label>{{tr.soc_name}}</label>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" ng-blur="judgePath(tr)" ng-focus="changeSourceFlag()" class="sub-form-control" ng-model="tr.log_file_path"  name="log_file_path{{$id}}"  required />
+                            <validate-msg style="font-size: 10px;" tag-cn-name="存储路径"  name="log_file_path{{$id}}"></validate-msg>
+                        </td>
+                        <td>
+                            <span class="fa fa-trash-o"  title="删除" style=" padding-left: 10px;" ng-click="deleteLogPath(tr,$index)"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--分割一行-->
+        <div class="log-line-horizon"></div>
+        <!--时间戳-->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group form-style">
+                    <label class="col-sm-3 control-label label-key" style="padding-right:0;">日志日期格式</label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               name="datastamp_exp"
+                               ng-model="info.log.date_exp_show"
+                               class="form-control label-value"
+                               ng-change="showPrompt(info.log,1)"
+                               placeholder=""
+                               style="position: relative;width:216px"
+                               required
+                               ng-maxlength=50
+                                >
+                        <span title="选择日期格式" class="fa fa-search first-span-choose choose-data-type" ></span>
+                        <validate-msg tag-cn-name="日期格式" name="datastamp_exp"></validate-msg>
+                        <div ng-if="info.log.date_exp_show">
+                            <span style="color:#999;font-size:12px;">{{info.log.date_show_title}}</span>
+                        </div>
+                        <div   class="data-chooose-common target-log-choose show-none">
+                            <div class="choose-data"  ng-repeat="one in data.data_format_list"  ng-click="chooseCurDateFormat(one,info.log)">
+                                <span class="log-span log-img-span " title="{{one.value}}" style="font-size: 12px;width: 200px;">{{one.value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group form-style">
+                    <label class="control-label col-sm-3 label-key" style="padding-right:0;">时间格式</label>
+                    <div class="col-sm-7">
+                        <input type="text"
+                               name="timesstamp_exp"
+                               ng-model="info.log.timestamp_exp_show"
+                               class="form-control label-value"
+                               placeholder=""
+                               ng-change="showPrompt(info.log,2)"
+                               required
+                               style="position: relative;width:216px;"
+                               ng-maxlength=50
+                                >
+                        <span title="选择时间格式" class="fa fa-search second-span-choose choose-data-type"></span>
+                        <validate-msg tag-cn-name="时间格式" name="timesstamp_exp"></validate-msg>
+                        <div ng-if="info.log.timestamp_exp_show">
+                            <span style="color:#999;font-size:12px;">{{info.log.timestamp_show_title}}</span>
+                        </div>
+                        <div style="max-height: 200px"  class="target-second-log-choose show-none data-chooose-common" custom-scroll custom-config="data.scroll_list">
+                            <div class="choose-data" ng-repeat="one in data.time_format_list"  ng-click="chooseCurTimeFormat(one,info.log)">
+                                <span  style="font-size: 12px;">{{one.value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--自定义关键字-->
+        <div class="row form-style" >
+            <label class="control-label col-sm-3 label-key" style="padding-right:0;width:12.4%;margin-left: 3px;">自定义关键字</label>
+            <div class="col-sm-9 label-value" style="width: 85.6%">
+                <table class="sub-table  text-center" style="background: rgba(0, 0, 0, 0.298);" row-plus="addKeyWord()">
+                    <thead>
+                    <tr>
+                        <td class="log-text-type">关键字名称</td>
+                        <td class="log-text-type">识别表达式</td>
+                        <td style="min-width: 60px;">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="tr in info.log.keywords">
+                        <td>
+                            <input type="text" class="sub-form-control" ng-model="tr.keyword_name" name="keyword_name{{$id}}"  placeholder="输入关键字" required />
+                            <validate-msg style="font-size: 10px;" tag-cn-name="关键字名称"  name="keyword_name{{$id}}"></validate-msg>
+                        </td>
+                        <td>
+                            <input type="text" class="sub-form-control" ng-model="tr.keyword_exp" name="keyword_exp{{$id}}" placeholder="识别表达式" required/>
+                            <validate-msg style="font-size: 10px;" tag-cn-name="识别表达式"  name="keyword_exp{{$id}}"></validate-msg>
+                        </td>
+                        <td>
+                            <span class="fa fa-trash-o"  title="删除" style=" padding-left: 10px;" ng-click="deleteKeyWord($index)"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="margin: 20px;">
+            <div class="col-sm-12 text-center">
+                <button type="button" class="cancel-btn btn-md text-center" ng-click="returnLogList();">取消</button>
+                <button ng-if="!control.log_save_loading" type="submit" class="save-btn btn-md text-center">保存</button>
+                <button ng-if="control.log_save_loading"  class="save-btn btn-md text-center">
+                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>

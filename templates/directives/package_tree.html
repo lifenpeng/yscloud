@@ -1,0 +1,33 @@
+<script type="text/ng-template" id="nodes_renderer.html">
+    <div  class="tree-node tree-node-content" data-nodrag style="cursor: default;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+        <div ng-click="(node.nodes && node.nodes.length==0) && collapsed || getMoreFile(this)" ng-if="node.dir" ng-class="(node.nodes && node.nodes.length==0 && collapsed) ? 'ui-tree-fold-bg-disabed':'ui-tree-fold-bg'">
+            <a style="padding: 1px 5px;display: inline-block;width: 25px;vertical-align: top;position: relative;z-index: 2" data-nodrag>
+                <span class="fa" ng-class="{
+              'fa-folder': collapsed,
+              'fa-folder-open': !collapsed
+            }" style="font-size: 14px;vertical-align: top;margin-top: 4px">
+                </span>
+            </a>
+            <span style="font-size: 12px;font-weight: 400;display: inline-block;white-space: nowrap;">{{node.file}}</span>
+        </div>
+        <div ng-if="!node.dir && !node.tar" style="cursor: pointer;display: inline-block;padding-left: 20px;width: 100%;">
+            <a class="btn btn-xs" data-nodrag>
+                <span class="fa fa-file-text-o" style="font-size: 14px;color: #d2f1fe"></span>
+            </a>
+            <span style="font-size: 12px;color: #d2f1fe;display: inline-block;vertical-align: middle;margin-top: -2px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 100%;"  title="{{node.file}}">{{node.file}}</span>
+        </div>
+        <div class="file-check" style="position: absolute;left: 5px;top: 0;" ng-if="!node.dir">
+            <input type="checkbox" i-check  ng-change="chooseSingleFile(node,$index)" ng-model="node.checked" value="1">
+        </div>
+    </div>
+    <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" style="position: relative;">
+   <!--     <div style="position: absolute;height: 90%;border-left: 1px dotted #0f1721;width: 1px;left: -10px;top: -10px;" ng-if="$last"></div>
+        <div style="position: absolute;height: 90%;border-left: 1px dotted #808080;width: 1px;left: 10px;top: -10px;"></div>-->
+        <li ng-repeat="node in node.nodes track by $index" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+    </ol>
+</script>
+<div ui-tree="treeOptions" class="tree-option" ng-if="data.length!=0">
+    <ol ui-tree-nodes="" ng-model="data" id="tree-root">
+        <li ng-repeat="node in data track by $index" ui-tree-node ng-include="'nodes_renderer.html'" ></li>
+    </ol>
+</div>

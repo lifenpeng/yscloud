@@ -1,0 +1,93 @@
+
+<div class="container-fluid single-file-compare" id="file-compare-view" ng-controller="viewFileCompareCtrl">
+    <tabset>
+        <tab class="analysis-tab"  select="changeCompareTab($index)" active="tab.active" ng-repeat="tab in temp_data.compare_tab_list">
+            <tab-heading>
+                <span class="file-icon" ng-class="formatFileIconStyle(tab)" ng-if="tab.control.has_file_icon"></span>
+                <span class="fa fa-file-text-o file-default-icon" ng-if="!control.has_file_icon"></span>
+                <span class="file-name-compare" ng-bind="tab.compare_info.file_name ? tab.compare_info.file_name : ' '"></span>
+            </tab-heading>
+            <div class="row compare-header">
+                <div class="col-sm-8 path-overflow-ellipsis" title="{{tab.compare_info.real_file_path}}">
+                    <span class="file-path">
+                        {{'..'+tab.compare_info.real_file_path.substring(tab.compare_info.real_file_path.indexOf('/',1))}}
+                    </span>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <span class="code_method" title="切换编码方式" ng-click="(control.left_loading || control.right_loading) || changeCompareCodeMethod(tab)" ng-if="!control.compare_error">
+                            {{tab.compare_info.encoding_type}}
+                    </span>
+                    <div class="version-btn-group">
+                        <div class="version-btn-file-switch all-btn" ng-click="(tab.control.left_loading || tab.control.right_loading || tab.control.is_error) || changeCompareType(1,tab)" ng-class="{'btn-checked':tab.compare_info.compare_type ==1}">
+                            全部
+                        </div>
+                        <div class="version-btn-file-switch up-btn" ng-click="(tab.control.left_loading || tab.control.right_loading || tab.control.is_error) || changeCompareType(2,tab)" ng-class="{'btn-checked':tab.compare_info.compare_type ==2}">
+                            变更
+                        </div>
+                        <span class="part-line" style="margin-top: 8px;margin-right: 12px"></span>
+                        <!--返回按钮-->
+                        <span class="return-btn" ng-click="fileCompareReturn()">
+                        <span class="fa fa-reply"></span>返回</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" scroll-control>
+                <div class="col-sm-6" id="file-left">
+                    <div class="row file-header">
+                        <div class="version-common-icon version-num-icon version-margin-top-5"></div>
+                        <span class="version_label" ng-bind="tab.is_pub_compare ? '发布版本:': tab.control.is_new_version ? '最新版本:' : '当前版本:'"></span>
+                        <span class="version_label version_name" ng-bind="tab.compare_info.curr_version_num ? tab.compare_info.curr_version_num : ''" ng-show="!tab.compare_info.is_pre_pub_ver"></span>
+                        <span class="version_label version_name" ng-show="tab.compare_info.is_pre_pub_ver">预发布版本({{tab.compare_info.pre_pub_project}})</span>
+                        <span class="version_label file-font file-size" ng-bind="tab.compare_info.file_size ? tab.compare_info.file_size : ''"></span>
+                        <span class="file-font part-line" ng-show="tab.compare_info.file_size"></span>
+                        <span class="version_label file-font file-update-time" ng-bind="tab.compare_info.file_update_time ? tab.compare_info.file_update_time : ''"></span>
+                    </div>
+                    <div class="row min-height-450" style="border-right: 1px solid #1E5465">
+                        <div class="code-loading compare-error-msg" ng-show="tab.control.left_error && !tab.control.left_loading" ng-bind="tab.control.left_error"></div>
+                        <span class="fa fa-spinner code-loading"  ng-show="tab.control.left_loading" ng-class="{'fa-spin':tab.control.left_loading}"></span>
+                        <textarea
+                                ui-codemirror="{onLoad:detailLeftOptions}"
+                                ui-refresh="tab_control.cm_refresh"
+                                ng-model="tab.file_str.left_str"
+                                ng-if="!tab.control.left_loading && !tab.control.tab_change"
+                                class="form-control">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="col-sm-6" id="file-right">
+                    <div class="row file-header" style="overflow: visible">
+                        <div class="version-common-icon version-num-icon version-margin-top-5"></div>
+                        <span class="version_label" ng-bind="tab.is_pub_compare ? '备份版本:': tab.compare_info.full_absolute_path ? '全量版本':'对比版本:'"></span>
+                        <bs-select width=70
+                                   no-border
+                                   disable="tab.control.left_loading || tab.control.right_loading"
+                                   ng-if="!tab.is_pub_compare"
+                                   style="display: inline-block;vertical-align: top"
+                                   items="tab.version_list"
+                                   my-select="tab.compare_info.compare_version_num"
+                                   select-val="selectCompareVersion(selectKey,tab)"
+                                   option-labal="version_num"
+                                   option-key="version_num">
+                        </bs-select>
+                        <span class="version_label version_name" ng-if="tab.is_pub_compare" ng-bind="tab.compare_info.compare_version_num ? tab.compare_info.compare_version_num : ''"></span>
+                        <span class="version_label file-font file-size" ng-bind="tab.compare_info.compare_file_size ? tab.compare_info.compare_file_size : ''"></span>
+                        <span class="file-font part-line" ng-show="tab.compare_info.compare_file_size"></span>
+                        <span class="version_label file-font file-update-time" ng-bind="tab.compare_info.compare_update_time ? tab.compare_info.compare_update_time : ''"></span>
+                    </div>
+                    <div class="row min-height-450">
+                        <div class="code-loading compare-error-msg" ng-show="tab.control.right_error && !tab.control.right_loading" ng-bind="tab.control.right_error"></div>
+                        <span class="fa fa-spinner code-loading" ng-show="tab.control.right_loading" ng-class="{'fa-spin':tab.control.right_loading}"></span>
+                        <textarea
+                                ui-codemirror="{onLoad:detailRightOptions}"
+                                ui-refresh="tab_control.cm_refresh"
+                                ng-if="!tab.control.right_loading && !tab.control.tab_change"
+                                ng-model="tab.file_str.right_str"
+                                class="form-control">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <span class="add-file-btn"  ng-click="(curr_control.left_loading || curr_control.right_loading) || fileCompareReturn(true)" title="添加文件">+</span>
+    </tabset>
+</div>

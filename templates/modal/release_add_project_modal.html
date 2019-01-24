@@ -1,0 +1,39 @@
+<style>
+    .none-scroll{
+        max-height: 233px;
+        overflow: auto;
+        width: 100%;;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">新增项目</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body cmpt" style="min-height: 400px;">
+    <!-- 正在加载-->
+    <div class="row" ng-show="control.project_list_loading">
+        <div class="col-sm-4 col-sm-offset-4 text-center cmpt-modal-loading-container">
+            <div class="cmpt-detail-modal-loading" ng-show="!info.error_message">
+                <span class="loading-font-color">正在获取信息&nbsp;&nbsp;<i style="font-size: 24px;color:#44dcfd;" class="fa fa-spinner fa-spin"></i></span>
+            </div>
+            <div ng-show="info.error_message" class="cmpt-detail-modal-error error-font-color" style="height:170px;">
+                <span>获取信息异常</span>
+                <div class="cmpt-detail-modal-error-msg" ng-bind="info.error_message"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 加载成功-->
+    <div ng-show="!control.project_list_loading">
+        <!-- 添加组件-->
+        <div class="row" style="position: relative">
+            <div class="col-md-12 lg-table">
+                <release-project-list></release-project-list>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center ;margin-top: 30px;margin-bottom: 20px;">
+        <button class="cancel-btn btn-xl"  ng-click="formCancel()">取消</button>
+        <button class="save-btn btn-xl"  ng-disabled="info.error_message" type="button" ng-click="formSubmit()" >确定
+        </button>
+    </div>
+</div>

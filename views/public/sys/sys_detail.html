@@ -1,0 +1,78 @@
+<div class="container-fluid new-sys">
+    <form  class="form-horizontal form-style" novalidate autocomplete="off">
+        <div class="form-group form-style">
+            <label class="col-sm-3 label-key">应用系统名</label>
+            <div class="col-sm-6 label-value">
+                <span ng-bind="info.sys.sys_name ? info.sys.sys_name : '--'"></span>
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 label-key">应用系统中文名</label>
+            <div class="col-sm-6 label-value">
+                <span ng-bind="info.sys.sys_cn_name ? info.sys.sys_cn_name : '--'"></span>
+            </div>
+        </div>
+       <!-- <div class="form-group form-style">
+            <label class="col-sm-3 label-key">管理平台系统码</label>
+            <div class="col-sm-6 label-value">
+                <span ng-bind="info.sys.platform_sys_name ? info.sys.platform_sys_name : '&#45;&#45;'"></span>
+            </div>
+        </div>-->
+        <div class="form-group form-style">
+            <label class="col-sm-3 label-key">Agent部署</label>
+            <div class="col-sm-6 label-value">
+                <span ng-bind="info.sys.agent_flag == 1 ? '是' : '否'"></span>
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 label-key">发布包获取方式</label>
+            <div class="col-sm-6 label-value">
+                <span ng-bind="info.sys.package_gain_type == 1 ? '本地上传' : info.sys.package_gain_type == 2 ? '版本机获取' : '定制化渠道' "></span>
+            </div>
+        </div>
+        <div ng-if="info.sys.package_gain_type == 3">
+            <div class="form-group form-style" style="margin-bottom: 15px;">
+                <label class="col-sm-3  label-key">渠道</label>
+                <div class="col-sm-6 label-value">
+                    <span ng-bind="info.sys.channel_name ? info.sys.channel_name : '--'"></span>
+                </div>
+            </div>
+        </div>
+        <div ng-if="info.sys.package_gain_type == 2">
+            <div class="form-group form-style" style="margin-bottom: 15px;">
+                <label class="col-sm-3  label-key">版本机数据源</label>
+                <div class="col-sm-6 label-value">
+                    <span ng-bind="info.sys.version_soc_name ? info.sys.version_soc_name : '--'"></span>
+                </div>
+            </div>
+            <div class="form-group form-style" style="margin-bottom: 15px;">
+                <label class="col-sm-3  label-key">版本机发布包路径</label>
+                <div class="col-sm-6 label-value">
+                    <span ng-bind="info.sys.dftpropac_bk_dir ? info.sys.dftpropac_bk_dir : '--'"></span>
+                </div>
+            </div>
+            <div class="form-group form-style" style="margin-bottom: 15px;">
+                <label class="col-sm-3  label-key">版本机清单路径</label>
+                <div class="col-sm-6 label-value">
+                    <span ng-bind="info.sys.dftprolst_bk_dir ? info.sys.dftprolst_bk_dir : '--'"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-style" style="margin-bottom: 15px;">
+            <label class="col-sm-3  label-key">责任人</label>
+            <div class="col-sm-6 label-value" style="padding-left:10px;margin-top:-7px;">
+                <div ng-show="data.response_person_name_list.length != 0">
+                    <div class="sys-response-person" ng-repeat="user in data.response_person_name_list" ng-if="user">
+                        {{user}}
+                    </div>
+                </div>
+                <div ng-show="data.response_person_name_list.length == 0">--</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button  type="button" ng-click="back()" class="cancel-btn btn-md">返回</button>
+            </div>
+        </div>
+    </form>
+</div>

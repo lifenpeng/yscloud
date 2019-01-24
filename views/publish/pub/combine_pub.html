@@ -1,0 +1,116 @@
+<div class="container-fluid pub-window project-application combine-pub" style="min-height: 450px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div style="height: 60px;background: #0d131a;position: relative">
+                <div class="table-search" style="padding-top: 12px;margin-left: 35px;">
+                    <div class="table-search-input">
+                        <input type="text"
+                               ng-model="info.key_word"
+                               class="form-control"
+                               placeholder="请输入关键字"
+                               ng-enter="searchPrepareListByKeyword(info.key_word)">
+                    </div>
+                    <div class="table-search-btn">
+                        <span class="table-clear-logol" ng-if="info.key_word" ng-click="info.key_word = ''"></span>
+                        <span class="table-search-logol"></span>
+                    </div>
+                </div>
+                <div  style="position: absolute;width: 50%;top: 0;left: 410px;padding-top: 15px;">
+                    <div class="choose-tag-style" ng-click="getListByStatus(1)">
+                        待准备
+                        <div ng-if="control.wait_pub_choose_flag" class="triangle-border-se">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                    <div  class="choose-tag-style"  ng-click="getListByStatus(2)">
+                        待执行
+                        <div ng-if="control.pub_exec_choose_flag" class="triangle-border-se">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                    <div class="choose-tag-style"  ng-click="getListByStatus(3)">
+                        执行中
+                        <div ng-if="control.pub_finish_choose_flag" class="triangle-border-se">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                    <div class="choose-tag-style"  ng-click="getListByStatus(4)">
+                        已结束
+                        <div ng-if="control.pub_close_choose_flag" class="triangle-border-se">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 60px;">
+        <div ng-if="!control.get_list_loading && data.prepare_list.length != 0" class="pub-block-wrap" ng-repeat="sys in data.prepare_list track by $index">
+            <div class="pub-block-body" ng-style="{'height': (!sys.pjProjectList || sys.pjProjectList.length * 28 < 60)? 60 : sys.pjProjectList.length * 28+10}">
+                <div class="sys-img-style"></div>
+                <span class="col-sm-4 publish-sys-name flex-wrap-algin">
+                    <div>{{sys.business_cn_name}}</div>
+                </span>
+                <span class="col-sm-4 flex-wrap-algin" style="padding-bottom: 4px">
+                    <div class="combine-project-style" ng-repeat="proj in sys.pjProjectList">
+                        <div>{{proj.project_name}}</div>
+                    </div>
+                </span>
+                <span class="col-sm-4 flex-wrap-algin" style="padding-left: 0">
+                      <div style="color: #87aab7;">负责人&nbsp;:&nbsp;{{sys.manager_user_name}}</div>
+                </span>
+                <!--主操作按钮-->
+                <div class="major-btn">
+                    <button type="button" ng-if="sys.sys_publish_status == 1" class="hollow-btn btn-md" style="border-radius: 20px;" ng-click="goPrepare(sys)">发布准备</button>
+                    <button type="button" ng-if="sys.sys_publish_status == 2 || sys.sys_publish_status == 9 || sys.sys_publish_status == 3 || sys.sys_publish_status == 6" class="hollow-btn btn-md" ng-click="goToExec(sys)" style="border-radius: 20px;">执行</button>
+                    <span ng-if="sys.sys_publish_status == 2" style="color: #44dcfd;position: absolute;width: 50px;left: -64px;top: 8px;">待执行</span>
+                    <span ng-if="sys.sys_publish_status == 1" style="color: #44dcfd;position: absolute;width: 50px;left: -64px;top: 8px;">待准备</span>
+                    <span ng-if="sys.sys_publish_status == 3" style="color: #44dcfd;position: absolute;width: 50px;left: -64px;top: 8px;">正在执行</span>
+                    <span ng-if="sys.sys_publish_status == 4" style="position: absolute;width: 50px;left: -64px;top: 8px;;color: #43FC8C;">自动结束</span>
+                    <span ng-if="sys.sys_publish_status == 5" style="position: absolute;width: 50px;left: -64px;top: 8px;color: #E9416E;">手动结束</span>
+                    <button type="button" ng-if="sys.sys_publish_status == 4 || sys.sys_publish_status == 5 || sys.sys_publish_status == 7 || sys.sys_publish_status == 8" class="hollow-btn btn-md" ng-click="goToRollback(sys)" style="border-radius: 20px;">回退准备</button>
+                    <span ng-if="sys.sys_publish_status == 6" style="display: inline-block;color: #44dcfd;position: absolute;width: 50px;left: -64px;top: 8px;">正在回退</span>
+                    <span ng-if="sys.sys_publish_status == 7" style="display: inline-block;color: #43FC8C;position: absolute;width: 50px;left: -64px;top: 8px;">回退成功</span>
+                    <span ng-if="sys.sys_publish_status == 8" style="display: inline-block;color: #E9416E;position: absolute;width: 50px;left: -64px;top: 8px;">回退失败</span>
+                    <span ng-if="sys.sys_publish_status == 9" style="display: inline-block;color: #44dcfd;position: absolute;width: 50px;left: -64px;top: 8px;">待回退</span>
+                </div>
+                <!--副操作按钮组-->
+                <div class="secondary-btn" ng-if="!sys.operation_flag && sys.sys_publish_status > 1"  ng-click="showSecondaryOperation(sys,data.prepare_list)">
+                    <span><i class="fa fa-cog"></i></span>
+                </div>
+                <div class="secondary-btn" style="color: #41cfef;" ng-if="sys.operation_flag && sys.sys_publish_status > 1" ng-click="sys.operation_flag = false">
+                    <span><i class="fa fa-cog"></i></span>
+                </div>
+                <!--副操作按钮下拉菜单-->
+                <div ng-if="sys.operation_flag" class="secondary-operation-wrap" ng-mouseleave="sys.operation_flag=false">
+                    <ul>
+                        <li ng-click="goToPubDetail(sys)">查看</li>
+                        <li ng-if="sys.sys_publish_status > 1" ng-click="goToSingleMonitor(sys)">监控</li>
+                        <li ng-if="sys.sys_publish_status == 2 || sys.sys_publish_status == 3 || sys.sys_publish_status == 10" ng-click="resetPublish(sys)">重置</li>
+                    </ul>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <!--<div style="width: 100%;padding:10px 15px">
+                <div class="pub-block-header">
+                    <span>{{item.projectInfo.project_name}}</span>
+                    <div class="pub-block-header-img"></div>
+                    <div class="proj-status" style="top:7px;" title="{{item.projectInfo.project_status == 1 ? '已登记' : item.projectInfo.project_status == 2 ? '待发布' : item.projectInfo.project_status == 3 ? '未审核' : item.projectInfo.project_status == 4 ? '发布中' : item.projectInfo.project_status == 5 ? '发布异常' : item.projectInfo.project_status == 6 ? '正常结束' : item.projectInfo.project_status ==7 ? '异常结束' : item.projectInfo.project_status == 8 ? '已挂起' : '已关闭'}}" ng-class="item.projectInfo.project_status == 1 ? 'proj-publish-assign' : item.projectInfo.project_status == 2 ? 'proj-pre-publish' : item.projectInfo.project_status == 3 ? 'proj-uncheck' : item.projectInfo.project_status == 4 ? 'proj-publish-ing' : item.projectInfo.project_status == 5 ? 'proj-publish-error' : item.projectInfo.project_status == 6 ? 'proj-publish-finish' : item.projectInfo.project_status ==7 ? 'proj-error-finish' : item.projectInfo.project_status == 8 ? 'proj-publish-loop' : 'proj-publish-close'"></div>
+                </div>
+            </div>-->
+            <div class="project-circle-style"></div>
+            <div ng-if="!$last" class="project-line-style"></div>
+            <!--项目时间-->
+            <div class="project-start-time" style="text-align: center;width: 80px;">
+                <div style="height: 20px;">{{sys.publish_date}}</div>
+                <div style="margin-top: 6px;">{{sys.publish_time.substring(0,sys.publish_time.lastIndexOf(':'))}}</div>
+            </div>
+        </div>
+        <div ng-if="!control.get_list_loading && data.prepare_list.length == 0" style="width: 100%;height: 200px;line-height: 200px;text-align: center;color: #6D7183">
+            暂无数据
+        </div>
+        <div ng-if="control.get_list_loading" style="width: 100%;height: 200px;line-height: 200px;text-align: center;color: #44dcfd">
+            正在加载数据...
+        </div>
+    </div>
+</div>

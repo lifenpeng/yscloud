@@ -1,0 +1,649 @@
+/*------------------------------------------------------------------------------------------*/
+/*搜索框样式*/
+.searchBox .search {
+    width: 350px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    zoom: 1;
+}
+.searchBox .search-input{
+    width:308px;float: left;
+}
+.searchBox .search-input input{
+    width:308px;
+    padding-right: 25px;
+    border-radius:0px;
+    padding-left: 38px;
+}
+.searchBox .search-btn{
+    width:42px;
+    position: relative;
+    float: right;
+}
+.searchBox .search-logol{
+    position:absolute;
+    top:0;
+    left: -308px;
+    font-size:18px;
+    width:42px;
+    height:34px;
+    line-height:34px;
+    text-align:center;
+    /*cursor:pointer;*/
+}
+.searchBox .clear-logol{
+    cursor: pointer;
+    position:absolute;
+    top:10px;
+    left:-25px;
+    z-index:10;
+    font-size:16px;
+    color:#ccc;
+}
+
+
+/*------------------------------------------------------巡检新视觉样式---------------------------------------------*/
+/*巡检模块公共样式*/
+.inspection .no-data-font{
+    color: #6d7183;
+}
+.inspection .loading-font{
+    color: #44dcfd;
+}
+.inspection .warning-font{
+    color: #FAD837;
+}
+.inspection .label-font{
+    color: #61A1B8;
+}
+.inspection .padding-top-7{
+    padding-top: 7px !important;
+}
+.inspection .margin-top-6{
+    margin-top: 6px !important;
+}
+.inspection .margin-top-7{
+    margin-top: 7px !important;
+}
+.inspection .margin-top-8{
+    margin-top: 8px !important;
+}
+.inspection .margin-top-10{
+    margin-top: 10px !important;
+}
+.inspection .display-inblock{
+    display: inline-block;
+}
+.inspection .no-data-icon{
+    background: url('../img/inspection/no-data-icon.png') no-repeat;
+    width: 110px;height: 130px;text-align: center;
+}
+.inspection .no-data-icon-font{
+    display: inline-block;
+    color: #6d7183;
+    vertical-align: bottom;
+    margin-top: 105px;
+}
+.inspection .font-block{
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    white-space: nowrap;
+    margin-top: 2px;
+    padding-left: 0;
+}
+.inspection .checked-triangle{
+    background: transparent;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+}
+.inspection .checked-triangle .fa-check{
+    position: absolute;
+    top: 8px;
+    left: -11px;
+    font-size: 10px;
+    color: #fff;
+}
+/*日志选择模态框*/
+.inspection  .inspet-log-icon{
+    background:url("../img/inspection/inspet_log_icon.png");
+    display: inline-block;
+    width: 30px;
+    height: 28px;
+    margin-left: 15px;
+}
+.inspection .log-modal .sys-checked{
+    background-color:#0f1822 ;
+    color:#44Dcfd;
+}
+.inspection .log-modal .sys-unchecked{
+    background-color: transparent;
+}
+.inspection .log-modal  .log-default-icon{
+    background-position: 0 -32px;
+}
+.inspection .log-modal .log-checked-icon{
+    background-position: 0 0;
+}
+/*日志子模块公共样式*/
+.inspection .log-block{
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border: 1px solid rgba(68, 220, 253,0.3);
+    background: rgba(92, 122, 169,0.15);
+    margin: 10px 10px 2px 0;
+    display: inline-block;
+    border-radius: 2px;
+}
+.inspection .log-unchecked{
+    color: #d2f1fe;
+}
+.inspection .log-checked{
+    border-color: #44DCFD !important;
+    color: #44DCFD;
+}
+.inspection .log-icon{
+    background: url("../img/inspection/inspect_log_file_icon.png") no-repeat 0px 0px/100%;
+    width: 48px;
+    height: 48px;
+    margin-left: 20px;
+    margin-top: 15px;
+}
+/*日志提取----样式*/
+.inspection .log-pick .node-ip-block{
+    position: relative;
+    width:200px;
+    height: 30px;
+    line-height:25px;
+    border: 1px solid rgba(68, 220, 253,0.3);
+    margin: 10px 10px 2px 0;
+    cursor: pointer;
+    text-align: left;
+    display: inline-block;
+    border-radius: 2px;
+}
+.inspection .log-pick .no-data-container{
+    padding:150px 10px;
+    position: relative;
+}
+.inspection .log-pick .server-icon{
+    background: url("../img/inspection/inspet_log_server_icon.png") no-repeat 5px 6px/60%;
+    width: 26px;
+    height: 25px;
+    display: inline-block;
+}
+.inspection .log-pick .log-name{
+    width: 80px;
+}
+.inspection .log-pick .node-ip-font{
+    width: 120px;
+}
+.inspection .log-pick .date-select-style{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 276px;
+}
+/*下载日志的按钮*/
+.inspection .log-pick .log-downLoad-icon{
+    display: inline-block;
+    background: url("../img/inspection/download.png") no-repeat 0 -1px/98%;
+    height: 22px;
+    width: 24px;
+    cursor: pointer;
+    position:relative;
+    top:3px;
+    margin-right:4px;
+}
+/*--------------------------------------日志分析-----------------------------------------*/
+/*关键字搜索框*/
+.inspection .log-analysis .log-keyword-search-container {
+    margin-bottom: 15px;
+    overflow: hidden;
+    zoom: 1;
+}
+.inspection .log-analysis .log-keyword-search-input input{
+    padding-right: 25px;
+    border-radius:0px;
+    padding-left: 50px;
+}
+.inspection .log-analysis .log-keyword-search-logo{
+    position:absolute;
+    top:0;
+    font-size:18px;
+    width:42px;
+    height:34px;
+    line-height:34px;
+    text-align:center;
+}
+.inspection .log-analysis .log-keyword-search-del-icon{
+    color: #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    position: absolute;
+    right: 29px;
+    top: 10px;
+    z-index: 10;
+}
+/*日志关键字搜索-操作图标共用样式*/
+.inspection .log-analysis .log-keyword-search-operate{
+    width: 26px;
+    height: 25px;
+    cursor: pointer;
+}
+.inspection .log-analysis .log-keyword-search-icon-position{
+    position: relative;
+    top: 5px;
+}
+/*搜索下一个图标*/
+.inspection .log-analysis .log-keyword-search-next-icon{
+    background: url("../img/inspection/log_after.png") no-repeat -1px 1px;
+}
+/*搜索上一个图标*/
+.inspection .log-analysis .log-keyword-search-prev-icon{
+    background: url("../img/inspection/log_before.png") no-repeat -1px 1px;
+}
+/*搜索第一个图标*/
+.inspection .log-analysis .log-keyword-search-first-icon{
+    background: url("../img/inspection/log_first.png") no-repeat -1px 0px;
+}
+/*搜索最后一个图标*/
+.inspection .log-analysis .log-keyword-search-last-icon{
+    background: url("../img/inspection/log_last.png") no-repeat -1px 0px;
+}
+/*进度条样式*/
+.inspection .log-analysis .process-bar-style{
+    background: #d2f1fe none repeat scroll 0 0;
+    height: 3px;
+    margin-bottom: 0;
+    overflow: visible;
+    position: relative;
+    width:100%;
+}
+/*日志筛选条件图标*/
+.inspection .log-analysis .filter-condition-icon-active{
+    color: #44Dcfd;
+}
+.inspection .log-analysis .filter-condition-icon-default{
+    color: #B3B3C6;
+}
+/*删除下载进度按钮*/
+.inspection .log-analysis .del-process-btn{
+    display: none;
+    margin-left: 2px;
+    right: 1px;
+    top:4px;
+    z-index: 9998;
+}
+.inspection .log-analysis .process-container:hover .del-process-btn{
+    display: inline-block;
+}
+/*数据返回的-日志的行号*/
+.inspection .log-analysis .inner-row-num{
+    font-size: 1px;
+    padding-right: 7px;
+    color: #26515c;
+}
+/*块容器内部字体*/
+.inspection .log-analysis .block-inner-font{
+    cursor: default;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    white-space: nowrap;
+    margin-top: 2px;
+    padding-left: 0px;
+}
+/*日志选择块容器*/
+.inspection .log-analysis .log-select-block{
+    width: 135px;
+    height: 32px;
+    border: 1px solid #44Dcfd;
+    color: #44Dcfd;
+    text-align:left;
+}
+.inspection .log-analysis .log-select-block:hover{
+    color: #f2f2f2;
+    background: #44dcfd;
+}
+.inspection .log-analysis .log-select-icon-high{
+    background: url("../img/inspection/inspet_log_icon.png") no-repeat 0 0;
+    width: 30px;
+    height: 30px;
+    margin-left: 15px;
+}
+.inspection .log-analysis .log-select-block:hover .log-select-icon-high{
+    background-position: 0 -32px;
+}
+.inspection .log-analysis .log-select-font{
+    margin-top:7px;margin-left:5px;cursor: pointer
+}
+/*筛选日志块*/
+.inspection .log-analysis .filter-log-block{
+    width: 100px;
+    height: 41px;
+    padding-top:10px;
+    text-align: center;
+    border: 1px solid #205468;
+}
+.inspection .log-analysis .filter-log-block:hover{
+    border-color:#44Dcfd;
+}
+.inspection .log-analysis .filter-log-block .block-inner-font:hover{
+    color: #44Dcfd;
+}
+.inspection .log-analysis .filter-icon-position{
+    position: absolute;
+    right:5px;
+    top:14px;
+}
+.inspection .log-analysis .filter-icon-position:hover{
+    color: #44Dcfd;
+}
+.inspection .log-analysis .filter-log-tab-container{
+    width: 400px;
+    float: right;
+    margin-top: 10px;
+    overflow: hidden;
+    text-align: right;
+}
+.inspection .log-analysis .filter-log-tab-incontainer{
+    display: inline-block;
+    text-align: right;
+    margin-left: 0;
+}
+.inspection .log-analysis .filter-log-single-block{
+    width: 70px;
+    cursor: pointer;
+    padding-left: 5px;
+}
+.inspection .log-analysis .filter-log-tab-prev{
+    display: inline-block;
+    width:40px;
+    height: 41px;
+    border: 1px solid #205468;
+    text-align: center;
+    float: right;
+    margin-top: 10px;
+}
+.inspection .log-analysis .filter-log-tab-next{
+    display: inline-block;
+    width:40px;
+    height: 41px;
+    border: 1px solid #205468;
+    text-align: center;
+    float: right;
+    margin-top: 10px;
+}
+.inspection .log-analysis .log-screen-checked{
+    background-color: #192a3a;
+    border: 1px solid #44Dcfd;
+}
+.inspection .log-analysis .log-screen-checked .block-inner-font{
+    color: #44Dcfd;
+}
+.inspection .log-analysis .log-screen-unchecked {
+    background-color:  #192a3a;
+}
+.inspection .log-analysis .log-screen-unchecked .block-inner-font{
+    color: #B3B3C6;
+}
+/*日志分析主体*/
+.log-analysis-header-container{
+    border: 1px solid #26515c;
+    height: 50px;
+}
+.log-analysis .show-page-num-input{
+    width:60px;
+    height: 25px;
+    display: inline-block;
+    margin-top: 4px;
+}
+.log-analysis .generate-report-btn{
+    background: url("../img/inspection/inspet_gene_report.png") no-repeat;
+    width: 30px;
+    height: 30px;
+    opacity: 0.6;
+}
+.log-analysis .generate-report-btn:hover{
+    opacity: 1;
+}
+/*左侧日志*/
+.log-analysis .log-data-container{
+    position: relative;
+    top:-7px;
+    height: 463px;
+    overflow:auto;
+    background-color: #091016;
+    padding-left: 30px;
+    padding-right: 5px;
+    padding-top: 2px;
+    border-right: 1px solid #26515c;
+    border-bottom: 1px solid #26515c;
+}
+.log-analysis .line-num-absolute{
+    top:0;
+    display: inline-block;
+    min-width:30px;
+    height:464px;
+    overflow: hidden;
+    position: absolute;
+    background-color:#212F41;
+    left: 0;
+    z-index: 9;
+    border-left: 1px solid #26515c;
+}
+.log-analysis .line-num-container{
+    overflow: hidden;
+    padding-top: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.log-analysis .line-num-div{
+    white-space: nowrap;
+    text-align: right;
+}
+.log-analysis .log-data-row{
+    white-space: nowrap;
+}
+.log-analysis .log-loading-row{
+    position: relative;
+    margin: 0;
+}
+.log-analysis .log-loading-container{
+    top:-8px;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    height: 440px;
+    padding-top:200px;
+    border-top:0px;position: relative;
+}
+.log-analysis .log-error-container{
+    margin-top: 10px;
+    min-height: 18px;
+    margin-left:60px
+}
+.log-analysis .log-keyword-high-light{
+    background-color: #44dcfb;
+}
+.log-analysis .log-keyword-high-light-checked{
+    background-color: #0078d7;
+}
+.log-analysis .keyword-table-default{
+    background-color: #253447;
+}
+.log-analysis .keyword-table-checked{
+    background-color: #0078d7;
+}
+/*右侧关键字列表*/
+.log-analysis .match-keyword-table-header{
+    height: 25px;
+    padding-top: 4px;
+    padding-left:5px;
+    color: #61a1b8;
+    border-right: 1px solid #205468;
+}
+.log-analysis .match-keyword-table-container{
+    padding: 0;
+    border-right: 1px solid #205468;
+    border-bottom: 1px solid #205468;
+}
+.log-analysis .keyword-expand-icon-position{
+    position: absolute;
+    right:2px;
+    top: -2px;
+    width: 25px;
+    height: 25px;
+    z-index: 9
+}
+.log-analysis .keyword-expand-icon-container{
+    line-height:25px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    font-size: 24px;
+}
+.log-analysis .keyword-expand-icon-container:hover{
+    color: #44Dcfd;
+}
+.log-analysis .footer-page-container{
+    margin-top:8px;
+    display: inline-block;
+    vertical-align: top
+}
+.log-analysis .footer-page-num-container{
+    margin-bottom:0;
+    margin-top: 10px;
+    cursor: pointer;
+}
+/*-----------------------日志分析关键字图表-----------------------------*/
+.log-analysis-keyword-chart .back-btn-position{
+    position:absolute;
+    left:18px;
+    z-index: 99;
+}
+.log-analysis-keyword-chart .back-btn-position .ordinary-btn{
+     min-width: 32px;
+ }
+.log-analysis-keyword-chart .font-15{
+   font-size: 15px;
+}
+.log-analysis-keyword-chart .font-30{
+   font-size: 30px;
+}
+.log-analysis-keyword-chart .padding-top-10{
+   padding-top: 10px;
+}
+/*-----------------------新增巡检报告----------------------------------*/
+.inspection .new-xj-report .select-log-block{
+    width: 135px;
+    height: 30px;
+    border: 1px solid rgba(68, 220, 253,0.3);
+    background: rgba(92, 122, 169,0.15);
+    display: inline-block;
+    text-align:left;
+    position: relative;
+    cursor: pointer;
+    color: #d2f1fe;
+}
+.inspection .new-xj-report .select-log-block:hover{
+    border-color: #44DCFD;
+    color: #44DCFD;
+}
+.new-xj-report .select-log-block:hover .log-select-default-icon{
+    background-position: 2px 3px;
+}
+.new-xj-report .inspet-log-icon{
+    display: inline-block;
+    width: 30px;
+    height: 28px;
+    margin-left: 5px;
+}
+.new-xj-report  .log-select-default-icon{
+    background:url("../img/inspection/inspet_log_icon.png") no-repeat 2px -21px/80%;
+}
+.new-xj-report .preview-btn{
+    width: 50px;
+    margin-left: 15px
+}
+/*------------------------------日志巡检报告预览-------------------------------------------*/
+.log-report-preview .loading-container{
+    margin-top: 240px;
+}
+.log-report-preview .margin-top-10{
+     margin-top: 10px;
+ }
+.log-report-preview .font-30{
+    font-size: 30px;
+}
+.log-report-preview .loading-conatiner{
+    margin-top: 240px;
+}
+.log-report-preview .log-lg-img{
+    background: url("../img/inspection/log_loggle.png") no-repeat;
+    width:70px;
+    height: 70px;
+    position: relative;
+    top:6px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.log-report-preview .log-report-prev-btn{
+    background: url("../img/inspection/log_before_report.png") no-repeat 2px 4px/95%;
+    width: 47px;
+    height: 54px;
+    position: relative;
+    top:6px;
+    display: inline-block;
+    margin-top: 200px;
+}
+.log-report-preview .log-report-btn-transform{
+    transform:rotate(180deg);
+}
+.log-report-preview .log-vertical-split-line{
+    height: 1px;
+    width: 100%;
+    border-top: 1px solid #205468;
+    margin-bottom: 20px;
+}
+.log-report-preview .back-btn-left-position{
+    min-width: 32px;
+    text-align: center;
+    left: 20px;
+    position: absolute;
+    z-index: 9
+}
+.log-report-preview .expand-collspse-btn-container{
+    font-size: 29px;
+    color: #CCCCCC;
+    text-align: right;
+    cursor: pointer
+}
+.log-report-preview .expand-collspse-btn-position{
+    margin-right: 4px;
+    position: relative;
+    top:-7px;
+}
+.log-report-preview .log-title-container{
+    display: inline-block;
+    width: 85px;
+    vertical-align: top;
+    margin-top: 27px;
+}
+.log-report-preview .log-report-name{
+    font-size: 20px;
+    margin-top: -8px !important;
+}
+.log-report-preview .log-report-total-count{
+    color:#A40000;
+    font-size: 30px;
+    vertical-align: middle;
+    padding-left: 5px
+}

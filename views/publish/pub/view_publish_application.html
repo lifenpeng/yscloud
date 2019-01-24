@@ -1,0 +1,58 @@
+<div class="container-fluid project-application routine-release">
+    <div class="apply-wrap">
+        <div class="row" style="padding: 0 20px;">
+            <div class="col-sm-6" style="padding: 0;">
+                <div class="row form-style row-distance">
+                    <label class="col-sm-3 label-key control-label text-right width-80">申请名称</label>
+                    <div class="col-sm-9 label-value">
+                       {{info.apply_info.pjpublish_name}}
+                    </div>
+                </div>
+                <div class="row form-style row-distance">
+                    <label class="col-sm-3 control-label label-key text-right width-80">发布日期</label>
+                    <div class="col-sm-9">
+                        {{info.apply_info.pjpublish_date}}
+                    </div>
+                </div>
+                <div class="row form-style row-distance">
+                    <label class="col-sm-3 control-label label-key text-right width-80">发布时间</label>
+                    <div class="col-sm-4" style="width:180px;">
+                       {{info.apply_info.pjpublish_time}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6" style="padding-right: 0">
+                <div class="row form-style row-distance">
+                    <label class="col-sm-3 control-label  label-key text-right">发布说明</label>
+                    <div class="col-sm-9" style="padding-right: 0">
+                        {{info.apply_info.pjpublish_desc}}
+                    </div>
+                </div>
+                <div class="row form-style row-distance">
+                    <label class="col-sm-3 control-label  label-key text-right">执行类型</label>
+                    <div class="col-sm-9" style="padding-right: 0">
+                       {{info.apply_info.execute_type == 1 ? '手动执行' : '自动执行'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--系统列表区域-->
+    <div class="row row-distance"  style="padding-left: 20px;padding-right: 20px;">
+        <div class="row proj-block-style" ng-repeat="proj in info.apply_info.publish_proj_list">
+            <div class="proj-block-head">
+                <p class="proj-block-name" ng-bind="proj.project_name"></p>
+                <p class="proj-block-number" ng-bind="proj.project_id"></p>
+            </div>
+            <!--<div class="pub-block-body" ng-repeat="sys in proj.business_sys_list track by $index">
+                <div class="sys-img-style"></div>
+                <span class="pub-sys-name" title="{{sys.business_cn_name}}">{{sys.business_cn_name ? sys.business_cn_name : '&#45;&#45;'}}</span>
+                <span class="pub-manger-name">负责人&nbsp;:&nbsp;{{sys.manager_user_name ? sys.manager_user_name : '&#45;&#45;'}}</span>
+            </div>-->
+            <div class="proj-sys-content col-sm-6" ng-repeat="sys in proj.business_sys_list" ng-if="sys.sys_used_flag == 3">
+                <div class="sys-item" ng-bind="sys.business_cn_name">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

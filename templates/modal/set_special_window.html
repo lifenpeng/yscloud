@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <span>特殊窗口设置</span>
+    </h3>
+    <div ng-click="close()"></div>
+</div>
+<div class="modal-body config-time-modal">
+    <div class="form-horizontal" style="padding:6px 20px 6px 60px;">
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="left" style="width: 400px;height: 320px;" custom-scroll custom-config="config.scroll_info">
+                    <div  class="autoStyle" style="width: 395px;" ng-class="{'nulBack':$odd,'eeeBack':$even}" ng-repeat="td in dateObj.cycles">
+                        <span>{{td.date_str}}</span>
+                   <!--     <input type="number" cus-time-val name="hour" error-mes="dateObj.errorM" ng-model="td.hh" required>
+                        <span>时</span>
+                        <input type="number" cus-time-val name="minute" error-mes="dateObj.errorM" ng-model="td.mi" required>
+                        <span>分</span>
+                        <input type="number" cus-time-val name="duration" error-mes="dateObj.errorM" ng-model="td.duration" required>
+                        <span >时长(h)</span>-->
+                        <i class="fa fa-trash-o"  ng-click="removeAutoTime($index)" style="cursor:pointer;position: absolute; right: 34px;top: 14px"></i>
+                    </div>
+                    <div ng-if="dateObj.cycles.length == 0" style="text-align: center;height: 310px;">
+                        <div style="background: url(img/dispatch/Model_no_auto_time.png) no-repeat 0px 0px;width: 140px;height: 90px;position: relative; left: 124px;top: 81px;"></div>
+                        <div style="position: relative; top: 80px;color:#999;font-size: 16px;">暂无特殊日时间</div>
+                    </div>
+                </div>
+                <div class="right">
+                    <div  class="pick-date-common">
+                        <div datepicker ng-model="cus_date.date" class="well well-sm"  min-date="cus_date.minDate" style="border:0px;background-color: transparent;padding-top: 14px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;margin-top: 40px;">
+        <button ng-if="!control.save_loading" class="save-cancel-btn cancel-btn btn-xl" ng-click="close()">取消</button>
+        <button ng-if="control.save_loading" disabled="disabled" type="button" class="btn-xl disabled-btn" >取消</button>
+        <button ng-if="!control.save_loading" class="save-cancel-btn save-btn btn-xl" ng-click="ok()">保存</button>
+        <button ng-if="control.save_loading" disabled="disabled" class="save-btn btn-xl">
+            <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>
+

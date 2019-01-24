@@ -1,0 +1,38 @@
+<form name="form.cmptLabel" ng-submit="formSubmit()" class="form-horizontal cmpt" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">组件标签</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body" style="height:180px;">
+        <div class="row">
+            <div class="col-sm-11 col-sm-offset-1" style="padding-top: 4px;">
+                <div class="tablecss tag-md cmpt-label" ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click ="selectLabel(one,$index)" title="{{one.value}}" ng-repeat="one in data.cmpt_label_list">
+                        {{one.value}}
+                        <div>
+                            <i class="fa fa-check"></i>
+                        </div>
+                </div>
+                <div class="other-type">
+                    <span style="color: #D2F1FE;">添加</span>
+                    <input type="text"
+                           name="tag_name"
+                           ng-blur="addNewLabel(info.label)"
+                           ng-model="info.label"
+                           class="sub-form-control modal-add-label"
+                    >
+                   <li ng-if="control.valid_length_falg" style="list-style: none;height: 20px;line-height: 20px;color: #E9416E;">标签名长度不超过50个字符</li>
+                </div>
+            </div>
+            <!-- 表单提交按钮-->
+            <div class="col-sm-12 text-center" style="margin-top: 40px;margin-bottom: 40px;">
+                <button  class="save-cancel-btn cancel-btn btn-xl"  type="button" ng-click="cancel()" style="margin-left: 20px;">取消</button>
+                <button  class="save_cancel-btn save-btn btn-xl"  type="submit" style="margin-left: 20px;">确认</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-3 col-sm-9">
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,98 @@
+<style>
+    .sub_table thead td, .sub_table thead th{
+        color: #333;
+    }
+    .sub_table tr td{
+        border-bottom: 1px solid #f2f2f2!important;
+        border-right: 1px solid #f2f2f2;
+    }
+    .sub_table tbody tr.tab-bg-color{
+        background: #fff;
+    }
+    .sub_table tbody tr.tab-bg-color:hover{
+        background: #5a90f8;
+        color: #fff;
+     }
+    .sub_table tbody tr.choose-tr-bg{
+        background: #5a90f8;
+    }
+    .sub_table tbody tr.choose-tr-bg{
+        color: #fff;
+    }
+    .sub_table tbody tr.tab-bg-color td{
+        cursor: pointer;
+    }
+    .env-tr td{
+        width:126px;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">语言环境部署</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body conform_modal">
+    <div class="row">
+        <div class="col-sm-4" style="padding-right: 0">
+            <table class="sub_table" style="border-top: 2px solid #ccc">
+                <thead style="background: #fafafa">
+                    <tr style="height:30px;">
+                        <td style="padding-left: 10px;border-left: 1px solid #f2f2f2;width: 181px;">
+                            语言
+                        </td>
+                    </tr>
+                </thead>
+                <tbody style="display: block;,max-height: 181px;overflow-y: auto; ">
+                <tr class="tab-bg-color" ng-repeat="language in data.language_list" ng-class="{'choose-tr-bg':language.choose_flag}" ng-click="chooseLanguage(language)">
+                    <td style="border-left: 1px solid #f2f2f2;width: 190px;">
+                       {{language.value}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-8" style="padding-left: 0">
+            <table class="sub_table" style="border-top: 2px solid #ccc;table-layout: fixed">
+                <thead style="background: #fafafa">
+                    <tr style="height:30px">
+                    <td>
+                        版本
+                    </td>
+                    <td>
+                        操作系统
+                    </td>
+                    <td>
+                        操作系统位数
+                    </td>
+                </tr>
+                </thead>
+                <tbody style="display: block; max-height: 90px; overflow-y: auto; width: 377px;">
+                <tr ng-if="!controls.loading && data.env_list.length!=0" class="tab-bg-color env-tr" ng-class="{'choose-tr-bg':env.choose_flag}" ng-repeat="env in data.env_list" ng-click="chooseEnv(env,$index)">
+                    <td>
+                        {{env.language_version}}
+                    </td>
+                    <td>
+                        {{getValue(env.operating_system,1)}}
+                    </td>
+                    <td>
+                        {{getValue(env.bit_number,2)}}
+                    </td>
+                </tr>
+                <tr ng-if="controls.loading">
+                   <td colspan="3" style="color: #999;width: 377px;">
+                       正在加载 <i class="fa fa-spin fa-spinner"></i>
+                   </td>
+                </tr>
+                <tr ng-if="!controls.loading && data.env_list.length==0">
+                    <td colspan="3" style="color: #999;width: 377px;">
+                        暂无环境
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="text-align: center;margin-top: 20px">
+        <button class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+        <button class="save-btn btn-xl" ng-click="saveData()">确定</button>
+    </div>
+</div>

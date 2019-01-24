@@ -1,0 +1,562 @@
+/*组件模块*/
+.cmpt{}
+/*ie中input不显示删除X*/
+.cmpt ::-ms-clear,::-ms-reveal{display:none;}
+.cmpt .stop-click {
+    color: #ccc!important;cursor: default!important;
+}
+.cmpt .cmpt-cpmts-switch-btn{
+    margin-bottom: 10px;
+    margin-left:115px;
+}
+.cmpt .cmpt-tab-choosed {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #FFB03F;
+    border-radius: 0;margin:0;
+}
+.cmpt .cmpt-tab-choosed > a{
+    color: #FFB03F;
+}
+.cmpt .cmpt-tab-leave{
+    background-color: transparent;
+    border: none;
+    margin:0;
+    border-bottom: 1px solid #ADDCF0;
+    border-radius: 0;
+}
+.cmpt .cmpt-tab-leave:hover{
+    border-bottom: 1px solid #67CCD6;
+}
+.cmpt .cmpt-tab-leave > a{
+    color: #ADDCF0;
+}
+.cmpt .cmpt-tab-leave > a:hover{
+    color: #67CCD6;
+}
+.cmpt .CodeMirror {
+    height: 170px;
+}
+#commandShell .CodeMirror {
+    height: 43px;
+}
+#commandShellu .CodeMirror{
+    height: 43px;
+}
+.cmpt .cmpt-script-tab > .tab-content{
+    background-color: #0F192A;
+    border: 1px solid #44DCFD !important;
+}
+.cmpt .nav.nav-tabs li a{
+    padding: 7px 10px;
+}
+.cmpt .nav.nav-tabs li.active{
+    background-color: #0f192a;
+    position: relative;
+    top:0;
+}
+.cmpt .cmpt-script-tab li.active > a,.cmpt .cmpt-script-tab > li.active > a:hover,.cmpt .cmpt-script-tab > li.active > a:focus{
+    border-color: #44dcfd;
+    border-bottom-color: transparent !important;
+    border-radius: 4px 4px 0 0!important;
+    margin: 0;
+}
+.cmpt .cmpt-script-tab .nav-tabs > li.active > a,.cmpt .cmpt-script-tab .nav-tabs > li.active > a:hover, .cmpt .cmpt-script-tab .nav-tabs > li.active > a:focus{
+    border-color:#44dcfd !important;
+    border-bottom-color: transparent !important;
+    color: #44dcfd !important;
+}
+.cmpt .label-add-btn {  /*添加标签按钮*/
+    border: 1px dashed #0c707f;
+    cursor: pointer;
+    float: left;
+    height: 34px;
+    line-height: 33px;
+    padding-top: 1px;
+    text-align: center;
+    width: 34px;
+    margin-bottom: 10px;
+}
+.cmpt .label-add-btn:hover{
+    background: transparent;
+    border-color:#00E1FF;
+}
+.cmpt .label-add-btn:hover > .fa{
+    color: #00E1FF;
+}
+.cmpt .label-add-btn .fa{
+    color: #0c707f;font-size: 14px;
+}
+.cmpt .cmpt-label-tag{
+    padding: 0 10px;
+    display: inline-block;
+    cursor: default;
+    border: 1px solid #407384;font-size: 12px;
+    height:34px;line-height: 34px;
+    float: left;margin-right: 14px;
+    color: #d2f1fe;margin-bottom: 10px;
+    max-width: 120px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.cmpt .sub-table thead td,.cmpt .sub-table thead th{
+    border-bottom: none !important;
+}
+.cmpt .sub-table tbody tr td{
+    border: none !important;
+    border-top: 2px solid #000 !important;
+    background-color: #253648 !important;
+}
+.cmpt .sub-table tfoot tr td{
+    border: none !important;
+    border-top: 2px solid #000 !important;
+    background-color: #253648 !important;
+}
+.cmpt .cmpt-type-radio{
+    float: left;margin-right: 25px;
+}
+.cmpt .cmpt-script-origin{
+    padding: 0 40px 0 10px;
+}
+.cmpt .script-tab{
+    word-break: keep-all;
+    width: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+}
+.cmpt .delete-script-tab-icon{
+    text-align: center;
+    cursor:pointer;
+    display: inline-block;
+    vertical-align: top;
+    position: absolute;
+    top: 0;right: 6px;
+}
+.cmpt .delete-script-tab-icon .fa{
+    color: #999;font-size: 14px;
+}
+.cmpt .delete-script-tab-icon .fa:hover{
+    color:#7d000e
+}
+.cmpt .cmpt-script-tab .nav-tabs{
+    margin-bottom: -1px;
+}
+.cmpt .cmpt-script-tab .nav-tabs:after{
+    border-color: transparent;
+}
+.cmpt .add-script-tab-btn{
+    display: inline-block;height:32px;
+    line-height: 32px;
+    font-size: 24px;width: 32px;
+    text-align: center;cursor: pointer;
+    border:1px solid transparent;
+}
+.cmpt .add-script-tab-btn:hover{
+    color: #7D000E;
+}
+.cmpt .cursor-default{
+    cursor: default;
+}
+.cmpt .cursor-pointer{
+    cursor: pointer;
+}
+.cmpt .cmpt-param-table td{
+    text-align: left;
+}
+.cmpt .param-table-asterisk{
+    color: #FF6600;font-size: 10px;
+}
+.cmpt .cmpt-param-table .cmpt-param-default-value{
+    max-width: 200px;text-align: left;padding-right: 40px;position: relative
+}
+.cmpt .cmpt-param-table-eye{
+    position: absolute;top: 9px;right: 14px;cursor: pointer;
+}
+.cmpt .output-param-table td{
+    text-align: left;
+}
+.cmpt .file-param-table td{
+    text-align: left;
+}
+.cmpt .cmpt-plugin-table td{
+    text-align: left;
+}
+.cmpt .param-group-style{
+    position: relative;
+    padding: 3px;
+}
+.cmpt .param-group-style:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.cmpt .param-group-style .param-name{
+    float: left;
+    max-width: 90%;
+    word-break: break-all;
+}
+.cmpt .param-group-style .group-name{
+    position: absolute;
+    top:50%;
+    right: 3px;
+    transform:translateY(-50%);
+}
+.cmpt .param-group-style .group-name i{
+    cursor: default;
+    color: #008000;
+}
+/*************************组件查看*************************************************/
+.cmpt .cmpt-detail-contain{
+    position: relative;
+}
+/*组件是否被引用提示 dcm_is_quote*/
+.cmpt .cmpt-is-quote{
+    position: absolute;
+    top: -5px;
+    left: 40px;
+}
+.cmpt .cmpt-is-quote .quote-info{
+    width: 40px;
+    text-align: center;
+    padding: 8px 10px 0;
+    background-color: #ff6666;
+    border-top-left-radius: 4px;
+    color: #fff;
+}
+.cmpt .cmpt-is-quote .bottom-triangle{
+    border: 19px solid #ff6666;
+    border-bottom-color: transparent;
+}
+.cmpt .cmpt-is-quote .shadow-triangle{
+    position: absolute;
+    top: 2px;
+    right: -3px;
+    border: 3px solid transparent;
+    border-right-color: #C95555;
+    transform:rotate(-45deg);;
+}
+.cmpt .cmpt-detail-export-btn{
+    position: absolute;
+    right: 30px;
+    top: 10px;
+}
+.cmpt .detail-publish-tag {
+    height:20px;line-height: 19px;
+    display: inline-block; text-align: center; margin-left: 20px; font-size: 12px; padding: 0 10px;
+}
+.cmpt .cmpt-not-publish {
+    background: #333C4C; color: #6D7183;
+}
+.cmpt .cmpt-publish-ok {
+    background: #009966; color: #FFF;
+}
+.cmpt .cmpt-text-ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.cmpt .cmpt-detail-desc{
+    display: inline-block;word-break: break-all;padding-top: 7px;
+}
+.cmpt table tbody tr td.table-no-data{
+    text-align: center;
+    font-size: 12px;
+}
+.cmpt .detail-param-name{
+    width: 80%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap
+}
+.cmpt .detail-param-cn-name{
+    display: block;
+    width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*********************************组件组******************************************************/
+.cmpt .cmpts-add-btn{
+    height: 30px;
+    border-color: rgba(68, 220, 253, 1);
+    color: rgba(68, 220, 253, 1);
+    background: rgba(255, 255, 255, 0);
+    font-size: 12px;
+    padding: 0 9px 0 0;
+    line-height: 28px;
+    width: 70px;
+}
+.cmpt .cmpts-add-btn:hover{
+    color:rgba(252, 158, 34, 1);
+    text-decoration:blink;
+    border-color: rgba(252, 158, 34, 1);
+}
+/*********************************组件测试*********************************************************/
+.cmpt .cmpt-test-detail-eye{
+    margin-left: 5px;font-size: 14px;cursor: pointer;
+}
+.cmpt .cmpt-test-script-btn{
+    margin-top:3px;margin-bottom: 8px;width: 100px;
+}
+.cmpt .cmpt-test-param-value{
+    padding-right: 40px;position: relative;max-width: 200px;
+}
+.cmpt .cmpt-test-password-eye{
+    position: absolute;top: 9px;right: 14px;cursor: pointer;
+}
+.cmpt .wrapper{
+    background:#1f3144 ;height: 40px;line-height: 40px;
+}
+.cmpt .cmpt-test-exec-disabled{
+    background: url('../img/public/public-cmpt-execute.png');
+    width: 28px;
+    height: 28px;
+    background-size:contain;
+    position: absolute;
+    left:5%;
+    top:6px;
+    cursor: default;
+}
+.cmpt .cmpt-test-exec-btn{
+    background: url('../img/public/public-cmpt-execute.png');
+    width: 28px;height: 28px;
+    background-size:contain;
+    position: absolute;
+    left:5%;
+    top:6px;
+    cursor: pointer;
+}
+.cmpt .progressbar-wraper{
+    margin-top:14px;
+}
+.cmpt .cmpt-test-progressbar{
+    background-color: #abe6e6;height: 6px;
+}
+.cmpt .cmpt-test-excuting{
+    position: absolute;
+    top:8px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    width: 90%;
+    overflow: hidden;
+}
+.cmpt .cmpt-test-faild {
+    background: url('../img/public/public-cmpt-exefailed.png') no-repeat 0 13px;
+}
+.cmpt .cmpt-test-success{
+    background: url('../img/public/public-cmpt-exesucceeded.png') no-repeat 0 13px;
+}
+.cmpt .cmpt-test-download-log{
+    /*width: 116px;*/
+    height: 28px;
+    border-radius: 5px;
+    border: 1px solid #FC9E22;
+    position: relative;
+    top:6px;
+    padding: 0 5px;
+    line-height: 26px;
+    overflow: hidden;
+    text-align: center;
+}
+.cmpt .cmpt-test-download-log .fa-download{
+    vertical-align: top;
+    margin-top: 7px;
+    font-size: 14px;
+    color: #FC9E22;
+}
+.cmpt .cmpt-test-download-log .download-mention{
+    margin-left: 6px;color: #EC732C;display: inline-block;
+}
+/******************************************组件标签模态框*************************************************/
+.cmpt .cmpt-label{
+    margin-bottom: 7px;float: left;margin-right: 15px;
+}
+.cmpt .sys-type{
+    float: left;margin-bottom: 7px;
+}
+.cmpt .sys-type span{
+    padding-right: 18px;margin-left: 5px;
+}
+.cmpt .other-type{
+    margin-bottom: 7px;position: relative;float: left;height: 34px;line-height: 42px;
+    width:160px;
+}
+.cmpt .modal-add-label{
+    font-size:12px;position: absolute;top: 6px;left:32px;width: 120px;border-bottom: 1px solid #141e2a;
+}
+/*.cmpt .checked-tag{
+    cursor: pointer;
+    background: #0a1017;
+    border: 1px solid #a40000;
+    font-size: 12px;
+    color: #D2F1FE;
+    position: relative;
+}
+.cmpt .checke-tag{
+    background: #0a1017;
+    border: 1px solid #407384;
+    font-size: 12px;
+    color: #D2F1FE;
+    position: relative;
+    cursor: pointer;
+}
+.cmpt .tablecss {
+    width: 120px;
+    height: 32px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #D2F1FE;
+    text-align: center;
+    line-height: 32px;
+    background-color: #0a1017;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    padding-left: 19px;
+    padding-right: 19px;
+    display: inline-block;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}*/
+/***********************************查看组件详情模态框******************************************************/
+.cmpt .modal-loading{
+    margin-top: 120px;margin-bottom: 120px
+}
+.cmpt .cmpt-detail-modal-loading {
+    margin:0 auto;font-size: 20px;color:#44dcfd;border:1px dashed #d2f1fe;
+    height:100px;line-height:100px;width:320px;border-radius: 4px;
+}
+.cmpt .cmpt-detail-modal-quote{
+    text-align: center;
+    position: absolute;
+    left: 8px;
+    font-size: 12px;
+    line-height: 34px;
+    top: 14px;
+    width: 80px;
+    height: 34px;
+    background-color: #ff6666;
+    color: #FFF;
+    transition: width 1s;
+    -moz-transition: width 1s; /* Firefox 4 */
+    -webkit-transition: width 1s; /* Safari 和 Chrome */
+    -o-transition: width 1s; /* Opera */
+}
+.cmpt .cmpt-detail-modal-error{
+    margin:0 auto;font-size: 20px;
+    border:1px dashed #d2f1fe;height:200px;line-height:100px;width:320px;border-radius: 4px;
+}
+.cmpt .cmpt-detail-modal-error-msg{
+    color: #E9416E;font-size: 12px;height: 20px;line-height: 20px;word-break: break-all;
+}
+/**************************************组件列表搜索***********************************************************/
+.cmpt .search-checked-flag {
+    background:#0084ab;
+    color: #fff;
+}
+.cmpt .search-unchecked-flag{
+    color: #091016;
+    background: #19b7ec;
+}
+.cmpt .search-unchecked-flag:hover{
+    color: #fff;
+    background: #0084ab;
+}
+.cmpt .senior-btn-position{
+    position: absolute;left: 337px
+}
+.cmpt .senior-btn-style{
+    height: 34px;font-size: 14px;border: 1px solid transparent;-moz-user-select: none; padding: 6px 12px;
+}
+.cmpt .senior-search-div {
+    padding-bottom:20px;margin-top: -15px;height: 480px;
+    position: absolute;background-color: #0d1827;
+    z-index:110;width: 800px;margin-left: 0;border:1px solid #396770
+}
+.cmpt .senior-crt-date-style{
+    width:290px;padding-right: 10px;
+}
+.cmpt .cmpt-type{
+    float: left;margin-right: 20px;
+}
+.cmpt .exec-type{
+    margin-right: 12px;
+}
+.cmpt .clear-icon{
+    width:32px;
+    height:32px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 16px;
+    display: inline-block;
+    font-size: 20px;
+    border-radius:50%;
+    color: #666;
+}
+.cmpt .clear-icon:hover{
+    background-color: #44dcfd;
+    color: #fff;
+}
+.cmpt .clear-icon:active{
+    background-color: #44dcfd;
+    color: #fff;
+}
+.cmpt .classify-close{
+    height:46px;
+    overflow: hidden;
+    transition: height 0.5s;
+    -moz-transition: height 0.5s;
+    -webkit-transition: height 0.5s;
+    -o-transition: height 0.5s;
+}
+.cmpt .classify-expand{
+    height:auto;
+}
+.cmpt .dropdown-menu  li {
+    height: auto;
+}
+.cmpt .dropdown-menu  li small{
+    color: #333;
+}
+.cmpt.cmpt-list{
+    margin-top: 15px;position: relative;min-height: 500px
+}
+.cmpt .senior-search-more-btn{
+    cursor: pointer;
+    color: #61a1b8 ;
+}
+.cmpt .senior-search-date-icon{
+    position: absolute;padding-left: 10px; top: 7px; height: 29px;
+}
+.cmpt .senior-search-shadow{
+    position: absolute;height: 100%;top: 0;left: 0;width: 100%;z-index: 1
+}
+.cmpt .senior-search-exec-type{
+    margin-left: 0;
+    width: 80px;
+    padding: 0;
+    text-align: center;
+}
+/***********************************组件组添加组件模态框*************************************/
+.cmpt .cmpt-modal-loading-container{
+    margin-top: 120px;margin-bottom: 120px
+}
+.cmpt .fixed-thead{
+    display: block;
+    width: 100%;
+}
+.cmpt .scroll-tbody{
+    display: block;
+    max-height: 233px;
+    overflow: auto;
+    width: 100%;
+}
+/*表格选中*/
+.cmpt .checked-style{
+    background: #555f76;
+    color:white;
+}

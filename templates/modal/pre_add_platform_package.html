@@ -1,0 +1,37 @@
+<form name="info.form.newDppForm" ng-submit="prodPacSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3  class="modal-title">添加发布包</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body">
+        <div  ng-if="!control.propackage_btn_loading">
+            <div class="row"  style="margin-bottom: 15px;" >
+                    <label class="col-sm-2 control-label label-key">发布包路径</label>
+                    <div class="col-sm-9" style="padding-top: 6px;">
+                    <!--
+                                            <div class="tablecss" style="width: auto;margin-left: 0px;"  ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = ! one.flag" ng-repeat="one in data.dir_names">
+                                                {{one.file_name}}
+                                                <div>
+                                                    <i class="fa fa-check"></i>
+                                                </div>
+                                            </div>
+                    -->
+                        <div style="max-height: 200px;" ng-if="info.file_nodes.nodes.length != 0" custom-scroll custom-config="configs.scroll_info">
+                            <package-tree files="info.file_nodes"></package-tree>
+                        </div>
+                        <span ng-if="info.file_nodes.nodes.length == 0">暂无发布包</span>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-sm-12 text-center" style="margin-top:20px;">
+                    <button  class="cancel-btn btn-xl" type="button" ng-click="cancel()" style="margin-left: 20px;width: 70px;">取消</button>
+                    <button ng-if="!control.propackage_btn_loading" type="submit" class="save-btn btn-xl" style="width: 70px;">确认</button>
+                    <button ng-if="control.propackage_btn_loading" type="button" class="save-btn btn-xl" style="width: 70px"><i style="color: white" class="fa fa-spinner fa-spin"></i></button>
+                </div>
+            </div>
+        </div>
+        <div ng-if="control.propackage_btn_loading" style="height: 100px;line-height: 100px;text-align: center;color: #44dcfd;">
+            正在上传发布包 <span><i class="fa fa-spinner fa-spin"></i></span>
+        </div>
+    </div>
+</form>

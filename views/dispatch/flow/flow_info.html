@@ -1,0 +1,73 @@
+<div class="flow-list-info">
+    <div class="row" ng-if="info.basic.sdflow_id">
+        <div class="col-sm-3 flow-cn-name">
+            <div class="flow_cn_name_icon">{{info.basic.sdflow_cn_name}}</div>
+        </div>
+        <div class="col-sm-4">
+            <a class="flow_type_icon" ng-mouseenter="!info.basic.flow_type_list.length || mouseEnterPopover()" ng-mouseleave="!info.basic.flow_type_list.length || mouseLeavePopover()">
+                <span ng-show="info.basic.flow_type_list.length == 0" style="cursor: default">--</span>
+                <span class="color-d2f1fe" ng-show="info.basic.flow_type_list.length != 0" style="cursor: pointer;">App类型查看</span>
+                <div class="flowtype_popover flowtype-popover-model">
+                    <div class="flow_type_font" ng-repeat="flow_type in info.basic.flow_type_list">{{flow_type}}</div>
+                </div>
+                <div class="flowtype_popover flowtype-triangle-up"></div>
+            </a>
+            <div class="flow_hand_exe_icon" ng-bind="info.basic.sddispatch_type == 1 ? '手动执行':'自动执行'"></div>
+            <div class="flow_exe_user_icon" ng-bind="info.basic.user_cn_names ? info.basic.user_cn_names[0] : '--'"></div>
+        </div>
+        <div class="col-sm-4" style="padding: 0;">
+            <div class="flow_start_time_icon"> {{info.flow.start_bk_datetime_val ? info.flow.start_bk_datetime_val.substring(0,11) : '--'}}</div>
+            <div class="flow_end_time_icon"> {{info.flow.end_bk_datetime_val ? info.flow.end_bk_datetime_val.substring(0,11) : '--'}}</div>
+        </div>
+        <div class="col-sm-1">
+            <i class="glyphicon glyphicon-cog flow-config-icon" ng-click="showModify()" title="设置"></i>
+            <i class="glyphicon glyphicon-star focus_flow_icon" ng-click="attentionFlow()" title="{{control.focus_flag ? '取消关注流程':'关注流程'}}" ng-style="{'color': control.focus_flag ? '#FF9933':'#D2F1FE'}"></i>
+        </div>
+    </div>
+    <div class="modify_include_div" ng-if="info.basic.sdflow_id && control.show_modify"  >
+    <span  class="modify_span">
+        <a ui-sref="dispatch_flow_detail({flow_id:info.basic.sdflow_id,version_id:info.basic.sdversion_id})">查看</a>
+    </span>
+    <span  class="modify_span">
+        <a ui-sref="dispatch_flow_modify({flow_id:info.basic.sdflow_id,version_id:info.basic.sdversion_id,modify_flag:true})">编辑</a>
+    </span>
+        <span  class="modify_span" ng-if="info.basic.sdflow_status == 1" ng-click="removeDetail()"><a>删除</a></span>
+    <span  class="modify_span">
+        <a ui-sref="dispatch_flow_copy({flow_id:info.basic.sdflow_id,version_id:info.basic.sdversion_id})">复制</a>
+    </span>
+        <span ng-if="!control.hand_up" class="modify_span" ng-click="handleUpOrDownFlow(1)"><a href="">挂起</a></span>
+        <span ng-if="control.hand_up" class="modify_span" ng-click="handleUpOrDownFlow(2)"><a href="">解挂</a></span>
+    </div>
+    <div ng-if="info.basic.sdflow_id" class="horizontal-separator-line"></div>
+    <div class="row flow-diagram-container" ng-if="info.basic.sdflow_id" style="min-height: 200px">
+        <div class="col-sm-12" cus-flow-detail go-model="info.flow" config="null"  job-config="control.job_config" ng-if="info.flow.nodeDataArray.length>0" style="padding-right: 4px">
+            <div id="myDiagramDiv" class="grid_bg" ng-style="calculateHeight()"></div>
+        </div>
+        <div style="margin-top: 85px;text-align: center;" ng-if="!info.flow.nodeDataArray || info.flow.nodeDataArray.length == 0">
+            <span class="no_flow_picture"></span>
+            <div>
+                <label class="none-content-font-color">无App信息</label>
+            </div>
+        </div>
+    </div>
+    <div class="row no_data_height" ng-if="!info.basic.sdflow_id">
+        <div  class="col-sm-12" style="text-align: center;">
+            <span class="no_flow_picture"></span>
+            <div>
+                <label class="none-content-font-color">未选择App</label>
+            </div>
+        </div>
+    </div>
+    <div class="row no_data_height" ng-if="info.basic.sdflow_id && control.error">
+        <div class="col-sm-12 error-font-color">
+            服务请求出错
+        </div>
+    </div>
+    <div class="row" ng-if="info.flow.nodeDataArray.length != 0 && info.basic.sdflow_id">
+        <div class="col-sm-12" style="text-align: center;padding-bottom: 8px;padding-left: 25px">
+            <button ng-if="!control.is_publish" type="button" ng-click="pubFlow()" class="save-cancel-btn save-btn btn-xl" style="width: 80px;height: 32px;">发布</button>
+            <button ng-if="control.is_publish && info.flow.nodeDataArray.length != 0 && !control.hand_up"  type="button" ng-click="executeFlow()" class="save-cancel-btn save-btn btn-xl" style="width: 80px;height: 32px;">执行</button>
+        </div>
+    </div>
+    <div class="transparentLayer" ng-if="control.show_config" ng-click="control.show_config = !control.show_config"></div>
+</div>

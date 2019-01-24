@@ -1,0 +1,119 @@
+<div class="modal-header">
+    <h3 class="modal-title">Agent部署</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<!--详细的信息-->
+<div class="modal-body server font-12" style="height: 260px;">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="deploy-step" ng-repeat="phase in info.deploy_steps" ng-class="{
+                'deploy-unstart':phase.status == 1,
+                'deploy-executing':phase.status == 2,
+                'deploy-failed':phase.status == 3,
+                'deploy-success':phase.status == 4}">
+                <label class="step-name">{{$index+1}}</label>
+                <label class="step-value">{{phase.value}}</label>
+                <label class="step-status">
+                    <i class="step-status fa fa-stop-circle-o status-flag-{{phase.status == 1 ? true: false}}" title="待部署"></i>
+                    <i class="step-status fa fa-spinner fa-spin status-flag-{{phase.status == 2 ? true: false}}" title="部署中"></i>
+                    <i class="step-status fa fa-times-circle-o status-flag-{{phase.status == 3 ? true: false}}" title="部署失败"></i>
+                    <i class="step-status fa fa-check-circle-o status-flag-{{phase.status == 4 ? true: false}}" title="部署成功"></i>
+                </label>
+                <!--<i class="step-status fa" ng-class="{-->
+                <!--'fa-stop-circle-o':phase.status == 1,-->
+                <!--'fa-spinner fa-spin':phase.status == 2,-->
+                <!--'fa-times-circle-o':phase.status == 3,-->
+                <!--'fa-check-circle-o':phase.status == 4}" title="{{phase.status == 1 ? '待部署' : phase.status == 2 ? '部署中' : phase.status == 3 ? '部署失败' : '部署成功'}}"></i>-->
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <!--未部署-->
+            <div class="agent-deploy-icon" ng-if="control.deploy_status==1" style="margin-top: 34px;">
+                <div class="agent-deploy-status agent-undeploy-icon"></div>
+                <div class="font-18 text-center">未部署</div>
+                <div class="agent-soc" style="margin-top: 8px">
+                    <form name="form.deploy_form" class="form-horizontal" novalidate autocomplete="off">
+                        <div class="text-center" ng-if="data.user_loading" style="color: rgb(0, 171, 237)">用户获取中&nbsp;<i class="fa fa-spinner fa-spin"></i></div>
+                        <div ng-if="!data.user_loading">
+                            <div class="error-font-color" ng-if="data.user_msg">{{data.user_msg}}</div>
+                            <div ng-if="!data.user_msg">
+                                <bs-select name="data_soc" class="label-value"
+                                           items="data.user_list"
+                                           my-select="info.srv_info.user"
+                                           required>
+                                </bs-select>
+                                <validate-msg tag-cn-name="用户" type="select" name="data_soc" model="info.srv_info.user"></validate-msg>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--部署中-->
+            <div class="agent-deploy-icon" ng-if="control.deploy_status==2 || control.deploy_status==5" style="margin-top: 40px;">
+                <!--部署中-->
+                <div class="agent-deploy-arc" ng-if="control.deploy_status==2">
+                    <div class="agent-deploy-sector rotate-c"></div>
+                    <div class="agent-deploy-loading agent-deploy-loading-icon"></div>
+                </div>
+                <div class="font-18 text-center" ng-if="control.deploy_status==2">部署中，请稍等</div>
+                <!--取消部署中-->
+                <div class="agent-deploy-arc" ng-if="control.deploy_status==5">
+                    <div class="agent-deploy-sector rotate-u"></div>
+                    <div class="agent-deploy-loading agent-undeploy-loading-icon"></div>
+                </div>
+                <div class="font-18 text-center" ng-if="control.deploy_status==5">取消部署中，请稍等</div>
+            </div>
+            <!--部署状态成功-->
+            <div class="agent-deploy-icon" ng-if="control.deploy_status==3 || control.deploy_status==6" style="margin-top: 30px;">
+                <div class="agent-deploy-status agent-deploy-succ" ng-if="control.deploy_status==3"></div>
+                <div class="agent-deploy-status agent-undeploy-succ" ng-if="control.deploy_status==6"></div>
+                <div class="font-18 text-center" ng-if="control.deploy_status==3">已部署</div>
+                <div class="font-18 text-center" ng-if="control.deploy_status==6">已取消部署</div>
+                <div class="text-center" ng-if="control.deploy_status==3">
+                    <button class="ordinary-btn agent-operate-btn" type="button" ng-click="uninstallAgent()">取消部署</button>
+                </div>
+                <div class="text-center" ng-if="control.deploy_status==6" style="margin-top: 7px;">
+                    <form name="form.deploy_form" class="form-horizontal" novalidate autocomplete="off">
+                        <bs-select  name="data_soc" class="label-value"
+                                    items="data.user_list"
+                                    my-select="info.srv_info.user"
+                                    required>
+                        </bs-select>
+                        <validate-msg tag-cn-name="用户" type="select" name="data_soc" model="info.srv_info.user"></validate-msg>
+                    </form>
+                    <!--<button class="ordinary-btn agent-operate-btn" type="button" ng-click="deployAgent()">重新部署</button>-->
+                </div>
+            </div>
+            <!--部署状态失败-->
+            <div class="agent-deploy-icon" ng-if="control.deploy_status==4 || control.deploy_status==7">
+                <div class="agent-deploy-status agent-deploy-failed" ng-if="control.deploy_status==4"></div>
+                <div class="agent-deploy-status agent-undeploy-failed" ng-if="control.deploy_status==7"></div>
+                <div class="font-18 text-center" ng-if="control.deploy_status==4">部署失败</div>
+                <div class="font-18 text-center" ng-if="control.deploy_status==7">取消失败</div>
+                <div class="text-center" style="margin-top: 7px;">
+                    <form name="form.deploy_form" class="form-horizontal" novalidate autocomplete="off">
+                        <bs-select name="data_soc" class="label-value"
+                                   items="data.user_list"
+                                   my-select="info.srv_info.user"
+                                   required>
+                        </bs-select>
+                        <validate-msg tag-cn-name="用户" type="select" name="data_soc" model="info.srv_info.user"></validate-msg>
+                    </form>
+                </div>
+                <div class="error-font-color text-left" style="margin-top: 7px;">
+                    <div ng-bind="info.error_message" style="max-height: 54px;overflow: auto;text-align: center;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer" style="border-top: none;">
+    <div class="form-group">
+        <div class="col-sm-12 text-center">
+            <button class="cancel-btn btn-xl" ng-disabled="btnBus_loading" ng-click="cancel()">关闭</button>
+            <button class="save-btn btn-xl" ng-if="control.deploy_status==1"  ng-click="deployAgent()">部署</button>
+            <button class="save-btn btn-xl" ng-if="control.deploy_status==4 || control.deploy_status==6"  ng-click="deployAgent()">重新部署</button>
+            <button class="save-btn btn-xl" ng-if="control.deploy_status==7" ng-click="uninstallAgent()">再次取消</button>
+        </div>
+    </div>
+</div>

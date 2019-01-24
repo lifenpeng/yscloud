@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <title>远舢工业云平台</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Page-Enter" contect="revealTrans(duration=1.0,transtion=4)">
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+         <!--stylesheet -->
+        <!--css-->
+                <link href="css/font-awesome.min.css" rel="stylesheet">
+                <link href="css/themes/pink-blue.css" rel="stylesheet">
+                <link href="css/comm/animate.css" rel="stylesheet">
+                <link href="css/comm/angular-ui-tree.css" rel="stylesheet">
+                <link href="css/comm/mCustomScrollbar.css" rel="stylesheet">
+                <link href="css/bootstrap/bootstrap-table.css" rel="stylesheet">
+                <link href="css/bootstrap.css" rel="stylesheet">
+                <link href="css/codemirror/codemirror.css" rel="stylesheet">
+                <link href="css/codemirror/midnight.css" rel="stylesheet">
+                <link href="css/codemirror/simplescrollbars.css" rel="stylesheet">
+                <link href="css/codemirror/show-hint.css" rel="stylesheet">
+                <link href="css/codemirror/fullscreen.css" rel="stylesheet">
+                <link href="css/codemirror/dialog.css" rel="stylesheet">
+                <link href="css/codemirror/matchesonscrollbar.css" rel="stylesheet">
+                <link href="css/calendar/fullcalendar.css" rel="stylesheet">
+                <link href="css/icheck_radio.css" rel="stylesheet">
+                <link href="css/comm.css" rel="stylesheet">
+                <link href="css/release.css" rel="stylesheet">
+                <link href="css/version.css" rel="stylesheet">
+                <link href="css/home.css" rel="stylesheet">
+                <link href="css/inspection.css" rel="stylesheet">
+                <link href="css/fault.css" rel="stylesheet">
+                <link href="css/cmpt.css" rel="stylesheet">
+                <link href="css/server.css" rel="stylesheet" >
+                <link href="css/public.css" rel="stylesheet">
+                <link href="css/dispatch.css" rel="stylesheet">
+
+       <!-- <link href="css/cl.min.css" rel="stylesheet"> -->
+
+    </head>
+    <style>
+        .sidebar-default{
+            position: relative;
+            max-width: 1920px;
+            background: url("./img/header/bg-common.png") no-repeat center;
+            height: auto;
+            overflow: hidden;
+        }
+        .show-border{
+            display: block !important;
+        }
+        .ui-view-content{
+            width: 100%;
+            padding: 8px;
+            overflow: hidden;
+        }
+
+        .new-page-content {
+            max-width: 1750px;
+            margin: 0 auto;
+        }
+    </style>
+    <body style="left: 0px;" class="sidebar-default" ng-controller="AppController" onKeyPress="forbidBackSpace(event)">
+        <div>
+            <div ng-include="'templates/states/header.html'"></div>
+            <!--<div ng-include="'templates/states/sitebar.html'"></div>-->
+            <div class="new-page-content" ng-class="sitebarData.top_bar_lg ? '' : 'index-border'" style="position: relative;">
+                <!--&lt;!&ndash;四个边框棱角&ndash;&gt;-->
+                <!--&lt;!&ndash;左上角&ndash;&gt;-->
+                <!--<div  ng-class="sitebarData.top_bar_lg ? '' : 'show-border'" style="display: none;width: 60px;height: 60px;border: 2px solid #3daecc;position: absolute;top: -2px;left: -2px;border-bottom: none;border-right: none;"></div>-->
+                <!--&lt;!&ndash;左下角&ndash;&gt;-->
+                <!--<div ng-class="sitebarData.top_bar_lg ? '' : 'show-border'" style="display: none;width: 60px;height: 60px;border: 2px solid #3daecc;position: absolute;bottom: -2px;left: -2px;border-top: none;border-right: none;"></div>-->
+                <!--&lt;!&ndash;右上角&ndash;&gt;-->
+                <!--<div ng-class="sitebarData.top_bar_lg ? '' : 'show-border'" style="display: none;width: 60px;height: 60px;border: 2px solid #3daecc;position: absolute;top: -2px;right: -2px;border-bottom: none;border-left: none;"></div>-->
+                <!--&lt;!&ndash;右下角&ndash;&gt;-->
+                <!--<div ng-class="sitebarData.top_bar_lg ? '' : 'show-border'" style="display: none;width: 60px;height: 60px;border: 2px solid #3daecc;position: absolute;bottom: -2px;right: -2px;border-top: none;border-left: none;"></div>-->
+                <div class="ui-view-content" custom-scroll custom-config="scroll_config_info" callbacks="scroll_callback" dyna-height init-bottom="90">
+                    <!--主体内容-->
+                    <div ui-view></div>
+                </div>
+            </div>
+        </div>
+        <!--第一种方案（全部是压缩文件）全部注释即可-->
+         <!--javascript -->
+        <script src="js/components/jquery/jquery-1.10.2.min.js"></script>
+        <script src="js/components/jquery/jquery.backstretch.min.js"></script>
+        <script src="js/components/jquery/jquery.flot.js"></script>
+        <script src="js/components/jquery/jquery.metisMenu.js"></script>
+        <script src="js/components/jquery/jquery.slimscroll.js"></script>
+        <script src="js/components/jquery/jquery-migrate-1.2.1.min.js"></script>
+        <script src="js/components/jquery/jquery-ui.js"></script>
+        <script src="js/components/jquery/icheck.js"></script>
+        <script src="js/components/jquery/jquery.mousewheel.min.js"></script>
+        <script src="js/components/jquery/mCustomScrollbar.js"></script>
+
+        <script src="js/components/angularjs/angular.min.js"></script>
+        <script src="js/components/angularjs/angular-locale_zh.js"></script>
+        <script src="js/components/angularjs/angular-animate.min.js"></script>
+        <script src="js/components/angularjs/angular-cookies.js"></script>
+        <script src="js/components/angularjs/angular-route.js"></script>
+        <script src="js/components/angularjs/angular-ui-router.js"></script>
+        <script src="js/components/angularjs/angular-file-upload.min.js"></script>
+        <script src="js/components/angularjs/angular-websocket.js"></script>
+        <script src="js/components/angularjs/angular-ui-tree.min.js"></script>
+
+
+        <script src="js/components/boostrap/bootstrap.min.js"></script>
+        <script src="js/components/boostrap/ui-bootstrap-tpls-0.11.0.js"></script>
+        <script src="js/components/boostrap/bootstrap-hover-dropdown.js"></script>
+        <script src="js/components/boostrap/bootstrap-table.js"></script>
+        <script src="js/components/boostrap/bootstrap-table-angular.js"></script>
+
+        <script src="js/components/other/moment.min.js"></script>
+        <script src="js/components/other/highstock.js"></script>
+        <script src="js/components/other/highcharts-ngv0.0.12.js"></script>
+        <script src="js/components/other/highcharts-more.js"></script>
+        <script src="js/components/other/solid-gauge.src.js"></script>
+        <script src="js/components/other/base64.js"></script>
+
+        <script src="js/components/other/codemirror/codemirror.js"></script>
+        <script src="js/components/other/codemirror/simplescrollbars.js"></script>
+        <script src="js/components/other/codemirror/show-hint.js"></script>
+        <script src="js/components/other/codemirror/key-text-hint.js"></script>
+        <script src="js/components/other/codemirror/sql.js"></script>
+        <script src="js/components/other/codemirror/properties.js"></script>
+        <script src="js/components/other/codemirror/shell.js"></script>
+        <script src="js/components/other/codemirror/python.js"></script>
+        <script src="js/components/other/codemirror/clike.js"></script>
+        <script src="js/components/other/codemirror/fullscreen.js"></script>
+        <script src="js/components/other/codemirror/active-line.js"></script>
+        <script src="js/components/other/codemirror/mark-selection.js"></script>
+        <script src="js/components/other/codemirror/vim.js"></script>
+        <script src="js/components/other/codemirror/annotatescrollbar.js"></script>
+        <script src="js/components/other/codemirror/dialog.js"></script>
+        <script src="js/components/other/codemirror/jump-to-line.js"></script>
+        <script src="js/components/other/codemirror/matchesonscrollbar.js"></script>
+        <script src="js/components/other/codemirror/search.js"></script>
+        <script src="js/components/other/codemirror/searchcursor.js"></script>
+        <script src="js/components/other/codemirror/filecompare.js"></script>
+        <script src="js/components/other/codemirror/placeholder.js"></script>
+
+        <script src="js/components/other/calendar/fullcalendar.js"></script>
+        <script src="js/components/other/calendar/gcal.js"></script>
+        <script src="js/components/other/pinyin.js"></script>
+        <script src="js/components/angularjs/calendar.js"></script>
+        <script src="js/components/angularjs/ui-codemirror.js"></script>
+
+        <script src="js/components/other/go.js"></script>
+        <script src="js/components/other/sortable.js"></script>
+        <!--第二种方案（只压缩自用的代码）需要把引入的components中的js文件打开-->
+        <!-- app control -->
+        <script src="js/controllers/common/LicenseController.js"></script>
+        <script src="js/controllers/common/HomePageController.js"></script>
+        <script src="js/controllers/common/UserController.js"></script>
+        <script src="js/controllers/common/TaskController.js"></script>
+        <script src="js/controllers/common/ModalCtrl.js"></script>
+        <script src="js/controllers/release/ProjController.js"></script>
+        <script src="js/controllers/release/ProdController.js"></script>
+        <script src="js/controllers/release/PlanController.js"></script>
+        <script src="js/controllers/release/AnalysisController.js"></script>
+        <script src="js/controllers/release/MonitorController.js"></script>
+        <script src="js/controllers/release/ApplicationController.js"></script>
+        <script src="js/controllers/release/VersionController.js"></script>
+        <script src="js/controllers/fault/FaultProgramController.js"></script>
+        <script src="js/controllers/fault/WorkorderController.js"></script>
+        <script src="js/controllers/inspection/InspectionController.js"></script>
+        <script src="js/controllers/dispatch/DispatchFlowController.js"></script>
+        <script src="js/controllers/dispatch/DispatchTaskController.js"></script>
+        <script src="js/controllers/dispatch/DispatchSceneController.js"></script>
+        <script src="js/controllers/dispatch/DispatchOtherController.js"></script>
+        <script src="js/controllers/public/SysController.js"></script>
+        <script src="js/controllers/public/CmptController.js"></script>
+        <script src="js/controllers/public/SrvController.js"></script> 
+        <script src="js/controllers/public/FactoryModeling.js"></script>
+        <script src="js/controllers/public/appStoreController.js"></script>
+
+        <!--app-service-->
+         <script src="js/services/CvService.js"></script>
+        <script src="js/services/http/CommHttpSrv.js"></script>
+        <script src="js/services/http/DispatchHttpSrv.js"></script>
+        <script src="js/services/http/FaultHttpSrv.js"></script>
+        <script src="js/services/http/InspectionHttpSrv.js"></script>
+        <script src="js/services/http/ReleaseHttpSrv.js"></script>
+        <script src="js/services/ChartsService.js"></script>
+        <script src="js/services/ConfigService.js"></script>
+        <script src="js/services/GlobalData.js"></script>
+        <script src="js/services/QRCodeLoginService.js"></script>
+        <script src="js/services/FuncService.js"></script> 
+
+         <!--app-directive-->
+         <script src="js/directives/Directives.js"></script>
+        <script src="js/directives/TableDirective.js"></script> 
+         <!--app-main-->
+        <script src="js/controllers/route.js"></script>
+        <script src="js/controllers/main.js"></script>
+        <!--第一种方案-->
+        <!-- <script src="js/cl.min.js"></script> -->
+    </body>
+</html>

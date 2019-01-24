@@ -1,0 +1,39 @@
+<div class="container-fluid program-list">
+    <div ng-if="info.prog_load_error_message">
+        <div class="program-error-position error-font-color">{{info.prog_load_error_message}}</div>
+    </div>
+    <div ng-if="!info.prog_load_error_message">
+        <div class="programme-common scheme-programme program-position program-list{{$index}}" ng-init="paramListPacPos($index)" ng-repeat="one_programme in data.progs">
+            <div  class="delete-style">
+                <span ng-click="deleteProgramme(one_programme.prog_id,$event,1)" title="删除"><i class="fa fa-trash-o"></i></span>
+            </div>
+            <div  class="copy-style">
+                <span ng-click="copyProgramme(one_programme)" title="复制方案"><i class="fa fa-clipboard"></i></span>
+            </div>
+            <div  class="common-publish" ng-class="one_programme.publish_state==1 ? 'is-publish':'no-publish'">
+                <span class="pub-common" ng-if="!one_programme.publish_state || one_programme.publish_state==2 || one_programme.publish_state==3">待发布</span>
+                <span class="pub-common" ng-if="one_programme.publish_state==1">已发布</span>
+            </div>
+            <div class="programme-back-image-circle" style="margin-top: 13px;">
+            </div>
+            <div class="prog-cn">{{one_programme.prog_cn_name}}</div>
+            <div style="text-align: center;">
+                <div class="common-programme-template" ng-class="one_programme.prog_type ==1 ? 'programme-is-pub-template' : 'programme-is-back-template'"></div>
+                <span class="prog-type" ng-bind="one_programme.prog_type ==1 ? '发布方案' : '回退方案'"></span>
+            </div>
+            <div class="programme-scroll" style="text-align: center;">
+                <div ng-repeat="pac_type in one_programme.pac_type_list" class="content-empty-style param-list-pac">{{pac_type.type_cn_name}}</div>
+                <div class="content-empty-style param-list-fix"><i class="fa fa-ellipsis-h"></i></div>
+            </div>
+            <ul class="common-scheme-programme" ng-class="one_programme.publish_state == 1 ? 'scheme-programme-top-three':'scheme-programme-top'">
+                <li ng-if="one_programme.publish_state !=1 " title="发布" ng-click="publishProgramme(one_programme.prog_id,1,$event)">发布</li>
+                <li  title="查看" ng-click="judgeOtherProgram(3,one_programme)">查看</li>
+                <li  title="修改" ng-click="judgeOtherProgram(2,one_programme)">修改</li>
+            </ul>
+        </div>
+        <div ng-click="judgeOtherProgram(1)" class="programme-common" style="margin-right: 16px;">
+            <div class="add-node-button" style="margin-top: 60px;"></div>
+            <div class="font-common"><span>新增方案</span></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,239 @@
+<div class="container-fluid fault-program fault-program-new">
+    <div class="row" ng-if="control.program_info_loading">
+        <div class="col-sm-4 col-sm-offset-4 text-center" style="margin-top: 180px;margin-bottom: 180px">
+            <div class="edit-program-loading">
+                <span class="loading-font-color">正在获取方案信息&nbsp;&nbsp;<i style="font-size: 24px;" class="fa fa-spinner fa-spin"></i></span>
+            </div>
+        </div>
+    </div>
+    <div ng-if="!control.program_info_loading">
+        <!--方案表单-->
+        <div class="row" style="margin-top: 20px;">
+            <form name="info.modify_fault_program_form" class="form-horizontal" novalidate autocomplete="off">
+                <div class="col-sm-8">
+                    <div class="form-group form-style">
+                        <label class="col-sm-2 control-label label-key">名称</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="program_name"
+                                   ng-model="info.program_info.program_name"
+                                   class="form-control label-value"
+                                   style="min-width: 400px;"
+                                   placeholder="必填"
+                                   ng-pattern="/^[^ ]+$/"
+                                   required
+                                   ng-model-options="{updateOn: 'blur'}">
+                            <validate-msg tag-cn-name="方案名称" name="program_name"></validate-msg>
+                        </div>
+                    </div>
+                    <div class="form-group form-style">
+                        <label class="col-sm-2 control-label label-key">描述</label>
+                        <div class="col-sm-8 label-value">
+                            <textarea name="program_bk_desc"
+                                      ng-model="info.program_info.program_bk_desc"
+                                      class="form-control label-value program-desc-style"
+                                      placeholder="必填"
+                                      ng-maxlength="100"
+                                      required
+                                      ng-model-options="{updateOn: 'blur'}">
+                            </textarea>
+                            <validate-msg tag-cn-name="方案描述"  name="program_bk_desc"></validate-msg>
+                        </div>
+                    </div>
+                    <div class="form-group form-style" ng-if="control.import_flag">
+                        <label class="col-sm-2 control-label label-key">事务处理</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <label class="col-sm-4 label-value" style="margin-top:6px;" ng-repeat="tran_type in data.transaction_type_list">
+                                    <input type="radio" name="tran_flag" value={{tran_type.key}} i-check ng-model="info.program_info.tran_flag" > {{tran_type.value}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="program-scheme-previewBtn" ng-if="control.program_preview_btn">
+                <span class="a-upload upload-btn" ng-if="info.program_info.step_list.length!=0 && info.program_info.step_list[0].sql_list.length !=0" ng-click="programPreview(info.program_info.program_seq)">方案预览</span>
+            </div>
+        </div>
+        <!--步骤列表-->
+        <div ui-sortable="sortableOptions" ng-model="info.program_info.step_list">
+            <div class="row" style="position: relative;" ng-repeat="step in info.program_info.step_list" ng-mousedown=" step.show_detail && (!control.add_step_by_hand_flag || !control.batch_select_add_btn_flag ) && step.step_bk_title  || stopPrevent($event)">
+                <div class="col-sm-11" style="margin-left: 9.3%">
+                    <div class="program-step-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="fault-header-style"  ng-mouseup="toggleDetail(step)" ng-mousedown="getDownTime()">
+                                    <form name="step.new_step_form"  class="form-horizontal" novalidate autocomplete="off">
+                                        <div class="program-step-seq" ng-bind="step.step_seq"></div>
+                                        <div class="col-sm-7" ng-mousedown="stopPrevent($event)" style="padding-left: 50px;">
+                                            <input class="sub-form-control"
+                                                   name="step_bk_title"
+                                                   ng-model="step.step_bk_title" placeholder="必填" ng-blur="stepFormSubmit($index)" required ng-mouseup="stopPrevent($event)" />
+                                            <validate-msg name="step_bk_title" tag-cn-name="步骤名" ng-if="!step.step_valid"></validate-msg>
+                                        </div>
+                                        <div class="delete-step-btn fault-delete-img" ng-if="!step.step_exist && !step.step_bk_title" ng-mouseup="deleteUnFinStep($index+1,$event)" ng-mousedown="stopPrevent($event)"></div>
+                                        <div class="delete-step-btn fault-delete-img" ng-mouseup="deleteStep(info.program_info.program_seq, $index+1,$event);" ng-mousedown="stopPrevent($event)" ng-if="step.step_exist || step.step_bk_title"></div>
+                                    </form>
+                                    <div class="fault-header-left-line"></div>
+                                    <div class="fault-header-right-line"></div>
+                                </div>
+                                <div class="fault-program-content">
+                                    <div collapse="step.show_detail">
+                                        <div class="row step-content-detail" ng-repeat="sql in step.sql_list | orderBy:'sql_seq'">
+                                            <div class="col-sm-12 sql-content-wrap">
+                                                <div class="container-fluid" style="margin-top: 20px;">
+                                                    <div class="row form-style" style="margin-bottom: 10px;">
+                                                        <div class="col-sm-2 label-key text-right">应用系统</div>
+                                                        <div class="col-sm-2 label-value" ng-bind="sql.sys_name_text"></div>
+                                                        <div class="col-sm-2 label-key text-right">数据库</div>
+                                                        <div class="col-sm-2 label-value" ng-bind="sql.soc_name"></div>
+                                                        <div class="sql-operation-btn sql-trash-btn" title="删除" ng-click="deleteSql(step.step_seq-1,$index)"></div>
+                                                    </div>
+                                                    <div class="row form-style" style="margin-bottom: 10px;">
+                                                        <div class="col-sm-2 label-key">SQL</div>
+                                                        <div class="col-sm-8 label-value" style="word-break: break-all;">{{sql.sql_text}}</div>
+                                                        <div class="sql-operation-btn sql-view-detail" title="详细" ng-click="viewSqlDetailInfo(info.program_info.program_seq, step.step_seq ,sql.sql_seq,$index+1)" ng-if="sql.sql_param_btn"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <scheme-param-tab ></scheme-param-tab>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-offset-6 col-sm-6 text-right step-submit-succ" ng-if="sql.sql_param_btn ">
+                                                        <div></div>
+                                                        <span>提交成功</span>
+                                                        <button type="button" class="hollow-btn btn-xl" style="border-radius: 15px;" ng-click="editSqlParam(step.step_seq-1, $index,sql)" ng-if="sql.sql_param_btn && sql.param_list.length!=0">修改</button>
+                                                    </div>
+                                                    <div class="col-sm-offset-6 col-sm-6 text-right" style="margin-top: 10px;margin-bottom: 10px;" ng-if="!sql.sql_param_btn  && !sql.btn_program_step_sql_param_loading">
+                                                        <button  class="hollow-btn btn-xl" style="border-radius: 15px;" type="submit" ng-click="sqlParamFormSubmit(step.step_seq-1, $index,sql)" >提交</button>
+                                                    </div>
+                                                    <div class="col-sm-offset-6 col-sm-6 text-right" style="margin-top: 10px;margin-bottom: 10px;" ng-if="!sql.sql_param_btn  && sql.btn_program_step_sql_param_loading">
+                                                        <button  disabled="disabled" class="hollow-btn btn-xl" style="text-align:center;margin-right: 0;border-radius: 15px;" >
+                                                            <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div  class="sql-list-empty" ng-show="!step.sql_list || step.sql_list.length == 0">
+                                            暂无数据
+                                        </div>
+                                    </div>
+                                    <div class="add-sql-btn">
+                                        <a ng-click="initSqlForm(step,$index)" class="add-sql">添加SQL</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--批量导入步骤列表-->
+        <div class="row" style="position: relative;" ng-show="!control.get_excel_data" ng-repeat="step in info.import_program_info.step_list">
+            <div class="col-sm-11" style="margin-left: 9.3%">
+                <div class="program-step-content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row" style="margin:2px 0;cursor: pointer;" ng-click="step.show_detail = !step.show_detail">
+                                <div class="col-sm-1 text-left program-step-seq"><span  ng-bind="step.stage_id"></span></div>
+                                <div class="col-sm-1 text-left program-step-name">
+                                    <span>步骤名</span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <span ng-bind="step.stage_desc" class="step-stage-desc"></span>
+                                </div>
+                            </div>
+                            <!--横线-->
+                            <div class="row" ng-if="!step.show_detail">
+                                <div class="col-sm-12">
+                                    <div class="horizontal-line"></div>
+                                </div>
+                            </div>
+                            <div collapse="step.show_detail">
+                                <div class="row batch-program-stepDetail">
+                                    <div class="col-sm-12">
+                                        <div style="margin-top: 10px;" >
+                                            <div class="col-sm-11 step-soc-sqltext">
+                                                <span ng-bind="step.soc_name"  class="sys-name-text"></span>
+                                                <span ng-bind="step.sql_txt" class="step-soc-sqltext"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-bottom: 10px;">
+                                            <div class="col-sm-12">
+                                                <table class="sub-table">
+                                                    <thead>
+                                                    <tr>
+                                                        <td>序号</td>
+                                                        <td>参数中文名</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="tr in step.pg_params">
+                                                        <td><span>{{tr.sparam_seq}}</span></td>
+                                                        <td><span ng-bind="tr.sparam_cn_name"></span></td>
+                                                    </tr>
+                                                    <tr ng-if="!step.pg_params" style="text-align: center">
+                                                        <td colspan="2">
+                                                            <span style="color: #999">无参数</span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--获取Excel数据loading-->
+        <div class="row" ng-show="control.get_excel_data">
+            <div class="col-sm-4 col-sm-offset-4 text-center" style="margin-top: 60px;margin-bottom: 60px">
+                <div class="edit-program-loading">
+                    <span class="loading-font-color">正在获取Excel数据信息&nbsp;&nbsp;<i style="font-size: 24px;" class="fa fa-spinner fa-spin"></i></span>
+                </div>
+            </div>
+        </div>
+        <!--添加按钮-->
+        <div class="row" style="margin-top:10px;" ng-if="!control.import_flag">
+            <div style="margin-left: 9.5%">
+                <div class="text-center add-step-btn general-btn" ng-show="!control.add_step_by_hand_flag">
+                    <div class="add-btn" ng-click="addNewProgramStep(1);">
+                        <span>手动添加步骤</span>
+                    </div>
+                </div>
+                <div class="text-center add-step-btn general-btn" ng-show="!control.batch_import_btn_flag">
+                    <div class="add-btn" ng-click="importProgramStep(2)">
+                        <span>批量导入步骤</span>
+                    </div>
+                </div>
+                <!--批量查询步骤-->
+                <div class="text-center add-step-btn general-btn" ng-show="!control.batch_select_add_btn_flag">
+                    <div class="add-btn" ng-click="addNewProgramStep(3);">
+                        <span>批量查询步骤</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--保存按钮-->
+        <div class="row" style="margin-top: 20px;margin-bottom: 20px;" ng-show="!control.add_step_by_hand_flag || !control.batch_select_add_btn_flag">
+            <div class="form-group" >
+                <div class="col-sm-12 text-center btnStyle">
+                    <button ng-if="!control.program_edit_save_btn_loading" type="button" class="cancel-btn btn-md" ng-click="cancel()">取消</button>
+                    <button ng-if="control.program_edit_save_btn_loading" disabled="disabled" type="button" class="cancel-btn btn-md" >取消</button>
+                    <button ng-if="!control.program_edit_save_btn_loading" type="submit" class="save-btn btn-md" ng-click="submitProgram(info.program_info.program_seq,$event)">保存</button>
+                    <button ng-if="control.program_edit_save_btn_loading" disabled="disabled" class="save-btn btn-md" style="text-align:center;">
+                        <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

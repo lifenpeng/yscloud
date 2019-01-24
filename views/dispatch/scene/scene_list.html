@@ -1,0 +1,10 @@
+<div class="container-fluid scene-container scene-list">
+    <div class="row">
+        <div class="col-sm-7 scene_list">
+            <div ui-view="table_view"  ng-style="calculateSceneListHeight()" custom-scroll custom-config="scene_list_scroll"></div>
+        </div>
+        <div class="col-sm-5 padding-left-0" style="min-width: 350px;">
+            <div ui-view="scene_info_view" class="scene-info-view" ng-style="calculateSceneInfoHeight()" custom-scroll custom-config="scene_list_scroll"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<style>
+    .mCSB_container{
+        overflow: visible;
+    }
+</style>
+<!--紧急发布-->
+<div class="container-fluid">
+    <div class="row" style="margin-top: 12px;">
+        <div class="col-sm-3" style="text-align: left;">
+            <bs-select width=150 items="info.yearList" my-select="info.historyYearString" select-val="changeYear(selectKey)" ></bs-select>
+        </div>
+        <div class="col-sm-9" style="text-align: right;margin-top: 7px;">
+            截止 {{info.endDay}} 紧急类发布共计 : {{info.yearCount}}(个)
+        </div>
+    </div>
+    <urgent-proj-list this-year="info.historyYear" year-count="info.yearCount"></urgent-proj-list>
+</div>

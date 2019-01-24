@@ -1,0 +1,246 @@
+
+<table class="sub-table program-auth-tb" style="border-top: none;">
+    <tbody>
+    <tr style="color: #f1c891;">
+        <td>参数名</td>
+        <td>显示文本</td>
+        <td style="width: 135px;">参数类型</td>
+        <td>参数值</td>
+        <td style="width: 80px;">权限设置</td>
+    </tr>
+    <tr ng-repeat="tr in sql.param_list">
+            <td  ng-bind="tr.sparam_name"></td>
+            <td style="padding-left: 2px;padding-right: 2px;">
+                <input ng-model="tr.sparam_cn_name" type="text" class="sub-form-control" placeholder="请输入文本" ng-disabled="!sql.editable">
+            </td>
+            <td style="padding:0 2px;"><bs-select width="130" no-border items="data.param_type" my-select="tr.sparam_type" disable="!sql.editable" select-val="changeParamType(selectKey, $index);" required></bs-select></td>
+            <td ng-show="tr.sparam_type > 1 && tr.sparam_type < 5"  ng-style="borderParamStyle($index)" style="width: 135px;padding: 0 2px;">
+                <span ng-show="(tr.sparam_scope && !sql.editable) && !tr.param_show"><a style="cursor: pointer;text-decoration: none;" ng-click="showParamType($index)">查看</a></span>
+                <span ng-show="tr.param_show"><a style="cursor: pointer;text-decoration: none;" ng-click="formParamKeyValueCancel($index)">收起</a></span>
+                <span ng-show="(!tr.sparam_scope || sql.editable) && !tr.param_show"><a style="cursor: pointer;text-decoration: none;" ng-click="showParamType($index)">配置</a></span>
+                <div class="config-div-style" ng-show="tr.param_show">
+                    <form name="tr.param_key_value_form"  class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+                        <div class="form-style row" style="margin-bottom: 10px;">
+                            <div class="col-sm-2 text-right " style="padding-top: 14px;">
+                                <label class="label-key">值类型</label>
+                            </div>
+                            <div class="col-sm-4 control-label label-value" style="text-align: left; padding-top: 10px;">
+                                <bs-select width=130 no-border name="param_key"  disable="tr.param_key_type && !sql.editable" items="param_key_value_type" my-select="tr.param_key_type" select-val="changeKeyValue(selectKey,tr)" required></bs-select>
+                                <validate-msg tag-cn-name="值类型" type="select" name="param_key" model="tr.param_key_type"></validate-msg>
+                            </div>
+                            <div style="padding-top: 14px;padding-right: 0;" class="col-sm-2 text-right">
+                                <label class="label-key">显示类型</label>
+                            </div>
+                            <div class="col-sm-4 control-label label-value"  style="text-align: left; padding-top: 10px;">
+                                <bs-select width=130 no-border items="param_key_value_type" disable="tr.param_value_type && !sql.editable" name="param_value"  my-select="tr.param_value_type" select-val="changepParamValue(selectKey, tr)" required></bs-select>
+                                <validate-msg tag-cn-name="显示类型" type="select" name="param_value" model="tr.param_value_type"></validate-msg>
+                            </div>
+                        </div>
+                        <div style="padding: 0 10px;">
+                            <table class="sub-table text-center" ng-if="sql.editable" row-plus="addParamKeyValueList($index)" tbl-Data="tr.param_key_value_list">
+                                <thead>
+                                <tr>
+                                    <td>
+                                        <span>值</span>
+                                        <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                    </td>
+                                    <td>
+                                        <span>显示</span>
+                                        <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                    </td>
+                                    <td width="70">
+                                        操作
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="one in tr.param_key_value_list">
+                                    <td>
+                                        <div ng-if="tr.param_key_type == 1" style="text-align: left;">
+                                            <input type="text"  ng-disabled="!sql.editable" name="param_key_{{$index}}" ng-pattern="/^[0-9]*$/" placeholder="整型" ng-model="one.key" class="sub-form-control" required>
+                                            <validate-msg tag-cn-name="KEY" name="param_key_{{$index}}"></validate-msg>
+                                        </div>
+                                        <div ng-if="tr.param_key_type != 1" style="text-align: left;">
+                                            <input type="text"  ng-disabled="!sql.editable" name="param_key_1{{$index}}" placeholder="字符串" ng-model="one.key" class="sub-form-control" required>
+                                            <validate-msg tag-cn-name="KEY" name="param_key_1{{$index}}"></validate-msg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div ng-if="tr.param_value_type == 1" style="text-align: left;">
+                                            <input type="text"  ng-disabled="!sql.editable" name="param_value_{{$index}}" ng-pattern="/^[0-9]*$/" placeholder="整型" ng-model="one.value" class="sub-form-control" required>
+                                            <validate-msg  tag-cn-name="Value" name="param_value_{{$index}}"></validate-msg>
+                                        </div>
+                                        <div ng-if="tr.param_value_type != 1" style="text-align: left;">
+                                            <input type="text"  ng-if="tr.param_value_type != 1" ng-disabled="!sql.editable" name="param_value_1{{$index}}" placeholder="字符串" ng-model="one.value" class="sub-form-control" required>
+                                            <validate-msg ng-if="tr.param_value_type != 1" tag-cn-name="Value" name="param_value_1{{$index}}"></validate-msg>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span class="fa fa-trash-o" title="删除" style=" padding-left: 10px;" ng-click="removeKeyValueList($index,$parent.$index)"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="sub-table text-center" ng-if="!sql.editable">
+                                <thead>
+                                <tr>
+                                    <td>
+                                        <span>值</span>
+                                        <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                    </td>
+                                    <td>
+                                        <span>显示</span>
+                                        <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="one in tr.param_key_value_list">
+                                    <td>
+                                        <div ng-if="tr.param_key_type == 1" style="text-align: left;">
+                                            <input type="text"  ng-disabled="!sql.editable" name="param_key_{{$index}}" ng-pattern="/^[0-9]*$/" placeholder="整型" ng-model="one.key" class="sub-form-control" required>
+                                        </div>
+                                        <div ng-if="tr.param_key_type != 1" style="text-align: left;">
+                                            <input type="text"  ng-disabled="!sql.editable" name="param_key_1{{$index}}" placeholder="字符串" ng-model="one.key" class="sub-form-control" required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div ng-if="tr.param_value_type == 1" style="text-align: left;">
+                                            <input type="text"  ng-disabled="!sql.editable" name="param_value_{{$index}}" ng-pattern="/^[0-9]*$/" placeholder="整型" ng-model="one.value" class="sub-form-control" required>
+                                        </div>
+                                        <div ng-if="tr.param_value_type != 1" style="text-align: left;">
+                                            <input type="text"  ng-if="tr.param_value_type != 1" ng-disabled="!sql.editable" name="param_value_1{{$index}}" placeholder="字符串" ng-model="one.value" class="sub-form-control" required>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </td>
+            <td ng-if="tr.sparam_type == 5"  style="width: 135px;padding: 0 2px;">
+                <input type="text" class="sub-form-control" placeholder="请配置参数值" ng-model="tr.sparam_scope" ng-disabled="!sql.editable" style="min-width: 125px;">
+            </td>
+            <td ng-if="tr.sparam_type == 1 || !tr.sparam_type"  style="width: 135px;padding: 0 2px;"></td>
+            <td ng-style="borderAuthStyle($index)" style="width: 80px;">
+                <div ng-if="sql.pg_source ==1">
+                    <label ng-if="tr.sparam_type != 5" style="cursor: pointer;margin-top: 6px;">
+                        <i ng-if="tr.success_flag && !tr.auth_show" class="author-img set-author-down-style" ng-click="showAuth($index)" ></i>
+                        <i ng-if="tr.success_flag && tr.auth_show" class="author-img set-author-up-style" ng-click="formcancel($index,sql.editable)"></i>
+                        <i ng-if="!tr.success_flag && !tr.auth_show" class="author-img unset-author-down-style" ng-click="showAuth($index)" style=""></i>
+                        <i ng-if="!tr.success_flag && tr.auth_show" class="author-img unset-author-up-style" ng-click="formcancel($index,sql.editable)" ></i>
+
+                    </label>
+                    <div ng-if="tr.auth_show" class="auth-div-style">
+                        <div ng-show="!tr.success_flag && !sql.editable" style="margin-top: 20px;">无授权条件</div>
+                        <form ng-show="tr.success_flag || sql.editable" name="tr.param_auth_form" ng-submit="formSubmit($index)" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+                            <div style="margin-top: 10px;margin-bottom: 20px;" class="row form-style">
+                                <div style="padding-top: 7px;" class="col-sm-2 text-right label-key">
+                                    <label >授权说明</label>
+                                </div>
+                                <div class="col-sm-10 text-left label-value" style="margin-left: -16px;">
+                                    <input type="text" name="auth_bk_expl" class="form-control" ng-disabled="!sql.editable" placeholder="最大长度250个字符" ng-model="tr.auth_bk_expl" required>
+                                    <validate-msg tag-cn-name="授权说明" name="auth_bk_expl"></validate-msg>
+                                </div>
+                            </div>
+                            <div style="padding: 0 10px;">
+                                <table class="sub-table text-center" ng-if="sql.editable" row-plus="addAuthList($index)" tbl-Data="tr.param_auth_list">
+                                    <thead>
+                                    <tr>
+                                        <td>
+                                            <span>授权条件</span>
+                                            <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                        </td>
+                                        <td>
+                                            授权类型
+                                        </td>
+                                        <td>
+                                            授权部门
+                                        </td>
+                                        <td>
+                                            授权角色
+                                        </td>
+                                        <td width="70">
+                                            操作
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="one in tr.param_auth_list" style="font-size: 12px;">
+                                        <td title="{{one.condition_text}}">
+                                            <input type="text" name="auth_condition{{$index}}" ng-disabled="!sql.editable" placeholder="最大长度100个字符" ng-model="one.condition_text" class="sub-form-control" required>
+                                            <validate-msg tag-cn-name="授权条件" name="auth_condition{{$index}}"></validate-msg>
+                                        </td>
+                                        <td>
+                                            <bs-select width=130 no-border items="one.sparam_auth_list" name="sparam_auth{{$index}}" disable="!sql.editable" my-select="one.sparam_auth" required></bs-select>
+                                            <validate-msg tag-cn-name="授权类型" type="select" name="sparam_auth{{$index}}" model="one.sparam_auth"></validate-msg>
+                                        </td>
+                                        <td>
+                                            <bs-select width=130 no-border name="auth_dept_id{{$index}}" option-key="dept_id" disable="!sql.editable" option-labal="dept_cn_name" items="data.auth_dept_list" my-select="one.auth_dept_id" select-val="loadauthRoleData(selectKey, $index, $parent.$index);" required></bs-select>
+                                            <validate-msg tag-cn-name="授权部门" type="select" name="auth_dept_id{{$index}}" model="one.auth_dept_id"></validate-msg>
+                                        </td>
+                                        <td>
+                                            <bs-select width=130 no-border items="one.authRole" name="auth_dprl_code{{$index}}" disable="!sql.editable" option-key="dprl_code" option-labal="bk_expl" my-select="one.auth_dprl_code" required></bs-select>
+                                            <validate-msg tag-cn-name="授权角色" type="select" name="auth_dprl_code{{$index}}" model="one.auth_dprl_code"></validate-msg>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <span class="fa fa-trash-o" title="删除" style=" padding-left: 10px;" ng-click="removeAuthList($index,$parent.$index)"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="sub-table text-center" ng-if="!sql.editable" tbl-Data="tr.param_auth_list">
+                                    <thead>
+                                    <tr>
+                                        <td>
+                                            <span>授权条件</span>
+                                            <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                        </td>
+                                        <td>
+                                            授权类型
+                                        </td>
+                                        <td>
+                                            授权部门
+                                        </td>
+                                        <td>
+                                            授权角色
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="one in tr.param_auth_list" style="font-size: 12px;">
+                                        <td title="{{one.condition_text}}">
+                                            <input type="text" name="auth_condition{{$index}}" ng-disabled="!sql.editable" placeholder="最大长度100个字符" ng-model="one.condition_text" class="sub-form-control" required>
+                                            <validate-msg tag-cn-name="授权条件" name="auth_condition{{$index}}"></validate-msg>
+                                        </td>
+                                        <td>
+                                            <bs-select width=130 no-border items="one.sparam_auth_list" name="sparam_auth{{$index}}" disable="!sql.editable" my-select="one.sparam_auth" required></bs-select>
+                                            <validate-msg tag-cn-name="授权类型" type="select" name="sparam_auth{{$index}}" model="one.sparam_auth"></validate-msg>
+                                        </td>
+                                        <td>
+                                            <bs-select width=130 no-border name="auth_dept_id{{$index}}" option-key="dept_id" disable="!sql.editable" option-labal="dept_cn_name" items="data.auth_dept_list" my-select="one.auth_dept_id" select-val="loadauthRoleData(selectKey, $index, $parent.$index);" required></bs-select>
+                                            <validate-msg tag-cn-name="授权部门" type="select" name="auth_dept_id{{$index}}" model="one.auth_dept_id"></validate-msg>
+                                        </td>
+                                        <td>
+                                            <bs-select width=130 no-border items="one.authRole" name="auth_dprl_code{{$index}}" disable="!sql.editable" option-key="dprl_code" option-labal="bk_expl" my-select="one.auth_dprl_code" required></bs-select>
+                                            <validate-msg tag-cn-name="授权角色" type="select" name="auth_dprl_code{{$index}}" model="one.auth_dprl_code"></validate-msg>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-if="noParamList" style="color:#E9416E;text-align: left;">
+                                    至少添加一条授权条件
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    <tr ng-if="sql.param_list.length == 0">
+        <td colspan="5" style="color: #6d7183;">暂无参数</td>
+    </tr>
+    </tbody>
+</table>
+

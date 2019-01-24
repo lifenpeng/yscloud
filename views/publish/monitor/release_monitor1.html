@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html ng-app="LargeScreenMonitorController">
+<head>
+    <title>发布监控</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="Page-Enter" contect="revealTrans(duration=1.0,transtion=4)">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+   <!-- <link href="../../../css/bootstrap.css" rel="stylesheet">
+    <link href="../../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../css/comm.css" rel="stylesheet">-->
+
+    <link rel="stylesheet" href="../../../css/cl.min.css"/>
+    <style type="text/css">
+        body{
+            background: #141e2a;
+        }
+        .top-header{
+            width: 100%;
+            background: url("../../../img/header/cl-logo-bg-sm.png") no-repeat;
+            height: 42px;
+            background-size: 100% 100%;
+            text-align: center;
+            min-width: 1366px;
+        }
+        .title-bg{
+            height: 40px;text-align:center;
+            background-image: linear-gradient(-180deg, #1d313d 0%, #0d1923 52%,  #1d313d 100%);
+            border: 1px solid;
+            border-image: linear-gradient(-180deg, #60C3E2 0%, rgba(75,86,95,0.00) 52%,#60C3E2 100%) 15 15;
+            min-width: 360px;
+        }
+        .un-publish-bg{
+            /* background: url("../../../img/publish/monitor_list/publish-bg.png") no-repeat; */
+            background-size: 100% 100%;
+            margin:30px 0 0 0;padding: 0 15px;
+            font-size: 14px;
+            /* height: 300px; */
+            min-width: 557px;
+            position: relative;
+        }
+        .mid-bg{
+            background: url("../../../img/publish/monitor_list/monitor-bg.png") center center no-repeat,
+            url("../../../img/publish/monitor_list/rocket-bg.png") center center no-repeat;
+            height: 330px;
+            width:100%;
+            position: absolute;
+        }
+        .footer-bg{
+            background: url("../../../img/publish/monitor_list/AIborder.png") no-repeat;
+            background-size: 100% 100%;
+            height: 250px;
+            padding: 12px 0;
+        }
+        #footer{
+            background: url("../../../img/publish/monitor_list/PPlusborder.png") no-repeat;
+            width: 101%;
+            height: 30%;
+        }
+        .content-wrap{
+            min-width: 1366px;
+            display: flex;
+            padding: 0 15px;
+            margin-top: 10px;
+        }
+    
+        .content-left , .content-right{
+            background: url("../../../img/publish/monitor_list/kuang.png")  no-repeat;
+            background-size:582px 600px;
+            margin: -12px;
+            width: 25%;
+            flex: 1;
+            height: 600px;
+            display: inline-block;
+        }
+        .content-center{
+            padding:27px;
+            width: 40%;
+            height: 600px;position: relative;
+            display: inline-block;
+        }
+        .content-center .canvas-position{
+            position: absolute;
+            left: calc((100% - 450px)/2 - 30px);
+        }
+        .publish-header{
+            color: #B7D9FE;
+            text-align: left;
+        }
+        .line-header{
+            color: #02c9e2;
+            margin-top: 15px;
+        }
+        .line-content{
+            color: #009df6;
+            margin-top: 12px;
+            height: 24px;
+            line-height: 24px;
+        }
+        .status-common-style{
+            color: #fff;border-radius: 5px;width: 50px;
+        }
+        .success-status{
+            background: #1fcd60;
+        }
+        .fail-status{
+            background: #eb5454;
+        }
+        .rollback-status{
+            background: #ff6c00;
+        }
+        .rollbacking-status{
+            background: #ff4d00;
+        }
+
+        .sys-list{
+            display: flex;padding: 0;
+            margin: 14px 0;
+        }
+        .sys-item{
+            list-style: none;
+            width: 290px;
+            height: 54px;
+            display: flex;
+            position: relative;
+            margin-right: 40px;
+        }
+        .sys-item:before{
+            content: '';
+            width: 300px;
+            height: 53px;
+            opacity: 0.3;
+            position: absolute;
+            background-image: linear-gradient(-180deg, #60C3E2 0%, rgba(75,86,95,0.00) 52%, #60C3E2 100%);
+            background: url("../../../img/publish/monitor_list/no-choose.png") no-repeat;
+            background-size: 250px 53px;
+        }
+        .sys-item-check.sys-item:before{
+            background: url("../../../img/publish/monitor_list/choose.png") no-repeat;
+            background-size: 250px 53px;
+        }
+        .sys-item-icon{
+            /* width:50px;background: url("../../../img/publish/large_monitor/sys_xl.png") no-repeat center; */
+        }
+        .sys-item-small-icon{
+            width:20px;height:20px;vertical-align: middle;display:inline-block;margin-right: 5px;
+            background: url("../../../img/publish/large_monitor/sys_sl.png") no-repeat center;
+
+        }
+        .sys-item-name{
+            margin-top:-5px;
+            margin-left: -93px;
+            width: 140px;font-size: 20px;
+            color: #02CBE4;
+            font-size:13px;
+            overflow: hidden;white-space: nowrap;
+            text-overflow: ellipsis;
+            height: 64px;line-height: 64px;
+        }
+        .sys-item-progress{
+            width:60px;
+            position: relative;
+        }
+        .fa-span{
+            margin-top: 12px;
+            position: absolute;
+            color:#B7D9FF;
+        }
+        .sys-item-progress-bar{
+            margin-left: -70px;;
+            position: absolute;
+            top:7px;
+            left:94px;
+        }
+        .sys-item-progress-value{
+            font-size: 12px;
+            text-align: center;
+            color: #FFFFFF;
+            line-height: 64px;
+            height:64px;
+        }
+        .sys-monitor-detail{
+            display: flex;;overflow: hidden;
+            /*flex: 1*/
+        }
+        .sys-monitor-progress{
+            width: 170px;
+            height: 300px;
+            display: flex;
+        }
+        .sys-monitor-phase{
+            padding-left: 50px;padding-top: 10px;
+            /*width: calc(100% - 490px);*/
+            overflow: hidden;
+            flex: 1;
+        }
+        .sys-monitor-progress-bar{
+            width:140px;
+            height: 140px;
+            /* padding-left: 35px; */
+            position: absolute;
+            /* padding-top: 35px; */
+            background: url("../../../img/publish/large_monitor/circle_bg.png") no-repeat;
+            background-size:cover;
+            /* background-position: 45px 22px; */
+            animation: sys_icon_spin 3s infinite linear;
+    -moz-animation: sys_icon_spin 3s infinite linear;	/* Firefox */
+    -webkit-animation: sys_icon_spin 3s infinite linear;	/* Safari 和 Chrome */
+    -o-animation: sys_icon_spin 3s infinite linear;	/* Opera */
+        }
+
+        .sys-monitor-progress-value{
+            position: absolute;
+            left: 112px;
+            top: 97px;
+            font-size: 45px;
+
+        }
+        .sys-monitor-info{
+            width: 210px;
+            height: 210px;
+            border-right: 1px solid #084C6F;margin-top: 50px;
+        }
+        .sys-monitor-name{
+            font-size: 28px;
+            color: #01A3FF;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .sys-monitor-response-time{
+            font-size: 14px;
+            color: #77A0C3;opacity: 0.7;
+            text-align: center;margin-top: 12px;
+        }
+        .sys-name-icon{
+            height: 64px;
+            width:64px;
+            margin:0 auto;
+            background: url("../../../img/publish/large_monitor/sys_lg.png") no-repeat center;
+        }
+        .sys-monitor-phase-time{
+            display: flex;padding-left: 16px;
+        }
+        .start-time{
+            background: url("../../../img/publish/large_monitor/start_time.png") no-repeat left center;
+        }
+        .end-time{
+            background: url("../../../img/publish/large_monitor/end_time.png") no-repeat left center;
+        }
+        .consume-time{
+            background: url("../../../img/publish/large_monitor/time_used.png") no-repeat left center;
+
+        }
+        .monitor-phase-time{
+            /*width:210px;*/
+            font-size: 18px;
+            color: #12C6F1;
+            height: 24px;
+            line-height: 24px;
+            padding-left: 36px;
+        }
+        .monitor-phase-exe-status{
+            margin-top: 24px;overflow: hidden;height: 120px;
+            padding-top: 10px;
+            margin-left: -50px
+
+        }
+        .monitor-phase-warp{
+            position: relative;
+            /* margin-right: 44px; */
+            text-align: center;
+
+        }
+        .monitor-phase-icon-wrap{
+            width:48px;
+            height:48px;text-align: center;
+            border-radius: 50%;font-size: 22px;line-height: 40px;
+            margin-top: -1px;
+        }
+        .phase-icon-succ{
+            box-shadow: inset 0 0 30px 0 #3D6FA2;
+            color: #D1D1D1;
+            border: 2px solid lawngreen;
+        }
+        .phase-icon-hand-succ{
+            box-shadow: inset 0 0 30px 0 #3D6FA2;color: #D1D1D1;
+        }
+        .phase-icon-failed{
+            box-shadow: inset 0 0 30px 0 #3D6FA2;
+            color: #D1D1D1;
+            border: 2px solid orange;
+        }
+        .phase-icon-skip{
+            box-shadow: inset 0 0 30px 0 #3D6FA2;
+            color: #afaeb1;
+            border:3px solid green; 
+        }
+        .phase-icon-executing{
+            box-shadow: inset 0 0 30px 0 #3D6FA2;color: #D1D1D1;
+            border: 2px solid lightcoral;
+        }
+        .phase-icon-no-executing{
+            box-shadow: inset 0 0 30px 0 #3D6FA2;
+            color: #D1D1D1;
+            border:2px solid red;
+        }
+        .phase-icon-line{
+            width:44px;
+            height: 6px;
+            position: absolute;left: -44px;
+            top:20px;
+        }
+        .phase-icon-line-executed{
+            background: #257357;
+        }
+        .phase-icon-line-executing{
+            background: #276C80;
+        }
+        .phase-icon-line-no-execute{
+            background: #3F4B55;
+        }
+        .phase-progress{
+            position: absolute;
+            top: -10px;
+            left:-2px;
+        }
+        .monitor-phase-name{
+            display: flex;margin-top: 27px;
+        }
+        .sys-monitor-phase{
+            /* margin-top: 24px; */
+        }
+        .phase-stage-name{
+            font-size: 16px;
+            color: #02CBE4;
+        }
+        .phase-name{
+            overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-right: 20px;
+        }
+        .phase-exec-type{
+            width:100px;
+            height:24px;
+            border-radius: 100px;
+            /*background: #1C2636;*/
+            font-size: 14px;
+            /*color: #D09C47;*/
+            line-height:24px;
+            text-align: center;margin-right: 20px;
+        }
+        .phase-exec-parall{
+            color: #3A78F0;
+        }
+        .phase-nodes{
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            height: 90px;
+            overflow: hidden;
+        }
+        .phase-node{
+            width:215px;height: 32px;
+            line-height:32px;
+            margin-right: 15px;
+            display: flex;position: relative;
+        }
+        .phase-node-bg{
+            position: absolute;
+            width:100%;
+            height: 100%;
+            opacity: 0.5;
+            background-image: linear-gradient(-180deg, #60C3E2 0%, rgba(75,86,95,0.00) 52%, #60C3E2 100%);
+        }
+        .phase-node-icon{
+            width:30px;background: url("../../../img/publish/large_monitor/node_img.png") no-repeat center  ;
+        }
+        .phase-node-ip{
+            font-size: 12px;
+            color: #fff;
+        }
+        .phase-node-protocol{
+            font-size: 12px;
+            width:18px;
+            overflow: hidden;
+            color: #02CBE4;margin: 0 5px;
+        }
+        .phase-soc-name{
+            font-size: 12px;
+            color: #fff;
+            width: 40px;
+            overflow: hidden;
+        }
+        .phase-node-exec-status{
+            width:34px;font-size: 16px;text-align: center;margin-left: 10px;
+        }
+        .text-hide-style{
+            overflow: hidden;white-space: nowrap;
+            /*text-overflow: ellipsis;*/
+        }
+    </style>
+</head>
+<body style="width:1920px">
+<div class="container-fluid" ng-controller="sysMonitorCtrl">
+    <!--头部-->
+    <div class="top-header">
+        <!--<img src="../../../img/header/cl-logo-bg-sm.png" style="width: 100%;height: 100%;">-->
+        <span style="color: #02cbe4;position: relative;font-size: 16px;cursor: pointer;" ng-click="return()">远舢工业云平台</span>
+        <span style="color: #02cbe4;text-align:center;display: block">YScloud</span>
+    </div>
+    <!--中间部分-->
+    <div class="content-wrap">
+        <div class="content-left">
+            <!-- <div class="title-bg">
+                <span style="font-size: 24px;color: #ffffff;">{{info.today_date}},&nbsp;&nbsp;{{info.week_cn_num}}</span>
+            </div> -->
+            <div class="un-publish-bg">
+                <div class="publish-header" >
+                    <!-- 待发布(共{{data.un_publish_project_list.length}}个) -->
+                    企业资源  <img src="../../../img/publish/monitor_list/long.png" style="margin-left:30px">
+                </div>
+                <!-- <div class="line-header row">
+                    <div class="col-sm-3">项目名</div>
+                    <div class="col-sm-2">系统名</div>
+                    <div class="col-sm-2">计划</div>nz
+                    <div class="col-sm-2">负责人</div>
+                    <div class="col-sm-3 text-center">倒计时</div>
+                </div> -->
+                <div style="height: 250px;overflow: hidden;" >
+                    <div ng-if="control.get_unpublish_loading" style="text-align: center;line-height: 250px;color: #02c9e2">
+                        正在获取待发布的系统 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+                    </div>
+                    <div >
+                        <!-- ng-if="!control.get_unpublish_loading" -->
+                        <!-- <div slide-follow style="height: 100%;position: relative;" scroll-height="36" scroll-index = "control.unpublish_index" scroll-number="5" scroll-date="data.un_publish_project_list">
+                            <div class="line-content row" ng-repeat="item in  data.un_publish_project_list">
+                                <div class="col-sm-3 text-hide-style" title="{{item.project_name }}"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.business_cn_name}}">{{item.business_cn_name}}</div>
+                                <div class="col-sm-2">{{item.publish_time.substring(0,5)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.manager_user_name}}">{{item.manager_user_name}}</div>
+                                <div class="col-sm-3 text-center">
+                                    <div ng-if="item.deplay_flag" class="status-common-style rollback-status" style="width: 80%">
+                                        已延期
+                                    </div>
+                                    <span ng-if="!item.deplay_flag">{{item.remainTime ?  item.remainTime : '--'}}</span>
+                                </div>
+                            </div>
+                            <div class="line-content row" ng-repeat="item in  data.un_publish_project_list" ng-if="data.un_publish_project_list.length > 5">
+                                <div class="col-sm-3 text-hide-style" title="{{item.project_name}}"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.business_cn_name}}">{{ item.business_cn_name}}</div>
+                                <div class="col-sm-2">{{item.publish_time.substring(0,5)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.manager_user_name}}">{{item.manager_user_name}}</div>
+                                <div class="col-sm-3 text-center">
+                                    <div ng-if="item.deplay_flag" class="status-common-style rollback-status" style="width: 80%">
+                                        已延期
+                                    </div>
+                                    <span ng-if="!item.deplay_flag">{{item.remainTime ?  item.remainTime : '--'}}</span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div id="gauge" style="width:50%;height: 250px;float: left;">
+
+                        </div>
+                        <div id="pie" style="width:50%;height: 250px;float: left;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="un-publish-bg" style="margin-top:0px;">
+                <div class="publish-header">
+                    <!-- 待发布(共{{data.un_publish_project_list.length}}个) -->
+                    企业资源转换率环比 <img src="../../../img/publish/monitor_list/short .png" style="margin-left:30px;">
+                </div>
+                <!-- <div class="line-header row">
+                    <div class="col-sm-3">项目名</div>
+                    <div class="col-sm-2">系统名</div>
+                    <div class="col-sm-2">计划</div>
+                    <div class="col-sm-2">负责人</div>
+                    <div class="col-sm-3 text-center">倒计时</div>
+                </div> -->
+                <div style="height: 250px;overflow: hidden;" >
+                    <div ng-if="control.get_unpublish_loading" style="text-align: center;line-height: 250px;color: #02c9e2">
+                        正在获取待发布的系统 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+                    </div>
+                    <div >
+                            <!-- ng-if="!control.get_unpublish_loading" -->
+                        <!-- <div slide-follow style="height: 100%;position: relative;" scroll-height="36" scroll-index = "control.unpublish_index" scroll-number="5" scroll-date="data.un_publish_project_list">
+                            <div class="line-content row" ng-repeat="item in  data.un_publish_project_list">
+                                <div class="col-sm-3 text-hide-style" title="{{item.project_name }}"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.business_cn_name}}">{{item.business_cn_name}}</div>
+                                <div class="col-sm-2">{{item.publish_time.substring(0,5)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.manager_user_name}}">{{item.manager_user_name}}</div>
+                                <div class="col-sm-3 text-center">
+                                    <div ng-if="item.deplay_flag" class="status-common-style rollback-status" style="width: 80%">
+                                        已延期
+                                    </div>
+                                    <span ng-if="!item.deplay_flag">{{item.remainTime ?  item.remainTime : '--'}}</span>
+                                </div>
+                            </div>
+                            <div class="line-content row" ng-repeat="item in  data.un_publish_project_list" ng-if="data.un_publish_project_list.length > 5">
+                                <div class="col-sm-3 text-hide-style" title="{{item.project_name}}"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.business_cn_name}}">{{ item.business_cn_name}}</div>
+                                <div class="col-sm-2">{{item.publish_time.substring(0,5)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.manager_user_name}}">{{item.manager_user_name}}</div>
+                                <div class="col-sm-3 text-center">
+                                    <div ng-if="item.deplay_flag" class="status-common-style rollback-status" style="width: 80%">
+                                        已延期
+                                    </div>
+                                    <span ng-if="!item.deplay_flag">{{item.remainTime ?  item.remainTime : '--'}}</span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div id="bar" style="width:100%;height:250px;margin-top: -18px;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-center">
+            <!-- <div class="mid-bg" ng-if="data.all_project_list.length == 0"></div> -->
+            <!-- <div class="canvas-position" ng-if="data.all_project_list.length != 0"> -->
+                <!-- <canvas width="500" height="500" merry-go-round data="data.all_project_list"></canvas> -->
+                    <div style="background:url('../../../img/publish/monitor_list/center.png') no-repeat;height: 600px;width: 744px;background-size: 700px;margin-top: 52px;"></div> 
+            <!-- </div> -->
+        </div>
+        <div class="content-right">
+            <!-- <div class="title-bg">
+                <span style="font-size: 24px;color: #ffffff;">{{info.now_time}}</span>
+            </div> -->
+            <div class="un-publish-bg">
+                <div class="publish-header" style="margin-top: -19px;">
+                    <!-- 已发布(共{{data.published_project_list.length}}个) -->
+                    生产效能
+                </div>
+                <!-- <div class="line-header">
+                    <div class="col-sm-4" style="padding: 0;">项目名</div>
+                    <div class="col-sm-2" style="padding: 0;">开始</div>
+                    <div class="col-sm-2" style="padding: 0;">结束</div>
+                    <div class="col-sm-2" style="padding: 0;">耗时</div>
+                    <div class="col-sm-2">状态</div>
+                </div> -->
+                <div style="height: 180px;overflow: hidden;width: 100%">
+                    <div ng-if="control.get_publish_loading" style="text-align: center;line-height: 180px;color: #02c9e2">
+                        正在获取已发布的系统 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+                    </div>
+                    <div >
+                            <!-- ng-if="!control.get_publish_loading" -->
+                        <!-- <div slide-follow style="height: 100%;position: relative;" scroll-index = "control.published_index" scroll-height="36" scroll-number="5" scroll-date="data.published_project_list">
+                            <div class="line-content" ng-repeat="item in  data.published_project_list">
+                                <div class="col-sm-4 text-hide-style" style="padding-left: 0;"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.start_datetime}}" style="padding-left: 0;">{{item.start_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.end_datetime}}" style="padding-left: 0;">{{item.end_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.time_used}}" style="padding-left: 0;">{{item.time_used}}</div>
+                                <div class="col-sm-2 text-center" style="padding: 0;">
+                                    <div class="status-common-style success-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 1">
+                                        成功
+                                    </div>
+                                    <div class="status-common-style fail-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 2">
+                                        失败
+                                    </div>
+                                    <div class="status-common-style rollback-status" ng-if="(item.sys_publish_status == 7 || item.sys_publish_status == 8 )">
+                                        已回退
+                                    </div>
+                                    <div class="status-common-style rollbacking-status" ng-if="(item.sys_publish_status == 6 )">
+                                        回退中
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line-content" ng-repeat="item in  data.published_project_list" ng-if="data.published_project_list.length > 5">
+                                <div class="col-sm-4 text-hide-style" style="padding-left: 0;"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.start_datetime}}" style="padding-left: 0;">{{item.start_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.end_datetime}}" style="padding-left: 0;">{{item.end_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.time_used}}" style="padding-left: 0;">{{item.time_used}}</div>
+                                <div class="col-sm-2 text-center" style="padding: 0;">
+                                    <div class="status-common-style success-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 1">
+                                        成功
+                                    </div>
+                                    <div class="status-common-style fail-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 2">
+                                        失败
+                                    </div>
+                                    <div class="status-common-style rollback-status" ng-if="(item.sys_publish_status == 7 || item.sys_publish_status == 8 )">
+                                        已回退
+                                    </div>
+                                    <div class="status-common-style rollbacking-status" ng-if="(item.sys_publish_status == 6 )">
+                                        回退中
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div id="rightBar" style="width:100%;height:180px;margin-top: -37px" >
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="un-publish-bg">
+                <div class="publish-header" style="margin-top: -65px;">
+                    <!-- 已发布(共{{data.published_project_list.length}}个) -->
+                    制度工时
+                </div>
+                <!-- <div class="line-header">
+                    <div class="col-sm-4" style="padding: 0;">项目名</div>
+                    <div class="col-sm-2" style="padding: 0;">开始</div>
+                    <div class="col-sm-2" style="padding: 0;">结束</div>
+                    <div class="col-sm-2" style="padding: 0;">耗时</div>
+                    <div class="col-sm-2">状态</div>
+                </div> -->
+                <div style="height: 250px;overflow: hidden;width: 100%">
+                    <div ng-if="control.get_publish_loading" style="text-align: center;line-height: 250px;color: #02c9e2">
+                        正在获取已发布的系统 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+                    </div>
+                    <div >
+                            <!-- ng-if="!control.get_publish_loading" -->
+                        <!-- <div slide-follow style="height: 100%;position: relative;" scroll-index = "control.published_index" scroll-height="36" scroll-number="5" scroll-date="data.published_project_list">
+                            <div class="line-content" ng-repeat="item in  data.published_project_list">
+                                <div class="col-sm-4 text-hide-style" style="padding-left: 0;"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.start_datetime}}" style="padding-left: 0;">{{item.start_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.end_datetime}}" style="padding-left: 0;">{{item.end_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.time_used}}" style="padding-left: 0;">{{item.time_used}}</div>
+                                <div class="col-sm-2 text-center" style="padding: 0;">
+                                    <div class="status-common-style success-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 1">
+                                        成功
+                                    </div>
+                                    <div class="status-common-style fail-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 2">
+                                        失败
+                                    </div>
+                                    <div class="status-common-style rollback-status" ng-if="(item.sys_publish_status == 7 || item.sys_publish_status == 8 )">
+                                        已回退
+                                    </div>
+                                    <div class="status-common-style rollbacking-status" ng-if="(item.sys_publish_status == 6 )">
+                                        回退中
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line-content" ng-repeat="item in  data.published_project_list" ng-if="data.published_project_list.length > 5">
+                                <div class="col-sm-4 text-hide-style" style="padding-left: 0;"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.start_datetime}}" style="padding-left: 0;">{{item.start_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.end_datetime}}" style="padding-left: 0;">{{item.end_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.time_used}}" style="padding-left: 0;">{{item.time_used}}</div>
+                                <div class="col-sm-2 text-center" style="padding: 0;">
+                                    <div class="status-common-style success-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 1">
+                                        成功
+                                    </div>
+                                    <div class="status-common-style fail-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 2">
+                                        失败
+                                    </div>
+                                    <div class="status-common-style rollback-status" ng-if="(item.sys_publish_status == 7 || item.sys_publish_status == 8 )">
+                                        已回退
+                                    </div>
+                                    <div class="status-common-style rollbacking-status" ng-if="(item.sys_publish_status == 6 )">
+                                        回退中
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div id="levelBar" style="width:100%;height:250px;margin-top: -50px;">   
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="un-publish-bg">
+                <div class="publish-header" style="margin-top: -107px;">
+                    <!-- 已发布(共{{data.published_project_list.length}}个) -->
+                   瓶颈约束（TOC）指标
+                </div>
+                <!-- <div class="line-header">
+                    <div class="col-sm-4" style="padding: 0;">项目名</div>
+                    <div class="col-sm-2" style="padding: 0;">开始</div>
+                    <div class="col-sm-2" style="padding: 0;">结束</div>
+                    <div class="col-sm-2" style="padding: 0;">耗时</div>
+                    <div class="col-sm-2">状态</div>
+                </div> -->
+                <div style="height: 250px;overflow: hidden;width: 100%">
+                    <div ng-if="control.get_publish_loading" style="text-align: center;line-height: 250px;color: #02c9e2">
+                        正在获取已发布的系统 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+                    </div>
+                    <div >
+                            <!-- ng-if="!control.get_publish_loading" -->
+                        <!-- <div slide-follow style="height: 100%;position: relative;" scroll-index = "control.published_index" scroll-height="36" scroll-number="5" scroll-date="data.published_project_list">
+                            <div class="line-content" ng-repeat="item in  data.published_project_list">
+                                <div class="col-sm-4 text-hide-style" style="padding-left: 0;"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.start_datetime}}" style="padding-left: 0;">{{item.start_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.end_datetime}}" style="padding-left: 0;">{{item.end_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.time_used}}" style="padding-left: 0;">{{item.time_used}}</div>
+                                <div class="col-sm-2 text-center" style="padding: 0;">
+                                    <div class="status-common-style success-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 1">
+                                        成功
+                                    </div>
+                                    <div class="status-common-style fail-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 2">
+                                        失败
+                                    </div>
+                                    <div class="status-common-style rollback-status" ng-if="(item.sys_publish_status == 7 || item.sys_publish_status == 8 )">
+                                        已回退
+                                    </div>
+                                    <div class="status-common-style rollbacking-status" ng-if="(item.sys_publish_status == 6 )">
+                                        回退中
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line-content" ng-repeat="item in  data.published_project_list" ng-if="data.published_project_list.length > 5">
+                                <div class="col-sm-4 text-hide-style" style="padding-left: 0;"><div class="sys-item-small-icon"></div>{{item.project_name}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.start_datetime}}" style="padding-left: 0;">{{item.start_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.end_datetime}}" style="padding-left: 0;">{{item.end_datetime.substring(11,16)}}</div>
+                                <div class="col-sm-2 text-hide-style" title="{{item.time_used}}" style="padding-left: 0;">{{item.time_used}}</div>
+                                <div class="col-sm-2 text-center" style="padding: 0;">
+                                    <div class="status-common-style success-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 1">
+                                        成功
+                                    </div>
+                                    <div class="status-common-style fail-status" ng-if="(item.sys_publish_status == 4 || item.sys_publish_status == 5 ) && item.syspublish_success_flag == 2">
+                                        失败
+                                    </div>
+                                    <div class="status-common-style rollback-status" ng-if="(item.sys_publish_status == 7 || item.sys_publish_status == 8 )">
+                                        已回退
+                                    </div>
+                                    <div class="status-common-style rollbacking-status" ng-if="(item.sys_publish_status == 6 )">
+                                        回退中
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div id="rightLine" style="width:50%;height:250px;float: left;margin-top: -20px;">   
+
+                            </div>
+                            <div id="rightLine1" style="width:50%;height:250px;float: left;margin-top: -20px;">   
+    
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin:20px 0 0 0;padding: 0 15px;min-width: 1336px">
+        <div class="col-sm-12 footer-bg">
+            <!--title-->
+            <!-- <div style="position: absolute;color: #02c9e2;left: 11%;top: 0;">
+                发布中(共{{data.publish_project_list.length}}个)
+            </div> -->
+            <div ng-if="control.get_running_loading" style="text-align: center;font-size: 16px;color: #02c9e2;line-height: 280px">
+                正在获取数据 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+            </div>
+            <div id="footerLine" style="width:25%;height:250px;float: left;">
+                
+            </div>
+            <div id="polar" style="width:25%;height:250px;float: left;">
+                
+            </div>
+            <div id="scatter" style="width:25%;height:250px;float: left;">
+                
+            </div>
+            <div id="_footerLine" style="width:25%;height:250px;float: left;">
+                
+            </div>
+            <div ng-if="control.get_running_loading" style="text-align: center;font-size: 16px;color: #02c9e2;line-height: 280px">
+                正在获取数据 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+            </div>
+
+            
+        </div>
+    </div>
+    <!--尾部部分-->
+    <div class="row" style="margin:20px 0 0 0;padding: 0 15px;min-width: 1336px">
+        <div class="col-sm-12 footer-bg" id="footer">
+            <!--title-->
+            <!-- <div style="position: absolute;color: #02c9e2;left: 11%;top: 0;">
+                发布中(共{{data.publish_project_list.length}}个)
+            </div> -->
+            <div ng-if="control.get_running_loading" style="text-align: center;font-size: 16px;color: #02c9e2;line-height: 280px">
+                正在获取数据 &nbsp;&nbsp;<span><i class="fa fa-spin fa-spinner"></i></span>
+            </div>
+            <div ng-if="!control.get_running_loading">
+                <div show-date date-list="data.publish_project_list" slide-index="control.sys_show_index">
+                    <div id="header_block" style="overflow: hidden;width: 90%;margin: 0 auto;">
+                        <ul class="sys-list" >
+                            <li class="sys-item" ng-repeat="item in data.publish_project_list" ng-class="{'sys-item-check' : control.sys_show_index == $index}">
+
+                                <div class="sys-item-icon"></div>
+                                <div class="sys-item-name">{{item.project_name}}</div>
+                                <div  style="color:#F5A623;width: 133px;margin-top: 18px;">{{"节点：" + item.project_name1 + "&nbsp;&nbsp;"+"人数：" +item.project_name2}}</div>
+                                <div class="sys-item-progress">
+                                    <div class="sys-item-progress-bar"><cycle-progress width="40" height="40" circle-width="4" percent="item.dynamic"></cycle-progress></div>
+                                    <!--<div class="sys-item-progress-value">30%</div>-->
+                                </div>
+                            </li>
+                            <!-- <li class="sys-item" ng-if="data.publish_project_list.length > 5" ng-repeat="item in data.publish_project_list" ng-class="{'sys-item-check' : control.sys_show_index == $index}">
+                                <div class="sys-item-icon"></div>
+                                <div class="sys-item-name">{{item.project_name}}</div>
+                                <div  style="color:#F5A623">{{"节点：" + item.project_name1 + "人数：" +item.project_name2}}</div>
+                                <div class="sys-item-progress">
+                                    <div class="sys-item-progress-bar"><cycle-progress width="40" height="40" circle-width="4" percent="item.percent"></cycle-progress></div> -->
+                                    <!--<div class="sys-item-progress-value">30%</div>-->
+                                <!-- </div>
+                            </li> -->
+                        </ul>
+                    </div>
+                    <div id="body_block" style="overflow: hidden;">
+                        <div class="slide-container">
+                            <div class="sys-monitor-detail" ng-repeat="item in data.publish_project_list track by $index">
+                                <div class="sys-monitor-progress">
+                                    <div style="position: relative;">
+                                        <div class="sys-monitor-progress-bar">
+                                        </div>
+                                        <cycle-progress width="92" height="92" circle-width="8" percent="item.dynamic" font-size="20" style="position:absolute;top: 25px;left: 24px;"></cycle-progress>
+                                    </div>
+                                    
+
+                                    <!-- <div class="sys-monitor-info">
+                                        <div class="sys-name-icon"></div>
+                                        <div class="sys-monitor-name">
+                                            {{item.project_name}}
+                                        </div>
+                                        <div class="sys-monitor-response-time">
+                                            计划时间&nbsp;&nbsp;&nbsp;{{item.publish_time}}
+                                        </div>
+                                        <div class="sys-monitor-response-time">
+                                            负责人&nbsp;&nbsp;&nbsp;{{item.manager_user_name}}
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="sys-monitor-phase">
+                                    <div class="sys-monitor-phase-time">
+                                        <!-- <div class="start-time monitor-phase-time">
+                                            {{item.start_datetime.substring(0,item.start_datetime.lastIndexOf('.'))}}
+                                        </div> -->
+                                        <!-- <div class="end-time monitor-phase-time">
+                                             &#45;&#45;
+                                         </div>
+                                         <div class="consume-time monitor-phase-time">
+                                             {{item.use_time}}
+                                         </div>-->
+                                    </div>
+                                    <div class="monitor-phase-exe-status">
+                                        <div style="display: flex;width: 100%" scroll-view phase-date="item.phase_list" current-phase="item.current_phase.phase_id">
+                                            <div class="monitor-phase-warp" ng-repeat="phase in item.phase_list track by $index" ng-style="{'padding-left': phase.phase_status == 2 ? '7px' :'0px', 'margin-right': phase.phase_status == 2  ? '44px' : '30px'}" style="padding-left: 7px">
+                                                <div class="monitor-phase-icon-wrap"
+                                                     ng-class="phase.phase_status == 1 ? 'phase-icon-no-executing' : phase.phase_status == 2 ?  'phase-icon-executing' :
+                                     (phase.phase_status == 3 || phase.phase_status == 4) ?  'phase-icon-failed' :
+                                     phase.phase_status == 5 ? 'phase-icon-succ' : phase.phase_status == 6 ?  'phase-icon-skip' : phase.phase_status == 7 ? 'phase-icon-stop' : 'phase-icon-hand-succ'">
+                                                    <div class="monitor-phase-icon">
+                                                        <!--<i class="fa fa-cube"></i>-->
+                                                        <i class="fa fa-cube" ></i>
+                                                    </div>
+                                                </div>
+                                                <span style= "line-height:50px;color:#B7D9FF;width: 50px;font-size: 3px;">{{phase.b}}</span>
+                                                <!-- <div class="phase-progress" ng-if="phase.phase_status == 2">
+                                                    <cycle-progress width="66" height="66" circle-width="4" percent="phase.dynamic" show-text="false"></cycle-progress>
+                                                </div> -->
+                                            </div>
+                                            
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sys-monitor-detail" ng-repeat="item in data.publish_project_list track by $index" ng-if="data.publish_project_list.length > 1">
+                                <div class="sys-monitor-progress">
+                                        <div style="position: relative;">
+                                                <div class="sys-monitor-progress-bar">
+                                                </div>
+                                                <cycle-progress width="92" height="92" circle-width="8" percent="item.dynamic" font-size="20" style="position:absolute;top: 25px;left: 24px;"></cycle-progress>
+                                            </div>
+                                </div>
+                                <div class="sys-monitor-phase">
+                                    <div class="sys-monitor-phase-time">
+                                    </div>
+                                    <div class="monitor-phase-exe-status">
+                                        <div style="display: flex;width: 100%" scroll-view phase-date="item.phase_list" current-phase="item.current_phase.phase_id">
+                                            <div class="monitor-phase-warp" ng-repeat="phase in item.phase_list track by $index" ng-style="{'padding-left': phase.phase_status == 2 ? '7px' :'0px', 'margin-right': phase.phase_status == 2  ? '44px' : '30px'}" style="padding-left: 7px">
+                                                <div class="monitor-phase-icon-wrap"
+                                                     ng-class="phase.phase_status == 1 ? 'phase-icon-no-executing' : phase.phase_status == 2 ?  'phase-icon-executing' :
+                                     (phase.phase_status == 3 || phase.phase_status == 4) ?  'phase-icon-failed' :
+                                     phase.phase_status == 5 ? 'phase-icon-succ' : phase.phase_status == 6 ?  'phase-icon-skip' : phase.phase_status == 7 ? 'phase-icon-stop' : 'phase-icon-hand-succ'" style="margin-left:0px;margin-top:-2px;">
+                                                    <div class="monitor-phase-icon">
+                                                        <i class="fa fa-cube"></i>
+                                                    </div>
+                                                </div>
+                                                <span style= "line-height:50px;color:#B7D9FF;width: 50px;font-size: 3px;">{{phase.b}}</span>
+                                                <!-- <div class="phase-progress" ng-if="phase.phase_status == 2">
+                                                    <cycle-progress width="64" height="64" circle-width="4" percent="phase.dynamic" show-text="false" ></cycle-progress>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--后加载js,避免初次跳转加载时间过长-->
+<script src="../../../js/components/jquery/jquery-1.10.2.min.js"></script>
+<script src="../../../js/components/echarts/echarts.min.js"></script>
+
+<script src="../../../js/components/angularjs/angular.min.js"></script>
+<script src="../../../js/components/angularjs/angular-cookies.js"></script>
+<script src="../../../js/components/angularjs/angular-websocket.js"></script>
+<script src="../../../js/components/angularjs/angular-animate.min.js"></script>
+<script src="../../../js/components/other/highcharts.js"></script>
+<script src="../../../js/components/other/highcharts-ngv0.0.12.js"></script>
+<script src="../../../js/components/other/highcharts-more.js"></script>
+<script src="../../../js/components/other/solid-gauge.src.js"></script>
+<script src="../../../js/components/boostrap/bootstrap.min.js"></script>
+<script src="../../../js/components/boostrap/ui-bootstrap-tpls-0.11.0.js"></script>
+
+<script src="../../../js/services/GlobalData.js"></script>
+<script src="../../../js/services/CvService.js"></script>
+<script src="../../../js/services/ChartsService.js"></script>
+<script src="../../../js/services/http/ReleaseHttpSrv.js"></script>
+<script src="../../../js/directives/Directives.js"></script>
+<script src="../../../js/controllers/common/CommController.js"></script>
+<script src="../../../js/controllers/common/ModalCtrl.js"></script>
+<script src="../../../js/controllers/release/LargeScreenMonitorController.js"></script>
+<!--第一种方案-->
+<!--<script src="../../../js/cl.min.js"></script>-->
+</body>
+</html>

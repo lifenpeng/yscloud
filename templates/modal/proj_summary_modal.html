@@ -1,0 +1,92 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">发布评价</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all;">
+    <div class="row form-style" style="margin-bottom: 15px;">
+        <label class="col-sm-3 label-key text-right" style="font-size: 12px;">发布结果</label>
+        <div class="col-sm-7 label-value" style="font-size: 12px;">
+            <input type="radio" i-check ng-model="summary.prod_flag" value="1">&nbsp;&nbsp;成功&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" i-check ng-model="summary.prod_flag" value="2">&nbsp;&nbsp;失败
+        </div>
+    </div>
+    <div class="row form-style" >
+        <label class="col-sm-3 label-key text-right" style=";font-size: 12px;">问题类型</label>
+        <div class="col-sm-9 label-value" style=";font-size: 12px;">
+            <div ng-repeat="problem_type in all_problem_type" style="display: inline-block;width: 120px;margin-right: 15px;margin-bottom: 20px;">
+                <input name="checkbox" type="checkbox" i-check ng-model="problem_type.checked">&nbsp;&nbsp;{{problem_type.value}}
+            </div>
+        </div>
+    </div>
+    <div class="row form-style" ng-if="summary.project_evaluate.user_cn_name" style="margin-bottom: 15px;">
+        <label class="col-sm-3 label-key text-right" style="margin-top: 1px;font-size: 12px;">评价人</label>
+        <div class="col-sm-7 label-value"  style="font-size: 12px;">
+            <!--<div ng-repeat="evaluate in summary.project_evaluate_list">-->
+                <div style="padding-bottom: 5px;width: 300px" ng-bind="summary.project_evaluate.user_cn_name"></div>
+            <!--</div>-->
+        </div>
+    </div>
+    <div class="row form-style" ng-if="summary.project_evaluate.assess_bk_date" style="margin-bottom: 15px;">
+        <label class="col-sm-3 label-key text-right" style="margin-top: 1px;font-size: 12px;">评价时间</label>
+        <div class="col-sm-7 label-value"  style=";font-size: 12px;">
+            <div>
+                <div style="margin-top: 2px" >{{summary.project_evaluate.assess_bk_date}}&nbsp;{{summary.project_evaluate.assess_bk_time}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-style" style="margin-bottom: 15px;">
+        <label class="col-sm-3 label-key text-right" style="margin-top: 2px;font-size: 12px;">发布评价</label>
+        <div class="col-sm-8 label-value">
+            <textarea placeholder="250字以内" class=form-control type="text"  ng-model="summary.project_bk_evaluate" style="color:#d2f1fe;resize:none;font-size: 12px"></textarea>
+        </div>
+    </div>
+    <div class="row form-style" style="margin-bottom: 15px;">
+        <label class="col-sm-3 label-key text-right" style="font-size: 12px;margin-top: 13px;">发布反馈</label>
+        <div class="col-sm-8 label-value" style="margin-top: 12px;">
+            <div class="form-group  label-value">
+                <div style="display: inline-block;margin-right: 40px" ng-repeat="i in  data.feedback_type_list">
+                    <input type="checkbox" name="upload_flag" i-check ng-model="i.state"  ng-change="chooseFeedBackType(i)"  ng-disabled="i.key == 2">
+                    <span style="position: relative; top: 1px;">{{i.value}}</span>
+                </div>
+                <!--<div style="margin-left: 40px;display: inline-block;">
+                    <input type="checkbox" name="upload_flag" i-check ng-model="summary.notice_type" ng-change="chooseFeedBackType(2)"  ng-disabled="true" style="margin-left: 50px;">
+                    <span style="position: relative; top: 1px;">短信</span>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="row form-style" ng-if="control.show_user_flag" >
+        <div class="col-sm-3 label-key text-right" style="font-size: 12px;margin-top: 10px;">
+            邮件收件人
+        </div>
+        <div class="col-sm-5">
+            <bs-select
+                       name="notice_users"
+                       class="label-value"
+                       items="data.select_person"
+                       my-select="summary.user_cn_name"
+                       select-val="addEmailAddress(selectKey)"
+                       option-labal="user_cn_name,email_add"
+                       option-key="user_cn_name"
+                       required></bs-select>
+            <div style="color: #a40000;" ng-if="control.user_is_none && summary.notice_users.length == 0">请至少添加一个收件人</div>
+        </div>
+    </div>
+    <div class="row form-horizontal" ng-if="control.show_user_flag" style="margin-top: 10px;">
+        <div class="col-sm-offset-3 col-sm-8" ng-if="summary.notice_users.length!=0">
+            <div class="data-source-btn" ng-repeat="user in summary.notice_users"  style="text-align: center;margin-right:10px;margin-bottom: 10px;position: relative;display: inline-block;" title="{{user.user_cn_name}}">
+                <span style="font-size: 12px; border-radius: 4px;color:#88B8FE;padding: 0 8px;">{{user.user_cn_name}}</span>
+                <span>{{user.email_add}}</span>
+                <div  class="data-source-delete-btn" ng-click="deleteSingleUser($index)"><i class="fa fa-times" style="color: #fff;"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer text-center" style="border-top: none;margin-bottom: 24px">
+    <button class="save-cancel-btn cancel-btn btn-xl" ng-click="cancel()">取消</button>
+    <button ng-show="!control.btnBus_loading" class="save-cancel-btn save-btn btn-xl" ng-click="ok()">保存</button>
+    <button ng-show="control.btnBus_loading" disabled="disabled" class="save-cancel-btn save-btn btn-xl">
+        <i style="color: white" class="fa fa-spinner fa-spin"></i>
+    </button>
+</div>

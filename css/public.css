@@ -1,0 +1,3473 @@
+/***********************************************系统配置***************************************/
+.sys-config {}
+.sys-config .custom-tab ul{
+    position: relative;
+    overflow: hidden;
+    *zoom: 1;
+    margin-right: 12px;
+}
+.sys-config .custom-tab ul:after{
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    bottom: 0;
+    border-bottom: 1px solid #d2f1fe;
+}
+.sys-config .custom-tab ul > li {
+    list-style: none;
+    float: left;
+    width: 160px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    padding: 0 30px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+.sys-config .custom-tab ul > li > a {
+    text-decoration: none;
+    color: #d2f1fe;
+}
+.sys-config .custom-tab ul > li.active{
+    border-bottom: 1px solid #fc9e22;
+}
+.sys-config .custom-tab ul > li.active > a {
+    text-decoration: none;
+    color: #fc9e22;
+}
+.sys-config .custom-tab ul > li > a:hover {
+    text-decoration: none;
+    color: #d2f1fe;
+}
+.sys-config .custom-tab ul > li.active > a:hover {
+    text-decoration: none;
+    color: #fc9e22;
+}
+/****************************************系统新增***************************************************/
+.new-sys {}
+.new-sys .version-dir{
+    margin-bottom: 15px;
+}
+.new-sys .version-dir .plus-hover{
+     float:left;
+     cursor:pointer;
+     width:40px;
+     height:34px;
+     z-index: 990;
+     padding-top:1px;
+     line-height: 30px;
+     margin-left: 20px;
+     text-align: center;
+     border: 1px dashed rgba(68, 220, 253,0.4);
+ }
+.new-sys .version-dir .plus-hover:hover{
+    border-color: rgba(68, 220, 253,1);
+}
+.new-sys .version-dir .plus-hover .fa{
+    color:rgba(68, 220, 253,0.4);
+}
+.new-sys .version-dir .plus-hover:hover .fa {
+    color:rgba(68, 220, 253,1);
+}
+/*配置版本机路径-设置*/
+.new-sys .version-span{
+    position: relative;font-size: 14px;
+}
+.new-sys .config-responsible-btn{
+    min-width: 80px;
+    background : transparent;
+    display: inline-block;
+    border : 1px solid #44DCFD ;
+    height : 32px;
+    line-height: 30px;
+    cursor: pointer;
+    border-radius : 4px;
+    -moz-border-radius : 4px;
+    -webkit-border-radius : 4px;
+    font-family : 微软雅黑;
+    font-size : 12px;
+    color : #44DCFD;
+    text-align: center;margin-right: 5px;margin-top: 5px
+}
+.new-sys .config-responsible-btn:hover{
+    background : #44DCFD ;
+    border-color : transparent;
+    color : white;
+}
+.new-sys .sys-response-person{
+    border:1px solid #969baa;
+    border-radius: 4px;
+    color: #555f76;
+    display: inline-block;
+    font-size: 12px;
+    height: 32px;
+    line-height: 30px;
+    min-width: 80px;
+    text-align: center;
+    margin:5px 10px 5px 0;
+    padding: 0 5px;
+    cursor: default;
+    position: relative;
+}
+.new-sys .sys-response-person:hover .data-source-delete-btn{
+    display: block;
+}
+.new-sys .user-popover{
+    width: 350px;
+    height: 257px;
+    z-index: 999;
+    position: absolute;
+    background: #151f2b;
+    top:-252px;
+    color: #808080;
+    border: 1px solid #418296;
+}
+.new-sys .user-popover-height1{
+    height:150px;
+    top:-145px;
+}
+.new-sys .user-popover-height3{
+    height:200px;
+    top:-195px;
+}
+.new-sys .user-layer{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: 998;
+}
+.new-sys .user-popover-content{
+    height:90%;margin-top: 10px;overflow: auto;
+}
+.new-sys .user-popover-part{
+    text-align: center; height: 30px;line-height: 30px;padding: 0 20px;
+    border: 1px solid #418296;margin-top: 2px;cursor: pointer;position: relative;
+}
+.new-sys .user-popover-part-chevron{
+    position: absolute;right: 10px;top:-2px;
+}
+.new-sys .user-popover-part-wrap{
+    padding:10px;border: 1px solid #418296;border-top: none;
+}
+.new-sys .table-css{
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    text-align: center;
+    margin-right: 5px;
+    display: inline-block;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+    width: auto;
+    margin-left: 0;height: 28px;line-height: 27px;padding: 0 10px;margin-bottom: 1px;
+}
+.new-sys .table-css:hover{
+    cursor: pointer;
+}
+/**********************************************系统节点配置列表************************************************/
+.node-list .node-list-error{
+   text-align: center;
+}
+.node-list .node-list-common{
+    width:320px;
+    height: 280px;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    display: inline-block;
+    border: 1px solid rgba(85,95,118,0.1);
+    border-radius: 4px;
+    vertical-align: top;
+    background: rgba(92,122,169,0.25);
+}
+.node-list .single-node{
+    display: inline-block;position: relative;
+}
+.node-list .add-node-button{
+    text-align: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 29px;margin:95px auto 0;
+    background: url('../img/public/sys_node_add.png') no-repeat 0 0;
+}
+.node-list .font-common{
+    text-align: center;
+    font-size:14px;
+    color:#5c697b;
+}
+.node-list .node-list-common:hover .font-common {
+    color:#44dcfd;
+}
+.node-list .scheme:hover .delete-style{
+    transition: right 0.5s 0.15s;
+    right:0;
+}
+.node-list .node-list-common:hover{
+    border:1px solid rgba(85,95,118,1);
+}
+.node-list .node-list-common:hover .add-node-button {
+    background: url('../img/public/sys_node_add.png') no-repeat 0 -64px;
+}
+.node-list .node-config-card-left-part{
+    display: inline-block;
+    width: 124px;
+    height: 128px;
+    padding-left: 5px;
+}
+.node-list .node-icon{
+    background: url("../img/public/sys_node_machine.png") no-repeat 7px 13px;
+    background-size: 100px;
+    width: 120px;
+    height: 120px;
+}
+.node-list .card-left-part-icon{
+    font-size: 16px;
+    display: inline-block;
+    margin-top: -4px;
+    width:100%;
+    text-align: center;
+    color:#44dcfd;
+}
+.node-list .line-vertical{
+    display: inline-block;
+    height: 96px;
+    margin-bottom:9px;
+    border-right: 1px solid #245a6c;
+}
+/*节点-cpu*/
+.node-list .span-font-style{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 2px;
+    width: 143px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: default;
+}
+.node-list .card-right-part{
+    width:181px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+    min-height: 151px;
+}
+.node-list .node-list-agent-position{
+    position: absolute;top: 50%;left: 18px;
+}
+.node-list .card-plugin-wrap{
+    margin-bottom: -2px;font-size: 12px;height: 32px;
+}
+.node-list .card-plugin-wrap{
+    margin-bottom: 10px;font-size: 12px;
+}
+.node-list .span-operator-font-style{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 2px;
+    width: 140px;
+    overflow: hidden;
+    font-size: 18px;color:#44dcfd;cursor:default;
+    white-space: nowrap
+}
+/*操作系统-系统*/
+.node-list .common-operator{
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    margin-left: 3px;vertical-align: top;
+    background: url("../img/public/sys_program_icon.png") no-repeat;
+}
+/*操作系统_linux图片*/
+.node-list .operator-image{
+    background-position: 0 -23px;
+}
+/*操作系统-windows*/
+.node-list .operator-image-windows{
+    background-position: 0 0;
+}
+/*操作系统-ios*/
+.node-list .operator-image-ios{
+    background-position: 0 -48px;
+}
+/*操作系统-未知*/
+.node-list .operator-image-none{
+    background-position: 0 -72px;
+}
+/*new_操作系统 AIX*/
+.node-list .operator-image-AIX{
+    background-position: 0 -96px;
+}
+.node-list .operator-image-HPUX{
+    background-position: 0 -120px;
+}
+.node-list .operator-image-freeBSD{
+    background-position: 0 -144px;
+}
+.node-list .operator-image-SCO{
+    background-position: 0 -192px;
+}
+.node-list .operator-image-solaris{
+    background-position: 0 -167px;
+}
+.node-list .node-common-font{
+    font-size: 12px;
+    margin-top: -1px;
+}
+/*cpu图片*/
+.node-list .cpu-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -2px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+/*内存图片*/
+.node-list .memory-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -51px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+/*硬盘图片*/
+.node-list .sata-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -27px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+/*lan图片*/
+.node-list .lan-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -74px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.node-list .content-empty-style{
+    height: 24px;
+    font-size:12px;
+    border-radius: 28px;
+    text-align: center;
+    line-height: 22px;
+    display: inline-block;
+    border: 1px solid #61a1b8;
+    padding-left: 8px;
+    padding-right: 8px;
+    color: #d2f1fe;
+    margin-bottom: 9px;
+    margin-right: 10px;
+    margin-top: 2px;
+    cursor: default;
+}
+
+.node-list .content-style{
+    width: 54px;
+    height: 23px;
+    background-color: #61a1b8;
+    color: #d2f1fe;
+    font-size: 12px;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 24px;
+    display: inline-block;
+    margin-right: 6px;
+    cursor: default;
+}
+.node-list .line-horizon{
+    display: inline-block;
+    width: 100%;
+    margin-top:7px;
+    margin-bottom: 5px;
+    border-top: 1px solid rgba(85,95,118,0.1);
+}
+/*节点出现滚动条*/
+.node-list .scroll-roll{
+    display: block;
+    overflow-x:hidden;
+}
+.node-list .card-plugin{
+    color: #6d7183;
+    margin-left: 10px;
+    margin-right: 20px;
+    vertical-align: top;
+    margin-top: 3px;
+}
+.node-list .card-bottom-value{
+    display: inline-block;
+    width: 225px;
+    height: 32px;
+    overflow: hidden;
+}
+.node-list .card-bottom-value-nodata{
+    color: #d2f1fe;
+    display: inline-block;
+    margin-top:2px;
+}
+.node-list .card-protocol-detail{
+    width: 21px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    top:0;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color:#d2f1fe
+}
+.node-list .scheme-top{
+    position: absolute;z-index: 1;
+    padding: 0 0 0 0;transition: right 0.5s;color: #a5a5a5;font-size: 13px;
+    bottom: -19%;
+    width:320px;
+}
+.node-list .scheme:hover .scheme-top{
+    transition: bottom 0.5s 0.15s;
+    bottom:-10px;
+}
+.node-list .scheme-top li{
+    list-style: none;
+    padding: 0;
+    margin:0;
+    cursor: pointer;
+    float: left;
+    width: 50%;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 14px;
+    background-color: rgba(0,0,0,0.6);
+    border-right: 1px solid rgba(85,95,118,0.6);
+    color:#d2f1fe;
+}
+.node-list .scheme-top li:hover{
+    color: #44DCFD;
+}
+.node-list .delete-style ,.node-list .copy-style{
+    text-align: right;
+    margin-right: 5px;
+    margin-top: 5px;
+    color: #d2f1fe;
+    position: absolute;
+    right: -24px;
+    cursor: pointer;
+}
+.node-list .delete-style:hover,.node-list .copy-style:hover{
+    color: #44dcfd;
+}
+.node-list .delete-style:active,.node-list .copy-style:active{
+    color: #44dcfd;
+}
+/********************************************节点配置************************************************************/
+.node-tabs {
+    position: absolute;
+}
+.node-tabs .node-tab {
+    height: 120px;
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+    width: 180px;
+    padding: 14px;
+    border: 1px solid transparent;
+    color:#44dcfd;
+    background: rgba(0, 0, 0, 0.298);
+}
+.node-tabs .node-tab:hover{
+    color:rgba(252, 158, 34, 1)
+}
+.node-tabs .node-tab:hover .new-img{
+    background: url(../img/public/sys_node_add.png) no-repeat 0 -64px;
+}
+.node-tabs .node-tab .new-text {
+    font-size: 14px;
+    text-align: center;
+    color: #999;
+    margin: 0 auto;
+}
+.node-tabs .node-tab:hover .new-text{
+    color:#44dcfd;
+}
+.node-tabs .tab-checked {
+    width: 180px;
+    border: 1px solid rgba(252, 158, 34, 1);
+    color:rgba(252, 158, 34, 1)
+}
+.node-tabs .node-tab .add-img {
+    width: 64px;
+    height: 64px;
+    background-size:64px 64px;
+    -moz-background-size: 64px 64px; /* 老版本的 Firefox */
+    background-repeat:no-repeat;
+    margin: 0 auto;
+}
+.node-tabs .node-tab .new-img {
+    background: url(../img/public/sys_node_add.png) no-repeat 0 0;
+}
+.node-tabs .node-img {
+    background-image: url(../img/public/sys_node_srv.png);
+}
+.node-tabs .node-tab .node-ip {
+    font-size: 18px;
+    text-align: center;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.node-content {
+    margin-left: 190px;
+    padding: 8px;margin-top: 10px;
+    background: rgba(0, 0, 0, 0.298);
+}
+.node-content .container-fluid{
+   padding: 10px 0 0 0;
+}
+.node-content .delete-node,.node-content .delete-node-disable{
+    position: absolute;
+    top: -20px;
+    right: 5px;
+    height:34px;
+    width:47px;
+    background: url("../img/public/sys_node_close.png") no-repeat 0 0;
+    cursor: pointer;
+}
+.node-content .delete-node:hover{
+    background: url("../img/public/sys_node_close.png") no-repeat 0 -34px;
+}
+.node-content .sys-config-deploy-agent-btn{
+    position: absolute; top:-2px;left: 120px;
+}
+.node-content .sys-config-deploy-agent-btn button{
+    height:22px;line-height: 18px;
+}
+.node-content .node-deployed-agent{
+    color: #fff;
+    font-size: 12px;
+    position: absolute;
+    left: 114px; top: -2px;
+    background: rgba(252, 158, 34, 1);
+    border: 1px solid rgba(252, 158, 34, 1);
+    padding: 2px;
+    border-radius: 6px;
+}
+.node-content .node-type-style{
+    float: left;
+    margin-right: 20px;
+}
+.node-content .node-type-style label{
+    cursor: pointer;
+}
+.node-content .node-type-style label span{
+    position: relative;
+    top:2px;
+    margin-left: 5px;
+}
+.node-content .soc-config-style{
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.298);
+    padding: 10px 15px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -o-user-select:none;
+    user-select:none;
+}
+.agent-deploy-modal .soc-config-style{
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.298);
+    padding: 10px 15px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -o-user-select:none;
+    user-select:none;
+}
+.node-content .soc-config-style .label-style{
+    min-width: 90px;
+}
+.node-content .soc-config-form{
+    padding: 10px 15px 0 10px;
+}
+/*单个数据源样式*/
+.node-content .soc-config-style .soc-source-style{
+    float: left;
+    position: relative;
+    width: 160px;
+    border: 1px solid #1e5363;
+    padding: 5px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor:pointer;
+}
+.agent-deploy-modal .soc-config-style .soc-source-style{
+    float: left;
+    position: relative;
+    width: 160px;
+    border: 1px solid #1e5363;
+    padding: 5px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor:pointer;
+}
+/*协议类型的样式*/
+.node-content .soc-config-style .soc-source-style .potocal-type-style {
+    float: left;
+    color: #ccc;
+    width: 35px;
+    margin-right: 5px;
+    white-space:nowrap;
+    overflow:hidden;
+}
+.agent-deploy-modal .soc-config-style .soc-source-style .potocal-type-style {
+    float: left;
+    color: #ccc;
+    width: 35px;
+    margin-right: 5px;
+    white-space:nowrap;
+    overflow:hidden;
+}
+.node-content .soc-config-style .soc-source-style .soc-name-style{
+    float: left;
+    width: 82px;
+    white-space:nowrap;
+    overflow:hidden;
+}
+.agent-deploy-modal .soc-config-style .soc-source-style .soc-name-style{
+    float: left;
+    width: 82px;
+    white-space:nowrap;
+    overflow:hidden;
+}
+/*数据源选中样式*/
+.node-content .soc-config-style .soc-source-style .soc-checked-style{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    background: rgb(48, 120, 232) url('../img/public/sys_node_source_select.png') no-repeat scroll 3px 4px;
+}
+.node-content .sys-config-data-soc-check{
+    background: transparent;border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;position: absolute;right: 0;bottom: 0;
+}
+.node-content .sys-config-data-soc-check i{
+    color: #fff;position: absolute;left: -11px;font-size: 10px;top: 8px;
+}
+.agent-deploy-modal .sys-config-data-soc-check{
+    background: transparent;border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;position: absolute;right: 0;bottom: 0;
+}
+.agent-deploy-modal .sys-config-data-soc-check i{
+    color: #fff;position: absolute;left: -11px;font-size: 10px;top: 8px;
+}
+.node-content  .sys-config-soc-loading{
+    height: 30px;line-height: 30px
+}
+.node-content .sys-config-soc-agent{
+    min-width: 95px;padding: 10px;
+}
+.node-content .sys-config-soc-agent-mention{
+    color: #FAD837;margin-left: 20px;vertical-align: middle
+}
+.node-content .sys-config-soc-usage{
+    min-width: 90px;padding-top: 7px
+}
+.node-content .sys-soc-config-btn{
+    position: absolute;bottom: 10px;right: 25px;
+}
+.node-content .basic-info{
+    height:40px;padding-top: 20px;position: relative;margin-bottom: 5px;
+}
+.node-content .basic-info-top{
+    background-color: rgba(0, 0, 0, 0.298);
+    padding: 10px 130px 10px 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.node-content .basic-info-bottom{
+    background-color: rgba(0, 0, 0, 0.298);
+    padding: 0 130px 10px 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.node-content .basic-info-bottom td{
+    position: relative;
+}
+.node-content .sys-basic-info-btn{
+    height:24px;width:80px;text-align: center;line-height: 22px;border-radius: 14px
+}
+.node-content .basic-info-mid{
+     background-color: rgba(0, 0, 0, 0.298);
+     padding: 0 130px 0 10px;
+ }
+.node-content .basic-info-mid td{
+    position: relative;
+}
+.node-content .change-flag-style{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background: url('../img/public/sys_node_blue_trian.png') no-repeat;
+    background-size: 10px 10px;
+    transform: rotate(90deg);
+}
+.node-content .has-feedback {
+    position: relative;
+}
+.node-content .has-feedback .form-control {
+    padding-right: 42.5px;
+}
+.node-content .has-feedback .form-control-feedback {
+    position: absolute;
+    top: 25px;
+    right: 0;
+    display: block;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+}
+.node-content .check-item-table{
+    background-color: rgba(0, 0, 0, 0.298);padding: 10px 130px 10px 10px;
+}
+.node-content .check-item-save-btn{
+    position: absolute;bottom: 10px;right: 38px;
+}
+/**start插件部署*/
+.node-content .plugin-deploy-wrap{
+    background-color: rgba(0, 0, 0, 0.298);padding: 10px 0 0 10px;min-height: 185px;
+}
+
+.node-content .plugin-env-btn-div{
+    margin-bottom:10px;
+}
+.node-content .plugin-env-btn{
+    width: 80px;
+    height: 24px;
+    background-color: transparent;
+    border-radius: 45px;
+    font-size: 12px;
+    color: rgba(252, 158, 34, 1);
+    border:1px solid rgba(252, 158, 34, 1);
+    cursor: pointer;
+    text-align: left;
+    padding-right: 5px;
+    line-height: 22px;
+}
+.node-content .plugin-env-btn:hover{
+    background-color: rgba(252, 158, 34, 1);
+    color: #fff;
+}
+.node-content .env-container{
+    width:100px;height: 100px;overflow: hidden;
+    border:1px solid;position: relative;display: inline-block;margin-right: 10px;margin-bottom: 10px;
+    border-color: rgba(68, 220, 253,0.3);background: rgba(92, 122, 169,0.15);border-radius: 4px;
+}
+.node-content .env-container:hover{
+    border-color:  #44dcfd;
+}
+.node-content .env-container-succ{
+    border-color: rgba(68, 220, 253,0.3);
+    background: rgba(92, 122, 169,0.15);
+}
+.node-content .env-container-fail{
+    border-color: rgba(68, 220, 253,0.3);
+    background: rgba(92, 122, 169,0.15);
+}
+.node-content .env-container-mid{
+    border-color: rgba(68, 220, 253,0.3);
+    background-color: #091016;
+    opacity: 0.6;
+}
+.node-content .env-img-style{
+    display: inline-block;
+    width:50px;
+    height:50px;
+    background: url("../img/public/sys_node_plugin_icon.png") no-repeat;
+    background-size: 50px;
+    margin-top:15px;
+}
+.node-content .env-name{
+    color: #6D7183;
+}
+.node-content .env-container-succ .env-name{
+    color: #43FC8C;
+}
+.node-content .node-content .env-container-fail .env-name{
+    color: #E9416E;
+}
+.node-content .env-container-mid .env-name{
+    color: #d2f1fe;
+}
+.node-content .env-deploy-loading{
+    border-color: rgba(68, 220, 253,0.3);
+    position: absolute;
+    top:0;
+    background-color: #091016;
+    height:100%;opacity: 0.6;
+    width:100%;border-radius: 4px;
+    text-align: center;
+}
+.node-content .env-deploy-status{
+    position: absolute;
+    top:3px;left:3px;
+    width:20px;height:20px
+}
+.node-content .evn-deploy-succ{
+    background: url("../img/public/sys_node_success.png") no-repeat 0 0;
+    background-size: 16px;
+}
+.node-content .evn-deploy-failed{
+    background: url("../img/public/sys_node_deploy_fault.png") no-repeat -7px -10px;background-size: 32px;
+}
+.node-content .plugin-empty-style{
+    background: url("../img/public/sys_node_empty.png") no-repeat;
+    padding-top: 86px;
+    background-size: 90px;
+}
+.node-content .status-check-delete{
+    width:20px;height:20px;cursor: pointer;
+    display: inline-block;vertical-align: top;
+    background: url("../img/public/sys_node_cmpt_operator.png") no-repeat -5px -6px;
+}
+.node-content .status-check-delete:hover{
+    background-position: -37px -6px;
+}
+.node-content .status-check-operate{
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url("../img/public/sys_node_wreach.png") no-repeat scroll 3px 3px / 10px 10px;
+    border: 1px solid #5c697b;
+    border-radius: 50%;
+    margin-top: 1px;
+}
+.node-content .status-check-operate:hover{
+    background: url("../img/public/sys_node_wreach_hover.png") no-repeat scroll 3px 3px / 10px 10px;
+}
+.node-content .plugin-deploy-disabledbtn{
+    background: #E9EBF1;
+    color:#B3B4BA;
+    border:1px solid #E9EBF1;
+    pointer-events: none;
+}
+.node-content .config-basic-info .sub-table tbody .change-basic-info{
+    background: #3e5373;
+}
+.node-content .config-basic-info .sub-table tbody .change-basic-info td{
+    color:#d2f1fe;
+}
+.node-content ::-ms-clear,.node-content ::-ms-reveal{display:none;}
+/************************************modal***************************************************************/
+.get-loading-border{
+    margin:0 auto;font-size: 20px;color:#CCC;border:1px dashed #CCC;height:100px;line-height:100px;width:266px;border-radius: 4px;
+}
+.loading-center{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.get-error-border{
+    margin: 0 auto;
+    color: rgb(204, 204, 204);
+    border: 1px dashed rgb(204, 204, 204);
+    border-radius: 4px;
+    width: 266px;
+    font-size: 20px;
+}
+.common-error{
+    color: rgb(102, 102, 102);
+    font-size: 12px;
+    word-break: break-all;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.common-btn-center{
+    text-align: center;margin-top: 40px;margin-bottom: 20px;
+}
+.label-font{
+    padding-top: 8px;
+}
+.run-env-row{
+    margin-bottom: 10px;
+}
+/*****************************************配置检查项模态框******************************************/
+.node-config-check-modal {
+    min-height: 410px;position: relative;overflow: hidden
+}
+.node-config-check-modal td .CodeMirror{
+    height:26px;
+}
+.node-config-check-modal .check-item-none-cmpt{
+    text-align: center;height: 70px;margin: 10px 115px 15px 0;
+    background: rgba(0, 0, 0, 0) url('../img/public/sys_node_empty.png') no-repeat scroll 250px -10px;
+    background-size: 88px;
+}
+.node-config-check-modal .check-iten-modal-script{
+    margin-top:3px;margin-bottom: 8px;width: 100px;
+}
+.node-config-check-modal .soc-config-style{
+    width:120px;
+    height:30px;
+    background: #091016;
+    border-radius: 16px;
+    border:1px solid #44dcfd;
+    display: inline-block;margin-right: 10px;margin-bottom: 10px;
+    cursor: pointer;line-height: 28px;
+}
+.node-config-check-modal .soc-config-style:hover{
+    border-color:#A40000;
+}
+.node-config-check-modal .soc-config-style:hover .protocol-style{
+    color: #d2f1fe;
+}
+.node-config-check-modal .soc-config-style.soc-config-checked{
+    border-color:#A40000;
+}
+.node-config-check-modal .protocol-style{
+    display: inline-block;width: 34px;padding-left: 10px;overflow: hidden;white-space: nowrap;vertical-align: top;
+    color: #5a90f8;cursor: pointer;margin-right: 8px;text-align: center;
+}
+.node-config-check-modal .senior-search-shadow{
+    position: absolute;height: 100%;top: -54px;left: 0;width: 100%;z-index: 1
+}
+.node-config-check-modal .protocol-style{
+    display: inline-block;width: 34px;padding-left: 10px;overflow: hidden;white-space: nowrap;vertical-align: top;
+    color: #5a90f8;cursor: pointer;margin-right: 8px;text-align: center;
+}
+.node-config-check-modal .soc-config-checked > .protocol-style{
+    color: rgba(255, 255, 255, 0.8);
+}
+.node-config-check-modal .soc-config-checked > .soc-name-style{
+    color: #fff;
+}
+
+/***************************************************部署插件模态框*********************************************************/
+.config-plugin-modal{}
+.config-plugin-modal .plugin-type {
+    display: inline-block;
+    width:116px;height: 22px;margin-right: 14px;margin-bottom: 10px;
+}
+.config-plugin-modal .search-btn{
+    width:30px;height: 32px;text-align: center;line-height: 30px;font-size: 16px;
+    position: absolute;
+    top:1px;border-top-right-radius: 2px;border-bottom-right-radius: 2px;
+    right:16px;cursor: default;border-left: 1px solid #26515c;
+}
+.config-plugin-modal .search-btn i{
+    color:#408195;
+}
+.config-plugin-modal .choose-item{
+    width:100px;
+    height:30px;line-height: 28px;
+    padding-right: 20px;padding-left:10px;position: relative;
+    border-radius: 4px;margin-right: 10px;margin-bottom: 10px;
+    display: inline-block;
+    border:1px solid #1e5363;
+}
+.config-plugin-modal .delete-env{
+    color: #d2f1fe;
+    cursor: pointer;
+}
+.config-plugin-modal .delete-env:hover{
+    color: #00A2E3;
+}
+.config-plugin-modal .no-plugin{
+    background: rgba(0, 0, 0, 0) url("../img/public/sys_plugin_none.png") no-repeat scroll center center / 105px auto;
+    color: #6D7183;padding-top: 90px;text-align: center;opacity: 0.8;
+}
+.config-plugin-modal .plugin-modal-border-bottom{
+    border-bottom: 1px solid #44dcfd
+}
+.config-plugin-modal .plugin-input-wrap{
+    border-right:1px solid #44dcfd;padding-top: 8px;padding-right: 0
+}
+/*********************************************分割分割****************************************************/
+
+/*************************方案阶段***********************************/
+.cmpt-cur-icon{
+    display: inline-block;
+    width:20px;margin-top: 4px;
+    height:20px;background: url("../img/public/sys_program_config.png") no-repeat -40px -102px;
+}
+/*验证组件图标*/
+.cmpt-check-icon{
+    display: inline-block;
+    width:20px;margin-top: 4px;
+    height:20px;background: url("../img/public/sys_program_config.png") no-repeat -8px -324px;
+}
+/*自定义*/
+.cmpt-owner-icon{
+    display: inline-block;
+    width:20px;margin-top: 4px;
+    height:20px;background: url("../img/public/sys_program_config.png") no-repeat -40px -132px;
+}
+/*人工阶段*/
+.cmpt-manual-icon{
+    display: inline-block;
+    width:20px;margin-top: 4px;
+    height:20px;background: url("../img/public/sys_program_config.png") no-repeat -40px -228px;
+}
+/*组件交互式，并行标志*/
+.cmpt-exec-method{
+    background: url("../img/public/sys_program_config.png") no-repeat -8px -324px;
+    height:24px;
+    width:24px;display: inline-block;margin:1px 4px 0 0;
+}
+.cmpt-exec-method-interact{
+    background-position: -5px -513px;
+}
+/*并行*/
+.cmpt-exec-method-parallel{
+    background-position: -5px -544px;
+}
+/*****固化配置*****/
+.phase-soc-title{
+    margin-bottom: 10px;font-size: 12px;
+}
+.soc-detail{
+    display: inline-block;vertical-align: top;height: 20px;color: #43E0F7;margin-right: 4px;line-height: 18px;
+    overflow: hidden;padding: 0 8px;
+    background: rgba(67,224,247,0.3);border-radius: 2px;
+    font-size: 12px
+}
+.file-list{
+    overflow: hidden;text-overflow: ellipsis;white-space:nowrap;width: 140px;display: inline-block;
+    margin-right: 12px;
+    height: 32px;border: 1px solid #61a1b8;
+    padding: 0 10px;line-height: 30px;
+    margin-bottom: 5px;
+    color: #d2f1fe;
+    font-size: 12px;
+}
+.file-list .fa{
+    color: #d2f1fe;
+    font-size: 14px;margin-right: 8px;
+}
+/*步骤圆样式竖线*/
+.module-vertical-common-line{
+    width: 1px;
+    height: 30px;
+    bottom:-10px;
+    position: absolute;
+    background: #555f76;
+}
+/*关联组件显示样式*/
+.relate-cmpt-line{
+    position: absolute;right: -12px;top: 0;width: 20px;
+}
+.relate-cmpt-horizon-line{
+    background: #555f76; height: 1px;width: 16px;margin-top: 15px
+}
+.relate-cmpt-vertical-line{
+    background: #555f76;width: 1px;height: 14px;margin-left: 15px;
+}
+.relate-cmpt-icon{
+    width: 20px;height: 16px;position: relative;left: 5px;background: url("../img/public/sys_program_config.png") no-repeat -5px -584px;
+}
+/*阶段分组为空样式*/
+.default-group-empty{
+    background: url("../img/public/sys_program_empty.png") no-repeat center;
+    background-size: 54px;
+    height:54px;
+    margin:5px;
+}
+
+
+/*系统列表-方案列表ptogram_list.html*/
+.program-list{}
+.program-list .font-common{
+    text-align: center;
+    font-size:14px;
+    color:#5c697b;
+}
+.program-list .program-error-position{
+    position: relative;width: 100%;text-align: center;
+}
+.program-list .program-position{
+    overflow: hidden;position: relative;cursor: default;
+}
+.program-list .pub-common{
+    text-align:center;display:block;
+    margin-top: -1px;
+}
+.program-list .prog-cn{
+    font-size: 18px;color: #44dcfd;text-align: center;margin-bottom: 6px;margin-top:3px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding: 0 5px;
+}
+.program-list .prog-type{
+    display: inline-block;vertical-align: top;margin-top: 8px;
+}
+
+/*方案配置*/
+.program-list .programme-common{
+    width:230px;
+    height: 200px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    display: block;
+    border: 1px solid rgba(85,95,118,0.1);
+    border-radius: 4px;
+    float: left;
+    /*vertical-align: top;*/
+    background: rgba(92, 122, 169, 0.25) none repeat scroll 0 0;
+}
+/*新增按钮*/
+.program-list .add-node-button{
+    text-align: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 29px;margin:95px auto 0;
+    cursor: pointer;
+    background: url('../img/public/sys_node_add.png') no-repeat 0 0;
+}
+.program-list .programme-common:hover{
+    border:1px solid #44dcfd;
+}
+.program-list .programme-common:hover .add-node-button {
+    background: url('../img/public/sys_node_add.png') no-repeat 0px -64px;
+}
+.program-list .programme-common:hover .font-common {
+    color: #44dcfd;
+}
+/*方案-鼠标hover让操作列显示*/
+.program-list .scheme-programme:hover .scheme-programme-top{
+    transition: bottom 0.5s 0.15s;
+    bottom:-10px;
+}
+.program-list .scheme-programme:hover .scheme-programme-top-three{
+    transition: bottom 0.5s 0.15s;
+    bottom:-10px;
+}
+.program-list .delete-style ,.copy-style{
+    text-align: right;
+    margin-right: 5px;
+    margin-top: 5px;
+    color: #d2f1fe;
+    position: absolute;
+    right: -24px;
+    cursor: pointer;
+}
+.program-list .delete-style:hover,.copy-style:hover{
+    color: #44dcfd;
+}
+.program-list .delete-style:active,.copy-style:active{
+    color: #44dcfd;
+}
+.program-list .common-publish{
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    float: left;
+    margin-left: 2px;
+    margin-top: 20px;
+}
+/*方案中发布样式*/
+.program-list .is-publish{
+    border: 1px solid #99ccff;
+    border-radius: 4px;
+    margin-left: -3px;
+    font-size: 12px;
+    color: #99ccff;
+    width: 60px;
+    height: 24px;
+    line-height: 24px;
+}
+/*方案中未发布样式*/
+.program-list .no-publish{
+    border: 1px solid #e4e4e4;
+    margin-left: -3px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #cccccc;
+    width: 60px;
+    height: 24px;
+    line-height: 24px;
+}
+/*方案*/
+.program-list .programme-back-image-circle{
+    text-align: center;
+    background: url('../img/public/sys_program_tmpl.png') no-repeat 2px 3px;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto;
+}
+/*方案发布公共模板样式*/
+.program-list .common-programme-template{
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+}
+/*方案有发布模板图片*/
+.program-list .programme-is-pub-template{
+    background: url('../img/public/sys_progarm_publish.png') no-repeat;
+    background-size: 100%;
+}
+/*方案有回退模板图片*/
+.program-list .programme-is-back-template{
+    background: url('../img/public/sys_program_back.png') no-repeat;
+    background-size: 100%;
+}
+/*方案-发布字体*/
+.program-list .pub-font{
+    color:#2CBC99;
+}
+/*方案出现滚动条*/
+.program-list .programme-scroll{
+    display: block;
+    height:30px;
+    overflow:hidden;
+}
+.program-list .content-empty-style{
+    height: 24px;
+    font-size:12px;
+    border-radius: 28px;
+    text-align: center;
+    line-height: 22px;
+    display: inline-block;
+    border: 1px solid #61a1b8;
+    padding-left: 8px;
+    padding-right: 8px;
+    color: #d2f1fe;
+    margin-bottom: 9px;
+    margin-right: 10px;
+    margin-top: 2px;
+    cursor: default;
+}
+.program-list .param-list-fix{
+    display: none;
+}
+.program-list .common-scheme-programme li{
+    color:#d2f1fe;
+}
+.program-list .common-scheme-programme li:hover{
+    color:#44dcfd;
+}
+.program-list .scheme-programme:hover .delete-style{
+    transition: right 0.5s 0.15s;
+    right:10px;
+}
+.program-list .scheme-programme:hover .copy-style{
+    transition: right 0.5s 0.15s;
+    right:35px;
+}
+.program-list .scheme-programme-top-three{
+    position: absolute;z-index: 1;
+    padding: 0 0 0 0;transition: right 0.5s;color: #a5a5a5;font-size: 13px;
+    bottom: -26%;
+    width: 230px;
+}
+.program-list .scheme-programme-top{
+    position: absolute;z-index: 1;
+    padding: 0 0 0 0;transition: right 0.5s;color: #a5a5a5;font-size: 13px;
+    bottom: -26%;
+    width: 230px;
+}
+/*方案*/
+.program-list .scheme-programme-top li{
+    list-style: none;
+    padding: 0;
+    margin:0;
+    cursor: pointer;
+    float: left;
+    width: 33.3%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    background-color: #000000;
+    color:#d2f1fe;
+    /*opacity:0.4;*/
+    border-right: 1px solid #396770;
+}
+/*方案操作列三列*/
+.program-list .scheme-programme-top-three li{
+    list-style: none;
+    padding: 0;
+    margin:0;
+    cursor: pointer;
+    float: left;
+    width: 50%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    background-color: #000000;
+    /*opacity:0.4;*/
+    border-right: 1px solid rgba(85,95,118,0.6);
+}
+/*方案*/
+.program-list .scheme-programme-top li:hover{
+    color: #44ddfc;
+}
+/*方案-鼠标hover让操作列显示*/
+.program-list .scheme-programme:hover .scheme-programme-top{
+    transition: bottom 0.5s 0.15s;
+    bottom:-10px;
+}
+.program-list .scheme-programme:hover .scheme-programme-top-three{
+    transition: bottom 0.5s 0.15s;
+    bottom:-10px;
+}
+.program-list .delete-stop-style{
+    color: #d75910;
+    right:0px;
+}
+
+/*program_tab.html*/
+.program-tab{}
+.program-tab .program-img {
+    width: 64px;
+    height: 64px;
+    background-size:64px 64px;
+    -moz-background-size: 64px 64px; /* 老版本的 Firefox */
+    background-repeat:no-repeat;
+    margin: 0 auto;
+}
+.program-tab .prog-img {
+    background-image: url(../img/public/sys_program_tmpl.png);
+}
+.program-tab .prog-name {
+    font-size: 14px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/*pub_flow*/
+.program-pub-flow{}
+.program-pub-flow .padding-right-10{
+    padding-right: 10px
+}
+.program-pub-flow .padding-right-0{
+    padding-right: 0
+}
+.padding-left-0{
+    padding-left: 0!important;
+}
+.program-pub-flow .package-color{
+    padding:12px;background: #101923;margin-left: 10px
+}
+.program-pub-flow .package-font{
+    font-size: 10px;
+}
+.program-pub-flow .package-no-delete{
+    padding-left: 10px;color: #ddd;cursor: default;
+}
+.program-pub-flow .add-group-width{
+    /*max-width: 772px;*/
+    padding-left: 39px
+}
+.program-pub-flow .toggle-span{
+    padding-right: 5px;float: right;margin-top: 1px
+}
+.program-pub-flow .step-head-width{
+    width: 20px;margin-right: 10px;
+}
+.program-pub-flow .pub-tog-position{
+    position: absolute; right: 15px;top:15px;
+}
+.program-pub-flow .pub-each-position{
+    position: absolute; right: 120px;top:15px;
+}
+.program-pub-flow .no-param-common{
+    padding-left:10px;padding-right:35px;margin-top: 10px
+}
+.program-pub-flow .no-param-color{
+    color: #999;margin-top: -3px
+}
+.program-pub-flow .param-min-width{
+    min-width: 160px;
+}
+.program-pub-flow .param-cn-color{
+    color: #FF6600;
+}
+.program-pub-flow .param-cn-width{
+    max-width: 120px;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;
+}
+.program-pub-flow .param-delete-ref{
+    margin-top: 1px;margin-bottom: -12px;margin-left: 20px;text-align: left;
+}
+.program-pub-flow .param-protocol{
+    font-size: 12px; border-radius: 4px;color:#88B8FE;padding: 0 8px;
+}
+.program-pub-flow .copy-position{
+    position: absolute;top:0;right: 20px;
+}
+.program-pub-flow .copy-common{
+    position: absolute;top:16px;right: 20px;width: 220px;height: 180px;background: rgba(29, 42, 58,0.95);z-index: 999;
+}
+.program-pub-flow .copy-spin-position{
+    font-size: 48px;position: absolute;left: 40%;top: 20%;
+}
+.program-pub-flow .copy-waiting{
+    position: absolute;left:30%;top:50%;font-size: 12px;
+}
+.program-pub-flow .none-copy{
+    color: #6D7183;position: absolute;top:40%;left: 30%;
+}
+.program-pub-flow .copy-hidden{
+    min-height: 140px;max-height: 140px;overflow: hidden; overflow-y:auto;
+}
+.program-pub-flow .copy-btn-position{
+    background: rgba(29, 42, 58,0.95);width: 100%;height: 40px;position: absolute;bottom: 0;text-align: center;
+}
+.program-pub-flow .position-absolute{
+    position: absolute;
+    top:15px;
+}
+.program-pub-flow .soc-proto{
+    display: inline-block;width: 100%;overflow: hidden;cursor: default
+}
+.program-pub-flow .no-config{
+    padding: 6px 0;text-align: center;color: #999
+}
+.program-pub-flow .curstom-frame{
+    padding-top: 18px;margin: 0 0 0 20px;padding-bottom: 10px
+}
+.program-pub-flow .curstom-img{
+    width: 24px;height: 30px;margin-top: -8px;background: url('../img/public/sys_program_config.png') 0 -608px
+}
+.program-pub-flow .last-line{
+    width: 1px;
+    position: absolute;
+    background: #555f76;
+    left: 34px;
+    bottom: 0;
+    height: 13px;
+}
+.program-pub-flow .param-label{
+    padding-right:0;margin-left: 4px;width: 13%
+}
+.program-pub-flow .param-tab{
+    text-align: center;padding-right: 15px;padding-bottom: 10px;
+}
+.program-pub-flow .align-left{
+    text-align: left
+}
+.program-pub-flow .param-value-common{
+    /*width: 27%;*/
+    max-width: 300px;
+}
+.program-pub-flow .param-password{
+    position: absolute;top: 9px;right: 2px;cursor: pointer;
+}
+.program-pub-flow .no-delete-param{
+    padding-left: 10px;color: #ddd;cursor: default;
+}
+.program-pub-flow .over-flow-inherit{
+    overflow: inherit;
+}
+.program-pub-flow .flag-program-type{
+    background-color: #0d151d;
+    box-shadow: 0 0 2px 2px #3eaac9;
+    height: 40px;
+    position: fixed;
+    top: 81px;
+    z-index: 99;
+    display: none;
+    width: 74%;
+    margin-left: -8px;
+    padding:4px 0;
+    justify-content: center;
+}
+.program-pub-flow .ecm-cmpt-group-btn{
+    height: 32px;
+    border-color: rgba(68, 220, 253, 1);
+    color: rgba(68, 220, 253, 1);
+    background: rgba(255, 255, 255, 0);
+    font-size: 12px;
+    padding: 0 9px 0 0;
+    line-height: 31px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover{
+    color:rgba(252, 158, 34, 1);
+    text-decoration:blink;
+    border-color: rgba(252, 158, 34, 1);
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .fa{
+    color:#a40000;
+}
+.program-pub-flow .ecm-cmpt-group-btn-disabled{
+    color: #2c7d93 !important;
+    cursor: default;
+}
+.program-pub-flow .ecm-cmpt-group-btn-disabled:hover{
+    border-color: rgba(68, 220, 253, 1) !important;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-group {
+    background-position:-65px -293px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-cmpt {
+    background-position:-65px -4px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-cmpts {
+    background-position:-65px -37px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-script {
+    background-position:-65px -69px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-stable-config {
+    background-position:-65px -101px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-self-config {
+    background-position:-65px -133px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-hand {
+    background-position:-65px -229px;
+}
+.program-pub-flow .ecm-cmpt-group-btn:hover > .program-batch-operate {
+    background-position:-65px -261px;
+}
+.program-pub-flow .program-add-btn{
+    display: inline-block;
+    background: url(../img/public/sys_program_config.png) no-repeat;
+    width:24px;
+    height:24px;
+    vertical-align: middle;margin-right: 5px;margin-left: 2px;
+    margin-top:-2px;
+}
+.program-pub-flow .program-group{
+    background-position:-33px -293px;
+}
+.program-pub-flow .program-cmpt{
+    background-position:-33px -4px;
+}
+.program-pub-flow .program-cmpts{
+    background-position:-33px -37px;
+}
+.program-pub-flow .program-script{
+    background-position:-33px -69px;
+}
+.program-pub-flow .program-stable-config{
+    background-position:-33px -101px;
+}
+.program-pub-flow .program-self-config{
+    background-position:-33px -133px;
+}
+.program-pub-flow .program-self-config-disable{
+    background-position:-1px -133px!important;
+}
+.program-pub-flow .program-hand{
+    background-position:-33px -229px;
+}
+.program-pub-flow .program-batch-operate{
+    background-position:-33px -261px;
+}
+.program-pub-flow .program-batch-operate-disable {
+    background-position:-1px -261px;
+}
+.program-pub-flow .cmpt-btn-group{
+    float: left;
+}
+.program-pub-flow .phase-container{
+    width: 85.3333%; margin-left: 12.41%;
+    padding-bottom: 12px;
+    position: relative;
+}
+/*分组被选中*/
+.program-pub-flow .phase-module-check{
+    border-color: rgba(68, 220, 253, 1);
+}
+.program-pub-flow .phase-container-copy {
+    background: url("../img/public/sys_program_config.png") no-repeat -6px -358px;
+}
+.program-pub-flow .phase-container-copy:hover{
+    background: url("../img/public/sys_program_config.png") no-repeat -38px -358px;
+}
+.program-pub-flow .cmpt-operator-delete:hover{
+    background-position: -37px -6px;
+}
+
+
+/*copy数据源a标签*/
+.program-pub-flow .copy-soc-a , .copy-soc-a i{
+    color: #d2f1fe;
+    text-decoration: underline;
+}
+.program-pub-flow .copy-soc-a:hover{
+    color: #44dcfb;
+}
+.program-pub-flow .copy-soc-a:active{
+    color: #44dcfb;
+}
+.program-pub-flow .copy-soc-a:focus{
+    color: #44dcfb;
+}
+.program-pub-flow .copy-wrap{
+    position: relative;height: 100%;width: 100%;box-shadow: 0px 1px 6px 1px #418296;
+}
+.program-pub-flow .cmpt-copy-style{
+    padding: 5px 20px;
+    color: #61A1B8;
+}
+.program-pub-flow .cmpt-copy-style:hover{
+    cursor: pointer;
+    background: #555f76;
+    color: #44dcfb;
+}
+.program-pub-flow .cmpt-copy-checked{
+    background: #555f76;
+    color: #fff;
+}
+.program-pub-flow .param-group-style{
+    position: relative;
+    padding: 3px;
+}
+.program-pub-flow .param-group-style:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.program-pub-flow .param-group-style .param-name{
+    float: left;
+    max-width: 90%;
+    word-break: break-all;
+}
+.program-pub-flow .param-group-style .group-name{
+    position: absolute;
+    top:50%;
+    right: 3px;
+    transform:translateY(-50%);
+}
+.program-pub-flow .param-group-style .group-name i{
+    cursor: default;
+    color: #008000;
+}
+
+.program-pub-flow .ecm-cmpt-group-btn{
+    position: relative;z-index: 10;
+}
+.program-pub-flow .group-nav:hover  .group-btn-collect{
+   display: block;
+}
+
+.program-pub-flow  .group-nav .group-btn-collect{
+    position: absolute;z-index: 10;  padding-left: 0!important;
+    height: 100px;
+    width:90px;
+    top: 31px;background: #000;
+    display: none;
+    padding-top:10px;border-radius: 4px;left: -14px;overflow: hidden;
+}
+.program-pub-flow .group-nav .group-btn-collect > li{
+    text-align: center;display: block;
+    list-style: none;margin-left: 9px!important;cursor: pointer;position: relative;
+    width:72px;margin-bottom: 12px;padding-right: 0!important;
+}
+.program-pub-flow .condition-group-pac{
+   margin-bottom: 7px;
+}
+.program-pub-flow .execute-node{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.program-pub-flow .execute-node-selected{
+    border: 1px solid #A40000;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.program-pub-flow .checked_div{
+    background: transparent none repeat scroll 0 0;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0;
+    bottom: 0
+}
+.program-pub-flow .checked_sign{
+    color: #000;
+    position: absolute;
+    left: -10px;
+    font-size: 10px;
+    top: 7px;
+}
+.group-exec-method{
+    position: absolute;
+    top: 4px;
+    cursor: pointer;
+}
+ .group-method-serial{
+    border:1px solid rgb(204, 204, 204);
+    color: #4edb8d;
+    width: 22px;
+    height: 22px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    line-height: 20px;
+    text-align: center;
+}
+/*发布查看*/
+.publish-config-view{
+    padding: 20px 5px 5px 5px;
+}
+.publish-config-view .pub-package-type{
+    position: relative;margin-bottom: 8px
+}
+.publish-config-view .package-tbl{
+    padding:12px;background: #101923;margin-left: 10px
+}
+.publish-config-view .none-color{
+    color: #999;
+}
+.publish-config-view .group-name{
+    padding-left: 10px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.publish-config-view .group-toggle{
+    padding-right: 5px;float: right;margin-top: 1px
+}
+.publish-config-view .group-name-color{
+    color:#61a1b8
+}
+.publish-config-view .step-head-width{
+    width: 20px;margin-right: 10px;
+}
+.publish-config-view .no-param{
+    padding-left:10px;padding-right:35px;margin-top: 3px
+}
+.publish-config-view .param-cn-color{
+    color: #FF6600;
+}
+.publish-config-view .view-param-name{
+    width: 85%;text-align: center;overflow: hidden;text-overflow: ellipsis
+}
+.publish-config-view .param-max-width{
+    max-width: 200px
+}
+.publish-config-view .param-protocol{
+    font-size: 12px; border-radius: 4px;color:#88B8FE;padding: 0 8px;
+}
+.publish-config-view .soc-proto{/*repe*/
+    display: inline-block;width: 100%;overflow: hidden;cursor: default
+}
+.publish-config-view .curstom-frame{/*repe*/
+    padding-top: 18px;margin: 0 0 0 20px;padding-bottom: 10px
+}
+.publish-config-view .curstom-img{/*repe*/
+    width: 24px;height: 30px;margin-top: -8px;background: url('../img/public/sys_program_config.png') 0 -608px
+}
+.publish-config-view .last-line{/*repe*/
+    width: 1px;
+    position: absolute;
+    background: #555f76;
+    left: 35px;
+    bottom: 0;
+    height: 13px;
+}
+.publish-config-view .pub-tab{
+    cursor: pointer;
+    background: url('../img/public/sys_program_pub_disabled.png') no-repeat 0 -5px;padding-left:34px
+}
+.publish-config-view .nav-tabs>li.active>a .pub-tab{
+    background: url('../img/public/sys_program_pub_pro.png') no-repeat 0 -5px;
+}
+.publish-config-view .nav-tabs>li{
+    cursor: pointer;
+}
+.publish-config-view .rol-tab{
+    cursor: pointer;
+    background: url('../img/public/sys_program_back_pro.png') no-repeat 0 -5px;padding-left:34px
+}
+.publish-config-view .nav-tabs>li.active a .rol-tab{
+    background: url('../img/public/sys_program_pub_back.png') no-repeat 0 -5px;
+}
+.publish-config-view .close-btn{
+    background: url("../img/comm/modal_close.png") no-repeat 0 0;
+    height:24px;
+    width:24px;
+    position: absolute;
+    right:15px;
+    top:-5px;cursor: pointer;
+}
+.publish-config-view .close-btn:hover{
+    background: url("../img/comm/modal_close.png") no-repeat 0 -24px;
+}
+.publish-config-view .phase-container{
+    width: 85.3333%; margin-left: 12.41%;
+    padding-bottom: 12px;
+    position: relative;
+}
+.publish-config-view .param-tab{
+    text-align: center;padding: 10px;padding-right: 15px;
+}
+.publish-config-view .download-type-div{
+    position: absolute;right: 12px;z-index: 999;text-align: center;width: 90px;background-color: #091016;
+}
+.publish-config-view .download-type-div ul{
+    list-style: none;padding: 0;margin-top: 5px;margin-bottom: 5px;
+}
+.publish-config-view .download-type-div ul > li{
+    height: 30px;line-height: 30px;cursor: pointer;
+}
+.publish-config-view .download-type-div ul > li:hover{
+    background-color: #00bebc;color: #fff;
+}
+
+.publish-config-view .condition-group-pac{
+    margin-bottom: 7px;
+}
+.publish-config-view .execute-node{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.publish-config-view .execute-node-selected{
+    border: 1px solid #A40000;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.publish-config-view .checked_div{
+    background: transparent none repeat scroll 0 0;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0;
+    bottom: 0
+}
+.publish-config-view .checked_sign{
+    color: #000;
+    position: absolute;
+    left: -10px;
+    font-size: 10px;
+    top: 7px;
+}
+/*修改脚本*/
+.stop-click{
+    color: #ccc!important;cursor: default!important;
+}
+
+/*方案-人工*/
+.add-manual{}
+.add-manual .check-value{
+    display: inline-block;height: 20px;
+    width:20px;background: url("../img/public/sys_program_config.png") no-repeat -38px -678px;vertical-align: top;margin-top: 2px;
+    margin-left: 14px;cursor: pointer;
+}
+.add-manual .delete-value{
+    display: inline-block;
+    width:20px;
+    height:20px;
+    background: url("../img/public/sys_program_config.png") no-repeat -38px -710px;margin-top: 2px;
+    margin-left: 8px;cursor: pointer;
+}
+.add-manual .manual-title-icon{
+    width: 32px;height: 32px;border: 1px solid #e6e6e6;
+    background: url('../img/public/sys_program_config.png') no-repeat 0 -640px;cursor: pointer;
+    float: right;
+}
+.add-manual .manual-title-icon:hover{
+    border-color: #333;
+    background-position: -32px -640px;
+}
+.add-manual .test-box {
+    width: 558px;
+    min-height: 120px;
+    max-height: 300px;
+    _height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    outline: 0;
+    border: 1px solid #a0b3d6;
+    font-size: 12px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    _overflow-y: visible;
+    border-radius: 3px;
+}
+.add-manual #editDiv div{
+    display: inline;
+}
+.add-manual #editDiv p{
+    display: inline;margin: 0;
+}
+/*program_batch_config_modal*/
+.batch-config .step-first{
+    color: #61a1b8;
+    height:355px;overflow-y: auto;
+}
+.batch-config .step-first .batch-group{
+    border: 1px solid rgba(204, 204, 204,0.3);margin-bottom: 12px;
+    background:#27364a;
+}
+.batch-config .step-first .batch-group-top{
+    width: 638px;height: 30px;margin-bottom: 8px;border-bottom: 1px solid rgba(204, 204, 204,0.3);line-height: 28px;font-size: 12px;
+}
+.batch-config .step-first .group-top-icon{
+    vertical-align: middle;display: inline-block;
+    width: 26px;height: 28px;background: url('../img/public/sys_program_step_icon.png') no-repeat;
+    transform: scale(0.88);margin-left: 7px;
+    -webkit-transform: scale(0.88);
+    -moz-transform: scale(0.88);
+    -ms-transform: scale(0.88);
+    -o-transform: scale(0.88);
+}
+.batch-config .step-first .group-title{
+    display: inline-block;width: 540px;
+}
+.batch-config .batch-cmpt-list{
+    display: inline-block;width:181px;margin-bottom: 8px;line-height: 22px;height: 24px;
+    border: 1px solid #396770;border-radius: 12px;font-size: 12px;cursor: pointer;margin-right: 7px;
+    color: #61a1b8;
+}
+.batch-config .list-container .batch-phase-style{
+    border-color: #396770;
+}
+.batch-config .list-container .batch-phase-style:hover{
+    border-color: #d2f1fe;
+}
+.batch-config .list-container .phase-active{
+    border-color: rgba(68, 220, 253, 1);
+}
+.batch-config .batch-cmpt-index{
+    vertical-align: top;margin-top: 1px;width: 20px;height: 20px;border-radius: 50%;
+    background: #93d9fd;display: inline-block;
+    text-align: center;line-height: 20px;color: #091016;
+}
+.batch-config .batch-cmpt-name{
+    display: inline-block;width: 131px;
+    white-space: nowrap;overflow: hidden;text-overflow: ellipsis
+}
+.batch-config .step-second-left{
+    width:200px;
+    height:380px;
+    float: left;
+    padding-top: 12px;overflow-y: auto;
+}
+.batch-config .step-second-right{
+    width: 500px;
+    height:355px;
+    float: left;
+}
+.batch-config .bacth-operate-btn{
+    display: inline-block;padding: 0 8px 0 4px;
+    height:32px;line-height: 32px;font-size: 12px;
+    border: 1px solid #555f76;cursor: pointer;border-radius: 4px;
+}
+.batch-config .operate-btn-batch{
+    display: inline-block;
+    background: url(../img/public/sys_program_config.png) no-repeat;
+    width:24px;
+    height:24px;cursor: pointer;
+    margin-top:2px;
+    vertical-align: top;margin-right: 1px;
+}
+.batch-config .btn-batch-copy{
+    background-position: -4px -738px;
+}
+.batch-config .bacth-operate-btn:hover{
+    color: #d2f1fe;border-color: #d2f1fe;
+}
+.batch-config .bacth-operate-btn:hover .btn-batch-copy{
+    background-position: -36px -738px;
+}
+.batch-config .btn-batch-copy-active{
+    color: #44DCFD;
+    border-color: #44DCFD;
+    background-color: #091016;
+}
+.batch-config .btn-batch-copy-active .btn-batch-copy{
+    background-position: -36px -738px;
+}
+
+.batch-config .btn-batch-remove{
+    background-position: -4px -769px;
+}
+.batch-config .bacth-operate-btn:hover .btn-batch-remove{
+    background-position: -36px -769px;
+}
+.batch-config .btn-batch-remove-active{
+    color: #44DCFD;
+    border-color: #44DCFD;
+    background-color: #091016;
+}
+.batch-config .btn-batch-remove-active .btn-batch-remove{
+    background-position: -36px -769px;
+}
+
+.batch-config .btn-batch-config{
+    background-position: -4px -803px;
+}
+.batch-config .bacth-operate-btn:hover .btn-batch-config{
+    background-position: -36px -803px;
+}
+.batch-config .btn-batch-config-active{
+    color: #44DCFD;
+    border-color: #44DCFD;
+    background-color: #091016;
+}
+.batch-config .btn-batch-config-active .btn-batch-config{
+    background-position: -36px -803px;
+}
+
+.batch-config .btn-batch-delete{
+    background-position: -4px -834px;
+}
+.batch-config .bacth-operate-btn:hover .btn-batch-delete{
+    background-position: -36px -834px;
+}
+.batch-config .btn-batch-delete-active{
+    color: #44DCFD;
+    border-color: #44DCFD;
+    background-color: #091016;
+}
+.batch-config .btn-batch-delete-active .btn-batch-delete{
+    background-position: -36px -834px;
+}
+.batch-config .batch-delete{
+    background: url("../img/public/sys_program_batch_delete.gif") no-repeat;
+    width:200px;
+    height:200px;
+    margin:45px auto 0 auto;
+}
+.batch-config .btn-batch-disabled{
+    display: inline-block;padding: 0 8px 0 4px;
+    height:32px;line-height: 32px;font-size: 12px;
+    border: 1px solid #fff;border-radius: 4px;
+    color: #999!important;opacity: 0.3;cursor: default;
+}
+
+/*配置数据源*/
+.batch-config .modal-dialog{
+    width:702px !important;
+}
+.batch-config .soc-select .btn{
+    font-size: 12px;
+}
+.batch-config .default-node-ip{
+    border: 1px solid transparent
+}
+.batch-config .checked_node_ip{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+}
+.batch-config .default-group-empty{
+    background: url("../img/public/sys_program_empty.png") no-repeat center;
+    background-size: 54px;
+    height:54px;
+    margin-top:-10px;
+}
+.batch-config .deal-loading{
+    border: 1px dashed #d2f1fe;
+    color: #44DCFD;
+    font-size: 18px;
+    height: 100px;
+    left: 244px;
+    line-height: 88px;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    top: 140px;
+    width: 230px;
+}
+.batch-config .batch-config-modal .soc-name{
+    display: inline-block;
+    vertical-align: top;
+    width: 85px;overflow: hidden;
+    white-space: nowrap;color: #d2f1fe;
+    text-overflow: ellipsis;margin-top: 5px
+}
+.batch-config .batch-config-modal .protocol-type{
+    display: inline-block;
+    font-size: 12px;
+    padding: 0 8px;
+    border-radius: 4px;
+    color:#999;
+    width: 34px;
+    height: 20px;
+    background: #f0fbf9;
+    line-height: 20px;
+    vertical-align: top;
+    margin-top: 3px;
+    margin-left: 2px;
+}
+.batch-config .batch-config-modal .protocol-color{
+    color:#43E0F7 !important;
+    background-color: rgba(67,224,247,0.3);
+}
+.batch-config .search {
+    margin-bottom: 5px;
+    zoom: 1;
+}
+.batch-config .search-input{
+    width:108px;float: left;
+}
+.batch-config .search-input input{
+    width:125px;
+    padding-right: 25px;
+    border-radius:0px;
+    padding-left: 14px;
+    font-size: 12px;
+    background-color: transparent;
+    border:1px solid #408195;
+    height: 27px;
+    color: #d2f1fe;
+}
+.batch-config .search-input input:hover{
+    border-color:#4A90E2;
+}
+.batch-config .checked-div{
+    background: transparent none repeat scroll 0 0;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.batch-config .checked-sign{
+    color: #000;
+    position: absolute;
+    left: -10px;
+    font-size: 10px;
+    top: 7px;
+}
+.batch-config .was-data-source{
+    border: 1px solid transparent;
+    color: #d2f1fe;
+}
+.batch-config .was-data-source:hover{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+}
+.batch-config .was-data-source:hover span{
+    background: rgba(0, 0, 0, 0) url("../img/public/sys_program_delete.png") no-repeat scroll 0 2px;
+    background-size: 95%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+}
+.batch-config .was-data-source:hover span:hover{
+    background: rgba(0, 0, 0, 0) url("../img/public/sys_program_delete.png") no-repeat scroll 0px -17px;
+    background-size: 95%;
+}
+.batch-config .was-data-source-delete{
+    border: 1px solid transparent;
+    color: #d2f1fe;
+}
+.batch-config .was-data-source-delete:hover{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+}
+.batch-config .was-data-source-delete:hover span{
+    background: rgba(0, 0, 0, 0) url("../img/public/sys_ds_revoke.png") no-repeat scroll 0 2px;
+    background-size: 95%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+}
+.batch-config .was-data-source-delete:hover span:hover{
+    background: rgba(0, 0, 0, 0) url("../img/public/sys_ds_revoke.png") no-repeat scroll 0 -17px;
+    background-size: 95%;
+}
+
+.batch-config .data-source{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #d2f1fe;
+}
+.batch-config .data-source:hover{
+    border: 1px solid #A40000;
+}
+
+.batch-config .data-source-selected{
+    border: 1px solid #A40000;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #d2f1fe;
+}
+
+/*系统配置-agent管理*/
+.agent-manage{}
+.agent-manage .agent-common{
+    display: inline-block;position: relative;
+}
+.agent-manage .agent-list-common{
+    overflow: hidden;
+    position: relative;
+    height: 190px;
+    width:283px;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    display: inline-block;
+    border: 1px solid rgba(85,95,118,0.1);
+    border-radius: 4px;
+    vertical-align: top;
+    background: rgba(92,122,169,0.25);
+}
+.agent-manage .agent-list-common:hover{
+    border:1px solid rgba(85,95,118,1);
+}
+.agent-manage  .agent-config-card{
+    display: inline-block;
+    padding-left: 5px;
+    height: 50px;margin-top:0;width:130px;text-align: center;margin-left: 0
+}
+.agent-manage .agent-machine-size{
+    display: inline-block;width: 60px;vertical-align:middle;padding-right:5px;
+}
+.agent-manage .agent-config-card-left-part{
+    display: inline-block;
+    padding-left: 5px;
+    height: 63px;
+    margin-top: 20px;
+    width:75px;
+}
+.agent-manage .card-right-part{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+    min-height: 80px;
+    width: 190px;
+
+}
+.agent-manage .agent-card-line{
+    display: inline-block;
+    vertical-align: top;
+    min-height: 50px;
+    width:130px;
+    margin-top: 0px;
+    text-align: center;
+    margin-left: 12px;
+}
+.agent-manage .monitor-pre-progress-bar{
+    background-color:#D2F1FE;
+    border-radius: 15px!important;
+    height: 10px;
+    margin-bottom: 0;margin-top: 5px;
+}
+/*cpu图片*/
+.agent-manage .cpu-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -2px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage .span-font-style{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 2px;
+    width: 143px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: default;
+}
+.agent-manage .ip-font{
+    font-size: 18px;width:105px;margin-left: 11px;color: #44dcfb
+}
+/*内存图片*/
+.agent-manage .memory-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -51px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+/*硬盘图片*/
+.agent-manage .sata-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -27px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+/*lan图片*/
+.agent-manage .lan-image{
+    background: url('../img/public/sys_node_target_icon.png') no-repeat -8px -74px;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage .agent-scheme-top li{
+    list-style: none;
+    padding: 0;
+    margin:0;
+    cursor: pointer;
+    float: left;
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 14px;
+    background-color: rgba(0,0,0,0.6);
+    border-right: 1px solid #797979;
+    color:#d2f1fe;
+}
+
+.agent-manage .agent-scheme-top{
+    position: absolute;z-index: 1;
+    padding: 0 0 0 0;transition: right 0.5s;color: #d2f1fe;font-size: 13px;
+    bottom: -24%;
+    width:280px;
+}
+.agent-manage .agent-scheme-top li:hover{
+    color: #44DCFD;
+}
+.agent-manage .agent-scheme:hover .agent-scheme-top{
+    transition: bottom 0.5s 0.15s;
+    bottom:-10px;
+}
+.agent-manage .span-operator-font-style{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    color:#d2f1fe;
+    cursor:default;
+    width: 152px;
+}
+.agent-manage .none-sys{
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: top;
+    cursor:default;
+}
+.agent-manage .agent-line{
+    background-color:rgba(85,95,118,0.1);
+    height: 1px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.agent-manage .agent-big-modify{
+    /* background: url('././img/log_big_modify.png') no-repeat 0px -2px;*/
+    background: url('../img/public/sys_log_modify.png') no-repeat 0px -2px;
+    width: 66px;
+    height: 60px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage .common-font{
+    color:#d2f1fe;
+}
+.agent-manage .get-agent-loading-color{
+    color:#44dcfd;
+}
+.agent-manage .get-agent-none-color{
+    color:#6D7183;
+}
+.agent-manage .common-srv-name{
+    font-size: 12px;margin-left: 11px;margin-top: -4px;display: inline-block;color: #44dcfb
+}
+.agent-manage .agent-stop-img{
+    background: url('../img/public/sys_agent_stop.png') no-repeat 5px 2px;
+    width: 30px;
+    height: 28px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage  .agent-execing-img{
+    background: url('../img/public/sys_agent_exec.png') no-repeat;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 12px;
+}
+.agent-manage .agent-wait-img{
+    background: url('../img/public/sys_agent_wait.png') no-repeat 5px 2px;
+    width: 30px;
+    height: 28px;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage .agent-common-operator{
+    display: inline-block;
+    height: 15px;
+    margin-left: 3px;
+    width: 15px;
+    background: url("../img/public/sys_program_icon.png") no-repeat;
+}
+.agent-manage .agent-ope-size{
+    background-size: 96%;margin-top: 2px;margin-left: 8px;
+}
+.agent-manage .agent-line-vertical{
+    display: inline-block;
+    margin-bottom:9px;
+    border-right: 1px solid #245a6c;
+    position: absolute;;height:100%;margin-left:5px;
+}
+.agent-manage .agent-stop-type-img{
+    background: url('../img/public/sys_agent_error.gif') no-repeat -7px -5px;
+    height: 25px;
+    width:100%;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage .agent-exec-type-img{
+    background: url('../img/public/sys_agent_exec.gif') no-repeat -7px -5px;
+    height: 25px;
+    width:100%;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage .agent-wait-type-img{
+    background: url('../img/public/sys_agent_waiting.gif') no-repeat -7px -4px;
+    height: 25px;
+    width:100%;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.agent-manage .common-half{
+    width:130px;
+    text-align: left;
+}
+.agent-manage .margin-center-5{
+    margin-left:5px;
+    margin-right: 5px;;
+}
+.agent-manage .span-common-log{
+    height: 10px;
+    width: 30px;
+    display: inline-block;
+}
+.agent-manage .monitor-height{
+    padding-top: 20px;background: transparent;min-height: 300px;
+}
+.agent-manage .monitor-loading{
+    margin:0 auto;font-size: 20px;color:#44dcfb;border:1px dashed #d2f1fe;height:100px;line-height:100px;width:320px;border-radius: 4px;margin-top: 80px;
+}
+
+.log-list{}
+.log-list .common-log-list{
+    display: inline-block;position: relative;
+}
+.log-list .log-name-common{
+    display: inline-block;width: 160px;vertical-align: top; margin-top: 27px;
+}
+.log-list .delete-style{
+    text-align: right;
+    margin-right: 5px;
+    margin-top: 5px;
+    color: #d2f1fe;
+    position: absolute;
+    right: -24px;
+    cursor: pointer;
+}
+.log-list .font-common{
+    text-align: center;
+    font-size:14px;
+    color:#5c697b;
+}
+/*节点按钮*/
+.log-list .add-node-button{
+    text-align: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 29px;margin:95px auto 0;
+    background: url('../img/public/sys_node_add.png') no-repeat 0px 0px;
+}
+.log-list .common-log{
+    width:  250px;
+    height: 190px;
+    border: 1px solid rgba(85,95,118,0.1);
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-right: 8px;
+    vertical-align: top;
+    background-color: rgba(92,122,169,0.25);
+    cursor: pointer;
+}
+.log-list .common-log:hover{
+    border:1px solid rgba(85,95,118,1);
+}
+
+.log-list .common-log:hover .add-node-button {
+    background: url('../img/public/sys_node_add.png') no-repeat 0px -64px;
+}
+.log-list .common-log:hover .font-common {
+    color: #44dcfd;
+}
+.log-list .common-log:hover .delete-style{
+    transition: right 0.5s 0.15s;
+    right:0px;
+}
+.log-img{
+    background-image: url("../img/public/sys_log_loggle.png");
+    background-size: 95%;
+    background-repeat: no-repeat;
+    width: 60px;
+    height: 65px;
+    position: relative;
+    top:6px;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+.log-span{
+    display: inline-block;width: 150px;height: 20px;
+    cursor:default;
+}
+.log-img-span{
+    cursor: default;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    white-space: nowrap;
+    margin-top: 3px;
+    padding-left: 10px;
+}
+.log-margin-left20{
+    margin-left: 20px;
+}
+.log-manager-icon{
+    background: url("../img/public/sys_log_manager_icon.png") no-repeat;
+    width: 20px;
+    height: 20px;
+}
+.log-server-img{
+    background-position: -10px -3px;
+}
+.log-block{
+    display: inline-block;
+    vertical-align: middle;
+}
+.log-width-120{
+    width: 120px;
+}
+.log-start-img{
+    background-position: -10px -33px;
+}
+.log-size-img{
+    background-position: -10px -63px;
+}
+.running-img{
+    color:#FFF;
+    width: 24px;
+    height: 24px;
+    display:inline-block;
+    background-image: url(../img/public/sys_agent_exec.png);
+    background-repeat: no-repeat;
+    margin: 0;
+    margin-top:2px;
+}
+.log-modify{
+    position: absolute;z-index: 1;
+    padding: 0 0 0 0;transition: right 0.5s;font-size: 13px;
+    bottom: -25%;
+    width:260px;
+    background-color: rgba(0,0,0,0.6);
+}
+.log-modify li{
+    list-style: none;
+    padding: 0;
+    margin:0;
+    cursor: pointer;
+    float: left;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 14px;
+    border-right: 1px solid rgba(85,95,118,0.6);
+    color:#d2f1fe;
+}
+.log-modify li:hover{
+    color: #44dcfb;
+}
+.log-width-per50{
+    width:50%;
+}
+.log-width-per25{
+    width:25%;
+}
+.common-log:hover .log-modify{
+    transition: bottom 0.5s 0.15s;
+    bottom:-10px;
+}
+.log-time .log-input-time{
+    display: inline-block;
+    height: 30px;
+    width: 50px;
+}
+.log-line-horizon{
+    display: inline-block;
+    width: 100%;
+    height: 1px;
+    margin-top:7px;
+    margin-bottom: 5px;
+    background-color: #44DCFD;
+    opacity: 0.3;
+}
+.show-none{
+    display: none;
+}
+
+.log-expand-icon{
+    font-size: 29px;color:#5c697b;text-align: right;
+}
+.log-expand-icon .fa-angle-down:hover,.log-expand-icon .fa-angle-up:hover{
+    color:#3090a8;
+}
+
+
+.log-add-modify {
+
+}
+.log-add-modify .delete-common{
+    margin-right: 6px; cursor: pointer;
+}
+.log-add-modify .delete-log{
+    position: absolute;
+    right: -74px;
+    height:34px;
+    width:47px;
+    background: url("../img/public/sys_node_close.png") no-repeat 0 0;
+    cursor: pointer;
+}
+.log-add-modify .delete-log:hover{
+    background: url("../img/public/sys_node_close.png") no-repeat 0 -34px;
+}
+.log-add-modify  .log-text-type{
+    text-align: left;
+}
+.log-add-modify  .data-chooose-common{
+    position: absolute;background-color: #091016;z-index:999;top:34px;
+}
+.log-add-modify  .choose-data-type{
+    position: absolute; left: 237px; top: 12px;cursor: pointer;
+}
+.log-add-modify .choose-data{
+    width:216px;margin-bottom: 10px;margin-top:0;padding-left: 5px;cursor: pointer;border:1px solid #deeafa;height: 30px;line-height: 25px;text-align: left;overflow: hidden
+}
+/****************************************插件库****************************************/
+/*插件样式*/
+.plugin-common{
+    font-size:12px;
+}
+.plugin-common .run-env-row .CodeMirror{
+    height: 95px;
+}
+/*新增插件*/
+.plugin-common .add-plugin-common{
+    width: 200px;
+    margin: 20px;
+}
+/****添加插件模态框*****/
+.view-ptotocol .content-empty-style{
+    height: 24px;
+    font-size:12px;
+    border-radius: 28px;
+    text-align: center;
+    line-height: 24px;
+    display: inline-block;
+    border: 1px solid #61a1b8;
+    padding-left: 8px;
+    padding-right: 8px;
+    color: #d2f1fe;
+    margin-bottom: 9px;
+    margin-right: 10px;
+}
+/************************************公共资源***************************************/
+.common-resources{
+
+}
+.common-resources .add-resources-common{
+    width: 200px;
+    margin: 20px;
+}
+.view-basic-info tr td:first-child{
+    color:#61a1b8;
+}
+/***********************************配置******************************************/
+.checked-node-ip{
+    border: 1px solid #44dcfd;
+}
+
+/***********************************架构配置struct_config.html******************************************/
+.struct-config .sort-name {
+    cursor: pointer;border: 1px solid #1D3D4F;text-align: center; background: #172230;
+}
+.struct-config .diagram-span{
+    /*height: 450px*/;position: relative;width: 100%;padding-left: 100px;display: inline-block;z-index: 11;height: 100%;min-height: 400px;
+}
+.struct-config .diagram{
+    /*height: 448px;*/ position: relative; cursor: auto;background-color: #172230;height: calc(100% - 2px);min-height: 388px;
+}
+.struct-config .palette-diagram{
+    /*height: 450px*/;border: 1px solid #1D3D4F;padding: 0;height: 100%;min-height: 400px;
+}
+.struct-config .palette-span{
+    position: absolute;/*height: 448px*/;width: 105px;z-index: 22;background-color: #172230;border-right: 1px solid #1D3D4F ;height: calc(100% - 2px);min-height: 388px;
+}
+.struct-config .node_property{
+    position: absolute;height: 300px;bottom: -4px;width: 100%;left: 0px;padding-left: 120px;z-index: 2;padding-right: 15px;
+}
+.struct-config .property-tab-head{
+    height:36px;padding-left:20px;line-height: 36px; border-bottom: 1px solid #1D3D4F;position: relative;margin-left: 120px;
+}
+.struct-config .property-tab-line{
+    height:2px;border:none;border-top:2px solid #ccc;display: inline-block; width: 50px;position: absolute; top: -2px;
+}
+.struct-config .property-tab-circle{
+    width:20px;height:20px;display:inline-block;background:#fff;color:#333;border-radius:100%;position: absolute; top: 3px;left: 4px;line-height:20px;
+}
+.struct-config .property-tab{
+    cursor:pointer;display: inline-block;width:124px;border-radius:16px;background: #ccc;height: 26px;text-align:center;line-height: 26px;position: relative;
+}
+.struct-config .property-tab:hover{
+    background: #00AAEE;
+    color:white;
+}
+.struct-config .property-tab-active{
+    background: #00AAEE;
+    color:white;
+}
+.struct-config .cmpt-module{
+    position: relative;
+    padding-bottom: 17px;
+}
+/*步骤圆样式位置*/
+.struct-config .step_circle_position{
+    position: absolute;
+    left:-69px;
+    top:0;
+}
+/*步骤圆的样式*/
+.struct-config .step_circle_common{
+    display: inline-block;
+    background: #555f76;
+    border-radius: 15px;
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+    position: absolute;
+    top:3px;
+    text-align: center;
+    margin-left: 0px;
+}
+.struct-config .fix-param-table td{
+    text-align: left;
+}
+.struct-config  .status-check-operate {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url("../img/public/sys_node_wreach.png") no-repeat scroll 3px 3px / 10px 10px;
+    border: 1px solid #5c697b;
+    border-radius: 50%;
+    margin-top: 1px;
+}
+.struct-config .status-check-operate:hover{
+    background: url("../img/public/sys_node_wreach_hover.png") no-repeat scroll 3px 3px / 10px 10px;
+}
+.struct-config .status-check-delete{
+    width:20px;height:20px;cursor: pointer;
+    display: inline-block;vertical-align: top;
+    background: url("../img/public/sys_node_cmpt_operator.png") no-repeat -5px -6px;
+}
+.struct-config .status-check-delete:hover{
+    background-position: -37px -6px;
+}
+
+/***********************************环境配置-环境列表env_config_list.html******************************************/
+.env-config .env-pub-img,.env-config .env-pub-btn-disabled{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    margin-top:6px;
+    cursor: pointer;
+    background: url("../img/public/env/publish_gray_icon.png") no-repeat;
+    transform: scale(1.5);
+}
+.env-config .env-pub-img:hover{
+    background: url("../img/public/env/publish_blue_icon.png") no-repeat;
+}
+.env-config .env-save-img,.env-config .env-save-btn-disabled{
+    display: inline-block;
+    width: 21px;
+    height: 20px;
+    text-align: center;
+    margin-top:6px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0) url("../img/public/env/save_cancle.png") no-repeat scroll -2px -2px / 46px auto;
+    transform: scale(1.5);
+}
+.env-config .env-save-img:hover{
+    background-position: -2px -25px;
+}
+.env-config .env-save-btn-disabled,.env-config .env-pub-btn-disabled{
+    cursor: default;
+    opacity: 0.3;
+}
+.env-config .env-published-icon{
+    width: 20px;height: 20px;position: absolute;top:10px;left: 30px;
+    background: url(../img/public/env/env_published_img.png) no-repeat;
+}
+.env-config .info-panel{
+    width: 400px;
+    height: 200px;
+    margin: 0 auto;
+    text-align: center;
+    word-break: break-all;
+    position: relative;
+}
+.env-config .info-panel .error-div{
+    position: absolute;
+    top: 36px;left: 120px;
+    width: 180px;height: 80px;
+    display: inline-block;
+    color: #6d7183;
+}
+.env-config .env-loading{
+    line-height: 200px;
+    font-size: 30px;
+}
+.env-config .clear-float:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.transition-block{
+    transition: all 0.5s;
+    -moz-transition: all 0.5s; /* Firefox 4 */
+    -webkit-transition: all 0.5s; /* Safari 和 Chrome */
+    -o-transition: all 0.5s; /* Opera */
+}
+.env-config-container{
+    padding: 20px 20px 0 20px;
+}
+.env-config-container-border{
+    border: 1px solid #1D3D4F;background-color:#172230
+}
+/*左侧列表*/
+.env-config-container .env-config-left{
+    position: absolute;top: 0;left: 0;
+    width: 160px;z-index: 4;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 400px;
+    border-right: 1px solid #1D3D4F;
+}
+.env-config-container .env-config-left{
+
+}
+.env-config-container .env-config-left .env-type-list{
+    margin: 0;padding: 0;
+}
+.env-config-container .env-config-left .env-type-list .env-type-nav{
+    height: 40px;line-height: 40px;
+    background-color: #44dcfd;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.env-config-container .env-config-left .env-type-list .env-type-nav-border-bottom{
+    border-bottom: 1px solid rgba(210, 241, 253,0.4);
+}
+.env-config-container .env-config-left .env-type-list .env-block{
+    min-height: 125px;
+    padding: 15px 15px 0 15px;
+    overflow: hidden;
+}
+.env-config-container .env-config-left .env-type-list:last-child .env-type-nav{
+    border: none;
+}
+/*单个环境样式*/
+.env-config-container .env-config-left .env-name.block-panel{
+    position: relative;width: 100px;
+    height: 100px;margin: 0 0 10px 15px;
+    padding: 8px 4px;border-radius: 5px;
+    border:1px solid transparent;
+}
+.env-config-container .env-config-left .env-name.block-panel.checked-style{
+    border: 1px solid #d2f1fe;
+    cursor: default;
+}
+.env-config-container .env-config-left .env-block-container{
+    position: relative;
+    display: inline-block;
+}
+.env-block-container .env-name.block-panel{
+    width: 88px;height: 92px;
+    margin-right: 0;margin-top: 0
+}
+.env-block-container .env-add-img {
+    width: 30px;height: 30px;
+    position: absolute;
+    right: 24px;top: 4px;
+    cursor: pointer;
+    background: url(../img/public/env/env_add_img_gray.png) no-repeat;
+}
+.env-block-container:hover .env-name.block-panel{
+    border: 1px solid #d2f1fe;
+    cursor: pointer;
+}
+.env-block-container:hover .env-name.block-panel .fa.fa-trash-o{
+    display: inline-block;
+}
+.env-name.block-panel .fa.fa-trash-o{
+    display: none;position: absolute;
+    right: 2px;top: 76px;font-size: 20px;
+}
+.env-name.block-panel .fa.fa-trash-o:hover{
+   color: #44dcfd;
+   cursor: pointer;
+}
+.env-name.block-panel .env-name-text{
+    margin: 0 auto;overflow: hidden;
+    text-align: center;height: 35px;
+    word-wrap: break-word;font-size: 12px
+}
+.env-config-container .env-config-left .add-env-block{
+   display: none;
+}
+.env-config-container .env-config-left:hover .add-env-block{
+   display: block;
+}
+.env-config-container .env-config-left .add-env-btnblock .env-block-container{
+    height: 110px;
+}
+.env-config-container .env-config-left .add-env-btnblock .block-panel{
+    border:1px solid #ccc;color: #ccc;
+}
+.env-config-container .env-config-left .add-env-btnblock .env-add-img{
+    top:28px;left: 34px;
+}
+.env-config-container .env-config-left .add-env-btnblock .env-name-text{
+    position: absolute; top: 58px;height: 22px;left: 26px;
+}
+.env-config-container .env-config-left .add-env-btnblock .env-block-container:hover .block-panel{
+    border:1px solid #00aaee;color: #00aaee;
+}
+.env-config-container .env-config-left .add-env-btnblock .env-block-container:hover .env-add-img{
+    background: url(../img/public/env/env_add_img_blue.png) no-repeat;
+}
+/*环境图标公共样式*/
+.env-block-container .block-panel.env-name .env-icon{
+    height: 49px;width: 49px;color: #666666;
+    font-size: 25px;margin: 0 auto;
+    background: url("../img/public/env/env_type_img.png") no-repeat;
+}
+/*开发环境图标*/
+.env-block-container .block-panel.env-name .env-icon.env-type1-icon{
+    background-position: 0 0;
+}
+/*测试环境图标*/
+.env-block-container .block-panel.env-name .env-icon.env-type2-icon{
+    background-position: 0 -48px;
+}
+/*准生产环境图标*/
+.env-block-container .block-panel.env-name .env-icon.env-type3-icon{
+    background-position: 0 -96px;
+}
+/*生产环境图标*/
+.env-block-container .block-panel.env-name .env-icon.env-type4-icon{
+    background-position: 0 -144px;
+}
+/*SIT环境图标*/
+.env-block-container .block-panel.env-name .env-icon.env-type5-icon{
+    background-position: 0 -192px;
+}
+/*SUT环境图标*/
+.env-block-container .block-panel.env-name .env-icon.env-type6-icon{
+    background-position: 0 -192px;
+}
+/*右侧配置容器*/
+.env-config-container .env-config-right{
+    position: relative;padding-left: 160px;
+}
+.env-config-container .env-config-right .config-page-container{
+    overflow-x: hidden;
+    overflow-y: hidden;
+    min-height: 400px;
+}
+.env-config-container .env-config-right .no-env-img{
+    position: absolute;top: 50%;left: 50%;
+    transform: translateY(-70px);
+    width: 110px;height: 125px;
+    padding-top: 100px;text-align: center;
+    background: url('../img/publish/monitor_list/no_project.png') no-repeat 0 -450px;
+}
+.env-config-container .env-config-right .env-font{
+    color:#6D7183;cursor: default;
+}
+
+/***********************************环境配置--新增环境env_config_new.html******************************************/
+.env-config-new {
+    height: 100%;position: relative;
+}
+.env-config-new .margin-t-padding-b-10{
+     margin-top: 10px;padding-bottom: 10px;
+ }
+.env-config-new .padding-left-0{
+    padding-left: 0 !important;
+}
+.env-config-new .padding-right-0{
+    padding-right: 0 !important;
+}
+.env-config-new .env-form-container{
+    position: relative;padding: 20px;border-bottom: 1px solid #1D3D4F
+}
+.env-config-new .config-properties-container{
+    position: absolute;bottom:0;
+    left:0;height:0;width: 100%;
+    z-index: 11;overflow: hidden;
+    background: #141e2a;padding: 0 15px;
+}
+.env-config-new .config-properties-header{
+    padding-left: 20px;padding-right: 20px;
+}
+.env-config-new .config-properties-header div{
+    height: 30px;border-bottom: 1px solid #1D3D4F;line-height: 30px;color: #D2F1FE
+}
+.env-config-new .config-properties-body{
+    position: relative;height: 100%;
+    margin-top: -30px;margin-right: 0;
+    padding-top: 30px;margin-left: 0;
+}
+.env-config-new .properties-body-left{
+    width: 212px;padding-left:30px;padding-top:20px;position: absolute;z-index: 11;height: 100%;
+}
+.env-config-new .properties-body-left .env-node-config-container{
+    overflow-x: hidden;overflow-y: auto;height:66%;
+    height:-moz-calc(100% - 70px);/*Firefox*/
+    height:-webkit-calc(100% - 70px);/*chrome safari*/
+    height:calc(100% - 70px);
+}
+.env-config-new .properties-body-splitline{
+    position: absolute;height: 100%;width: 1px;left: 208px;background: #1D3D4F;top: 47px;
+    height:-moz-calc(100% - (15px *2) - 32px);/*Firefox*/
+    height:-webkit-calc(100% - (15px *2) - 32px);/*chrome safari*/
+    height:calc(100% - (15px *2) - 32px);
+}
+.env-config-new .properties-body-right{
+    padding-top: 15px;padding-left: 230px;height: 100%;
+}
+.env-config-new .properties-body-right .param-group-style{
+    position: relative;padding: 3px;
+}
+.env-config-new .properties-body-right .param-group-style:after{
+    content: "";display: block;clear: both;
+}
+.env-config-new .properties-body-right .param-group-style .param-name{
+    float: left;max-width: 90%;word-break: break-all;text-align: left;
+}
+.env-config-new .properties-body-right .password-input{
+    background-color: #0F192A !important; font-size: 12px;height: 25px;width: 100%;padding-left: 3px;
+}
+.env-config-new .properties-body-right .password-eye{
+    position: absolute;top: 50%;transform:translateY(-50%);right: 5px;cursor: pointer;
+}
+.env-config-new .properties-body-right .config-properties-btn-group{
+    margin-top: 30px;margin-bottom: 25px;
+}
+.env-config-new .config-properties-body .env-node-select{
+    width: 150px; padding-left: 6px;
+}
+.env-config-new .config-properties-body .env-node-config{
+    width: 150px;height: 32px;position: relative;border:1px solid rgba(233, 234, 238, 1);margin-top: 10px;background-color: #091016;border-radius: 4px;cursor: pointer;
+}
+.env-config-new .config-properties-body .env-node-config .node-icon{
+    display:inline-block;background: url(../img/public/env/server-icon.png) no-repeat;background-size: 20px;height: 20px;width: 20px;position: relative; top: 5px;left: 10px;
+}
+.env-config-new .config-properties-body .env-node-config .node-ip{
+    display:inline-block;position: relative;width: 92px;left: 13px;
+}
+.env-config-new .config-properties-body .env-node-config .node-other{
+    display:inline-block;left: 10px;position: relative;
+}
+.env-config-new .config-properties-body .env-node-config .fa-trash-o{
+    position: absolute;right: 6px;top: 5px;font-size: 20px;display: none;
+}
+.env-config-new .config-properties-body .env-node-config:hover .fa-trash-o{
+    display: inline;
+}
+.env-config-new .config-properties-body .env-node-config .fa-trash-o:hover{
+    color: #44dcfb;
+}
+.env-config-new .config-properties-body .config-already{
+    background-color: rgba(68, 220, 253,0.2);
+    border:1px solid rgba(68, 220, 253,0.2);
+}
+.env-config-new .config-properties-body .config-already .fa-trash-o{
+    background-color: #1d4455;
+}
+.env-config-new .config-properties-body .config-already .node-icon{
+    background: url(../img/public/env/server-checked-icon.png) no-repeat;
+}
+.env-config-new .config-properties-body .config-already .node-other{
+    color:#00aaee;
+}
+.env-config-new .config-properties-body .config-active{
+    border-color: rgba(0, 170, 238, 1);
+}
+.env-config-new .config-properties-body .env-node-config:hover{
+    border-color:rgba(0, 170, 238, 1);
+}
+.env-config-new .config-properties-body .delete-icon{
+    font-size: 20px;cursor: pointer;color:#999;
+}
+.env-config-new .config-properties-body .delete-icon:hover{
+    color:#00aaee;
+}
+.env-config-new .config-properties-body .delete-icon:hover{
+    background-position: -52px 0;
+}
+.env-config-new .config-properties-body .main_standby_icon{
+    display:inline-block;width: 22px;height: 22px;line-height: 22px;text-align: center; border-radius: 4px;cursor: pointer;
+}
+.env-config-new .config-properties-body .main_standby_active{
+    background-color:#44dcfb;color: #D2F1FE;border:1px solid #44dcfb;
+}
+.env-config-new .config-properties-body .main_standby_no_active{
+    border:1px solid #1D3D4F;color: #D2F1FE;
+}
+.env-config-new .config-properties-body .logic-save-icon{
+    width: 30px;height: 30px;position: absolute; right: 20px;top: 5px; background: url(../img/public/env/save_cancle.png) no-repeat 0px 0px;cursor: pointer;
+}
+.env-config-new .config-properties-body .logic-save-icon:hover{
+    width: 30px;height: 30px;position: absolute; right: 20px;top: 5px; background: url(../img/public/env/save_cancle.png) no-repeat 0px -32px;
+}
+.env-config-new .config-properties-body .logic-cancel-icon{
+    width: 30px; height: 10px; position: absolute; right: 80px; top: 16px;background: #ccc;cursor: pointer; }
+.env-config-new .config-properties-body .logic-cancel-icon:hover{
+    background: #00AAEE;
+}
+.env-config-new .config-properties-body .agent-icon{
+    background: url(../img/public/env/agent_icon.png) no-repeat;width: 34px;height: 32px;background-size: 20px;position: absolute;top:0px;right:-13px;
+}
+
+
+
+.agent_monitor{}
+/***节点块***/
+@keyframes spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/* Firefox */
+@-moz-keyframes spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/* Safari 和 Chrome */
+@-webkit-keyframes spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/* Opera */
+@-o-keyframes spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/*背景旋转*/
+.agent_monitor .bg-spin{
+    animation: spin 3s infinite linear;
+    -moz-animation: spin 3s infinite linear;	/* Firefox */
+    -webkit-animation: spin 3s infinite linear;	/* Safari 和 Chrome */
+    -o-animation: spin 3s infinite linear;	/* Opera */
+}
+.agent_monitor .node-block{
+    /*width: 400px;*/
+    height: 180px;border: 1px solid rgba(1, 204, 212,0.4);
+    margin-bottom: 20px;border-radius: 4px;
+    overflow: hidden;cursor: pointer;
+}
+.agent_monitor .node-block:hover{
+    border-color: #01CCD4;
+}
+.agent_monitor .node-block-left{
+    display: inline-block;
+}
+.agent_monitor .node-block-left .sever-bg{
+    background: url("../img/dispatch/task/server-bg.png") no-repeat;
+    background-size: 116px; width: 116px;height: 116px;opacity: 0.6;
+    position: absolute;top: 10px;left: 20px;  z-index: 2;
+}
+.agent_monitor .node-block-left .sever-bg:hover{
+    background: url("../img/dispatch/task/server-bg-spin.png") no-repeat;
+    background-size: 116px; width: 116px;height: 116px;opacity: 0.9;
+    position: absolute;top: 10px;left: 20px;z-index: 2;
+    animation: spin 3s infinite linear;
+    -moz-animation: spin 3s infinite linear;	/* Firefox */
+    -webkit-animation: spin 3s infinite linear;	/* Safari 和 Chrome */
+    -o-animation: spin 3s infinite linear;	/* Opera */
+}
+.agent_monitor .node-block-left .sever-icon{
+    background: url("../img/dispatch/task/server-icon.png") no-repeat;
+    background-size: 116px; width: 116px;height: 116px;
+    position: absolute;top: 10px;left: 20px; z-index: 1;
+}
+.agent_monitor .node-block-left .node-ip{
+    position: absolute;
+    top: 128px;left: 0;
+    display: inline-block;
+    width: 155px;
+    text-align: center;
+    color: #66FFFF;
+}
+.agent_monitor .node-block-verline{
+    display: inline-block; width: 1px; height: 70px;
+    background-color: #01CCD4;margin-left: 130px;margin-top: 70px;
+}
+.agent_monitor .node-block-horline{
+    display: inline-block;width: 100%;
+    height: 1px;  margin-top:20px;
+    background-color: rgba(1, 204, 212,0.4);
+}
+.agent_monitor .node-block-right{
+    position: absolute;left: 165px;top: 0;min-height: 165px;
+    width: calc(100% - 200px);vertical-align: top;overflow: hidden;
+}
+/*操作系统-icon*/
+.agent_monitor .node-block-opsys-icon{
+    background: url('../img/dispatch/task/operation-sys.png') no-repeat;
+    width: 20px;  height: 20px;
+    display: inline-block;
+}
+.agent_monitor .node-block-opversion{
+    width: calc(100% - 30px);
+    display: inline-block; vertical-align: top;
+    overflow: hidden; cursor:default;
+    white-space: nowrap;font-size: 16px;
+    text-overflow: ellipsis;
+}
+.agent_monitor .node-hardware-block{
+    padding-top: 2px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
+}
+.agent_monitor .node-block-hardware-icon{
+    background: url('../img/dispatch/task/total_node.png') no-repeat;
+    display: inline-block; width: 20px; height: 20px;vertical-align: middle;
+}
+.agent_monitor .no_rate_data{
+    padding-top: 8px;
+    padding-left: 3px;
+    display:inline-block;
+    vertical-align: top;
+    font-size: 12px;
+    color: #CCC;
+}
+.agent_monitor .cpu-icon{
+    background-position:  -8px -2px;
+    margin-left: 5px;
+}
+.agent_monitor .mem-icon{
+    background-position: -11px -51px;
+    margin-left: 8px;
+}
+.agent_monitor .hard-disk-icon{
+    background-position: -8px -27px;
+    margin-left: 5px;
+}
+.agent_monitor .network-icon{
+    background-position: -8px -75px;
+    margin-left: 5px;
+}
+.agent_monitor .info-font-style{
+   font-size: 12px;vertical-align: middle;opacity: 0.8;
+}
+.agent_monitor .node-block-bottom{
+
+}
+.agent_monitor .node-block-bottom ul li{
+    display: inline-block;padding-left: 20px;
+    margin-top: 7px;
+}
+.agent_monitor .node-block-bottom ul li:first-child{
+    width: 200px;
+}
+.agent_monitor .node-block-bottom-icon{
+    background: url('../img/dispatch/task/hardware-icon.png') no-repeat;
+    display: inline-block;background-size: 30px;width: 30px;height: 30px;
+}
+.agent_monitor .cpu-monitor-icon{
+    background-position: 0 -10px;
+}
+.agent_monitor .net-monitor-icon{
+    background-position: 0 -127px;
+}
+.agent_monitor .hard-disk-monitor-icon{
+    background-position: 0 -49px;
+}
+.agent_monitor .hard-IO-monitor-icon{
+    background-position: 0 -88px;
+}
+.agent_monitor .hardware-progress-block{
+    display:inline-block;
+    padding-left: 5px
+}
+.agent_monitor .hardware-progress-font{
+    color: rgba(204, 204, 204,0.6);font-size: 12px;
+}
+.agent_monitor .hardware-progress-bar{
+    background-color: #162A40;
+    border: 1px solid  #00B8FE !important;
+    border-radius: 5px!important;
+    height: 10px; width: 120px;
+    margin-bottom: 0;margin-top: 5px;
+}
+.agent_monitor .hardware-progress-bar  .progress-bar{
+    background-color: #00B8FE;
+}
+.agent_monitor .net-icon-com{
+    width: 13px;height: 13px;display: inline-block; margin-right: 8px;
+}
+.agent_monitor .net-up-icon{
+    background: url("../img/dispatch/task/net-up-icon.png") no-repeat 0/13px;
+}
+.agent_monitor .net-down-icon{
+    background: url("../img/dispatch/task/net-down-icon.png") no-repeat 0/13px;
+    transform: rotate(180deg);opacity: 0.6;
+}
+/*节点查看*/
+.agent_monitor .node-detail-container{
+    padding-left: 8px;
+    padding-right: 5%
+}
+.agent_monitor .node-tabs {
+    position: absolute;
+}
+.agent_monitor .node-tab {
+    height: 120px;
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+}
+.agent_monitor .normal {
+    border-radius: 4px;
+    width: 180px;
+    border: 1px solid #096674;
+    background: #141e2a;
+}
+.agent_monitor .tab_checked {
+    background: #102234;
+    width: 188px;
+    box-shadow:none;
+    pointer-events: none;
+}
+.agent_monitor .normal-cover {
+    padding: 14px;
+    margin-top: -15px;
+}
+.agent_monitor .checked-cover {
+    background: #0e151d;;
+    width: 191px;
+    height: 120px;
+    border: 1px solid #66FFFF;
+    border-right: none;
+    padding: 14px;
+    margin: -15px;
+}
+.agent_monitor .node-tab:hover {
+    box-shadow: none;
+    border-color: rgba(9, 102, 116,0.7);
+}
+.agent_monitor .node-content {
+    background: #0e151d;
+    border: 1px solid #66FFFF;
+    margin-left: 190px;
+    box-shadow:none;
+    padding: 8px;
+    margin-top: 0;
+}
+.agent_monitor .view-node-srv{
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+}
+.agent_monitor .view-node-srvbg-icon{
+    background: url("../img/dispatch/task/server-bg.png") no-repeat 0/64px;
+    opacity: 0.7;
+}
+.agent_monitor .view-node-srvbg-spin-icon{
+    background: url("../img/dispatch/task/server-bg-spin.png") no-repeat 0/64px;
+    opacity: 0.9;
+}
+.agent_monitor .view-node-srv-icon{
+    background: url("../img/dispatch/task/server-icon.png") no-repeat  0/64px;
+    margin-top: -64px;
+}
+.agent_monitor .view-node-ip{
+    margin: 0 auto;color: #66FFFF;text-align: center;
+    padding-top: 7px;font-weight: bold;
+}
+.agent_monitor .close-view-node-icon{
+    background: url("../img/dispatch/task/view-node-del-icon.png") no-repeat 0/24px;
+    width: 24px;height: 24px;float: right;cursor: pointer;
+}
+.agent_monitor .node-basic-info{
+    padding-top: 25px;
+}
+.agent_monitor .node-basic-info table tr td:first-child{
+    min-width: 77px;color: rgba(225,225,225,0.8);
+}
+.agent_monitor .node-basic-info table tr td:last-child{
+    padding-left: 25px;
+}
+.agent_monitor .node-sys-info{
+    padding-top: 20px;padding-bottom: 7px;
+}
+.agent_monitor .node-sys-info .hardware-progress-font{
+    color: #FFF;
+}
+.agent_monitor .node-sys-info ul li{
+    display: inline-block;padding-right: 30px;
+}
+.agent_monitor .node-progress-info{
+
+}
+.agent_monitor .node-progress-info table thead tr td{
+    color: rgba(225,225,225,0.8);white-space: nowrap;
+}
+.agent_monitor .exe-fail-transparent-icon{
+    background: url("../img/dispatch/task/exe-fail-transparent.png") no-repeat 0/18px;
+    display: inline-block;width: 18px;height: 18px;vertical-align: middle;
+}
+
+.agent_monitor .row table{
+    width: 100%;
+}
+.agent_monitor .row table tr td{
+    border: 1px solid #096674;
+    padding: 7px;text-align: center;
+    word-break: break-all;color: #66FFFF;
+}
+.agent_monitor .row table tr td:last-child{
+    text-align: left;
+}
+.agent_monitor .row label{
+    color: rgba(225,225,225,0.8);padding-top: 7px;
+    text-align: center;
+}

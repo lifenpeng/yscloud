@@ -1,0 +1,142 @@
+<div class="container-fluid" style="padding-bottom: 0">
+    <div class="container-fluid flow-basic-new" collapse="control.show_basic_detail">
+        <!--流程基本信息-->
+        <form name="info.workorder_form"  class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+            <div class="row">
+                <div class="col-sm-6 form-style">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">App名称</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   name="flow_cn_name"
+                                   ng-model="info.sdflow_cn_name"
+                                   class="form-control label-value"
+                                   placeholder="中文，不超过20个字符"
+                                   ng-disabled="!control.name_edit_flag"
+                                   required
+                                   ensure-unique="fw_CheckFlowNameAction"
+                                   ng-maxlength=20>
+                            <validate-msg tag-cn-name="流程名称" name="flow_cn_name"></validate-msg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">App描述</label>
+                        <div class="col-sm-7">
+                        <textarea name="flow_bk_desc"
+                                  ng-model="info.sdflow_bk_desc"
+                                  class="form-control textarea-desc label-value"
+                                  placeholder="不超过50个字"
+                                  ng-disabled="control.basic_saveing"
+                                  required
+                                  ng-maxlength=50
+                                  ng-model-options="{updateOn: 'blur'}">
+                        </textarea>
+                            <validate-msg tag-cn-name="描述"  name="flow_bk_desc"></validate-msg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">选择场景</label>
+                        <div class="col-sm-7">
+                            <bs-select items="data.scene_list"
+                                       my-select="info.scene_main_id"
+                                       option-labal="scene_name"
+                                       option-key="scene_id"
+                                       loading="control.scene_loading"
+                                       empty-option="-- 暂不选择 --"></bs-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">编排方式</label>
+                        <div class="col-sm-8"  style="margin-top: 6px;">
+                            <label>
+                                <input type="radio" name="exe_types" i-check ng-model="info.sdarrange_method" value=1>
+                                简单
+                            </label>
+                            <label style="margin-left:25px;">
+                                <input type="radio" name="exe_types" i-check ng-model="info.sdarrange_method" value=2 ng-disabled="true">
+                                复杂
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">重复执行</label>
+                        <div class="col-sm-8"  style="margin-top: 6px;">
+                            <label>
+                                <input type="radio" name="sdparallel_task" i-check ng-model="info.sdparallel_task" value=1>
+                                允许
+                            </label>
+                            <label style="margin-left:25px;">
+                                <input type="radio" name="sdparallel_task" i-check ng-model="info.sdparallel_task" value=2>
+                                不允许
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">执行类型</label>
+                        <div class="col-sm-8"  style="margin-top: 6px;">
+                            <label>
+                                <input type="radio" name="dispatch_type" i-check ng-model="info.sddispatch_type" value=1>
+                                人工
+                            </label>
+                            <label style="margin-left:25px;">
+                                <input type="radio" name="dispatch_type" i-check ng-model="info.sddispatch_type" value=2>
+                                定时
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-top: 10px">
+                        <label class="col-sm-2 control-label">策略组</label>
+                        <div class="col-sm-3" style="padding-right: 0">
+                            <bs-select  items="data.strategy_group_list"
+                                        my-select="info.sd_strategy_id"
+                                        option-labal="sdstrategy_name"
+                                        option-key="sdstrategy_id"
+                                        select-val="selectStrategy(selectKey)"
+                                        loading="control.strategy_loading"></bs-select>
+                            <validate-msg tag-cn-name="策略组" type="select" model="info.sd_strategy_id"></validate-msg>
+                        </div>
+                        <label class="col-sm-2 control-label" ng-if="control.strategy_type == 2">并发度</label>
+                        <div class="col-sm-3" style="padding-top: 8px" ng-if="control.strategy_type == 2">
+                            <span ng-bind="control.strategy_concurrent ? control.strategy_concurrent : '--'"></span>
+                        </div>
+                        <label class="col-sm-2 control-label label_key" ng-if="control.strategy_type == 3">优先级</label>
+                        <div class="col-sm-3" style="padding-right: 0" ng-if="control.strategy_type == 3">
+                            <bs-select  items="data.strategy_priority_list"
+                                        my-select="info.sd_priority"
+                                        option-labal="key"
+                                        option-key="key"
+                                        disable="control.basic_saveing"></bs-select>
+                            <validate-msg tag-cn-name="优先级" type="select"  model="info.sd_priority"></validate-msg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label">App类型</label>
+                <div class="col-sm-9" ng-style="{'pointer-events':control.basic_saveing ? 'none':''}">
+                    <div class="tablecss tag-md" ng-class="flow.flag ? 'checked-tag':'check-tag'" ng-click="flow.flag = !flow.flag" ng-repeat="flow in data.flow_type_list">
+                        {{flow.value}}
+                        <div>
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button ng-if="!control.basic_saveing" type="button" ng-click="save()" class="save-cancel-btn save-btn btn-md">{{data.save_btn_label}}</button>
+                    <button ng-if="control.basic_saveing" disabled="disabled" class="save-cancel-btn save-btn btn-md">
+                        <i  class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div style="position: relative;">
+        <div ui-view="flow_new_info"></div>
+        <div ui-view="config_new_info"></div>
+    </div>
+</div>
+

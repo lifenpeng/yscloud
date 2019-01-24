@@ -1,0 +1,42 @@
+<div  class="modal-header">
+    <h3 class="modal-title">本地授权-{{info.authdprl_bk_expl}}</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body row" style="font-size: 14px; table-layout:fixed; word-break: break-all; overflow:hidden;">
+    <div class="row" style="padding: 0px 20px;">
+        <div class="col-sm-6" style="margin-top: 0;">
+            <div class="form-group form-style">
+                <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 6px;padding-left: 0px;">用户名：</label>
+                <div class="col-sm-9 label-value">
+                    <input type="text" placeholder="用户名" ng-model="info.user_id" class="form-control">
+                </div>
+            </div>
+            <div class="form-group form-style">
+                <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 12px;padding-left: 0px;">密码：</label>
+                <div class="col-sm-9 label-value" style="margin-top: 6px;">
+                    <input type="password" placeholder="密码" ng-model="info.user_password" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6" style="background: #0f161f;">
+            <div style="padding:10px;width: 160px;height: 160px;;margin: 25px auto 0;">
+                <img ng-src="{{info.qrcodeLocalAuthImageURL}}" style="width: 140px; height:140px;">
+            </div>
+            <div style="width: 155px;margin: 0 auto;">
+                <p style="font-size: 14px;color: #29ABE2;text-align: center;margin-top: 10px;">使用CorsLares 手机App扫一扫本地授权</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-sm-12" style="text-align: center;">
+            <button class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+            <button ng-show="!control.btnBus_loading" class="save-btn btn-xl" ng-click="submit()">授权</button>
+            <button ng-show="control.btnBus_loading" disabled="disabled" class="save-btn btn-xl">
+                <i style="color: white" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+

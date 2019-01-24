@@ -1,0 +1,182 @@
+
+<div class="container-fluid fontSize12 inspection" style="min-height: 570px;">
+    <form  name="log_pick_form" ng-submit="formSubmit()" class="form-horizontal form-style log-pick" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+           <div class="form-group">
+               <label class="col-sm-2 control-label label-key">应用系统</label>
+               <div  class="col-sm-8">
+                   <bs-select width=150  name="business_sys_name"
+                              items="data.sys_list"
+                              my-select="info.log_pick_info.sys_name"
+                              option-key="business_sys_name"
+                              option-labal="business_cn_name"
+                              select-val="getFileListBysys(info.log_pick_info.sys_name)"
+                              class="label-value"
+                              required></bs-select>
+                   <validate-msg tag-cn-name="应用系统" type="select" name="business_sys_name" model="info.log_pick_info.sys_name"></validate-msg>
+               </div>
+           </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label label-key">日志选择</label>
+            <div class="col-sm-8">
+                <div class="row form-style">
+                    <div class="col-sm-12 text-left">
+                        <div ng-if="data.log_file_list.length>0 && !control.loading_file" class="log-block" ng-repeat="one in data.log_file_list" ng-class="one.checked ? 'log-checked':'log-unchecked'" ng-click="chooseLogFile(one,$index)">
+                            <div style="text-align: center;cursor: pointer">
+                                <div class="log-icon"></div>
+                            </div>
+                            <div style="text-align: center">
+                                <span class="font-block log-name" title="{{one.log_name}}">{{one.log_name}}</span>
+                            </div>
+                            <div ng-if="one.checked" class="checked-triangle">
+                                <i class="fa fa-check"></i>
+                            </div>
+                        </div>
+                        <div style="text-align: left;">
+                            <label class="padding-top-7 no-data-font" ng-if="!control.loading_file &&  (data.log_file_list.length==0 || !data.log_file_list.length)">暂无数据</label>
+                            <div class="padding-top-7" ng-if="control.loading_file">
+                                <span class="loading-font">
+                                     正在获取信息&nbsp;&nbsp;
+                                    <i class="fa fa-spinner fa-spin loading-font"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label label-key">所属节点</label>
+            <div class="col-sm-8" style="margin-bottom: 10px;">
+                <div class="row" ng-if="data.node_ip_list.length>0 && !control.loading_node" style="text-align: center;">
+                    <div class="col-sm-12" style="text-align: left; cursor: pointer">
+                        <div class="node-ip-block" ng-repeat="one in data.node_ip_list" ng-class="one.checked ? 'log-checked':'log-unchecked'" ng-click="chooseIp(one)">
+                            <div class="server-icon"></div>
+                            <span title="{{one.soc_ip}}" class="font-block node-ip-font">{{one.soc_ip}}</span>
+                            <div ng-if="one.checked" class="checked-triangle">
+                                <i class="fa fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="!control.loading_node && data.node_ip_list.length==0">
+                    <label class="col-sm-3 text-left no-data-font padding-top-7">暂无数据</label>
+                </div>
+                <div class="padding-top-7" ng-if="control.loading_node">
+                    <span class="loading-font">
+                         正在获取信息&nbsp;&nbsp;
+                        <i class="fa fa-spinner fa-spin loading-font"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+          <div class="form-group">
+              <label class="col-sm-2 control-label label-key">日期选择</label>
+              <div class="col-sm-9">
+                  <div class="row">
+                      <div class="col-sm-9">
+                          <div class="row label-value">
+                              <div  class="col-sm-4 date-select-style pick-date-common">
+                                  <input type="text" name="begin_date" class="form-control"
+                                         ng-click="openDate($event)"
+                                         max-date="{{info.max_date}}"
+                                         ng-model="info.log_pick_info.begin_date"
+                                         datepicker-popup="yyyy年MM月dd日"
+                                         close-on-date-selection="false"
+                                         is-open="info.datepicker.opened"
+                                         placeholder="开始日期"
+                                         readonly="true"
+                                         ng-model-options="{updateOn: 'blur'}"
+                                         />
+                              </div>
+                              <div class="col-sm-4 date-select-style pick-date-common">
+                                  <input type="text"
+                                         name="end_date"
+                                         ng-click="openDate($event)"
+                                         max-date="{{info.max_date}}"
+                                         ng-model="info.log_pick_info.end_date"
+                                         class="form-control"
+                                         datepicker-popup="yyyy年MM月dd日"
+                                         placeholder="结束日期"
+                                         close-on-date-selection="false"
+                                         is-open="info.datepicker.opened"
+                                         />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-2">
+                          <div  class="form-group text-center">
+                              <button ng-if="!control.save_loading" type="submit" class=" save-btn btn-md">确定</button>
+                              <button ng-if="control.save_loading" type="button" class=" save-btn btn-md">
+                                  <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    </form>
+    <div  class="form-horizontal" ng-if="control.save_base_info">
+        <div class="form-group form_style">
+            <div class="col-sm-12">
+                <table class="sub-table">
+                    <thead>
+                        <tr>
+                            <td>
+                                <input type="checkbox"
+                                       name="cmpt_type"
+                                       style="top:10px;"
+                                       i-check
+                                       ng-change="chooseAllLog(control.choose_all_log)"
+                                       ng-model="control.choose_all_log"/>
+                            </td>
+                            <td style="text-align: left;">日期</td>
+                            <td style="text-align: left;">文件名</td>
+                            <td style="text-align: left;">节点</td>
+                            <td style="text-align: left;">大小</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  ng-repeat="tr in data.pick_log_list">
+                            <td>
+                                <label >
+                                    <input type="checkbox"
+                                           name="cmpt_type"
+                                           i-check
+                                           ng-change="choosePickedLog(tr)"
+                                           ng-model="tr.choose_log"/>
+                                </label>
+                            </td>
+                            <td  style="text-align: left;">{{tr.file_date}}</td>
+                            <td  style="text-align: left;">{{tr.local_file_name}}</td>
+                            <td  style="text-align: left;">{{tr.node_name}}</td>
+                            <td  style="text-align: left;">{{tr.size_str}}</td>
+                            <td>
+                                <span ng-if="tr.local_dir" class="log-downLoad-icon" title="下载" ng-click="downLoadLog(tr)"></span>
+                                <span ng-if="!tr.local_dir">--</span>
+                            </td>
+                        </tr>
+                        <tr ng-if="data.pick_log_list.length==0 || !data.pick_log_list">
+                            <td colspan="6" style="text-align:center;">暂无数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-gorup form_style">
+            <div class="col-sm-2" style="text-align: left;">
+                <button ng-if="!control.log_batch_loading && control.check_one_log && data.pick_log_list.length > 0" type="button" ng-click="batchDownloadLog()" class=" save-btn btn-md" style="text-align:center;">批量下载</button>
+                <button ng-if="control.log_batch_loading" type="button" class=" save-btn btn-md" style="text-align:center;"> <i style="color: white" class="fa fa-spinner fa-spin"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="form-horizontal log-pick">
+        <div class="row no-data-container" ng-if="!control.save_base_info">
+            <div style="position: absolute;top:21%;left:45%;">
+                <div class="no-data-icon">
+                    <span class="no-data-icon-font">暂无数据</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

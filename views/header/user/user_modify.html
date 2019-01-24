@@ -1,0 +1,108 @@
+
+<div class="container-fluid form-style">
+    <form name="userInfoForm" ng-submit="formSubmit()" class="form-horizontal user user_modify" novalidate  autocomplete="off" >
+        <div class="form-group">
+            <div class="col-sm-3 prompt-title-block">
+                <label class="prompt-title-font">用户详细信息</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key" >用户名</label>
+            <div class="col-sm-5 label-value">
+                <input type="text" name="user_id" ng-model="user_info.user_name" class="form-control" required disabled>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="col-sm-3 control-label label-key">用户姓名</label>
+            <div class="col-sm-5 label-value">
+                <input type="text"
+                       name="user_cn_name"
+                       ng-model="user_info.user_cn_name"
+                       class="form-control"
+                       required
+                       ng-minlength="2"
+                       ng-maxlength="20"
+                       placeholder="用户姓名（2-20个字符)"
+                       ng-pattern="/^[\u4E00-\u9FA5A-Za-z0-9_]+$/">
+                <validate-msg tag-cn-name="用户姓名" name="user_cn_name"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="col-sm-3 control-label label-key">柜员号</label>
+            <div class="col-sm-5 label-value">
+                <input type="text" name="teller_no" ng-model="user_info.teller_number" class="form-control" ng-minlength="6" ng-maxlength="6" ng-pattern="/^\d*$/" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">邮箱</label>
+            <div class="col-sm-5 label-value">
+                <input type="text"
+                       name="user_email"
+                       ng-model="user_info.user_email"
+                       class="form-control"
+                       ng-pattern="/^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/"
+                       placeholder="请输入邮箱地址">
+                <validate-msg tag-cn-name="邮箱" name="user_email"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">电话号码</label>
+            <div class="col-sm-5 label-value">
+                <input type="text"
+                       name="phone_number"
+                       ng-model="user_info.phone_number"
+                       class="form-control"
+                       ng-maxlength="12"
+                       ng-pattern="/^\d*$/"
+                       placeholder="电话号码（1-12位数字)">
+                <validate-msg tag-cn-name="电话号码" name="phone_number"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">密码到期日</label>
+            <div class="col-sm-5 label-value">
+                <input type="text" name="pwd_expiry_date" ng-model="user_info.pwd_expiry_date" class="form-control" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">用户类型</label>
+            <div class="col-sm-4 label-value">
+                <div class="btn-group" dropdown>
+                    <button class="btn custom-btn button-label" type="button"  style="width: 160px;">
+                        <span ng-show="user_info.user_type == 1">行内</span>
+                        <span ng-show="user_info.user_type == 2">行外</span>
+                        <span ng-show="!user_info.user_type">--请选择--</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="col-sm-3 control-label label-key">所属部门</label>
+            <div class="col-sm-5 label-value">
+                <input type="text" name="user_department" ng-model="user_info.user_department" class="form-control" required disabled>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="col-sm-3 control-label label-key">兼职部门</label>
+            <div class="col-sm-5 label-value">
+                <input type="text" name="parttime_department" ng-model="user_info.parttime_department" class="form-control" disabled>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="col-sm-3 control-label label-key">部门角色</label>
+            <div class="col-sm-5 label-value">
+                <input type="text" name="department_role" ng-model="user_info.department_role" class="form-control" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 text-center" style="margin-top: 26px;">
+                <button ng-hide="control.save_btn_loading" type="button" ng-click="back();" class="cancel-btn btn-md">返回</button>
+                <button ng-show="control.save_btn_loading" disabled="disabled" type="button" class="disabled-btn btn-md">返回</button>
+                <button ng-hide="control.save_btn_loading" type="submit" class="save-btn btn-md"  ng-disabled="userInfoForm.$invalid">提交</button>
+                <button ng-show="control.save_btn_loading" disabled="disabled" class="save-btn btn-md" style="text-align:center;">
+                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

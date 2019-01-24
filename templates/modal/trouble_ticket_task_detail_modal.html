@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <h3 class="modal-title">授权详细</h3>
+    <div ng-click="close()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all;">
+    <div  class="row form_style" style="margin-bottom: 10px">
+        <label class="col-md-3 control-label text-right label_key">工单名</label>
+        <label ng-bind="info.order_bk_title ? info.order_bk_title : '--'" style="text-align: left;" class="col-md-8 control-label label_value"></label>
+    </div>
+    <div  class="row form_style" style="margin-bottom: 10px">
+        <label class="col-md-3 control-label text-right label_key">引用方案</label>
+        <label ng-bind="info.program_name" style="text-align: left;" class="col-md-8 control-label label_value"></label>
+    </div>
+    <div  class="row form_style" style="margin-bottom: 10px">
+        <label class="col-md-3 control-label text-right label_key">当前步骤</label>
+        <label ng-bind="info.step_bk_title" style="text-align: left;" class="col-md-8 control-label label_value"></label>
+    </div>
+    <div  class="row form_style">
+        <label class="col-md-3 control-label text-right label_key">步骤预执行信息</label>
+        <div class="col-md-8">
+            <div style="height: 200px;width: 100%" custom-scroll custom-config="config.scroll_info">
+                <div ng-repeat="sql in info.sql_result_list track by $index" style="margin-top: 5px;">
+                    <div style="height: 25px;line-height: 25px;white-space: nowrap;;">
+                        <span>{{sql.sql_seq}}</span>:<span style="margin-left: 10px;">{{sql.sql_text}}</span>
+                    </div>
+                    <div ng-if="sql.sql_type == 1">
+                        <div ng-if="sql.success">
+                            <table class="sub-table">
+                                <thead>
+                                <tr>
+                                    <td ng-repeat="thead in sql.title_list">
+                                        <div ng-bind="thead.value ? thead.value :thead.key "></div>
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-if="sql.content_list.length==0" style="font-size: 15px;">
+                                    <td colspan="{{sql.title_list.length}}" style="padding: 4px 6px;text-align: center">
+                                        暂无数据
+                                    </td>
+                                </tr>
+                                <tr ng-repeat="tbody in sql.content_list" style="font-size: 12px;">
+                                    <td ng-repeat="td in sql.title_list" style="padding: 4px 6px;">
+                                        {{tbody[td.key]}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-if="!sql.success">
+                            <span>{{sql.fail_reason}}</span>
+                        </div>
+                    </div>
+                    <div ng-if="sql.sql_type != 1">
+                        <span class="success-font-color" ng-if="sql.success">成功</span>
+                        <span class="error-font-color" ng-if="!sql.success">{{sql.fail_reason}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <!-- <div  class="row form_style">
+        <label class="col-md-2 control-label text-right label_key">步骤信息</label>
+        <div class="col-sm-9" style="border: 1px solid #d2f1fe; padding: 10px 20px; margin-left: 15px;">
+            <program-step-form  data="step" readonly="true" showbtn="false"></program-step-form>
+        </div>
+    </div>-->
+
+    <div style="text-align: center;margin-top: 40px;margin-bottom: 20px;">
+        <button class="cancel-btn btn-xl text-center" ng-click="close()">关闭</button>
+    </div>
+</div>

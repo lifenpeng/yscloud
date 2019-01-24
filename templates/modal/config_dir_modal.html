@@ -1,0 +1,38 @@
+<style>
+    .breadcrumb > li + li::before{
+        color: #ccc;
+        content: "";
+        padding: 0 0px;
+    }
+</style>
+<div  class="modal-header">
+    <h3 ng-if="control.version_config_flag==1" class="modal-title">版本机生产包</h3>
+    <h3 ng-if="control.version_config_flag==2" class="modal-title">版本机清单</h3>
+    <div ng-click="back()"></div>
+</div>
+<div class="modal-body" >
+    <!--第二步-->
+    <div ng-if="!control.show_real" style="min-height:300px;line-height: 300px;">
+        <div class="row"  style="position: relative;margin-left: 0">
+            <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;text-align: center;border-top:0px;position: relative;">
+                <div style="height: 18px;">
+                    <span class="loading-font-color"><i class="fa fa-spinner fa-spin" style="font-size: 30px;"></i></span>
+                </div>
+                <div style="margin-top: 10px;height: 18px;">
+                    <span style="color:#44DCFD;">正在获取信息&nbsp;&nbsp;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="control.show_real" style="min-height:300px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <file-browse node="info.version_info" change-path="changePath(info.version_info);"></file-browse>
+            </div>
+        </div>
+    </div>
+    <div class="common-btn-center">
+        <button class="cancel-btn btn-xl"  ng-click="back()">取消</button>
+        <button class="save-btn btn-xl"   type="submit"  ng-click="save()">确定</button>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="container-fluid proj_plan_list">
+    <div class="commonTabs">
+        <ul  class="nav nav-tabs">
+            <li class="analysis-tab " heading="计划">
+                <a ng-click="changeTabState('proj_plan_list')">计划</a>
+            </li>
+            <li class="analysis-tab active" heading="前置">
+                <a>前置</a>
+            </li>
+            <li class="analysis-tab " heading="分组">
+                <a ng-click="changeTabState('proj_group_list')">分组</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="row" ng-show="info.pre_items.length == 0" style="padding:10px;margin-top: -10px;height: 280px;position: relative;">
+                <div style="position: absolute;top:21%;left:45%;">
+                    <div class="plan_empty_img group_empty_position">
+                        <div style="position: absolute;bottom: 0;left:47px;color: #a0a0a0">暂无前置</div>
+                    </div>
+                </div>
+            </div>
+            <div class="prod_plan_list">
+                <accordion close-others="false">
+                    <accordion-group ng-class="item.show ? 'focus_heading':'common_heading'" is-open="item.show" ng-repeat="item in info.pre_items">
+                        <accordion-heading>
+                            <div class="row">
+                                <div class="col-md-2 plan-panel-date">编号:&nbsp;{{item.group_number}}</div>
+                                <div class="col-md-1 col-md-offset-8" style="font-size: 14px;margin-top: 8px;" >
+                                    <span style="font-size: 14px;">共{{item.group_count}}项</span>
+                                </div>
+                                <div class="plan-panel-head-ico" style="margin-right: 18px;">
+                                    <i style="font-size: 14px;" ng-if="item == items[0]" class="glyphicon glyphicon-chevron-up" ng-class="{'glyphicon glyphicon-chevron-up': item.show, 'glyphicon glyphicon-chevron-down': !item.show}"></i>
+                                    <i style="font-size: 14px;" ng-if="item != items[0]" class="glyphicon glyphicon-chevron-down" ng-class="{'glyphicon glyphicon-chevron-up': item.show, 'glyphicon glyphicon-chevron-down': !item.show}"></i>
+                                </div>
+                            </div>
+                        </accordion-heading>
+                        <div class="row" ng-if="item.show">
+                            <div class="col-md-12">
+                                <prodplan history="false" tab-state="control.tab_type" group-number="item.group_number"></prodplan>
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
+    </div>
+</div>

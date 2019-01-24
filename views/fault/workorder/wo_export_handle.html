@@ -1,0 +1,99 @@
+<div  class="wo-sql-handle">
+    <div class="container-fluid">
+        <div class="row sql-deal-step" ng-if="sub_tab.sql_steps.length != 0" ng-init="outer_index = $index" ng-repeat="sql_step in sub_tab.sql_steps" ng-class="{'last_sql_step': $last}">
+            <div class="sql-deal-stepIndex">{{$index + 1}}</div>
+            <div class="sql-deal-split-line"></div>
+            <div class="col-sm-12 sql-deal sql-deal-content">
+                <!-- 删除按钮-->
+                <div class="sql-delete-btn fault-delete-img" ng-if="!sub_tab.is_detail && !sql_step.is_single_task_author" ng-click="deleteSqlStep(sql_step.sql_work_seq,$index, sub_tab,sql_step.sql_text)"></div>
+                <div class="row">
+                    <div class="col-sm-2 text-left sys-name-style" >
+                        <span>{{sql_step.sys_cn_name}}</span>
+                    </div>
+                </div>
+                <div class="row" style="padding-left: 0;margin-top: 10px;">
+                    <div class="col-sm-11" style="padding-left: 0;word-break: break-all">
+                        {{sql_step.sql_text}}
+                    </div>
+                    <div class="col-sm-1 detail-btn text-right" >
+                        <a href="javascript:void(0);" ng-click="viewSqlStepDetailModal(sql_step.sql_work_seq)">详细>></a>
+                    </div>
+                </div>
+                <div class="row query-result form-style">
+                    <div class="col-sm-3" style="padding-left: 0;">
+                        <span class="label-key" ng-show="sql_step.sql_state == 1">预计影响条数</span>
+                        <span class="label-value result-detail" ng-show="sql_step.sql_state == 1">{{sql_step.exp_bk_num}}条</span>
+                        <span class="label-key" ng-show="sql_step.sql_type == 1 && sql_step.sql_state != 1">查询记录条数</span>
+                        <span class="label-key" ng-show="sql_step.sql_type == 2 && sql_step.sql_state != 1">更新记录条数</span>
+                        <span class="label-key" ng-show="sql_step.sql_type == 3 && sql_step.sql_state != 1">插入记录条数</span>
+                        <span class="label-key" ng-show="sql_step.sql_type == 4 && sql_step.sql_state != 1">删除记录条数</span>
+                        <span class="label-value result-detail" ng-show="sql_step.sql_state != 1">{{sql_step.act_bk_num}}条</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label-key" ng-show="sql_step.sql_state == 1">预计执行时间</span>
+                        <span class="result-detail" ng-show="sql_step.sql_state == 1">{{sql_step.exp_exec_time}}秒</span>
+                        <span class="label-key" ng-show="sql_step.sql_state != 1">执行耗时</span>
+                        <span class="label-value result-detail" ng-show="sql_step.act_exec_time && sql_step.sql_state != 1">{{sql_step.act_exec_time}}毫秒</span>
+                        <span class="label-value result-detail" ng-show="!sql_step.act_exec_time && sql_step.sql_state != 1">--</span>
+                    </div>
+                    <div class="col-sm-2" style="padding-right:0">
+                        <span class="label-key" ng-show="sql_step.sql_state == 1">时段</span>
+                        <span class="label-value result-detail" ng-show="sql_step.sql_state == 1" ng-class="sql_step.bucket_type == 1 ? 'sql-time-low' : 'sql-time-high'">{{sql_step.bucket_cn_type}}</span>
+                    </div>
+                    <div class="col-sm-4 text-right" style="padding-right:0;" ng-show="sql_step.priv_yn_flag ==1">
+                        <div ng-show="sql_step.is_single_task_author">
+                            <a class="view-author-style"  ng-click="viewTaskAuthorDetail(sub_tab,sql_step)">查看授权信息</a>
+                            <span ng-show="!sql_step.workflow_state" style="color: rgb(76, 174, 76);">任务授权中</span>
+                            <span ng-show="sql_step.workflow_state == 1" style="color: rgb(76, 174, 76);">任务待复核</span>
+                            <span ng-show="sql_step.workflow_state == 2" style="color: rgb(76, 174, 76);">任务复核拒绝</span>
+                            <span ng-show="sql_step.workflow_state == 3" style="color: rgb(76, 174, 76);">任务待授权</span>
+                            <span ng-show="sql_step.workflow_state == 4" style="color: rgb(76, 174, 76);">任务授权拒绝</span>
+                            <span ng-show="sql_step.workflow_state == 5" style="color: rgb(76, 174, 76);">任务待执行</span>
+                            <button class="ordinary-btn" ng-click="dataExportAuthor(sql_step,$index,sub_tab)" ng-if="sql_step.workflow_state == 5 && !sql_step.is_close_loading">提交</button>
+                            <button class="ordinary-btn" style="width:80px;" ng-click="closeBatchExeTask(sub_tab,sql_step,1,$index)" ng-if="(sql_step.workflow_state == 2 || sql_step.workflow_state == 4) && !sql_step.is_close_loading">关闭</button>
+                            <button ng-show="sql_step.is_close_loading" disabled="disabled" class="save-btn btn-xl text-center" style="width: 80px;line-height: 28px"><i style="color: white"  class="fa fa-spinner fa-spin"></i></button>
+                        </div>
+                        <div ng-show="!sql_step.is_single_task_author">
+                            <span ng-show="!sql_step.is_generate_sql_author">
+                                <button ng-show="!sql_step.submit_sql_btn_loading  && sql_step.sql_state == 1 && !sub_tab.is_detail" class="ordinary-btn" style="width:80px;" ng-click="submitSqlStep(sql_step,$index,sub_tab)">提交</button>
+                                <button ng-show="sql_step.submit_sql_btn_loading && !sub_tab.is_detail" disabled="disabled" class="save-btn btn-xl text-center" style="width: 80px;line-height: 28px;">
+                                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                                </button>
+                                <a  class="view-author-style" style="margin-right: 10px" ng-show="sql_step.pend_work_seq && sql_step.sql_state" ng-click="viewTaskAuthorDetail(sub_tab,sql_step)">查看授权信息</a>
+                                <button  class="ordinary-btn" style="cursor: pointer;width: 100px;border-radius: 15px;" ng-show="sql_step.sql_state == 2" ng-click="loadData(sql_step.download_bk_path)">导出数据</button>
+                            </span>
+                            <span style="color: #339900;" ng-show="sql_step.sql_state == 2 && sub_tab.handle_type != 4"><i class="fa fa-check-circle" style="color: #339900;font-size: 18px;"></i>&nbsp;提交成功</span>
+                            <span style="color: #C20608;" ng-show="sql_step.sql_state == 3"><i class="fa fa-times-circle" style="color: #C20608;font-size: 18px;"></i>&nbsp;提交失败</span>
+                            <span style="color: #339900;" ng-show="sql_step.sql_state == 4"><i class="fa fa-check-circle" style="color: #339900;font-size: 18px;"></i>&nbsp;回退成功</span>
+                            <span style="color: #C20608;" ng-show="sql_step.sql_state == 5"><i class="fa fa-times-circle" style="color: #C20608;font-size: 18px;"></i>&nbsp;回退失败</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-right" style="padding-right:0;" ng-show="sql_step.priv_yn_flag ==2">
+                        <span style="color: #FF9900;" ><i class="fa fa-warning " style="color: #F29417;font-size: 20px;"></i>&nbsp;权限不足</span>
+                    </div>
+                </div>
+                <div class="row text-right sql-step-error" ng-show="sql_step.error_message">
+                    <span>{{sql_step.error_message}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="!sub_tab.is_detail">
+            <div class="col-sm-3">
+                <button class="ordinary-btn" style="cursor:pointer;" ng-click="addHandleSQL(sub_tab)">添加SQL</button>
+            </div>
+        </div>
+        <div class="row" ng-if="!sub_tab.is_detail">
+            <div class="col-sm-12 text-center" style="padding:15px 15px 0 15px;">
+                <button ng-hide="sub_tab.hide_no_handle_btn || sub_tab.finish_handle_btn"
+                        type="button" class="cancel-btn btn-md text-center" ng-click="abandonHandle(sub_tab)">放弃处理</button>
+                <button  class="save-btn btn-md text-center" ng-click="finishDealWorkOrder(sub_tab)"
+                         ng-if="sub_tab.finish_handle_btn">完成处理</button>
+            </div>
+        </div>
+        <div class="row" ng-if="sub_tab.is_detail && !control.wo_detail_flag">
+            <div class="col-sm-12 text-center" style="padding-top: 20px;padding-bottom: 5px">
+                <button ng-show="!btn_handle_loading" type="button" class="cancel-btn btn-md text-center" ng-click="closeProcessOrder($index, sub_tab.wo_id)">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

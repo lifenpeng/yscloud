@@ -1,0 +1,231 @@
+<style>
+    .modal-header{
+        text-align: left;
+        padding: 8px 8px 8px 12px;
+        border: none;
+        background-color: #eee;
+        color: #777;
+    }
+    /*模态框body样式*/
+    .modal-body{
+        font-size: 14px;
+        table-layout:fixed;
+        word-break: break-all;
+        overflow:hidden;
+        padding-top: 10px;
+    }
+    /*文件路径样式*/
+    .file-path{
+        margin-top:8px;
+        margin-bottom: 10px
+    }
+    .file-path>div{
+        display:inline-block;
+        background-color: #F2DEDE;
+        padding: 0px 10px;
+        margin-left: 10px;
+        color: #C72B4E;
+    }
+    .file-path>div i{
+        color: red;
+        margin-right: 6px;
+    }
+    /*设置按钮样式*/
+    .set-detail{
+        position: absolute;
+        top: 11px;
+        right: 30px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    /*关闭图标样式*/
+    .close_icon{
+        position: absolute;
+        top: 9px;
+        right: 10px;
+        font-size: 18px;
+    }
+    .close_icon:hover{
+        font-size: 22px;
+        top:7px;
+        right: 8px;
+        color: #e9416e;
+        cursor: pointer;
+    }
+    /*显示主题动画*/
+    .show-theme{
+        animation: datatheme 0.6s;
+        -moz-animation: datatheme 0.6s;	/* Firefox */
+        -webkit-animation: datatheme 0.6s;	/* Safari 和 Chrome */
+        -o-animation: datatheme 0.6s;	/* Opera */
+    }
+    @keyframes datatheme {
+        from {right:-196px;}
+        to {right:-130px;}
+    }
+    /*显示编码动画*/
+    .show-encoding{
+        animation: scriptencode 0.6s;
+        -moz-animation: scriptencode 0.6s;	/* Firefox */
+        -webkit-animation: scriptencode 0.6s;	/* Safari 和 Chrome */
+        -o-animation: scriptencode 0.6s;	/* Opera */
+    }
+    @keyframes scriptencode {
+        from {right:-302px;}
+        to {right:-130px;}
+    }
+    .theme-style, .encode-style {
+        position: absolute;
+        right: -130px;
+        z-index: 10;
+        cursor: default;
+    }
+    .theme-style{
+        top: 5px;
+    }
+    .encode-style{
+        top: 40px;
+    }
+    .setting .theme-style:after, .setting .encode-style:after{
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .left-triangle{
+        float: left;
+        border: 14px solid transparent;
+        border-right-color:#65666D;
+    }
+    .title{
+        float: left;
+        width: 52px;
+        text-align: center;
+        background-color: #65666D;
+        padding: 3px 8px 5px 3px;
+        color: #fff;
+    }
+    .right-btn-group{
+        float: left;
+        padding: 0 0 2px 10px;
+        border-bottom: 2px solid #65666D;
+    }
+    .group-list .btn-group button{
+        padding: 2px 4px;
+        font-size: 12px;
+        width: 60px;
+    }
+    .btn-group i{
+        margin-right: 2px;
+    }
+    .edit-name{
+        padding: 0px 10px;
+        display: inline-block;
+        background: #FFCd3e;
+        color: #fff;
+        font-size: 12px;
+        margin-left: 15px;
+    }
+    /*切换编码方式的loading样式*/
+    .set-loading-shell{
+        position:absolute;
+        width:100%;
+        height: 100%;
+        z-index:100;
+        background-color:transparent;
+    }
+    .set-loading-shell div{
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        font-size: 30px;
+    }
+    /*快捷键样式*/
+    .shortcut{
+        color: #999;
+        margin-top: 5px;
+        padding-left: 0px;
+    }
+    .shortcut span{
+        font-size: 12px;
+        margin-right: 17px;
+    }
+</style>
+<div class="modal-header">
+    <span ng-if="is_edit">{{filePath}}</span>
+    <span ng-if="!is_edit">{{filePath}}</span>
+    <span class="edit-name">VIM</span>
+    <i class="fa fa-cog set-detail" ng-click="setFunc();"></i>
+    <i class="fa fa-times close_icon" ng-click="cancel()"></i>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all; overflow:hidden;padding-top: 10px;">
+    <div ng-show="!loading_config_file" class="set-loading-shell">
+        <div ng-style="select_data.script_day == '日间' ? {'color': '#009900'} : {'color': '#fff'}">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    </div>
+    <div ng-click="hidenGroupList()">
+        <div style="position: relative ;overflow: hidden">
+            <div ng-if="show_setting" ng-click="$event.stopPropagation();">
+                <div class="theme-style" ng-class="show_setting ? 'show-theme' : ''" ng-mouseenter="showAnimate('theme-style')" ng-mouseleave="hiddenAnimate('theme-style')">
+                    <div style="float: left;">
+                        <div class="left-triangle"></div>
+                        <div class="title">{{select_data.script_day}}</div>
+                    </div>
+                    <div class="right-btn-group">
+                        <div class="group-list">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" ng-style="select_data.script_day == '日间' ? {'background-color':'#54C241','color':'#fff','border-color':'#54C241'}:{}" ng-click="scriptDayOrNight('日间')"><i class="fa fa-sun-o"></i>日间</button>
+                                <button type="button" class="btn btn-default" ng-style="select_data.script_day == '夜间' ? {'background-color':'#54C241','color':'#fff','border-color':'#54C241'}:{}" ng-click="scriptDayOrNight('夜间')"><i class="fa fa-moon-o"></i>夜间</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="encode-style" ng-class="show_setting ? 'show-encoding' : ''" ng-mouseenter="showAnimate('encode-style')" ng-mouseleave="hiddenAnimate('encode-style')">
+                    <div style="float: left;">
+                        <div class="left-triangle"></div>
+                        <div class="title">{{select_data.encoding_type}}</div>
+                    </div>
+                    <div class="right-btn-group">
+                        <div class="group-list">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" ng-repeat="encode in select_data.encoding" ng-style="select_data.encoding_type == encode ? {'background-color':'#54C241','color':'#fff','border-color':'#54C241'}:{}" ng-click="changeCoding(encode)">{{encode}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 config_file" ng-if="isEdit" style="padding-right: 0px; padding-left: 0px; min-height: 300px;">
+                <textarea  ui-codemirror="{ onLoad : fileEditorLoaded}"
+                           ui-refresh="true"
+                           name="socWords"
+                           ng-model="fileData.socWords"
+                           class="form-control"
+                           required></textarea>
+                <!--<textarea ng-model="::fileData.socWords" class="form-control" style="width: 858px; height: 400px;resize: none;" ng-disabled="!isEdit"></textarea>-->
+            </div>
+            <div class="col-sm-12 config_file" ng-if="!isEdit">
+                <textarea  ui-codemirror="editorOptions"
+                           ui-refresh="true"
+                           name="socWords"
+                           ng-model="fileData.socWords"
+                           class="form-control"
+                           ></textarea>
+            </div>
+            <div class="col-sm-12 shortcut">
+                快捷键：<div style="float: right; width: 92%;">
+                <span>Ctrl/Cmd-F : 查找</span><span>Ctrl/Cmd-G : 跳转</span><span>Ctrl/Cmd-H : 替换</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12" style="text-align: center; padding-bottom: 20px;padding-right: 30px;">
+        <button ng-show="isEdit" class=" cancel-btn btn-xl" ng-click="cancel()">取消</button>
+        <button ng-show="!isEdit" class=" cancel-btn btn-xl" ng-click="cancel()">返回</button>
+        <button ng-show="isEdit && !btnBus_loading" ng-disabled="can_not_save || btnBus_loading" class=" save-btn btn-xl" ng-click="ok(fileData.socWords)">保存</button>
+        <button ng-show="isEdit && btnBus_loading" disabled="disabled" class=" save-btn btn-xl">
+            <i style="color: white" class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>

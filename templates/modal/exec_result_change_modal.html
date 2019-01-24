@@ -1,0 +1,27 @@
+<form name="form.new_result_form"   class="form-horizontal" novalidate="" autocomplete="off">
+    <div class="modal-header">
+        <h3 class="modal-title">结果变更</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body conform_modal">
+        <div class="row">
+            <div class="col-sm-10 form_style">
+             <textarea name="result_msg"
+                       ng-model="result_info.msg"
+                       class="form-control label_value"
+                       placeholder="变更原因，100字以内"
+                       style="min-height: 80px; resize:none;"
+                       ng-maxlength=100
+                       ng-model-options="{updateOn: 'blur'}"
+                        required
+                        >
+                                    </textarea>
+                <validate-msg tag-cn-name="变更原因" name="result_msg"></validate-msg>
+            </div>
+        </div>
+        <div style="text-align: center;margin-top: 20px;">
+            <button class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+            <button class="save-btn btn-xl"  ng-click="saveResult()">确定</button>
+        </div>
+    </div>
+</form>

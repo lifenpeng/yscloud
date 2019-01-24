@@ -1,0 +1,85 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <span>例行窗口设置</span>
+    </h3>
+    <div ng-click="close()"></div>
+</div>
+<div class="modal-body config-time-modal">
+    <div class="form-horizontal" style="padding:6px 90px;">
+        <div class="form-group">
+            <div class="col-sm-1" style="width: 75px;padding-right: 0px;padding-left: 5px;margin-left:10px;">
+                <label class="control-label">时间范围</label>
+            </div>
+            <div class="col-sm-3 pick-date-common" style="padding-left: 10px;padding-right: 10px;width: 260px;" >
+                <input type="text" name="startDate" class="form-control" style="min-width: 260px;"
+                       ng-click="open($event)"
+                       min-date="{{dateObj.minDate}}"
+                       ng-model="dateObj.start_bk_datetime"
+                       show-button-bar="true"
+                       datepicker-popup="yyyy年MM月dd日"
+                       close-on-date-selection="false"
+                       placeholder="开始时间"
+                       is-open="control.opened"
+                       readonly="true" required/>
+                <span ng-if="control.startTimeFlag" style="color: #e9416e">请输入开始时间</span>
+            </div>
+            <div class="col-sm-3 pick-date-common" style="width: 260px;margin-left: 40px;">
+                <input type="text"
+                       name="endDate"
+                       ng-click="open($event)"
+                       min-date="{{dateObj.minDate}}"
+                       ng-model="dateObj.end_bk_datetime"
+                       class="form-control"
+                       show-button-bar="true"
+                       datepicker-popup="yyyy年MM月dd日"
+                       close-on-date-selection="false"
+                       is-open="control.opened"
+                       placeholder="结束时间"
+                       style="min-width: 260px;"
+                       readonly="true"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="left" style="width: 648px;" custom-scroll custom-config="config.scroll_info">
+                    <div class="autoStyle">
+                        <label style="margin-bottom: 0px;position: relative; top: 2px;">周期选择：</label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio"  name="time_unit" i-check ng-model="dateObj.cycle_type" ng-change="changeTimeUnitType(1)" value="1">
+                            月
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" name="time_unit" i-check ng-model="dateObj.cycle_type" ng-change="changeTimeUnitType(2)" value="2">
+                            周
+                        </label>
+                    </div>
+                    <div  class="autoStyle" ng-class="{'nulBack':$odd,'eeeBack':$even}" ng-repeat="td in dateObj.cycles">
+                        <span ng-if="td.cycle_type == 2">周</span>
+                        <input type="text" cus-time-val name="week" error-mes="dateObj.errorM"  ng-if="td.cycle_type == 2" ng-model="td.cycle_number" required>
+                        <input type="text"  cus-time-val name="day" error-mes="dateObj.errorM"  ng-if="td.cycle_type == 1" ng-model="td.cycle_number" required>
+                        <span ng-if="td.cycle_type == 1 ">日</span>
+                      <!--  <input type="number" cus-time-val name="hour" error-mes="dateObj.errorM" ng-model="td.hh"  required>
+                        <span >时</span>
+                        <input type="number" cus-time-val name="minute" error-mes="dateObj.errorM" ng-model="td.mi"required>
+                        <span >分</span>
+                        <input type="number" cus-time-val name="duration" error-mes="dateObj.errorM" ng-model="td.duration" required>
+                        <span >时长(h)</span>-->
+                        <i class="fa fa-trash-o" ng-if="dateObj.cycles.length !=1" ng-click="removeAutoTime($index)" style="position: absolute; right: 34px;top: 14px;cursor: pointer;"></i>
+                    </div>
+                    <div  class="autoStyle" ng-if="dateObj.cycles.length !=0">
+                        <div ng-click="addCirlTime()" style="background: url(img/dispatch/Model_adding_cirlTime.png) no-repeat 0px 13px;width: 20px;height: 38px;cursor: pointer;"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;margin-top: 40px;">
+        <button ng-if="!control.save_loading" class="save-cancel-btn cancel-btn btn-xl" ng-click="close()">取消</button>
+        <button ng-if="control.save_loading" disabled="disabled" type="button" class="btn-xl disabled-btn" >取消</button>
+        <button ng-if="!control.save_loading" class="save-cancel-btn save-btn btn-xl" ng-click="ok()" >保存</button>
+        <button ng-if="control.save_loading" disabled="disabled" class="save-btn btn-xl">
+            <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>
+

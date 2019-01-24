@@ -1,0 +1,218 @@
+<style>
+    .margin {
+        margin: 5px 0px;
+    }
+</style>
+<!--流程图信息-->
+<div class="form-group flow-made" ng-if="control.load_flow" cus-flow-made undo="configs.undoOpreation" redo="configs.redoOpreation"  array="configs.layoutArray" select-key="control.selectKeyFromIns" pal-data="data" get-instance="getInstance()"  config="config(key)" reflash-node="control.reflash_node" job-config="control.job_config" go-model="flow_info" config-no-data="goToNoDataPage()">
+    <div class="col-sm-12" style="padding: 0">
+        <div class="header_bg">
+            <div style="min-width:220px;position: absolute;">
+                <span class="undo"  ng-click="configs.undoOpreation.invoke()" title="撤销"></span>
+                <span class="redo"  ng-click="configs.redoOpreation.invoke()" title="前进"></span>
+                <span class="array" ng-click="autoArray()" title="排列"></span>
+                <div class="operate_line"></div>
+                <span class="scene" ng-click="addScene()" title="添加场景"></span>
+                <span class="operate-font">微服务</span>
+                <div class="operate_line"></div>
+                <span class="save"  ng-click="saveExendData()" title="保存"></span>
+                <span class="operate-font">保存</span>
+            </div>
+            <div class="head-flow-name">
+                App名称：{{info.sdflow_cn_name}}
+            </div>
+            <div class="right-info">
+                <div class="time-config" ng-if="info.sddispatch_type == 2">
+                    <span ng-if="!flow_info.start_bk_datetime_val">日期配置：</span>
+                    <span ng-if="flow_info.start_bk_datetime_val">日期修改：</span>
+                    <label ng-if="!flow_info.start_bk_datetime_val" ng-click="configTime()" title="时间未设置" class="time-btn"></label>
+                    <label ng-if="flow_info.start_bk_datetime_val" ng-click="configTime()" title="{{flow_info.start_bk_datetime_val}}//{{flow_info.end_bk_datetime_val}}" class="time-btn"></label>
+                </div>
+                <div class="user-select">
+                    <span>执行人：</span>
+                    <div ng-if="!flow_info.exe_user_list || flow_info.exe_user_list.length == 0"  ng-style="control.user_config_show ? {'color':'#d2f1fe','background-color':'#44dcfd','border-color':'#44dcfd'}:{}" ng-click="configUser();"  class="choice-btn">选择</div>
+                    <div ng-if="flow_info.exe_user_list.length == 1" ng-style="control.user_config_show ? {'color':'#d2f1fe','background-color':'#44dcfd','border-color':'#44dcfd'}:{}" ng-click="configUser();"  class="choice-btn">
+                        {{data.user_list | getNameFilter}}
+                    </div>
+                    <div ng-if="flow_info.exe_user_list.length > 1" ng-style="control.user_config_show ? {'color':'#d2f1fe','background-color':'#44dcfd','border-color':'#44dcfd'}:{}" ng-click="configUser();"  class="choice-btn">
+                        {{data.user_list | getNameFilter}}...
+                    </div>
+                    <div class="exeuser_popover" ng-if="control.user_config_show" ng-style="{'pointer-events': control.save_exeuser_loading ? 'none':''}">
+                        <div class="row" >
+                            <label class="col-sm-2 control-label" style="padding-left: 0px;text-align: right;">请选择</label>
+                            <div class="col-sm-10" style="text-align: left; ">
+                                <div class="tablecss tag-md" title="{{one.user_cn_name}}" style="margin-left: 0px;" ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click=chooseUser($index) ng-repeat="one in data.user_list">
+                                    {{one.user_cn_name}}
+                                    <div>
+                                        <i class="fa fa-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align: center;margin-top: 20px;">
+                                <button  ng-if="!control.save_exeuser_loading" class="save-cancel-btn save-btn btn-xl" ng-click="saveFlowExeUser()">确定</button>
+                                <button ng-if="control.save_exeuser_loading" disabled="disabled" class="save-cancel-btn save-btn btn-xl" style="text-align:center;pointer-events: none">
+                                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mouseHover" ng-if="control.show_basic_detail" ng-click="togledetail()"><i title="展开" class="fa fa-angle-double-down"></i></div>
+                <div class="mouseHover" ng-if="!control.show_basic_detail" ng-click="togledetail()"><i title="收起" class="fa fa-angle-double-up"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" style="padding: 0">
+        <div class="drag">
+            <span class="dragLeft" custom-scroll custom-config="configs.drag_left_scroll">
+                <div style="padding-left:1px;">
+                    <!--基础元素-->
+                    <div class="basic_element" ng-click="control.basic_ele = !control.basic_ele" ng-class="{'basic_element_bottom':control.basic_ele}">
+                        基础元素
+                    </div>
+                    <div collapse="control.basic_ele">
+                        <div class="sort_name" ng-click="control.palette0 = !control.palette0" ng-class="{'sort_name_border_bottom':!control.palette0}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette0}"></i>条件
+                        </div>
+                        <div collapse="control.palette0">
+                            <div id="myPaletteDiv0" class="pal_title"  style="height:205px;"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette1 = !control.palette1" ng-class="{'sort_name_border_bottom':!control.palette1}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette1}"></i>轮询
+                        </div>
+                        <div collapse="control.palette1">
+                            <div id="myPaletteDiv1"  style="height:65px;" class="pal_title"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette2 = !control.palette2" ng-class="{'sort_name_border_bottom':!control.palette2}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette2}"></i>文件
+                        </div>
+                        <div collapse="control.palette2">
+                            <div id="myPaletteDiv2" class="pal_title"   style="height:276px;"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette3 = !control.palette3" ng-class="{'sort_name_border_bottom':!control.palette3}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette3}"></i>数据库
+                        </div>
+                        <div collapse="control.palette3">
+                            <div id="myPaletteDiv3" class="pal_title"  style="height:65px;"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette4 = !control.palette4" ng-class="{'sort_name_border_bottom':!control.palette4}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette4}"></i>网络
+                        </div>
+                        <div collapse="control.palette4">
+                            <div id="myPaletteDiv4" class="pal_title"  style="height:65px;"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette5 = !control.palette5" ng-class="{'sort_name_border_bottom':!control.palette5}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette5}"></i>应用
+                        </div>
+                        <div collapse="control.palette5">
+                            <div id="myPaletteDiv5" class="pal_title"  style="height:65px;"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette6 = !control.palette6" ng-class="{'sort_name_border_bottom':!control.palette6}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette6}"></i>脚本
+                        </div>
+                        <div collapse="control.palette6">
+                            <div id="myPaletteDiv6" class="pal_title"  style="height:205px;"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette7 = !control.palette7" ng-class="{'sort_name_border_bottom':!control.palette7}">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette7}"></i>服务
+                        </div>
+                        <div collapse="control.palette7">
+                            <div id="myPaletteDiv7" class="pal_title"  style="height:135px;"></div>
+                        </div>
+                        <div class="sort_name" ng-click="control.palette8 = !control.palette8" ng-class="{'sort_name_border_bottom':!control.palette8}" style="border-bottom: 1px solid #1D3D4F;">
+                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette8}"></i>其他
+                        </div>
+                        <div collapse="control.palette8">
+                            <div id="myPaletteDiv8"  class="pal_title"  style="height:65px;border-bottom: 1px solid #1D3D4F;"></div>
+                        </div>
+                    </div>
+
+                    <div class="basic_element" ng-click="control.basic_ele1 = !control.basic_ele1;control.basic_ele1&&initTree('hf');" ng-class="{'basic_element_bottom':control.basic_ele1}">
+                        恒丰纸业工厂模型
+                    </div>
+                    <div ng-if="!control.basic_ele1">
+                        <div ng-repeat="(key,item) in data.hf" style="position: relative;">
+                            <div ng-click="treeOne(key,item.name)"  id="myTree{{item.num}}"  class="pal_title"  style="width:180px;height:30px;" re-load sum="data.hf.length" name="item.name"></div>
+                            <img src="img/dispatch/fl/palette/site.png" style="position: absolute; top:1px; left:5px; cursor: pointer; z-index: 100;">
+                            <img src="img/dispatch/fl/palette/{{item.stu?'close':'open'}}.png" style="cursor: pointer;position: absolute; top:3px; left:60px;z-index: 100;">
+                            <div ng-if="item.stu">
+                                 <div ng-repeat="(key1,one) in item.child" style="position: relative;">
+                                     <div id="myTreeOne{{one.num}}" ng-click="treeTwo(key,key1,item.name)"  style="z-index: 100;width:180px;height:30px;" re-load-one sum="item.child.length" name="item.name"></div>
+                                     <img src="img/dispatch/fl/palette/area.png" style="position: absolute; top:2px; left:15px;cursor: pointer;z-index: 100;">
+                                     <img src="img/dispatch/fl/palette/{{one.stu?'close':'open'}}.png" style="cursor: pointer;position: absolute; top:3px; left:90px;z-index: 100;">
+                                     <div ng-if="one.stu">
+                                          <div ng-repeat="(key2,two) in one.child" style="position: relative;">
+                                                 <div id="myTreeTwo{{two.num}}" ng-click="treeInfo(key,key1,key2,item.name)"  style="width:180px;height:30px;" re-load-two sum="one.child.length" name="item.name"></div>
+                                                 <img src="img/dispatch/fl/palette/cell.png" style="position: absolute; top:2px; left:45px;cursor: pointer;z-index: 100;">
+                                                 <img src="img/dispatch/fl/palette/{{two.stu?'close':'open'}}.png" style="cursor: pointer;position: absolute; top:3px; left:100px;z-index: 100;">
+                                                 <div ng-if="two.stu">
+                                                     <div ng-repeat="(key2,info) in two.child" style="position: relative;">
+                                                          <div id="info{{info.num}}" style="width:180px;height:30px;" re-load-info sum="two.child.length" name="item.name"></div>
+                                                         <img src="img/dispatch/fl/palette/unit.png" style="cursor: pointer;position: absolute; top:2px; left:75px;z-index: 100;">
+                                                     </div>
+                                                 </div>
+                                          </div>
+                                     </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="basic_element" ng-click="control.basic_ele2 = !control.basic_ele2;control.basic_ele2&&initTree('paperma');" ng-class="{'basic_element_bottom':control.basic_ele2}">
+                        造纸行业模型
+                    </div>
+                    <div ng-if="!control.basic_ele2">
+                        <div id="zaozhi" class="pal_title"  style="height:205px;"></div>
+                    </div>
+
+                    <div class="basic_element" ng-click="control.basic_ele3 = !control.basic_ele3;control.basic_ele3&&initTree('tobacco');" ng-class="{'basic_element_bottom':control.basic_ele3}">
+                        烟草行业模型库
+                    </div>
+                    <div ng-if="!control.basic_ele3">
+                        <div id="yancao" class="pal_title"  style="height:205px;"></div>
+                    </div>
+
+                    <div class="basic_element" ng-click="control.basic_ele4 = !control.basic_ele4;control.basic_ele4&&initTree('s95');" ng-class="{'basic_element_bottom':control.basic_ele4}">
+                        S95
+                    </div>
+                    <div ng-if="!control.basic_ele4">
+                        <div id="s95" class="pal_title"  style="height:205px;"></div>
+                    </div>
+
+                    <!--私有元素-->
+                    <div class="basic_element" ng-click="control.private_ele = !control.private_ele" ng-class="{'basic_element_bottom':!control.private_ele}" ng-show="data.private_palette_list.length">
+                        私有元素
+                    </div>
+                    <div collapse="control.private_ele" ng-show="data.private_palette_list.length">
+                        <div id="privatePaletteDiv" style="background: #172230;min-height: 80px;"></div>
+                    </div>
+
+                    <!--场景元素-->
+                    <div ng-repeat="scene in data.scene_palette_list">
+                        <div class="basic_element" ng-click="scene.sc_collapse = !scene.sc_collapse" ng-class="{'basic_element_bottom':scene.sc_collapse && !$last}" >
+                            <i class="fa fa-times" ng-click="removeScene($index,scene.scene_name,$event)" title="删除"></i>
+                            <div class="scene_palete_name" title="{{scene.scene_name}}" style="border-top: 1px solid #1D3D4F;">
+                                <span ng-bind="scene.scene_name ? scene.scene_name : '--'"></span>
+                            </div>
+                        </div>
+                        <div collapse="scene.sc_collapse" ng-repeat="category in scene.category_list">
+                            <div class="sort_name" ng-click="category.type_collapse = !category.type_collapse" ng-class="{'sort_name_border_bottom':!category.type_collapse}">
+                                <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!category.type_collapse}"></i>
+                                {{category.category_cn}}
+                            </div>
+                            <div collapse="category.type_collapse">
+                                <div id="scenePaletteDiv{{$parent.$index}}-{{$index}}" style="background: #172230;min-height: 80px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            <span class="dragMid">
+              <div id="myEditDiagramDiv" class="grid_bg"></div>
+            </span>
+        </div>
+    </div>
+</div>

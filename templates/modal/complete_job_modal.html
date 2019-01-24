@@ -1,0 +1,30 @@
+<form name="form.reason_form" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div  class="modal-header" >
+        <h3 class="modal-title">完成作业</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal" style="padding-top: 20px">
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key" >原因</label>
+                <div class="col-sm-9">
+              <textarea name="reason"
+                        ng-model="reason.complete_reason"
+                        class="form-control label_value"
+                        placeholder="原因（最多250个字）"
+                        style="min-width: 260px; resize:none;"
+                        rows="6"
+                        ng-maxlength=250
+                        ng-model-options="{updateOn: 'blur'}"
+                        required>
+                        </textarea>
+                    <validate-msg tag-cn-name="原因" name="reason"></validate-msg>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;margin-top: 40px;">
+            <button class=" cancel-btn btn-xl" ng-click="formCancel()">取消</button>
+            <button class=" save-btn btn-xl" ng-click="formSubmit()">确定</button>
+        </div>
+    </div>
+</form>

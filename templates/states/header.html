@@ -1,0 +1,59 @@
+
+<div class="top-bar" style="margin-top: 30px;" ng-class="{'top_bar_lg':sitebarData.top_bar_lg,'top_bar_sm':!sitebarData.top_bar_lg}">
+    <div class="top-bar-container">
+        <img ng-src="{{sitebarData.top_bar_lg ? 'img/comm/cl-logo.png':'img/header/cl-logo-bg-sm.png'}}" style="width: 100%;height: 100%;">
+        <span class="top-bar-logo">
+            <img ng-src="{{sitebarData.top_bar_lg ? 'img/comm/u14.png':'img/header/cl-logo-sm.png'}}" style="margin-right: 6px; width: 48px; ng-click="jumpToIndex()">
+            <div class="top-bar-logo-block" style="cursor: pointer" ng-click="jumpToIndex()">
+                <span style="position: relative;top: -6px;" ng-if="sitebarData.top_bar_lg">远舢工业云平台</span>
+                <span ng-class="{'top-bar-lg-font':sitebarData.top_bar_lg,'top-bar-sm-font':!sitebarData.top_bar_lg}">YSCloud</span>
+            </div>
+        </span>
+        <div class="top-bar-user-block" style="right: 100px;">
+            <div class="top-bar-user-container">
+                <div class="top-bar-user-icon" ng-class="{'user-img':sitebarData.top_bar_lg,'user-img-sm':!sitebarData.top_bar_lg}" data-toggle="dropdown"></div>
+                <div class="dropdown-menu dropdown-user pull-left top-bar-user-menu">
+                    <li></li>
+                    <li><a class="top-bar-menu-font" ui-sref="user_modify">个人信息&nbsp;&nbsp;<i class="fa fa-user" ></i></a></li>
+                    <li><a class="top-bar-menu-font" ui-sref="pwd_modify">修改密码&nbsp;&nbsp;<i class="fa fa-key"></i></a></li>
+                    <li><a class="top-bar-menu-font" ng-click="registerCorsLares()">注册信息&nbsp;&nbsp;<i class="fa fa-address-card"></i></a></li>
+                </div>
+                <div class="top-bar-user-name" ng-bind="loginUser.orguser_cn_name"></div>
+            </div>
+            <div class="display-inblock width-height-30">
+                <span class="width-height-30">
+                    <div ng-class="{'message-img':sitebarData.top_bar_lg,'message-img-sm':!sitebarData.top_bar_lg}" ng-click="goMessageList()"></div>
+                </span>
+            </div>
+            <div class="display-inblock width-height-30">
+                <div ng-class="{'task-img':sitebarData.top_bar_lg,'task-img-sm':!sitebarData.top_bar_lg}" ng-click="goTaskList()"></div>
+            </div>
+            <div class="display-inblock width-height-30" ng-style="{'width':sitebarData.top_bar_lg ? '34px':'20px'}">
+                <span>
+                     <div ng-class="{'search-img':sitebarData.top_bar_lg,'search-img-sm':!sitebarData.top_bar_lg}" data-toggle="dropdown"></div>
+                    <div class="dropdown-menu dropdown-user pull-left top-bar-log-menu" ng-if="run_mode != 'integration'">
+                        <div class="line_style"></div>
+                        <li><a class="dropdown_icon log top-bar-menu-font" ui-sref="log_list"><i></i>&nbsp;&nbsp;日志</a></li>
+                        <li class="historyTask"><a class="dropdown_icon task top-bar-menu-font" ui-sref="tasks_history_list({tab_name:'submit_his'})" ><i></i>&nbsp;&nbsp;历史任务</a></li>
+                        <li><a class="dropdown_icon mail top-bar-menu-font" ui-sref="contacts_list"><i></i>&nbsp;&nbsp;通讯录</a></li>
+                    </div>
+                </span>
+            </div>
+            <div class="display-inblock width-height-30">
+                <div ng-class="{'out-img':sitebarData.top_bar_lg,'out-img-sm':!sitebarData.top_bar_lg}" ng-click="run_mode == 'integration' ? closeWindow() : logoout()"></div>
+            </div>
+        </div>
+        <!--面包屑-->
+        <div class="bread-crumb-block">
+            <span style="position: relative;" ng-style="{'margin-right':sitebarData.top_bar_lg ? '30px':'26px'}">
+                <a class="top-bar-home-icon" ng-class="{'home-img':sitebarData.top_bar_lg,'home-img-sm':!sitebarData.top_bar_lg}" ui-sref="index"></a>
+            </span>
+            <li class="display-inblock" style="list-style: outside none none;" ng-repeat="state in breadcrumb">
+                <i class="breadcrumb-font-last" ng-if="$last">{{state.label}}</i>
+                <i class="breadcrumb-font" ng-if="!$last" ng-click="sitebarJump(state)">{{state.label}}</i>
+                <div ng-if="!$last" class="bar_angle"></div>
+            </li>
+        </div>
+    </div>
+</div>
+

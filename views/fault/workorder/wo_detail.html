@@ -1,0 +1,854 @@
+<div class="container-fluid wo-handle">
+    <!--工单基本信息-->
+    <div class="row form-style" collapse="!sub_tab.show_all_detail" style="padding-top: 15px;">
+        <div class="col-sm-8">
+            <label class="col-sm-3 control-label text-right label-key">工单描述</label>
+            <div class="col-sm-9 label-value">{{sub_tab.basicData.order_bk_desc}}</div>
+        </div>
+    </div>
+    <div class="row" collapse="sub_tab.show_all_detail" style="padding-bottom: 20px;">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-4 workorder-detail-title">
+                    <label>工单信息</label>
+                </div>
+            </div>
+            <div class="row form-style">
+                <div class="col-sm-3 text-right">
+                    <label class="label-key">故障单编号</label>
+                </div>
+                <div class="col-sm-6 text-left control-label">
+                    <label class="label-value" ng-bind="sub_tab.basicData.order_seq "></label>
+                </div>
+                <div class="col-sm-3" ng-if="sub_tab.basicData.urgency_level == 2">
+                    <label class="worder-detail-emergency">紧急</label>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:5px;">
+                <div class="col-sm-3 text-right">
+                    <label class="label-key">标题</label>
+                </div>
+                <div class="col-sm-6 text-left control-label">
+                    <label class="label-value" ng-bind="sub_tab.basicData.order_bk_title"></label>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;" ng-if="sub_tab.basicData.workorder_type == 1">
+                <div class="col-sm-3 text-right">
+                    <label class="label-key">类型</label>
+                </div>
+                <div class="col-sm-8 text-left control-label">
+                    <label class="label-value" ng-bind="sub_tab.basicData.trouble_bk_desc"></label>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;" ng-if="sub_tab.basicData.workorder_type == 1">
+                <div class="col-sm-3 text-right">
+                    <label class="label-key">系统</label>
+                </div>
+                <div class="col-sm-8 text-left control-label">
+                    <label class="label-value" ng-bind="sub_tab.basicData.business_cn_name"></label>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;">
+                <div class="col-sm-3 text-right">
+                    <label class="label-key">描述</label>
+                </div>
+                <div class="col-sm-8 text-left control-label">
+                    <label class="label-value" ng-bind="sub_tab.basicData.order_bk_desc"></label>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;" ng-if="sub_tab.handle_type">
+                <div class="col-sm-3 text-right">
+                    <label class="label-key">处理方式</label>
+                </div>
+                <div class="col-sm-8 text-left control-label" style="word-break: break-all">
+                    <span class="label-value" ng-if="sub_tab.handle_type == 2">固化方案</span>
+                    <span class="label-value" ng-if="sub_tab.handle_type == 3">脚本处理</span>
+                    <span class="label-value" ng-if="sub_tab.handle_type == 1 && sub_tab.basicData.sqlexe_type == 1">手工SQL</span>
+                    <span class="label-value" ng-if="sub_tab.handle_type == 1 && sub_tab.basicData.sqlexe_type == 2">批量SQL</span>
+                    <span class="label-value" ng-if="sub_tab.handle_type == 4">数据导出</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-4 workorder-detail-title">
+                    <label>工单流转</label>
+                </div>
+            </div>
+            <work-order-flow data="sub_tab.flowData"></work-order-flow>
+        </div>
+    </div>
+    <!--收起展开按钮-->
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-8 text-right"  style="margin-top: -20px">
+            <div class="workorder-slide-btn" ng-if="sub_tab.show_all_detail"
+                 ng-click="sub_tab.show_all_detail = !sub_tab.show_all_detail;">查看详细&nbsp;<i class="fa fa-angle-down"></i></div>
+            <div class="workorder-slide-btn" ng-if="!sub_tab.show_all_detail"
+                 ng-click="sub_tab.show_all_detail = !sub_tab.show_all_detail;">收起详细&nbsp;<i class="fa fa-angle-up"></i></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div ng-if="sub_tab.handle_type == 1 && sub_tab.basicData.sqlexe_type == 1"  ng-include="'views/fault/workorder/wo_sql_hand.html'">手工sql</div>
+            <div ng-if="sub_tab.handle_type == 1 && sub_tab.basicData.sqlexe_type == 2"  ng-include="'views/fault/workorder/wo_batch_sql_handle.html'">批量sql</div>
+            <div ng-if="sub_tab.handle_type == 2"  ng-include="'views/fault/workorder/solid_program.html'">固化方案</div>
+            <div ng-if="sub_tab.handle_type == 3"  ng-include="'views/fault/workorder/wo_script_handle.html'">脚本处理</div>
+            <div ng-if="sub_tab.handle_type == 4"  ng-include="'views/fault/workorder/wo_export_handle.html'">数据导出</div>
+        </div>
+    </div>
+    <!--&lt;!&ndash;智能方案&ndash;&gt;
+    <div ng-if="sub_tab.temp_handle_type==2" class="row">
+        <div class="col-sm-12">
+            <div class="row form-style" ng-if="!sub_tab.showParamList || sub_tab.batchProgramBtn"  style="padding-top: 10px;" >
+                <div class="col-sm-8">
+                    <label class="col-sm-3 control-label text-right label-key">方案名称</label>
+                    <div class="col-sm-9">
+                        <span class="label-value" ng-bind="sub_tab.program_name ? sub_tab.program_name : '&#45;&#45;'"></span>
+                    </div>
+                </div>
+            </div>
+            &lt;!&ndash;批量方案&ndash;&gt;
+            <div class="row" ng-if="sub_tab.batchProgramBtn">
+                <div class="col-sm-12">
+                    <div class="row form-style" style="padding-top:10px;padding-bottom: 7px;">
+                        <label class="col-sm-2 control-label label-key" style="padding-right: 8px;">所选文件</label>
+                        <div class="col-sm-3" ng-if="sub_tab.control.show_result">
+                            <file-upload fileupload="sub_tab.batch_program_fileupload" downfile="downloadProgramFile(sub_tab);"></file-upload>
+                        </div>
+                        <div class="col-sm-6" ng-if="!sub_tab.control.show_result">
+                            <span class="label-value" style="padding-left: 6px;">暂无上传批量方案文件</span>
+                        </div>
+                    </div>
+                    <div class="row"  ng-if="sub_tab.control.show_result">
+                        <div class="col-sm-9 col-sm-offset-2">
+                            <fieldset class="excuting-program-fieldset">
+                                <legend>执行结果</legend>
+                                &lt;!&ndash;执行完成&ndash;&gt;
+                                <div ng-if="!sub_tab.control.exec_loading" class="program-excute-finished">
+                                    <div ng-if="sub_tab.control.is_task_author">
+                                        <div class="task-author-state">
+                                            <span ng-show="!sub_tab.workflow_state">任务授权中</span>
+                                            <span ng-show="sub_tab.workflow_state == 1">任务待复核</span>
+                                            <span ng-show="sub_tab.workflow_state == 2">任务复核拒绝</span>
+                                            <span ng-show="sub_tab.workflow_state == 3">任务待授权</span>
+                                            <span ng-show="sub_tab.workflow_state == 4">任务授权拒绝</span>
+                                            <span ng-show="sub_tab.workflow_state == 5">任务待执行</span>
+                                            <span ng-show="sub_tab.workflow_state == 7">任务关闭</span>
+                                            <div style="margin-left: 7px">
+                                                <a style="cursor: pointer;font-size:14px;" ng-click="viewProgramTaskAuthorDetail(sub_tab)">查看授权信息</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="!sub_tab.control.is_task_author">
+                                        <div class="row form-style" style="margin-bottom: 10px">
+                                            <div class="col-sm-3">
+                                                <span class="label-key" style="padding-left: 12px;">执行总条数</span>
+                                                <span class="label-value" style="padding-left: 10px;">{{sub_tab.program_result_msg.total_sql}}条</span>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <span class="label-key" >执行成功条数</span>
+                                                <span style="padding-left: 10px;color:#4CAF50;">{{sub_tab.program_result_msg.success_num}}条</span>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <span class="label-key">执行失败条数</span>
+                                                <span style="padding-left: 10px;color: #CF4646;">{{sub_tab.program_result_msg.fail_num}}条</span>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <span class="label-key" style="padding-left: 12px;">执行耗时</span>
+                                                <span class="label-value" style="padding-left: 10px;">{{sub_tab.program_result_msg.used_time}}ms</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-style" style="margin-bottom: 10px" ng-if="sub_tab.program_result_msg.task_msg.length !=0">
+                                            <div class="col-sm-4 label-key text-center" style="width: 120px;display: inline-block;">执行失败信息</div>
+                                            <div style="color: #CF4646;width: 76%;display: inline-block;margin-left: -6px;">
+                                                <table class="sub_table">
+                                                    <thead>
+                                                    <tr>
+                                                        <td>行号</td>
+                                                        <td>错误信息</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="tr in  sub_tab.program_result_msg.task_msg">
+                                                        <td>{{tr.step_id}}</td>
+                                                        <td>{{tr.exec_text}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            &lt;!&ndash;批量查询方案&ndash;&gt;
+            <div class="row" ng-if="sub_tab.batchSelectProgramBtn">
+                <div class="col-sm-10" style="margin-left: 15%;">
+                    &lt;!&ndash;步骤列表&ndash;&gt;
+                    <div class="row" style="position: relative;" ng-repeat="step in sub_tab.step_list">
+                        <div class="col-sm-12" style="padding-right: 60px;">
+                            <div class="batch-steps-list">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row form-style" style="margin:5px 0;cursor: pointer;" ng-click="step.show_detail = !step.show_detail">
+                                            <div class="col-sm-1 text-left" style="padding-top:5px;"><span class="batch-step-seq"  ng-bind="step.step_seq"></span></div>
+                                            <div class="col-sm-1 text-left" style="padding-top:5px;width: 80px;">
+                                                <span class="batch-step-name label-key">步骤名</span>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <span class="batch-step-title label-value" ng-bind="step.step_bk_title"></span>
+                                            </div>
+                                        </div>
+                                        &lt;!&ndash;横线&ndash;&gt;
+                                        <div class="row" ng-if="!step.show_detail">
+                                            <div class="col-sm-12">
+                                                <div class="horizontal-line"></div>
+                                            </div>
+                                        </div>
+                                        <div collapse="step.show_detail">
+                                            <div class="row" style="margin:15px ;background: #ffffff;" ng-repeat="sql in step.program_sql_list">
+                                                <div class="col-sm-12">
+                                                    <div class="row" style="margin-top: 10px;">
+                                                        <div class="col-sm-10" style="height: 25px;">
+                                                            <span class="program-sql-socName" ng-bind="sql.soc_name"></span>
+                                                            <span class="program-sql-text" ng-bind="sql.sql_text"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom: 10px;">
+                                                        <div class="col-sm-12">
+                                                            <table class="sub_table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <td>参数中文名</td>
+                                                                    <td>参数名</td>
+                                                                    <td>参数值</td>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="param in sql.sql_param_list">
+                                                                    <td>{{param.sparam_cn_name}}</td>
+                                                                    <td>{{param.sparam_name}}</td>
+                                                                    <td>
+                                                                        <div ng-if="param.sparam_type == 5">
+                                                                            {{param.sparam_scope}}<i style="color: #d9d9d9;padding-left: 5px;">[固定值] </i>
+                                                                        </div>
+                                                                        <div ng-if="param.sparam_type != 5">
+                                                                            {{param.sparam_scope}}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr ng-if="!sql.sql_param_list">
+                                                                    <td colspan="3" style="color: #666;text-align: center;">无参数</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    &lt;!&ndash;执行结果&ndash;&gt;
+                    <div class="row"  ng-if="sub_tab.control.show_result">
+                        <fieldset class="excuting-program-fieldset">
+                            <legend>执行结果</legend>
+                            &lt;!&ndash;执行完成&ndash;&gt;
+                            <div class="program-excute-finished">
+                                <div ng-if="sub_tab.control.is_task_author">
+                                    <div class="task-author-state">
+                                                        <span ng-show="!sub_tab.workflow_state">
+                                                             <span class="fa fa-spin fa-spinner" style="color: #4cae4c;font-size: 20px;"></span>
+                                                            任务授权中
+                                                        </span>
+                                        <span ng-show="sub_tab.workflow_state == 1">任务待复核</span>
+                                        <span ng-show="sub_tab.workflow_state == 2" style="color: #FF0101;">
+                                                            <span class="task-failure"></span>
+                                                            任务复核拒绝
+                                                        </span>
+                                        <span ng-show="sub_tab.workflow_state == 3" style="color: rgb(76, 174, 76);">任务待授权</span>
+                                        <span ng-show="sub_tab.workflow_state == 4" style="color: #FF0101;">
+                                                            <span class="task-failure"></span>
+                                                            任务授权拒绝
+                                                        </span>
+                                        <span ng-show="sub_tab.workflow_state == 5">
+                                                            任务待执行
+                                                        </span>
+                                        <span ng-show="sub_tab.workflow_state == 6" style="color: rgb(76, 174, 76);">任务执行完毕</span>
+                                        <span ng-show="sub_tab.workflow_state == 7" style="color: #d9534f;">
+                                                            任务关闭
+                                                        </span>
+                                        <div style="margin-left: 7px">
+                                            <a style="cursor: pointer;font-size:14px;" ng-click="viewProgramTaskAuthorDetail(sub_tab)">查看授权信息</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="!sub_tab.control.is_task_author">
+                                    <div class="excute-error-msg">
+                                        <div ng-if="sub_tab.control.show_error_message">
+                                            <span style="color: #CF4646">{{sub_tab.error_message}}</span>
+                                        </div>
+                                        <div ng-if="!sub_tab.control.show_error_message">
+                                            <span style="color: #666;margin-right: 10px;">{{sub_tab.select_path.substring(sub_tab.select_path.lastIndexOf('/')+1,sub_tab.select_path.length)}}</span>
+                                            <span><i class="fa fa-download" style="color: #379339;cursor: pointer;" ng-click="downloadSelectExcel(sub_tab.select_path)"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div ng-repeat="step in sub_tab.steps" ng-if="!sub_tab.showParamList" class="row ng-scope" style="margin-top:17px;">
+                <div class="col-sm-9 col-sm-offset-2" ng-style="borderStyle(step)">
+                    <div class="program-index-circle">
+                        <strong style="position:relative; z-index: 11">{{step.step_seq}}</strong>
+                        <div ng-style="smallCircle(step)"></div>
+                    </div>
+                    <div title="{{step.step_bk_title}}" class="step-title" ng-class="stepTitleStyle($index,'.step-title span')"><span>{{step.step_bk_title}}</span></div>
+                    <div ng-style="lineStyle(step)"></div>
+                    <div ng-if="step.type == 1">
+                        <program-step-form data="step.formData" flag="pgauthflag" submit-method="saveOneStep(sub_tab, $index);" view-auth="viewAuthProcess(sub_tab, $index)" readonly="{{step.stepFormLock}}" showbtn="false" detail="true"></program-step-form>
+                    </div>
+                    &lt;!&ndash;如果是没有参数的sql语句，没有参数&ndash;&gt;
+                    <div ng-if="step.type == 2 && step.checkData.sql_basic_list" class="row" style="margin-top: 10px;">
+                        <div class="col-sm-12">
+                            <div class="row form-style" ng-repeat="one in step.checkData.sql_basic_list">
+                                <label class="col-sm-3 control-label text-right label-key">{{one.key}}</label>
+                                <label class="col-sm-6 control-label label-value">{{one.value}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="without-execute-step" ng-if="step.type == 0 && $index == 0">
+                        <label>暂无执行步骤</label>
+                    </div>
+                    <div ng-if="step.type == 2 && step.checkData.isSuccess==true"  class="row" ng-style="setMarginTopStyle(sql.sql_type)" ng-repeat="sql in step.checkData.sql_result_list">
+                        <div class="col-sm-12" ng-if="sql.success ==true && sql.sql_type==1 ">
+                            <div class="row program-line"></div>
+                            <div class="row form-style" style="margin-top: 10px;">
+                                <div style="float: right;margin-right:7px">
+                                    <button class="btn search-more-btn"  ng-disabled="sql.search_loading" ng-click="searchMoreInfoInCurrTab(sql,$index,step,out_index)">查询</button>
+                                </div>
+                                <div class="search-input">
+                                    <input type="text" ng-model="sql.start_num"> - <input type="text" ng-model="sql.end_num" style="width: 40px;text-align: center">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-sm-12 data-content-tab">
+                                    <table class="table-bordered col-sm-12"  ng-if="!step.checkData.fail_reason">
+                                        <tbody>
+                                        <tr class="tab-head-title">
+                                            <td ng-repeat="thead in sql.title_list">
+                                                <span ng-bind="thead.value ? thead.value :thead.key "></span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="sql.content_list.length==0" style="font-size: 15px;color:#808080;">
+                                            <td colspan="{{sql.title_list.length}}" style="padding: 4px 6px;text-align: center">
+                                                暂无数据
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="tbody in sql.content_list" ng-class="$index % 2 == 0 ? '' : 'tbl-even'" style="font-size: 12px;">
+                                            <td ng-repeat="td in sql.title_list" style="padding: 4px 6px;">
+                                                {{tbody[td.key]}}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="step.type == 2 && step.checkData.isSuccess==true" class="row" style="margin-top:14px;">
+                        &lt;!&ndash;线条&ndash;&gt;
+                        <div  style="margin-bottom: 23px;" class="row program-line"></div>
+                        <div class="col-sm-4" style="margin-top: -10px">
+                            <label class="submit-success-tip">提交成功</label>
+                        </div>
+                        <div ng-if="step.checkData.total_count != 0"   class="col-sm-4" style="margin-top: -10px">
+                            <label>共计有{{step.checkData.total_count}}条</label>
+                        </div>
+                    </div>
+                    <div ng-if="step.type == 2 && step.checkData.isSuccess==false && step.is_exception==false" class="row" style="margin-top: 20px;">
+                        <div class="row program-line" style="margin-bottom: 20px;"></div>
+                        <div class="col-sm-4 program-exec-info">
+                            <label class="submit-error-tip">提交失败</label>
+                        </div>
+                        <div class="col-sm-7 program-exec-info">
+                            <label>{{step.checkData.fail_reason}}</label>
+                        </div>
+                    </div>
+                    <div ng-if="step.type == 2 && step.is_exception==true" style="text-align: center;" class="row">
+                        <div style="margin:42px 2px 42px 20px;" class="row program-line"></div>
+                        <div class="col-sm-4 exec-error-content">
+                            <label class="submit-error-tip" style="width: 156px;">执行异常</label>
+                        </div>
+                        <div class="col-sm-5 program-exec-info">
+                            <label>{{step.exception_reason}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="!sub_tab.showParamList" class="row" style="margin-top:20px;">
+                <div class="col-sm-9 col-sm-offset-2" style="position: relative;">
+                    <div class="finish-circle" ng-style="{'background-color':sub_tab.finish_deal_order ? '#3D9ED8' :'#E0E0E0'}"></div>
+                    <div class="step-title">完成</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    &lt;!&ndash;sql维护&ndash;&gt;
+    <div ng-if="sub_tab.temp_handle_type==1 || sub_tab.temp_handle_type == 4">
+        <div ng-if="!sub_tab.showParamList">
+            <div class="row"  ng-if="(sub_tab.sql_steps.length != 0 && sub_tab.is_detail) || !sub_tab.is_detail" style="padding: 5px 50px;">
+                &lt;!&ndash; 手工输入sql-步骤&ndash;&gt;
+                <div class="row sql-deal-step" ng-if="sub_tab.basicData.sqlexe_type == 1 || sub_tab.temp_handle_type == 4" ng-repeat="sql_step in sql_steps" ng-class="{'last_sql_step': $last}">
+                    <div class="sql-deal-stepIndex">
+                        {{$index + 1}}
+                    </div>
+                    <div class="col-sm-12 sql-deal sql-deal-content">
+                        <div class="row">
+                            <div class="col-sm-2" style="padding-left: 0px;;text-align: left">
+                                <span>{{sql_step.sys_cn_name}}</span>
+                            </div>
+                        </div>
+                        <div class="row form-style" style="padding-left: 0px;margin-top: 9px;">
+                            <div class="col-sm-11 label-value" style="padding-left: 0px;word-break: break-all   ">
+                                {{sql_step.sql_text}}
+                            </div>
+                            <div class="col-sm-1 detail_btn" style="padding:3px 0 0 ;font-size: 12px;text-align: right;">
+                                <a href="javascript:void(0);" ng-click="viewSqlStepModal(sql_step.sql_work_seq)">详细>></a>
+                            </div>
+                        </div>
+                        <div class="row query-result form-style">
+                            <div class="col-sm-3" style="padding-left: 0px;">
+                                <span class="label-key">预计影响条数</span>
+                                <span class="label-value" style="padding-left: 20px;">{{sql_step.exp_bk_num}}</span>
+                            </div>
+                            <div class="col-sm-3">
+                                <span class="label-key">预计执行时间</span>
+                                <span class="label-value" style="padding-left: 20px;">{{sql_step.exp_exec_time}}</span>
+                            </div>
+                            <div class="col-sm-3">
+                                <span class="label-key">时段</span>
+                                <span style="padding-left: 20px;" ng-class="sql_step.bucket_type == 1 ? 'sql_timeframe_low' : 'sql_timeframe_high'">{{sql_step.bucket_cn_type}}</span>
+                            </div>
+                            &lt;!&ndash;添加了权限&ndash;&gt;
+                            <div class="col-sm-3 text-right" style="padding-right:0;" ng-show="sql_step.priv_yn_flag ==1">
+                                <div ng-show="sql_step.pend_work_seq">
+                                    <a style="cursor: pointer" ng-click="viewTaskAuthorDetail(sub_tab,sql_step)">查看授权信息</a>
+                                    <span ng-show="sql_step.workflow_state == 1" style="color: rgb(76, 174, 76);padding-left: 5px;font-size: 16px">任务待复核</span>
+                                    <span ng-show="sql_step.workflow_state == 2" style="color: rgb(76, 174, 76);padding-left: 5px;font-size: 16px">任务复核拒绝</span>
+                                    <span ng-show="sql_step.workflow_state == 3" style="color: rgb(76, 174, 76);padding-left: 5px;font-size: 16px">任务待授权</span>
+                                    <span ng-show="sql_step.workflow_state == 4" style="color: rgb(76, 174, 76);padding-left: 5px;font-size: 16px">任务授权拒绝</span>
+                                    <span ng-show="sql_step.workflow_state == 5" style="color: rgb(76, 174, 76);padding-left: 5px;font-size: 16px">任务待执行</span>
+                                    <span ng-show="sql_step.workflow_state == 7" style="color: #d9534f;padding-left: 15px;font-size: 16px">任务关闭</span>
+                                </div>
+                                <div ng-show="!sql_step.pend_work_seq">
+                                    <span style="color: #339900;" ng-show="sql_step.sql_state == 2 && sub_tab.temp_handle_type != 4"><i class="fa fa-check-circle" style="color: #339900;font-size: 18px;"></i>&nbsp;提交成功</span>
+                                    <a style="cursor: pointer;" ng-show="sql_step.sql_state == 2 && sub_tab.temp_handle_type == 4" ng-click="loadData(sql_step.download_bk_path)">导出数据</a>
+                                    <span style="color: #C20608;" ng-show="sql_step.sql_state == 3"><i class="fa fa-times-circle" style="color: #C20608;font-size: 18px;"></i>&nbsp;提交失败</span>
+                                    <span style="color: #339900;" ng-show="sql_step.sql_state == 4"><i class="fa fa-check-circle" style="color: #339900;font-size: 18px;"></i>&nbsp;回退成功</span>
+                                    <span style="color: #C20608;" ng-show="sql_step.sql_state == 5"><i class="fa fa-times-circle" style="color: #C20608;font-size: 18px;"></i>&nbsp;回退失败</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-right" style="padding-right:0;" ng-show="sql_step.priv_yn_flag ==2">
+                                <span style="color: #FF9900;" ><i class="fa fa-warning " style="color: #F29417;font-size: 20px;"></i>&nbsp;权限不足</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                &lt;!&ndash; 批量导入&ndash;&gt;
+                <div class="row" style="border:1px solid rgba(68,220,253,0.3);"  ng-repeat="batch in sub_tab.sql_steps" ng-if="sub_tab.basicData.sqlexe_type == 2 && sub_tab.sql_steps.length != 0" ng-style="{'border-bottom':$last ? '1px solid rgba(68,220,253,0.3)':'none'}">
+                    <div class="col-sm-12">
+                        <div class="row add-file-origi-header" ng-class="batch.parse_success ? '':'add-file-header'"
+                             ng-style="{'border-bottom': batch.parse_success ? '1px solid rgba(68,220,253,0.3)' : '','padding-bottom':batch.fileupload.filename ? '10px' : ''}">
+                            <div class="col-sm-12">
+                                <div class="row form-style">
+                                    <div class="col-sm-3 sql-file-group">
+                                        <span class="add-sql-file-icon"></span>
+                                        <span ng-bind="batch.fileupload.filename"></span>&nbsp;
+                                        <span class="fa fa-download down-icon" title="下载sql文件" ng-click="downloadImportFile(batch)"></span>
+                                    </div>
+                                    <label class="col-sm-1 control-label header-label label-key" style="padding-right: 0px">应用系统</label>
+                                    <div class="col-sm-2 label-value" style="min-width: 208px;text-align: left">
+                                        <div ng-if="batch.parse_success" ng-bind="batch.sql_info.sys_name" style="padding-top: 7px"></div>
+                                    </div>
+                                    <label class="col-sm-1 control-label header-label label-key">数据库</label>
+                                    <div  class="col-sm-2 label-value" style="min-width: 208px">
+                                        <div ng-if="batch.parse_success" ng-bind="batch.sql_info.soc_name" style="padding-top: 7px;text-align: left"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"  ng-class="batch.parse_success || batch.parse_loading ? 'parse_success':''" style="background-color: #101720">
+                            <div class="col-sm-6" ng-if="batch.parse_success || batch.parse_loading">
+                                <div ng-if="!batch.parse_loading">
+                                    <div class="row form-style">
+                                        <label class="col-sm-6 control-label label-key">导入文件信息</label>
+                                    </div>
+                                    <div class="row form-style">
+                                        <div class="col-sm-4">
+                                            <span class="label-key"> SQL总条数:</span>
+                                            <span class="label-value">{{batch.import_file_info.total_bk_num}}</span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span class="label-key">无权限条数:</span>
+                                            <span class="label-value" ng-bind="batch.import_file_info.nopow_bk_num"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 10px">
+                                        <div class="col-sm-12">
+                                            <table class="sub_table">
+                                                <thead>
+                                                <tr class="cursor_default">
+                                                    <td>
+                                                        分类
+                                                    </td>
+                                                    <td>
+                                                        成功条数
+                                                    </td>
+                                                    <td>
+                                                        失败条数
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="text-align: left;">
+                                                    <td><span>INSERT</span></td>
+                                                    <td><span ng-bind="batch.import_file_info.inparse_bk_num"></span></td>
+                                                    <td><span ng-bind="batch.import_file_info.inall_bk_num - batch.import_file_info.inparse_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;">
+                                                    <td><span>UPDATE</span></td>
+                                                    <td><span ng-bind="batch.import_file_info.upparse_bk_num"></span></td>
+                                                    <td><span ng-bind="batch.import_file_info.upall_bk_num - batch.import_file_info.upparse_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;">
+                                                    <td><span>DELETE</span></td>
+                                                    <td><span ng-bind="batch.import_file_info.delparse_bk_num"></span></td>
+                                                    <td> <span ng-bind="batch.import_file_info.delall_bk_num - batch.import_file_info.delparse_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;color: #ddd;" title="跳过处理">
+                                                    <td class="line_through"><span>SELECT</span></td>
+                                                    <td class="line_through"><span ng-bind="batch.import_file_info.selparse_bk_num"></span></td>
+                                                    <td class="line_through"> <span ng-bind="batch.import_file_info.selall_bk_num - batch.import_file_info.selparse_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;">
+                                                    <td><span style="color: #336699">总计</span></td>
+                                                    <td><span ng-bind="batch.import_file_info.parsepow_bk_num"></span></td>
+                                                    <td><span ng-bind="batch.import_file_info.total_bk_num - batch.import_file_info.parsepow_bk_num"></span></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row"  style="text-align:right;" ng-if="batch.import_file_info.total_bk_num - batch.import_file_info.parsepow_bk_num">
+                                        <div class="col-sm-12 text-right" style="padding-top: 5px">
+                                            <div class="workorder-slide-btn"  ng-click="viewExeDetail(batch,1)">查看失败详细</div>
+                                            <span class="fa fa-download download_detail_file" title="下载失败详细信息" ng-click="downloadDetailFile(batch.import_file_info.parse_download_path)" ng-if="batch.import_file_info.parse_download_path"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="batch.parse_loading">
+                                    <div class="exe-batch-loading">
+                                        <span class="fa fa-spinner fa-pulse" style="color: #4cae4c"></span>
+                                        <span>文件解析中...</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6" ng-if="(batch.batch_exe_loading || batch.exe_success || batch.is_task_author)">
+                                <div ng-if="!batch.batch_exe_loading && !batch.is_task_author">
+                                    <div class="row">
+                                        <label class="col-sm-6 control-label" style="color: #336699">执行结果</label>
+                                    </div>
+                                    <div class="row form-style">
+                                        <div class="col-sm-4">
+                                            <span class="label-key"> SQL总条数:</span>
+                                            <span class="label-value">{{batch.exe_result_info.total_bk_num}}</span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span class="label-key">无权限条数:</span>
+                                            <span class="label-value" ng-bind="batch.import_file_info.nopow_bk_num"></span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span class="label-key">耗时:</span>
+                                            <span class="label-value" ng-bind="batch.exe_result_info.act_exec_time"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 10px">
+                                        <div class="col-sm-12">
+                                            <table class="sub_table">
+                                                <thead>
+                                                <tr class="cursor_default">
+                                                    <td>
+                                                        分类
+                                                    </td>
+                                                    <td>
+                                                        成功条数
+                                                    </td>
+                                                    <td>
+                                                        失败条数
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="text-align: left;">
+                                                    <td><span>INSERT</span></td>
+                                                    <td><span ng-bind="batch.exe_result_info.insucc_bk_num"></span></td>
+                                                    <td><span ng-bind="batch.exe_result_info.inall_bk_num - batch.exe_result_info.insucc_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;">
+                                                    <td><span>UPDATE</span></td>
+                                                    <td><span ng-bind="batch.exe_result_info.upsucc_bk_num"></span></td>
+                                                    <td><span ng-bind="batch.exe_result_info.upall_bk_num - batch.exe_result_info.upsucc_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;">
+                                                    <td><span>DELETE</span></td>
+                                                    <td><span ng-bind="batch.exe_result_info.delsucc_bk_num"></span></td>
+                                                    <td> <span ng-bind="batch.exe_result_info.delall_bk_num - batch.exe_result_info.delsucc_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;color: #ddd;" >
+                                                    <td class="line_through"><span>SELECT</span></td>
+                                                    <td class="line_through"><span ng-bind="batch.exe_result_info.selparse_bk_num"></span></td>
+                                                    <td class="line_through"> <span ng-bind="batch.exe_result_info.selall_bk_num - batch.exe_result_info.selparse_bk_num"></span></td>
+                                                </tr>
+                                                <tr style="text-align: left;">
+                                                    <td><span style="color: #336699">总计</span></td>
+                                                    <td><span ng-bind="batch.exe_result_info.success_bk_num"></span></td>
+                                                    <td><span ng-bind="batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num"></span></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-if="(batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num) || batch.pend_work_seq">
+                                        <div class="col-sm-12 text-right" style="padding-top: 5px">
+                                            <div class="workorder-slide-btn" ng-click="viewTaskAuthorDetail(sub_tab,batch)" ng-if="batch.pend_work_seq">查看授权信息</div>
+                                            <div class="workorder-slide-btn" href="javascript:void (0);" ng-click="viewExeDetail(batch,2)" ng-if="batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num">查看失败详细</div>
+                                            <span class="fa fa-download download_detail_file" title="下载失败详细信息" ng-click="downloadDetailFile(batch.exe_result_info.file_download_path)" ng-if="batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="batch.batch_exe_loading && !batch.is_task_author">
+                                    <div class="exe-batch-loading">
+                                        <span class="fa fa-spinner fa-pulse" style="color: #4cae4c"></span>
+                                        <span>执行中...</span>
+                                    </div>
+                                </div>
+                                <div ng-if="batch.is_task_author">
+                                    <div class="exe-batch-loading" style="line-height: 25px">
+                                                    <span ng-show="!batch.workflow_state" style="font-size: 18px">
+                                                        <span class="fa fa-spin fa-spinner" style="color: #4cae4c;font-size: 20px;"></span>
+                                                        任务授权中
+                                                    </span>
+                                        <span ng-show="batch.workflow_state == 1" style="color: #4cae4c;font-size: 18px;padding-left: 20px">任务待复核</span>
+                                        <span ng-show="batch.workflow_state == 2" style="color: #FF0101;font-size: 18px">
+                                                        <span class="task-failure"></span>任务复核拒绝
+                                                    </span>
+                                        <span ng-show="batch.workflow_state == 3" style="color: rgb(76, 174, 76);font-size: 16px;padding-left: 15px">任务待授权</span>
+                                        <span ng-show="batch.workflow_state == 4" style="color: #FF0101;font-size: 18px;padding-left: 20px">
+                                                        <span class="task-failure"></span>任务授权拒绝</span>
+                                        <span ng-show="batch.workflow_state == 5" style="color: rgb(76, 174, 76);font-size: 18px;padding-left: 20px">
+                                                        <span class="task-success"></span>任务授权成功</span>
+                                        <span ng-show="batch.workflow_state == 6" style="color: rgb(76, 174, 76);font-size: 18px;padding-left: 15px">任务执行完毕</span>
+                                        <span ng-show="batch.workflow_state == 7" style="color: #d9534f;;font-size: 18px;padding-left: 20px">任务关闭</span>
+                                        <div>
+                                            <div class="workorder-slide-btn" style="cursor: pointer;font-size:14px;padding-left: 20px" ng-click="viewTaskAuthorDetail(sub_tab,batch)">查看授权信息</div>
+                                        </div>
+                                        <div>
+                                            &lt;!&ndash;        <div class="batch-exe-btn" style="width: 80px;font-size: 16px;margin-left: 20px" ng-click="authorExeSQL(sub_tab,batch)"
+                                                         ng-if="batch.workflow_state == 5 && !batch.is_close_loading && !sub_tab.is_detail">
+                                                        <span class="exe-icon"></span>
+                                                        <span>执行</span>
+                                                    </div>&ndash;&gt;
+                                            &lt;!&ndash;     <div class="batch-exe-btn" style="width: 80px;font-size: 16px;margin-left: 20px" ng-click="closeBatchExeTask(sub_tab,batch,2,$index)"
+                                                      ng-if="(batch.workflow_state == 2 || batch.workflow_state == 4)&& !batch.is_close_loading && !sub_tab.is_detail">
+                                                     <span class="close-icon"></span>
+                                                     <span>关闭</span>
+                                                 </div>&ndash;&gt;
+                                            &lt;!&ndash;  <button ng-if="batch.is_close_loading" disabled="disabled" class="confbtn" style="text-align:center;width:80px;margin-top:5px;font-size:14px;margin-left: 20px">
+                                                  <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                                              </button>&ndash;&gt;
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" ng-show="sub_tab.is_detail && !batch.exe_success && !batch.is_task_author">
+                                <div class="without-exec-result">
+                                    暂无执行结果
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    &lt;!&ndash;执行脚本&ndash;&gt;
+    <div ng-if="sub_tab.temp_handle_type==3">
+        <div class="container-fluid">
+            <div class="row" style="margin-top: 15px;overflow: hidden">
+                <form class="form-horizontal">
+                    <div class="col-sm-8 script-excute-content left_content">
+                        &lt;!&ndash; 脚本方式&ndash;&gt;
+                        <div class="col-sm-2  col-sm-offset-10" style="color: #FF9C59;">
+                            <span ng-if="sub_tab.script_info.script_form.impl_type==2">shell</span>
+                            <span ng-if="sub_tab.script_info.script_form.impl_type==7">python2</span>
+                            <span ng-if="sub_tab.script_info.script_form.impl_type==8">python3</span>
+                        </div>
+                        <div class="form-group form-style">
+                            <label class="col-sm-2 control-label label-key">脚本来源</label>
+                            <div class="col-sm-9" style="margin-top: 5px">
+                                <div ng-if="!sub_tab.is_detail">
+                                    <div class="wo-handle-type label-value">
+                                        <input type="radio" name="script_source" i-check ng-model="sub_tab.script_info.script_form.script_source"
+                                               ng-change="changeScriptSource(sub_tab.script_info,1)" value="1" ng-disabled="false"/><span>输入</span>
+                                    </div>
+                                    <div class="wo-handle-type label-value">
+                                        <input type="radio" name="script_source" i-check ng-model="sub_tab.script_info.script_form.script_source"
+                                               ng-change="changeScriptSource(sub_tab.script_info,2)" value="2" ng-disabled="false"/><span>文件</span>
+                                    </div>
+                                </div>
+                                <div ng-if="sub_tab.is_detail">
+                                    <div class="wo-handle-type label-value">
+                                        <div class="iradio_minimal-blue" style="cursor: default" ng-class="sub_tab.script_info.script_form.script_source==1 ? 'checked' : ''"></div>
+                                        <span style="padding: 0 30px 0 5px;">输入</span>
+                                    </div>
+                                    <div class="wo-handle-type label-value">
+                                        <div class="iradio_minimal-blue" style="cursor: default" ng-class="sub_tab.script_info.script_form.script_source==2 ? 'checked' : ''"></div>
+                                        <span style="padding: 0 30px 0 5px;">文件</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-style">
+                            <label class="col-sm-2 control-label text-right label-key">执行数据源</label>
+                            <div class="col-sm-9">
+                                <div class="data_source_btn" ng-repeat="soc in sub_tab.script_info.script_form.exemsg_list" title="{{soc.soc_ip}}">
+                                    <span><label style="color: #bbb;margin-right: 5px;">{{soc.protocol_type_cn}}</label>{{soc.soc_name}}</span>
+                                    <span ng-if="soc.ftp_soc_name">&nbsp;&nbsp;<label style="color: #bbb;margin-right: 5px;">|&nbsp;&nbsp;{{soc.ftp_protocol_type_cn}}</label>{{soc.ftp_soc_name}}</span>
+                                </div>
+                                <div ng-if="!sub_tab.script_info.script_form.exemsg_list || sub_tab.script_info.script_form.exemsg_list.length==0" style="font-size:12px;text-align: left;color: #6D7183;margin-top: 6px;">
+                                    暂无数据
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-style" ng-if="sub_tab.script_info.script_form.impl_type == 7 || sub_tab.script_info.script_form.impl_type == 8">
+                            <label class="col-sm-2 control-label text-right label-key">语言环境</label>
+                            <div class="col-sm-10">
+                                <label ng-bind="sub_tab.script_info.script_form.env_name ? sub_tab.script_info.script_form.env_name : '&#45;&#45;'" style="padding-top: 5px"></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-style">
+                            <div class="col-sm-9 col-sm-offset-2" ng-if="sub_tab.script_info.script_form.script_source == 2" style="padding-bottom: 10px">
+                                <div ng-if="!sub_tab.is_detail">
+                                    <file-upload fileupload="sub_tab.script_info.script_fileupload" deletefile="removeScriptFile(sub_tab.script_info);" downfile="downloadScriptFile(sub_tab.script_info);" successthen="uploadScriptFileSuccessThen(sub_tab.script_info);"></file-upload>
+                                </div>
+                                <div ng-if="sub_tab.is_detail">
+                                    <file-upload fileupload="sub_tab.script_info.script_fileupload" downfile="downloadScriptFile(sub_tab.script_info);" successthen="uploadScriptFileSuccessThen(sub_tab.script_info);"></file-upload>
+                                </div>
+                            </div>
+                            <div ng-if="(sub_tab.script_info.script_form.script_source == 1) || (sub_tab.script_info.script_form.script_source == 2 && sub_tab.script_info.script_fileupload.filename)">
+                                <label class="col-sm-2 control-label label-key" >执行脚本</label>
+                                <div class="col-sm-9">
+                                    &lt;!&ndash; 切换脚本模式&ndash;&gt;
+                                    <span class="script-model">
+                                        <i class="fa fa-moon-o" ng-if="toggle_show" ng-click="toggleScriptDayOrNight(sub_tab)"  title="点击切换为日间"></i>
+                                        <i class="fa fa-sun-o"  ng-if="!toggle_show"  ng-click="toggleScriptDayOrNight(sub_tab)" title="点击切换为夜间"></i>
+                                    </span>
+                                    <textarea name="exe_script"
+                                              ui-codemirror="(sub_tab.script_info.script_form.impl_type == 2) ?  detailOptionShell  : detailOptionPython"
+                                              ui-refresh="true"
+                                              ng-model="sub_tab.script_info.script_form.exe_script"
+                                              class="form-control"
+                                              required>
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        &lt;!&ndash; 执行结果&ndash;&gt;
+                        <div class="form-group exec-result-div" style="margin-right: 0px;">
+                            <div class="col-sm-12">
+                                <div class="row form-style">
+                                    <label class="col-sm-2 control-label label-key" style="text-align: left">执行结果</label>
+                                </div>
+                                <div class="row exec-result"
+                                     style="cursor:default;border: 1px solid #ddd;"
+                                     ng-click="exe.collapse_flag = !exe.collapse_flag"
+                                     ng-repeat="exe in sub_tab.script_info.script_form.exemsg_list"
+                                     ng-class="{'exec-result-bg':exe.cmd_status != 1 && exe.cmd_status != 2}" ng-style="!$last ? {'border-bottom':'none'}:{}">
+                                    <div class="col-sm-3 server-name-style" style="text-align: left;cursor: default;margin-bottom: 5px;" title="{{exe.exe_ip}}">{{exe.soc_ip}}</div>
+                                    <div class="col-sm-3 server-name-style" style="text-align: left;cursor: default" title="{{exe.soc_name}}">{{exe.soc_name}}</div>
+                                    <div class="col-sm-4" style="text-align: left;position: relative">
+                                        &lt;!&ndash; 待执行&ndash;&gt;
+                                        <span ng-if="exe.cmd_status == 1">待执行</span>
+                                        &lt;!&ndash; 执行耗时&ndash;&gt;
+                                        <span ng-if="exe.cmd_status == 5">[{{exe.act_exec_time}}s]&nbsp;&nbsp;</span>
+                                        &lt;!&ndash;exe.cmd_status == 2 执行中;exe.exe_state == 3 执行失败;exe.cmd_status == 4 验证失败;exe.cmd_status == 5 执行成功;exe.cmd_status == 6 执行跳过;exe.cmd_status == 7 执行停止;&ndash;&gt;
+                                        <span title="{{exe.cmd_status == 2 ? '执行中': exe.cmd_status == 3 ? '执行失败':exe.cmd_status == 4 ? '验证失败':exe.cmd_status == 5 ? '执行成功':exe.cmd_status == 6 ? '执行跳过':exe.cmd_status == 7 ? '执行停止':''}}"
+                                              ng-class="{'fa fa-spin fa-spinner':exe.cmd_status == 2,
+                                                           'status_img list_fail_img exec-result-icon':exe.cmd_status == 3,
+                                                           'fa fa-exclamation-triangle':exe.cmd_status == 4,
+                                                           'status_img list_success_img exec-result-icon':exe.cmd_status == 5,
+                                                           'fa fa-step-forward':exe.cmd_status == 6,
+                                                           'fa fa-stop-circle-o':exe.cmd_status == 7}"></span>
+                                    </div>
+                                    <div class="col-sm-2" style="text-align: right;cursor: pointer;">
+                                        <i ng-if="!exe.collapse_flag" class="fa fa-angle-down" ng-click="$event.stopPropagation();exe.collapse_flag = !exe.collapse_flag;" style="color: #333;"></i>
+                                        <i ng-if="exe.collapse_flag" class="fa fa-angle-up" ng-click="$event.stopPropagation();exe.collapse_flag = !exe.collapse_flag;" style="color: #333;"></i>
+                                    </div>
+                                    <div class="col-sm-12" collapse="!exe.collapse_flag" style="padding: 0;">
+                                        <div class="row" ng-click="$event.stopPropagation();" style="margin:0;padding:6px 10px 6px 0;overflow: hidden;word-break:break-all;background-color: #fff;cursor: default;border-top: 1px solid #ddd;max-height: 200px;overflow-y: auto;">
+                                            <div class="col-sm-12">
+                                                <ul style="list-style: none;margin-right: 0;font-size: 12px;margin-bottom: 0;">
+                                                    <li ng-repeat="detail in exe.result_msg track by $index" style="padding: 3px 0;">{{detail}}</li>
+                                                </ul>
+                                                <div ng-if="!exe.result_msg || exe.result_msg.length == 0" style="color: #6D7183;">暂无数据</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" style="padding-right: 0;position: relative;">
+                        <div class="row config-header-style"> 历史纪录</div>
+                        <div class="col-sm-12 exe-config" id="history-record-scroll" ng-style="calculateMaxHeight()">
+                            <div class="row config-step" ng-repeat="step in sub_tab.script_info.execute_list" ng-click="viewExeInfo(step.order_seq,step.deal_bk_seq,step.script_bk_seq,$index)" style="cursor: pointer;" ng-style="step.his_style_flag ? {}:{'background-color':'#E8E8E8'}">
+                                <div class="col-sm-11 history-record-script" title="{{step.str_script}}">
+                                    <div class="script-type-icon">
+                                        <span class="exec-icon" ng-if="!step.back_flag" ng-class="step.impl_type == 2 ? 'fa fa-cube' : (step.impl_type == 7 || step.impl_type == 8) ? 'fa fa-bars' : 'sql-icon'"></span>
+                                    </div>
+                                    <div class="execing-cmd" style="cursor: pointer;">
+                                        <span ng-show="step.impl_type == 7">phython2：{{step.str_script}}</span>
+                                        <span ng-show="step.impl_type == 8">phython3：{{step.str_script}}</span>
+                                        <span ng-show="step.impl_type == 2">SHELL：{{step.str_script}}</span>
+                                    </div>
+                                </div>
+                                &lt;!&ndash; 执行成功&ndash;&gt;
+                                <span ng-show="step.success_yn_flag == 1" class="status_img list_success_img script-exec-result" style="right: 10px;"></span>
+                                &lt;!&ndash; 执行失败&ndash;&gt;
+                                <span ng-show="step.success_yn_flag == 2" class="status_img list_fail_img script-exec-result" style="right: 10px;"></span>
+                            </div>
+                            <div class="row" ng-show="sub_tab.script_info.execute_list.length == 0">
+                                <div class="col-sm-4 col-sm-offset-4 text-center" style="color: #6D7183;line-height: 190px;">暂无数据</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>-->
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-sm-12 text-center">
+            <button type="button" class="cancel-btn btn-md" ng-click="backToWoList()">返回</button>
+        </div>
+    </div>
+</div>

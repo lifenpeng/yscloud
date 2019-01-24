@@ -1,0 +1,299 @@
+<div  ng-if="!control.data_loading">
+    <div class="row struct-config " style="padding: 20px;" >
+        <div class="col-sm-12 palette-diagram" ng-style="syncHeight()" struct-drag palette-data="data.palette"  node-link-data="info" cancel="basicCancel()" config="nodeConfig(key)" save="nodeSave()" node="prog_info" reflash="control.reflash_node" clear="control.clear_select_flag">
+            <span class="palette-span"  custom-scroll custom-config="configs.scroll_info">
+                <div class="sort-name" ng-click="control.palette_a_flag = !control.palette_a_flag">
+                    服务器
+                </div>
+                <div collapse="control.palette_a_flag">
+                    <div id="myPaletteDiv" style="height: 560px"></div>
+                </div>
+                <!--<div class="sort-name" ng-click="control.palette_w_flag = !control.palette_w_flag">
+                    web服务器
+                </div>
+                <div collapse="control.palette_w_flag">
+                    <div id="myPaletteWDiv" style="height:92px;"></div>
+                </div>-->
+                <!--            <div class="sort-name" ng-click="control.palette_d_flag = !control.palette_d_flag">
+                                数据库
+                            </div>
+                            <div collapse="control.palette_d_flag">
+                                <div id="myPaletteDDiv" style="height:370px;"></div>
+                            </div>
+                            <div class="sort-name" ng-click="control.palette_o_flag = !control.palette_o_flag">
+                                通用
+                            </div>
+                            <div collapse="control.palette_o_flag">
+                                <div id="myPaletteODiv" style="height:92px;"></div>
+                            </div>-->
+            </span>
+            <span class="diagram-span" ng-style="syncHeight()" style="position: relative;">
+                <div id="structDiagramDiv" class="diagram resize-parent"></div>
+            </span>
+            <div class="configDiv" resize-height="35" style="z-index:11;display: none;background: #141e2a; position: absolute;padding-right: 20px; padding-left: 20px; bottom: 0; left: 106px;">
+                <div ng-if="info.logic_node_info.basic_msg.node_name != ''" style="left: 0;width: 125px;height: 36px;position: absolute; border-bottom: 1px solid #1D3D4F;line-height: 36px;text-align: center">{{info.logic_node_info.basic_msg.node_name}}</div>
+                <div ng-if="!info.logic_node_info.basic_msg || info.logic_node_info.basic_msg.node_name == ''" style="left: 0;width: 125px;height: 36px;position: absolute; border-bottom: 1px solid #1D3D4F;line-height: 36px;text-align: center;color: #ccc">请配置基本信息</div>
+                <div class="row">
+                    <div class="property-tab-head " class="col-sm-12">
+                        <div class="property-tab" ng-class="control.protab_basic_flag ? 'property-tab-active':''" ng-click="changePropertyTab(1)">
+                            <div class="property-tab-circle">1</div>
+                            基本信息
+                        </div>
+                    </div>
+                </div>
+                <div class="row stepDiv" style="height: calc(100% - 35px);overflow: hidden;" custom-scroll custom-config="configs.node_info">
+                    <div class="col-sm-12">
+                        <form name="info.form.node_form"  class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+                            <div class="row form-style" style="margin-top: 15px;">
+                                <div class="col-sm-2 text-right">
+                                    <label class="control-label label-key">节点名</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="info.logic_node_info.basic_msg.node_name"
+                                           name="node_name"
+                                           placeholder="输入不超过60个字符或汉字"
+                                           ng-maxlength="25"
+                                           required/>
+                                    <validate-msg tag-cn-name="节点名" name="node_name"></validate-msg>
+                                </div>
+                            </div>
+                            <div class="row form-style" style="margin-top: 15px;">
+                                <div class="col-sm-2 text-right">
+                                    <label class="control-label label-key">部署类型</label>
+                                </div>
+                                <div class="col-sm-7" style="padding-left: 10px;">
+                                    <div class="tablecss tag-xl" title="{{deploy_type.label}}" ng-class="deploy_type.state ? 'checked-tag':'check-tag'" ng-repeat="deploy_type in data.deploy_list" ng-click="chooseDeployType(deploy_type)">
+                                        {{deploy_type.label}}
+                                        <div>
+                                            <i class="fa fa-check"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--配置文件-->
+                            <div class="row form-style" >
+                                <div class="col-sm-2 text-right">
+                                    <label class="control-label label-key" style="padding-top: 15px;">配置文件</label>
+                                </div>
+                                <div class="col-sm-10 label-value" style="margin-top: 5px">
+                                    <table class="sub-table fix-param-table" style="text-align: center;" row-plus="addConfigFile()">
+                                        <thead>
+                                        <tr>
+                                            <td>文件名称</td>
+                                            <td style="min-width: 60px;"></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in info.logic_node_info.basic_msg.config_file_list">
+                                            <td>
+                                                <input type="text" class="sub-form-control" ng-model="tr.file_name"  name="file_name{{$id}}" required />
+                                                <validate-msg class="package-font" tag-cn-name="文件名称"  name="file_name{{$id}}"></validate-msg>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span class="fa fa-trash-o" title="删除" style=" padding-left: 10px;" ng-click="deleteConfigFile($index,tr)"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--包参数类型-->
+                            <div class="row form-style" >
+                                <div class="col-sm-2 text-right">
+                                    <label class="control-label label-key">包类型</label>
+                                </div>
+                                <div class="col-sm-10 label-value" style="margin-top: 5px">
+                                    <table class="sub-table fix-param-table" style="text-align: center;" row-plus="addPackage()">
+                                        <thead>
+                                        <tr>
+                                            <td>包类型名</td>
+                                            <td>包类型中文名</td>
+                                            <td style="min-width: 60px;"></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in info.logic_node_info.basic_msg.pac_type_list">
+                                            <td>
+                                                <input type="text" class="sub-form-control" ng-model="tr.type_name"  name="package_name{{$id}}" required />
+                                                <validate-msg class="package-font" tag-cn-name="包类型名"  name="package_name{{$id}}"></validate-msg>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="sub-form-control" ng-model="tr.type_cn_name" name="package_cn_name{{$id}}" required/>
+                                                <validate-msg class="package-font" tag-cn-name="中文名"  name="package_cn_name{{$id}}"></validate-msg>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span class="fa fa-trash-o" title="删除" style=" padding-left: 10px;" ng-click="deletePackageType($index,tr)"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- 日志文件-->
+                            <div class="row form-style">
+                                <div class="col-sm-2 text-right">
+                                    <label class="control-label label-key">日志文件</label>
+                                </div>
+                                <div class="col-sm-10 label-value" style="margin-top: 5px;">
+                                    <table class="sub-table  fix-param-table" row-plus="addLogFile()">
+                                        <thead>
+                                            <tr>
+                                                <td>文件全路径</td>
+                                                <td style="width: 70px;text-align: center;">
+                                                    操作
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="tr in info.logic_node_info.basic_msg.logger_list">
+                                                <td>
+                                                    <input type="text" class="sub-form-control" ng-model="data.file_path"  name="tr{{$id}}" required/>
+                                                    <validate-msg class="package-font" tag-cn-name="文件全路径"  name="tr{{$id}}"></validate-msg>
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span class="fa fa-trash-o" title="删除" style=" padding-left: 10px;" ng-click="deleteLogFile($index,tr)"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--状态检查-->
+                            <div class="row form-style">
+                                <div class="col-sm-2 text-right">
+                                    <label class="control-label label-key">状态检查</label>
+                                </div>
+                                <div class="col-sm-10 label-value" style="margin-top: 5px;">
+                                        <table class="sub-table fix-param-table"  tbl-Data="info.node.monitor_item_list" row-plus="addCheckItem()">
+                                            <thead>
+                                            <tr>
+                                                <td >
+                                                    检查项名称
+                                                </td>
+                                                <td>
+                                                    检查项组件
+                                                </td>
+                                                <td style="width: 70px;text-align: center;">
+                                                    操作
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="tr in info.logic_node_info.basic_msg.node_monitor_list" >
+                                                <td>
+                                                    <input type="text" name="tr{{$index}}" ng-model="tr.monitor_item_name" placeholder="检查项名称" required class="sub-form-control">
+                                                    <validate-msg tag-cn-name="检查项名称" name="tr{{$index}}"></validate-msg>
+                                                </td>
+                                                <td>
+                                                    <div ng-if="!tr.phase.phase_name" style="color: #6D7183">点击右侧配置按钮配置组件及参数</div>
+                                                    <div ng-if="tr.phase.phase_name">
+                                                                          <span title="{{tr.phase.phase_name}}" style="padding-left: 10px;color: #d2f1fe">
+                                                                              <i style="padding-right: 4px;font-size: 14px;color:#93d9fd" class="fa fa-cube"></i>
+                                                                              {{tr.phase.phase_name}}
+                                                                          </span>
+                                                        <div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span class="status-check-operate" title="配置" ng-click="statusCheckConfig(tr)"></span>
+                                                        <span class="status-check-delete" title="删除" ng-click="deleteStatusCheck($index)"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                </div>
+                            </div>
+                            <!--节点固化参数类型-->
+                            <div class="row form-style" >
+                                <div class="col-sm-2 text-right">
+                                    <label class="control-label label-key">固化参数</label>
+                                </div>
+                                <div class="col-sm-10 label-value" style="margin-top: 5px">
+                                    <table  class="sub-table  fix-param-table" row-plus="addParam()" tbl-Data="info.logic_node_info.basic_msg.fixed_param_list">
+                                        <thead>
+                                        <tr>
+                                            <td width="30%">
+                                                <span>参数名</span>
+                                            </td>
+                                            <td width="30%">
+                                                中文名
+                                            </td>
+                                            <td>
+                                                默认值
+                                            </td>
+                                            <td style="width: 70px;text-align: center;">
+                                                操作
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="param in info.logic_node_info.basic_msg.fixed_param_list"  style="font-size: 12px;">
+                                            <td style="text-align: left">
+                                                <input ng-if="!param.delete_flag" type="text" ng-model="param.param_name" ng-maxlength="25" name="param_name{{$id}}" class="sub-form-control" placeholder="输入参数名"/>
+                                                <validate-msg ng-if="!param.delete_flag" style="font-size: 10px;" tag-cn-name="参数名"  name="param_name{{$id}}"></validate-msg>
+                                                <span ng-if="param.delete_flag" ng-bind="param.param_name"></span>
+                                            </td>
+                                            <td style="text-align: left">
+                                                <input ng-if="!param.delete_flag" type="text" ng-model="param.param_cn_name" ng-maxlength="25" name="param_cn_name{{$id}}" class="sub-form-control" placeholder="输入参数中文名"/>
+                                                <validate-msg ng-if="!param.delete_flag" style="font-size: 10px;" tag-cn-name="参数名"  name="param_cn_name{{$id}}"></validate-msg>
+                                                <span ng-if="param.delete_flag" ng-bind="param.param_cn_name"></span>
+                                            </td>
+                                            <td style="max-width: 180px;position: relative;padding-right: 20px;text-align: left;">
+                                                <textarea name="param_value{{$id}}"
+                                                          ui-codemirror="{ onLoad : paramShellLoaded}"
+                                                          ui-refresh="true"
+                                                          ng-model="param.param_value"
+                                                          ng-maxlength="250"
+                                                          ng-if="!param.sensitive_flag"
+                                                          class="sub-form-control">
+                                                    </textarea>
+                                                <!--只是为了兼容360浏览器阻止默认密码填写-->
+                                                <input type="password" style="display: none;" disabled autocomplete = "new-password"/>
+                                                <input type="password"
+                                                       class=""
+                                                       style="background-color: #666;border: 1px solid #666;border-radius: 4px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;color: #555;display: block;font-size: 12px;height: 25px;width: 100%;"
+                                                       ng-model="param.param_value"
+                                                       disabled
+                                                       ng-if="param.sensitive_flag">
+                                                <div style="position: absolute;top: 7px;right: 5px;cursor: pointer;">
+                                                    <i ng-if="!param.sensitive_flag" class="fa fa-eye" title="明文" ng-click="param.sensitive_flag=true;"></i>
+                                                    <i ng-if="param.sensitive_flag" class="fa fa-eye-slash" title="密文" ng-click="param.sensitive_flag=false;"></i>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: center">
+                                                <div class="form-group has-feedback" ng-if="!param.delete_flag">
+                                                    <div class="input-group" style="margin-top: 1px;margin-bottom: -12px;margin-left: 33px;">
+                                                        <span class="fa fa-trash-o" style="cursor: pointer;" ng-click="deleteParam($index)"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row form-style" style="margin-top: 10px;padding-bottom: 10px;">
+                                <div class="col-sm-12 text-center">
+                                    <button  type="button" class="cancel-btn btn-md" ng-click="basicCancel()">取消</button>
+                                    <button  class="save-btn btn-md" ng-click="saveTab()">确定</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row env-config">
+        <div class="env-save-img" ng-click="saveStructMsg()" title="保存" style="position: absolute; right: 40px;top: 135px;z-index: 99;"></div>
+    </div>
+</div>
+<div  ng-if="control.data_loading">
+    <div class="loading-font-color" style="position: relative;height: 200px;line-height: 200px;text-align: center">
+        正在加载架构信息<i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>

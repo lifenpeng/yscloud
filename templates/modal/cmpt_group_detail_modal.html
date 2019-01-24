@@ -1,0 +1,312 @@
+<style>
+    /*发布 标签 样式*/
+    .publish-tag {
+        height:20px; display: inline-block; text-align: center; margin-left: 20px; font-size: 12px; padding: 0 10px;
+    }
+    .not-publish {
+        background: #DDD; color: #999;
+    }
+    .publish-ok {
+        background: #009966; color: #FFF;
+    }
+    /*刷出参数-表格样式*/
+    .tb-hand{
+        background-color: #fafafa;
+    }
+    .ce-panel{
+        position: relative;
+    }
+    /*导出按钮*/
+    .export-btn{
+        position: absolute;
+        right: 86px;
+        top:6px;
+    }
+    table div{
+        text-align: left;
+    }
+    /*导航栏*/
+    .nav {
+        position: relative;
+    }
+    #groupNav {
+        position: fixed;
+        right: 50px;
+        top: 24%;
+    }
+    .nav .groupLis {
+        text-align: center;
+        height: 40px;
+        position: relative;
+    }
+    .nav a {
+        color: #999;
+        display: inline-block;
+        text-decoration: none;
+        text-align: center;
+    }
+    .nav .groupLis a {
+        position: relative;
+        border-radius: 50%;
+        height: 26px;
+        width: 26px;
+        line-height: 26px;
+        background-color: #EFEFEF;
+    }
+    .nav .groupLis a:hover {
+        color: #ffffff;
+        background-color: #77BBEE;
+    }
+    .groupPam a {
+        font-size: 12px;
+        padding: 4px;
+        background-color: #EFEFEF;
+    }
+    .groupPam a:hover {
+        color: #ffffff;
+        background-color: #77BBEE;
+    }
+    .groupsVerticalLine {
+        width: 1px;
+        height: 14px;
+        position: absolute;
+        background: #D3D3D3;
+        left: 22px;
+        top: 26px;
+    }
+    .quote{
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        font-size: 12px;
+        line-height: 34px;
+        top:10px;
+        width: 77px;
+        height: 34px;
+        background-color: #ff6666;
+        color:#FFF;
+    }
+    .module-header{
+        background-color: #E4E4E4;height: 32px;line-height: 31px;
+        margin:0;cursor:pointer
+    }
+    .module-header:hover{
+        background-color: #2D6DB8;
+    }
+    .module-header:hover >.col-sm-10 > .col-sm-4 > span{
+        color: #ffffff;
+    }
+    .control-label{
+        color: #1e315b;
+    }
+</style>
+<div class="cmptGroup_detail_modal">
+<form name="form.cmpt_group_detail" class="form-horizontal " novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">查看组件组详细</h3>
+        <div ng-click="return()"></div>
+    </div>
+    <div class="modal-body fontSize12">
+        <div class="quote" ng-if="cmpt_group_info.ref_flag">
+            组件组被引用
+        </div>
+        <div class="row form_style">
+            <label class="col-sm-2  text-right label_key">组件组名</label>
+            <div class="col-sm-6 label_value ">
+                {{cmpt_group_info.cn_name}}
+                <div class="publish-tag not-publish" ng-show="cmpt_group_info.publish_state == 2">未发布</div>
+                <div class="publish-tag publish-ok" ng-show="cmpt_group_info.publish_state == 1"><i class="fa fa-check"></i>已发布</div>
+            </div>
+        </div>
+        <div class="row form_style" style="margin-top: 10px;">
+            <label class="col-sm-2  text-right label_key">描述</label>
+            <div class="col-sm-9">
+                <span class="label_value" style="word-wrap: break-word;color:#666;" ng-bind="cmpt_group_info.bk_desc"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right form_style" style="margin-top: 10px;" ng-if="cmpt_group_info.modules.length !=0">
+                <div class="togglebutton">
+                    <label style="font-size: 14px; color: #777;margin-right: 10px;">
+                        <span class="label_key" style="-webkit-padding-end:10px;vertical-align: middle;">展开全部</span>
+                        <input type="checkbox" ng-model="cmpt_group_control.expand_flag" ng-if="cmpt_group_control.nav_show_flag == 0 || cmpt_group_control.nav_show_flag == 1 " ng-click="expandAll()">
+                        <input type="checkbox" ng-model="cmpt_group_control.expand_flag" ng-if="cmpt_group_control.nav_show_flag == 2" ng-click="collapseAll()">
+                        <span class="toggle" style="vertical-align: middle;"></span>
+                    </label>
+                </div>
+                <!--<toggle-button checked="" side="left" text="展开全部"></toggle-button>-->
+            </div>
+        </div>
+        <div id="div_{{$index}}" class="row cmpt-module" ng-repeat="step in cmpt_group_info.modules" style="width: 83.3333%;margin-left: 16.6667%;padding-right: 15px">
+            <div style="padding-left: 6px;">
+           <!--     <span style="border-radius: 50%;height: 20px;width: 20px;position: absolute;left: 5px;top:5px;z-index: 2;background: #77BBEE;text-align: center;color: #fff;">{{$index + 1}}</span>
+                <div ng-style="horizontalLineStyle()"></div>
+                <div ng-style="verticalLineStyle()" ng-if="!$last"></div>-->
+                <div class="cmpt-module-content">
+                    <div class="row cmpt_module_head" ng-click="toggleModulesDetail(step)">
+                        <div class="col-sm-1" style="width: 20px;margin-right: 10px;">
+                            <div class="step_circle_common">
+                                <span class="step_circle_font">{{$index + 1}}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="cmpt-icon-common">
+                                <i class="fa fa-cube" title="组件" ng-show="step.type==1"></i>
+                                <i class="fa fa-dropbox" title="阶段" ng-show="step.type==4"></i>
+                            </div>
+                            <div class="col-sm-4 alias-name" ng-show="step.type==1" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                                <span type="text" ng-bind="step.alias_name" title="{{step.alias_name}}"/>
+                            </div>
+                            <div class="col-sm-4 cmpt-cn-name" ng-show="step.type==4" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                                <span title="{{step.cn_name}}">{{step.cn_name}}</span>
+                            </div>
+                        </div>
+                        <div style="float: right;">
+                            <span ng-if="step.impl_type == 1" class="exec-type ftp_color">FTP</span>
+                            <span ng-if="step.impl_type == 2" class="exec-type shell_color">SHELL</span>
+                            <span ng-if="step.impl_type == 3" class="exec-type was_color">WAS</span>
+                            <span ng-if="step.impl_type == 4" class="exec-type svn_color">SVN</span>
+                            <span ng-if="step.impl_type == 5" class="exec-type web_logic_color">WEBLOGIC</span>
+                            <span ng-if="step.impl_type == 6" class="exec-type jdbc_color">JDBC</span>
+                            <span ng-if="step.impl_type == 7" class="exec-type python_color">PYTHON2</span>
+                            <span ng-if="step.impl_type == 8" class="exec-type python_color">PYTHON3</span>
+                        </div>
+                    </div>
+                    <div  ng-show="step.type == 4">
+                        <div class="content_border form_style" style="z-index:3">
+                            <div class="row" collapse="!step.show_detail" style="padding-bottom: 18px;width: 100%;padding-top: 20px;">
+                                <div class="col-sm-12">
+                                    <label class="col-sm-1  text-right label_key" style="min-width: 100px">执行脚本</label>
+                                    <div class="col-sm-9">
+                             <textarea
+                                     ui-codemirror="editorOptions"
+                                     ui-refresh="true"
+                                     ng-model="step.exec_script"
+                                     placeholder="执行脚本">
+                            </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="step.type == 1">
+                        <div collapse="!step.show_detail" class="form_style">
+                            <div  class="content_border" style="z-index:3">
+                                <div class="row" style="padding-top:20px;">
+                                        <label class="col-sm-1  text-right label_key" style="min-width: 100px;">描述</label>
+                                        <div class="col-sm-9 label_value">{{step.bk_desc}}</div>
+                                </div>
+                                <div class="row" style="padding-top:5px;">
+                                        <label class="col-sm-1  text-right label_key" style="min-width: 100px">执行脚本</label>
+                                        <div class="col-sm-9">
+                                            <textarea
+                                                    ui-codemirror="editorOptions"
+                                                    ui-refresh="true"
+                                                    ng-model="step.exec_script"
+                                                    placeholder="执行脚本">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 20px;padding-bottom: 10px" ng-show="step.ref_params.length!=0">
+                                        <label class="col-sm-1 text-right label_key" style="min-width: 100px;">组件参数</label>
+                                        <div class="col-sm-9">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table class="table sub_table text-center">
+                                                        <thead>
+                                                        <tr>
+                                                            <td>
+                                                                <span>参数名</span>
+                                                                <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                                            </td>
+                                                            <td>
+                                                                参数引用
+                                                            </td>
+                                                            <td>
+                                                                参数中文名
+                                                            </td>
+                                                            <td>
+                                                                参数描述
+                                                            </td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-repeat="tr in step.ref_params"  style="font-size: 12px;text-align: left">
+                                                            <td>
+                                                                <span>{{tr.param_name}}</span>
+                                                            </td>
+                                                            <td>
+                                                                <span ng-if="tr.ref">{{tr.ref}}</span>
+                                                                <span ng-if="!tr.ref">--</span>
+                                                            </td>
+                                                            <td style="max-width: 120px;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;">
+                                                                <span ng-if="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                                <span ng-if="!tr.param_cn_name">--</span>
+                                                            </td>
+                                                            <td style="max-width: 120px;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;">
+                                                                <span ng-if="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                                                                <span ng-if="!tr.param_bk_desc">--</span>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <!--参数列表-->
+                    </div>
+                </div>
+            </div>
+            <div class="module-vertical-common-line" style="left: 23px;z-index: 0" ng-if="!$last"></div>
+        </div>
+        <div class="row form_style" style="margin-top: 10px;">
+            <label class="col-sm-2  text-right label_key">全局参数表</label>
+            <div class="col-sm-10">
+                <table class="table sub_table  text-center">
+                    <thead>
+                    <tr>
+                        <td>参数名</td>
+                        <td>参数中文名</td>
+                        <td>参数描述</td>
+                        <td>参数值</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-if="cmpt_group_info.params.length==0" style="text-align: center">
+                        <td colspan="6">暂无数据</td>
+                    </tr>
+                    <tr  ng-if="cmpt_group_info.params.length!=0" ng-repeat="tr in cmpt_group_info.params" ng-class="{'tb-hand' : !tr.hand_param}" style="text-align: left;">
+                        <td title="{{tr.param_group ?  '分组:'+tr.param_group : ''}}">
+                            <div class="param-group-style">
+                                <div class="param-name">{{tr.param_name}}</div>
+                                <div class="group-name" title="分组:{{tr.param_group}}" ng-if="tr.param_group"><i class="fa fa-info-circle"></i></div>
+                            </div>
+                        </td>
+                        <td style="max-width: 120px;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;">
+                            <span ng-show="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                            <span ng-show="!tr.param_cn_name">--</span>
+                        </td>
+                        <td style="max-width: 120px;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;">
+                            <span ng-show="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                            <span ng-show="!tr.param_bk_desc">--</span>
+                        </td>
+                        <td style="max-width: 200px;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;">
+                            <span ng-show="tr.param_value">{{tr.param_value}}</span>
+                            <span ng-show="!tr.param_value">--</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 40px;margin-bottom: 20px;">
+        <div class="col-sm-12 text-center">
+            <button class="cancel-btn btn-xl" type="button" ng-click="return()">返回</button>
+        </div>
+    </div>
+    </div>
+</form>
+</div>

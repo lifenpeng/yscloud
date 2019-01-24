@@ -1,0 +1,12 @@
+<div class="container-fluid task-preview">
+    <div class="row row-style">
+        <div class="col-sm-12">
+            <div class="title_group_btn">
+                <div ng-click="jumpTo('task_all')" ng-class="control.active_name == 'task_all' ? 'active':''">全行</div>
+                <div ng-click="jumpTo('task_attention')" ng-class="control.active_name == 'task_attention' ? 'active':''">关注</div>
+                <div ng-click="jumpTo('task_node')" ng-class="control.active_name == 'task_node' ? 'active':''">节点</div>
+            </div>
+        </div>
+    </div>
+    <div ui-view></div>
+</div>

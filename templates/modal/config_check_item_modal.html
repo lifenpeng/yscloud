@@ -1,0 +1,226 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-if="!plugin_info.is_update">配置检查项</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body check-modal cmpt node-config-check-modal">
+    <div class="row form-style" style="height: 35px;">
+       <label class="col-sm-2 label-key" style="margin-top: 8px;">
+           组件选择
+       </label>
+       <div class="col-sm-8 label-value">
+            <div class="table-search">
+                <div class="table-search-input">
+                    <input type="text"
+                           ng-model="config.hight_search_obj.search_key_word"
+                           class="form-control"
+                           placeholder="请输入组件名"
+                           ng-enter="searchSubgroupByKeyword()">
+                </div>
+                <div class="table-search-btn">
+                    <span class="table-clear-logol" ng-if="config.hight_search_obj.search_key_word" ng-click="clear()"></span>
+                    <span class="table-search-logol"></span>
+                    <button type="button" ng-click="changeSearchFlag($event)" ng-class="!control.search_flag ? 'search-checked-flag' : 'search-unchecked-flag'" class="senior-btn-style" style="margin-left: -1px;">高级搜索</button>
+                </div>
+            </div>
+           <form ng-show="!control.search_flag" class="form-horizontal senior-search-div" style="margin-top: -15px;" ng-click="$event.stopPropagation()">
+               <div class="col-sm-12">
+                   <div class="form-group form-style" style="margin-top: 20px">
+                       <label class="col-sm-2 control-label label-key">关键字</label>
+                       <div class="col-sm-6">
+                           <input type="text"
+                                  name="key_word"
+                                  ng-model="info.high_search_obj.key_word"
+                                  class="form-control"
+                                  placeholder="请输入关键字"
+                                  required
+                                  ng-model-options="{updateOn: 'blur'}">
+                       </div>
+                       <div class="col-sm-4" style="text-align: right">
+                           <div class="clear-icon" ng-click="clearData()"><i class="fa fa-trash-o" style="color: #b02323;" title="全部清空"></i></div>
+                       </div>
+                   </div>
+                   <div class="form-group form-style" style="margin-bottom: 0">
+                       <label class="col-sm-2 control-label label-key">执行类别</label>
+                       <div class="col-sm-8">
+                           <div class="tablecss senior-search-exec-type"  ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = ! one.flag" ng-repeat="one in info.high_search_obj.exec_type_list">
+                               {{one.value}}
+                               <div>
+                                   <i class="fa fa-check"></i>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group form-style">
+                       <label class="col-sm-2 control-label label-key">分类</label>
+                       <div>
+                           <div class="col-sm-7 classify-close" style="width: 455px" ng-class="{'classify-expand':control.tags_more_flag}">
+                               <div class="classify-tag-id" ng-style="countTagDivHeight()">
+                                   <div class="tablecss" style="width: auto;margin-left: 0px;"  ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = ! one.flag" ng-repeat="one in info.high_search_obj.classify_list">
+                                       {{one.value}}
+                                       <div>
+                                           <i class="fa fa-check"></i>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-sm-1" style="text-align: left;width: 75px;">
+                               <label ng-if="!control.tags_more_flag && control.classify_flag" class="control-label" style="color:#808080;cursor: pointer;" ng-click="control.tags_more_flag =true">更多</label>
+                               <label ng-if="control.tags_more_flag && control.classify_flag" class="control-label" ng-click="control.tags_more_flag = false" style="color:#808080;cursor: pointer;">收起</label>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-sm-12 text-center">
+                           <button type="button" ng-click="control.search_flag=true" class="cancel-btn btn-xl">取消</button>
+                           <button type="button" class="save-btn btn-xl" ng-click="seniorSearch();">搜索</button>
+                       </div>
+                   </div>
+               </div>
+           </form>
+        </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-10 col-sm-offset-2" ng-if="!control.cmpt_list_loading && cmpt_info.cmpt_list.length!=0">
+           <div ng-click="checkCheckCmpt(cmpt)" ng-repeat="cmpt in cmpt_info.cmpt_list" ng-class="cmpt.is_checked ? 'checked-tag':'check-tag'" style="height: 32px; line-height: 30px; display: inline-block; margin-right: 20px;width: 155px;margin-bottom: 8px;overflow: hidden;white-space: nowrap; text-overflow: ellipsis;vertical-align: top">
+               <span title="{{cmpt.cn_name}}" style="padding-left: 10px;">
+                   <i style="padding-right: 10px;" class="fa fa-cube"></i>
+                   {{cmpt.cn_name}}
+               </span>
+               <div>
+                   <i class="fa fa-check"></i>
+               </div>
+           </div>
+       </div>
+        <div class="col-sm-10 col-sm-offset-2" ng-if="!control.cmpt_list_loading && cmpt_info.cmpt_list.length==0">
+            <div class="check-item-none-cmpt none-content-font-color"><span style="display: inline-block;margin-top: 72px">暂无组件</span></div>
+        </div>
+        <div class="col-sm-10 col-sm-offset-2" ng-if="control.cmpt_list_loading">
+            <div class="loading-font-color" style="font-size: 16px;margin: 10px;"><span>正在加载组件信息 <i class="fa fa-spinner"></i></span></div>
+        </div>
+    </div>
+    <div class="row form-style">
+        <label class="col-sm-2 label-key" style="margin-top: 8px;">
+            脚本
+        </label>
+        <div class="col-sm-10 label-value">
+            <div class="check-iten-modal-script">
+                <bs-select
+                        name="param_name{{$id}}"
+                        items="cmpt_info.script_list"
+                        ng-if="cmpt_info.script_list.length!=0"
+                        option-key="script_type"
+                        option-labal="script_type_cn"
+                        select-val="selectScriptByScriptType(selectKey,cmpt_info)"
+                        no-border
+                        my-select="cmpt_info.script_type"
+                        required
+                ></bs-select>
+            </div>
+            <textarea
+                    ui-codemirror="config.view_options"
+                    ui-refresh="control.script_loading"
+                    placeholder="执行脚本"
+                    ng-model="cmpt_info.exec_script"
+            >
+                </textarea>
+        </div>
+    </div>
+    <!--<div class="row form-style" style="margin-top: 10px;">
+        <label class="col-sm-2 label-key" style="margin-top: 7px">
+            执行用户
+        </label>
+        <div class="col-sm-10 label-value" ng-if="data.user_loading" style="margin-top: 7px">
+            <span class="loading-font-color">正在加载数据源信息 <i class="fa fa-spinner"></i></span>
+        </div>
+        <div class="col-sm-10 label-value" ng-if="!data.user_loading && data.user_list.length==0" style="margin-top: 7px">
+            <span class="none-content-font-color">暂无可选用户</span>
+        </div>
+        <div class="col-sm-10 label-value" ng-if="!data.user_loading && data.user_list.length!=0">
+            <form name="config.form.user_form" class="form-horizontal" novalidate autocomplete="off">
+                <bs-select width=200 name="data_soc" class="label-value"
+                           items="data.user_list"
+                           my-select="info.user"
+                           required>
+                </bs-select>
+                <validate-msg tag-cn-name="用户" type="select" name="data_soc" model="info.user"></validate-msg>
+            </form>
+        </div>
+    </div>-->
+    <div class="row" style="margin-top: 10px">
+        <div class="col-sm-2 text-right form-style" style="margin-top: 8px">
+            <label class="control-label label-key">参数表</label>
+        </div>
+        <!--参数列表-->
+        <div class="col-sm-10 label-value" ng-if="!control.script_loading" style="margin-top: 8px">
+            <span style="color: #6d7183;">正在加载参数信息 <i class="fa fa-spinner"></i></span>
+        </div>
+        <div class="col-sm-10" ng-if="control.script_loading && cmpt_info.param_list.length!=0">
+            <form name="config.form.param_form">
+                <table class="sub-table table text-center" tbl-Data="cmpt_info.param_list">
+                    <thead>
+                    <tr>
+                        <td  width="170px" style="text-align: left">
+                            <span>参数名</span>
+                            <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                        </td>
+                        <td width="200px" style="text-align: left">
+                            参数中文名
+                        </td>
+                        <td style="text-align: left">
+                            默认值
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="tr in cmpt_info.param_list"  style="font-size: 12px;text-align: left;" ng-show="cmpt_info.param_list.length != 0">
+                        <td  style="text-align: left">
+                            <div class="param-group-style">
+                                <div class="param-name">{{tr.param_name}}</div>
+                            </div>
+                        </td>
+                        <td style="text-align: left">
+                            <div class="has-feedback"><input type="text" ng-model="tr.param_cn_name" class="sub-form-control"/></div>
+                        </td>
+                        <td style="max-width: 200px;text-align: left;padding-right: 40px;position: relative " title="{{ tr.sensitive_flag ? '': tr.param_value}}">
+                            <textarea name="cmpt_param_value{{$index}}"
+                                      ng-if="!tr.sensitive_flag"
+                                      ui-codemirror="{ onLoad : paramShellLoaded}"
+                                      ui-refresh="true"
+                                      ng-model="tr.param_value"
+                                      required
+                                      class="sub-form-control">
+                            </textarea>
+                            <!--只是为了兼容360浏览器阻止默认密码填写-->
+                            <input type="password" style="display: none;" disabled autocomplete = "new-password"/>
+                            <input type="password"
+                                   class="pass-input"
+                                   name="cmpt_param_value{{$index}}"
+                                   style="height: 26px;padding-left: 5px;width: 100%;"
+                                   ng-model="tr.label_param_value"
+                                   disabled
+                                   autocomplete="new-password"
+                                   required
+                                   ng-if="tr.sensitive_flag"
+                                   ng-init="tr.label_param_value =  tr.param_value ?  '1111111111' : ''"
+                            >
+                            <validate-msg tag-cn-name="参数值" name="cmpt_param_value{{$index}}"></validate-msg>
+                            <div style="position: absolute;top: 9px;right: 14px;cursor: pointer;">
+                                <i ng-if="!tr.sensitive_flag" class="fa fa-eye" title="明文" ng-click="tr.sensitive_flag=true; tr.label_param_value = tr.param_value ? '1111111111' : ''"></i>
+                                <i ng-if="tr.sensitive_flag" class="fa fa-eye-slash" title="密文" ng-click="tr.sensitive_flag=false"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <div class="col-sm-10 none-content-font-color" ng-if="control.script_loading && cmpt_info.param_list.length==0" style="margin-top: 8px;">暂无参数</div>
+    </div>
+    <div class="row form-style" style="text-align: center;padding-top: 45px;padding-bottom: 30px">
+        <div class="text-center">
+            <button class="cancel-btn btn-xl" type="button" ng-click="cancel()">取消</button>
+            <button class="save-btn btn-xl" ng-click="save()">保存</button>
+        </div>
+    </div>
+    <div class="senior-search-shadow" ng-if="!control.search_flag" ng-click="control.search_flag = true"></div>
+</div>

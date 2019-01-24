@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <div  style="padding-bottom: 20px;">
+        <div class="row" style="margin-top: 10px;">
+            <label class="col-sm-offset-8 col-sm-4 control-label text-right" style="font-size: 16px;">
+                <span  ng-click="changeData(3);" style="cursor: pointer;">本次导入&nbsp;<strong class="loading-font-color">{{info.total_size}}</strong>&nbsp;条</span>，
+                <span  ng-click="changeData(1);" style="cursor: pointer;">成功&nbsp;<strong class="success-font-color">{{info.success_num}}</strong>&nbsp;条</span>，
+                <span  ng-click="changeData(2);" style="cursor: pointer;">失败&nbsp;<strong class="error-font-color">{{info.total_size-info.success_num}}</strong>&nbsp;条</span></label>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <import-list></import-list>
+            </div>
+        </div>
+        <div class="row" style="margin-top:20px;">
+            <div class="col-sm-12 text-center" style="padding-bottom: 5px">
+                <button type="button" class="cancel-btn btn-md text-center" ng-click="cancel()">取消</button>
+                <button ng-if="info.total_size == info.success_num"  class="save-btn btn-md text-center"  ng-click="saveImportOrder()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

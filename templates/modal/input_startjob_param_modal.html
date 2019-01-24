@@ -1,0 +1,56 @@
+
+<form name="form.input_param_form" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">输入参数</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body" style="max-height: 320px;overflow: auto">
+        <div class="form-group form_style" ng-style="{'margin-bottom': $last ? 0 :''}" style="margin-bottom: 5px">
+            <label class="col-sm-2 control-label label_key" style="padding-top: 4px">参数表</label>
+            <div class="col-sm-10">
+                <table class="sub-table text-center" tbl-Data="input_param_list">
+                    <thead>
+                    <tr class="ecm_paramsTb_cursor">
+                        <td width="100px">
+                            <span>参数名</span>
+                            <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                        </td>
+                        <td width="120px">
+                            参数中文名
+                        </td>
+                        <td>
+                            参数值
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="tr in input_param_list"  style="font-size: 12px;text-align: left;">
+                        <td  class="ecm_paramsTb_cursor" title="{{tr.param_name}}">
+                            <div class="param-group-style">
+                                <div class="param-name">{{tr.param_name}}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="has-feedback"><input type="text" ng-model="tr.param_cn_name" class="sub-form-control"/></div>
+                        </td>
+                        <td style="max-width: 220px;text-align: left" title="{{tr.param_value}}">
+                                <input name="param_value{{$id}}"
+                                          ng-model="tr.param_value"
+                                          class="sub-form-control"
+                                          placeholder="输入参数值"
+                                          required>
+                            <validate-msg tag-cn-name="参数值" name="param_value{{$id}}"></validate-msg>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-sm-12 text-center">
+            <button class="btn-md save-cancel-btn cancel-btn" type="button" ng-click="formCancel()">取消</button>
+            <button class="btn-md save-cancel-btn save-btn" type="submit" >确认</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+<style>
+    .collect_image_modal{
+        background: url("./img/CL_collect.png") center center / 27px;
+        display: inline-block;vertical-align:middle;
+        height: 16px; width: 16px;margin-top: -4px
+    }
+    .file_list{
+        max-height: 435px;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">{{content.node_ip}}</h3>
+    <div ng-click="formCancel();"></div>
+</div>
+<!--<div class="modal-title"  style="background: #F2F2F2;padding: 10px 0 10px 20px;text-align: left; font-size: 14px;">-->
+    <!--<div class="collect_image_modal"></div>-->
+    <!--<span>{{content.node_ip}}</span>-->
+<!--</div>-->
+<!--详细的信息-->
+<div class="modal-body fontSize12">
+    <div class="row">
+        <div class="col-sm-12" ng-if="node.path_files">
+            <file-browse-check node="node" change-path="changePath();" check="true"></file-browse-check>
+        </div>
+        <div class="col-sm-12" style="font-size: 14px;text-align: center;color: #ccc;" ng-if="!node.path_files">
+            暂无文件信息
+        </div>
+    </div>
+    <div class="bottom_buttonMargin_t40b20" style="text-align: center;">
+        <button  type="button" ng-click="formCancel();" class="cancel-btn btn-xl cancel_button_marginRight">
+            取消
+        </button>
+        <button  type="button" ng-click="formSubmit();" class="save-btn btn-xl" style="text-align:center;">
+            确定
+        </button>
+    </div>
+</div>

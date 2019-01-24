@@ -1,0 +1,231 @@
+<div class="container-fluid no-padding form-style ">
+    <div class="row">
+        <div class="col-md-12 node-config-view">
+            <div class="row basic-info">
+                <label class="col-sm-2 control-label label-key" style="padding-right: 20px">节点IP</label>
+                <div class="col-sm-5">
+                    <span class="node-name label-value">{{info.node.node_soc_ip}}</span>
+                    <div ng-if="info.node.exist_agent_yn_falg == 1" class="node-deployed-agent">已部署AGENT</div>
+                </div>
+                <div class="close-btn" ng-click="back();"></div>
+            </div>
+            <div class="row" style="margin-bottom: 10px">
+                <label class="col-sm-2 control-label label-key node-view-soc-type">节点类型</label>
+                <div class="col-sm-10" style="padding-left: 0">
+                    <div class="node-type-style label-value" style="position: relative;height: 22px" ng-repeat="i in info.node.node_type_list">
+                        <div class="icheckbox_minimal-blue disabled" ng-class="i.state ? 'checked' : ''">
+                        </div>
+                        <span>{{i.value}}</span>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label label-key config-view-basic-info">基本信息</label>
+                <div class="col-sm-10 label-value">
+                    <div class="row basic-info-table-wrap" ng-if="info.node.node_basic_info">
+                        <table class="sub-table view-basic-info" style="margin-bottom:0">
+                            <tbody>
+                            <tr>
+                                <td width="90px;" style="position: relative" class="text-center">
+                                    服务器名
+                                    <div class="change-flag-style" title="自动获取" ng-if="info.node.node_basic_msg.server_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left">
+                                    <span>{{info.node.node_basic_info.server_name}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <span class="none-content-font-color" ng-if="!info.node.node_basic_info" style="display: inline-block;">暂无基本信息</span>
+                </div>
+            </div>
+            <div class="row" ng-if="info.node.node_basic_info">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <div class="row view-basic-config-detail">
+                        <table class="sub-table view-basic-info" style="margin-bottom:0">
+                            <tbody>
+                            <tr>
+                                <td width="90px;" style="position: relative" class="text-center">
+                                    机器配置
+                                    <div class="service-config-icon" ng-if="info.node.node_basic_info.node_hard_msg.machine_cfg_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left">
+                                    <span>{{info.node.node_basic_info.node_hard_msg.machine_cfg}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: relative" class="text-center">CPU
+                                    <div class="service-config-icon"  ng-if="info.node.node_basic_info.node_hard_msg.cpu_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left">
+                                    <span>{{info.node.node_basic_info.node_hard_msg.cpu}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: relative" class="text-center">内存
+                                    <div class="service-config-icon" ng-if="info.node.node_basic_info.node_hard_msg.mem_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left">
+                                    <span>{{info.node.node_basic_info.node_hard_msg.mem}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: relative" class="text-center">磁盘
+                                    <div class="service-config-icon" ng-if="info.node.node_basic_info.node_hard_msg.disk_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left">
+                                    <span>{{info.node.node_basic_info.node_hard_msg.disk}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: relative" class="text-center">网络
+                                    <div class="service-config-icon" ng-if="info.node.node_basic_info.node_hard_msg.network_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left">
+                                    <span>{{info.node.node_basic_info.node_hard_msg.network}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="info.node.node_basic_info">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <div class="row viewOS-table-style">
+                        <table class="table sub-table view-basic-info">
+                            <tbody>
+                            <tr style="border-top: none;">
+                                <td width="90px" class="text-center" style="position: relative;border-top: none">操作系统
+                                    <div class="service-config-icon" ng-if="info.node.node_basic_info.node_soft_msg.op_system_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left;border-top: none">
+                                    <span>{{info.node.node_basic_info.node_soft_msg.op_system}}</span>
+                                </td>
+                            </tr>
+                            <tr style="border-top: none;">
+                                <td class="text-center;" style="position: relative;border-top: none">JRE
+                                    <div class="service-config-icon" ng-if="info.node.node_basic_info.node_soft_msg.jre_flag == 0"></div>
+                                </td>
+                                <td style="text-align: left;border-top: none">
+                                    <span>{{info.node.node_basic_info.node_soft_msg.jre}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top: 20px">
+                <label class="col-sm-2 control-label label-key" style="padding-right: 20px;" ng-style="{'margin-top':info.node.protocol_soc_list.length!=0 ?'14px':'0px'}">数据源配置</label>
+                <div class="col-sm-10 label-value" ng-if="info.node.protocol_soc_list.length!=0">
+                    <div class="row data-soc-config">
+                        <span class="data-soc-usage">一般用途</span>
+                        <ul class="col-sm-10">
+                            <li ng-repeat="soc in info.node.protocol_soc_list" title="{{soc.protocol_cn_name}} {{soc.soc_name}}">
+                                <span class="config-soc-type">{{soc.protocol_cn_name.substring(0,4)}}</span>
+                                <span class="config-soc-name">{{soc.soc_name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row data-soc-config">
+                        <div ng-if="info.node.agent_config_yn_falg == 1">
+                            <span class="node-config-soc-agent">已选Agent作为配置和校验数据源</span>
+                        </div>
+                        <div ng-if="info.node.agent_config_yn_falg == 2">
+                            <span class="data-soc-usage">配置用途</span>
+                            <ul>
+                                <li title="{{info.node.config_soc.protocol_type}}  {{info.node.config_soc.soc_name}}" ng-if="info.node.config_soc.protocol_type">
+                                    <span class="config-soc-type">{{info.node.config_soc.protocol_type.substring(0,4)}}</span>
+                                    <span class="config-soc-name">{{info.node.config_soc.soc_name}}</span>
+                                </li>
+                                <div ng-if="!info.node.config_soc.protocol_type" class="none-content-font-color data-soc-no-config">
+                                    --
+                                </div>
+                            </ul>
+                            <span class="data-soc-usage" style="margin-left: 40px">校验用途</span>
+                            <ul>
+                                <li title="{{info.node.check_soc.protocol_type}}  {{info.node.check_soc.soc_name}}" ng-if="info.node.check_soc.protocol_type">
+                                    <span class="config-soc-type">{{info.node.check_soc.protocol_type.substring(0,4)}}</span>
+                                    <span class="config-soc-name">{{info.node.check_soc.soc_name}}</span>
+                                </li>
+                                <div ng-if="!info.node.check_soc.protocol_type" class="none-content-font-color data-soc-no-config">
+                                    --
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-10" ng-if="info.node.protocol_soc_list.length==0"><span class="none-content-font-color">暂无数据源配置</span></div>
+            </div>
+            <!--状态检查-->
+            <div class="row form-style" style="margin-top: 20px">
+                <label class="col-sm-2 control-label label-key" style="padding-top: 17px;padding-right: 20px">状态检查</label>
+                <div class="col-sm-10 label-value">
+                    <div class="row data-soc-config" style="padding: 10px;">
+                        <table class="sub-table"  tbl-Data="info.node.monitor_item_list">
+                            <thead>
+                            <tr  style="height:30px">
+                                <td style="padding-left: 10px;">
+                                    检查项名称
+                                </td>
+                                <td style="padding-left: 10px;">
+                                    检查项组件
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-if="info.node.monitor_item_list.length==0" class="none-content-font-color" style="text-align: center;">
+                                <td colspan="2">暂无数据</td>
+                            </tr>
+                            <tr ng-if="info.node.monitor_item_list.length!=0" ng-repeat="check_item in info.node.monitor_item_list" >
+                                <td>
+                                    <div class="text-ellipse" style="width: 100%;" ng-bind="check_item.monitor_item_name" title="{{check_item.monitor_item_name}}"></div>
+                                </td>
+                                <td>
+                                    <div ng-if="check_item.phase.phase_name">
+                                       <span title="{{check_item.phase.phase_name}}" style="padding-left: 10px;">
+                                           <i class="fa fa-cube check-item-cmpt-cube"></i>
+                                           {{check_item.phase.phase_name}}
+                                       </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px">
+                <label class="col-sm-2 control-label label-key" style="padding-right: 20px;margin-top: 15px">插件部署</label>
+                <div class="col-sm-10 label-value" style="padding-left: 0;padding-right: 35px;">
+                    <div class="plugin-content-wrap">
+                        <div class="plugin-content">
+                            <div class="env-container" ng-class="{'env-container-fail':plugin.deploy_status==3,'env-container-succ':plugin.deploy_status==2,'env-container-mid':plugin.deploy_status==4}"  ng-repeat="plugin in info.node.plugin_list">
+                                <div class="text-center">
+                                    <div class="env-img-style"></div>
+                                </div>
+                                <div class="text-center" style="margin-top: 4px;">
+                                    <span class="env-name" ng-bind="plugin.plugin_name ? plugin.plugin_name : '--'" title="{{plugin.plugin_name}}"></span>
+                                </div>
+                                <div class="env-deploy-loading" ng-if="plugin.deploy_status ==1 || plugin.deploy_status == 4">
+                                    <i class="fa fa-spin fa-circle-o-notch" style="font-size: 26px;margin-top: 26px"></i>
+                                    <div style="margin-top: 4px" ng-bind="plugin.deploy_status==1 ? '部署中...':plugin.deploy_status==4 ? '删除中...':''"></div>
+                                </div>
+                                <div class="env-deploy-status evn-deploy-succ" ng-if="plugin.deploy_status==2" title="部署成功"></div>
+                                <div class="env-deploy-status evn-deploy-failed" ng-if="plugin.deploy_status==3" title="{{plugin.error_message}}"></div>
+                            </div>
+                            <div  ng-if="info.node.plugin_list && info.node.plugin_list.length ==0" style="text-align: center">
+                                <span class="plugin-empty-style detail-node-plugin-empty">
+                                    暂无部署插件
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

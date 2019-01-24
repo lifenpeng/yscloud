@@ -1,0 +1,13 @@
+<div class="container-fluid tasks-list">
+    <div class="row task-container">
+        <div class="col-sm-12 commonTabs">
+            <ul class="nav nav-tabs nav-justified" style="width: 50%;margin-left: -15px;">
+                <li role="presentation" ng-class="control.tab_flag == 1 ? 'active' :'' "><a href="" ng-click="selectTab(1,'mine_task')" >我的任务<span class="task-title" ng-bind="task_info.mine_task_exe_count"></span></a></li>
+                <li role="presentation" ng-class="control.tab_flag == 2 ? 'active' :'' "><a href="" ng-click="selectTab(2,'review_task')">复核任务<span class="task-title"  ng-bind="task_info.review_task_exe_count"></span></a></li>
+                <li role="presentation" ng-class="control.tab_flag == 3 ? 'active' :'' "><a href="" ng-click="selectTab(3,'auth_task')">授权任务<span class="task-title"  ng-bind="task_info.auth_task_exe_count"></span></a></li>
+                <li role="presentation" ng-class="control.tab_flag == 4 ? 'active' :'' "><a href="" ng-click="selectTab(4,'trouble_task')">故障单任务<span class="task-title" ng-bind="task_info.trouble_task_exe_count"></span></a></li>
+            </ul>
+            <mine-task class="tabCont" tab-state="control.tab_flag" ng-if="control.tab_flag"></mine-task>
+        </div>
+    </div>
+</div>

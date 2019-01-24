@@ -1,0 +1,30 @@
+<div class="cd-panel server">
+    <form class="form-horizontal form-style" name="server_form" novalidate autocomplete="off">
+        <ui-view>
+            <div class="form-group">
+                <label class="col-sm-2 control-label label-key text-right">节点IP</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           class="form-control label-value"
+                           placeholder="请输入IP"
+                           ng-model="info.srv_info.server_ip"
+                           name="server_ip"
+                           ng-model-options="{updateOn: 'blur'}"
+                           ng-maxlength=15
+                           ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                           required
+                    >
+                    <validate-msg tag-cn-name="IP地址" name="server_ip"></validate-msg>
+                </div>
+                <div class="col-sm-3" style="margin-top: 2px;">
+                    <button type="button" class="save-btn btn-md" ng-if="!control.save_ip_loading" ng-click="saveSrvIp()">
+                        保存
+                    </button>
+                    <button type="button" class="save-btn btn-md" ng-if="control.save_ip_loading">
+                        <i class="fa fa-spin fa-spinner" style="color: #fff"></i>
+                    </button>
+                </div>
+            </div>
+        </ui-view>
+    </form>
+</div>

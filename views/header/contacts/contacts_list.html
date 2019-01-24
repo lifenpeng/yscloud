@@ -1,0 +1,59 @@
+
+<div class="container-fluid contacts-list">
+    <div class="row padding-10">
+        <form class="form-inline searchBox">
+            <div class="search">
+                <div class="search-input">
+                    <input type="text" placeholder="请输入用户进行搜索" class="form-control" ng-model="info.user_cn_name" style="" ng-enter="searchConcats()">
+                </div>
+                <div class="search-btn">
+                    <span ng-click="info.user_cn_name = '' " class="fa fa-times clear-logol"></span>
+                    <span  class="fa fa-search search-logol"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row contact-row" ng-repeat="contacts_row in info.contacts_list">
+        <div class="col-lg-3 col-md-5 col-sm-6 contacts-block" ng-repeat="contact in contacts_row">
+            <div class="row contacts-container">
+                <div class="col-sm-2" style="padding-top: 1px;padding-left: 2px;">
+                    <div class="contacts-left-container">
+                        <img class="img-responsive img-circle" src="./img/comm/contact_icon.png" alt="">
+                        <i class="glyphicon glyphicon-heart" ng-style="getAttentionStyle(contact.user_id,contact)" ng-click="addAndRemoveAttentionContact(contact.user_id,contact)"></i>
+                    </div>
+                </div>
+                <div class="col-sm-10 contacts-right-container">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <i class="glyphicon glyphicon-user icon-color"></i>
+                        </div>
+                        <div class="col-sm-9 text-padding">
+                            <span popover-placement="top" popover-trigger="mouseenter" popover="{{contact.dept_cn_name}}">
+                                 {{contact.user_cn_name}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <i class="glyphicon glyphicon-earphone icon-color"></i>
+                        </div>
+                        <div class="col-sm-9 text-padding">
+                            {{contact.phone_no ? contact.phone_no :"--"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <i class="glyphicon glyphicon-envelope icon-color"></i>
+                        </div>
+                        <div class="col-sm-9 text-padding">
+                            {{contact.email_add ? contact.email_add:"--"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="text-align:center;">
+        <pagination total-items="control.total_recd" ng-model="control.current_page" ng-change="pageChanged()" max-size="5" items-per-page="20"></pagination>
+    </div>
+</div>

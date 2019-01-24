@@ -1,0 +1,137 @@
+
+<div class="container-fluid task-detail task_handle">
+    <form name="taskForm" ng-submit="formSubmit()"  novalidate autocomplete="off">
+        <div class="row" ng-style="setContainerHeight(task_info.task_detail.work_detail_list.length)">
+            <div class="col-sm-5 layout-left">
+                <div class="row padding-10">
+                    <div class="col-sm-2 text-center"></div>
+                    <div class="col-sm-2 text-center">
+                        <label>
+                            <div class="flow-container">
+                                <div class="vertical-line-style" ng-style="verticalLineStyle(task_info.task_detail.work_detail_list.length)">
+                                    <div ng-repeat="one in task_info.task_detail.work_detail_list">
+                                        <div class="flow-circle-sm" ng-style="flowCircleSm(one.run_state,$index)">
+                                            <div class="out-triangle-style">
+                                                <div class="changeWith{{$index}} task-block-style" ng-mouseenter="mouseEnter($index)" ng-mouseleave="mouseLeave($index)">
+                                                    <div class="padding-1-4" ng-if="one.deal_bk_date">{{one.deal_bk_date+" "+one.deal_bk_time}}</div>
+                                                    <div class="padding-1-4" ng-if="!one.deal_bk_date" style="height: 28px;"></div>
+                                                    <div class="handle-user-font" ng-if="one.pgpend_type == 1">提交人：{{one.deal_user_cname}}</div>
+                                                    <div class="handle-user-font" ng-if="(one.pgpend_type == 2) && ($index != task_info.task_detail.work_detail_list.length-1)">授权人：{{one.deal_user_cname}}</div>
+                                                    <div class="handle-user-font" ng-if="one.pgpend_type == 3 && task_info.task_detail.pgwork_status!=2 && task_info.task_detail.pgwork_status !=5">执行人：{{one.deal_user_cname}}</div>
+                                                    <div class="handle-user-font" ng-if="(task_info.task_detail.pgwork_status ==2 || task_info.task_detail.pgwork_status ==5)&& ($index == task_info.task_detail.work_detail_list.length-1)">关闭人：{{one.deal_user_cname}}</div>
+                                                    <div class="handle-user-font trouble-task-handle-flow-desc">授权说明：<span class="auth-introduce">{{one.condition_text}}</span></div>
+                                                    <div class="handle-user-font trouble-task-handle-flow-desc" ng-if="one.deal_bk_desc">处理说明：<span class="auth-introduce">{{one.deal_bk_desc}}</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="one.run_state == 2" ng-style="flowCircleLg($index)"></div>
+                                    </div>
+                                </div>
+                                <div class="task-state-cn-name" ng-repeat="one in task_info.task_detail.work_detail_list" ng-style="taskStateCnName($index)" ng-bind="one.deal_type_name"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-sm-4 text-center task-basic-info-title">
+                        <label>任务进程</label>
+                    </div>
+                    <div class="col-sm-4 text-center"></div>
+                </div>
+            </div>
+            <div class="col-sm-6 layout-right">
+                <div class="row padding-10">
+                    <div class="col-sm-12 text-center task-basic-info-title" >
+                        <label>任务信息</label>
+                    </div>
+                </div>
+                <div class="row padding-10">
+                    <div class="col-sm-12 task-basic-info">
+                        <div class="row" >
+                            <div class="col-sm-12 text-left" >
+                                <label class="control-label trouble-task-handle-label">任务流水号：</label>{{task_info.task_detail.wrk_seq}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 text-left" style="padding-right: 0">
+                                <label class="control-label trouble-task-handle-label">提交人：</label>{{task_info.task_detail.work_detail_list[0].deal_user_cname}}
+                            </div>
+                            <div class="col-sm-7 text-left">
+                                <label class="control-label">提交时间：{{task_info.task_detail.work_detail_list[0].deal_bk_date +" "+task_info.task_detail.work_detail_list[0].deal_bk_time}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row padding-10" style="margin-top:-20px;">
+                    <div class="col-sm-12 task-apply-desc" >
+                        <div class="row">
+                            <div class="col-sm-12 text-left" >
+                                <label class="control-label trouble-task-handle-label">任务申请说明：</label>
+                                <label class="control-label"  ng-bind="task_info.task_detail.apply_bk_expl  ? task_info.task_detail.apply_bk_expl  : '暂无任务说明'"  ng-style="{'color': !task_info.task_detail.apply_bk_expl ? '#6d7183':''}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <button class="btn btn-default view-task-interface-btn" type="button" ng-click="programDetail()">信息查看</button>
+                    </div>
+                </div>
+                <div class="row padding-10" ng-if="task_info.task_detail.pgwork_status !=4 && task_info.task_detail.pgwork_status !=5 && !control.is_detail">
+                    <div class="col-sm-12 text-center task-basic-info-title">
+                        <label ng-if="task_info.task_detail.pgwork_status==1">任务授权</label>
+                        <label ng-if="task_info.task_detail.pgwork_status==3">任务执行</label>
+                        <label ng-if="task_info.task_detail.pgwork_status==2">任务关闭</label>
+                    </div>
+                </div>
+                <div class="row" style="padding:0 10px;" ng-if="task_info.task_detail.pgwork_status !=4 && task_info.task_detail.pgwork_status !=5 && !control.is_detail">
+                    <div class="col-sm-12 task-handle-container">
+                        <div class="row" ng-if="task_info.task_detail.pgwork_status==1">
+                            <div class="col-sm-2 radio">
+                                <label class="task-handle-label-font">审批</label>
+                            </div>
+                            <label class=" col-sm-4 radio margin-top-12">
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" i-check ng-model="task_info.submit_info.deal_res"> 通过
+                            </label>
+                            <label class=" col-sm-4 radio margin-top-12">
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2" i-check ng-model="task_info.submit_info.deal_res"> 拒绝
+                            </label>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 checkbox">
+                                <label class="task-handle-label-font">说明</label>
+                            </div>
+                            <div class="col-sm-10 task-handle-desc-container">
+                                <textarea
+                                        style="
+                                        height: 120px;
+                                        resize: none;"
+                                        class="form-control"
+                                        ng-model="task_info.submit_info.deal_bk_desc"
+                                        name="deal_bk_desc"
+                                        ng-maxlength=100>
+                                </textarea>
+                                <validate-msg tag-cn-name="说明" name="deal_bk_desc"></validate-msg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <div ng-if="task_info.task_detail.pgwork_status !=4 && task_info.task_detail.pgwork_status !=5 && !control.is_detail">
+                    <button ng-if="!control.btn_loading" type="button" class="cancel-btn btn-md" ng-click="back()">取消</button>
+                    <button ng-if="control.btn_loading" type="button" disabled="disabled" class="disabled-btn btn-md">取消</button>
+                    <button type="button" class="save-btn btn-md"  ng-click="taskClose()" ng-if="task_info.task_detail.pgwork_status==2 && !control.btn_loading">关闭</button>
+                    <button type="button" class="save-btn btn-md"  ng-click="taskExec()" ng-if="task_info.task_detail.pgwork_status==3 && !control.btn_loading">执行</button>
+                    <button type="button" class="save-btn btn-md"  ng-click="taskAuth()" ng-if="task_info.task_detail.pgwork_status==1 && !control.btn_loading">授权</button>
+                    <button ng-if="control.btn_loading" disabled="disabled" class="save-btn btn-md" style="text-align:center;">
+                        <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+                <div ng-if="task_info.task_detail.pgwork_status ==4 || task_info.task_detail.pgwork_status ==5 || control.is_detail">
+                    <button type="button" class="save-btn btn-md" ng-click="back();">返回</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

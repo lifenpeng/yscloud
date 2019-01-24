@@ -1,0 +1,86 @@
+<div class="modal-header">
+    <h3 class="modal-title">上传文件基本信息</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body" >
+    <form name="form.uploadFile" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="form-group form-style pick-date-common">
+            <label class="col-sm-3 control-label label-key" style="padding-right:0;">日期</label>
+            <div class="col-sm-4 pick-date-common">
+                <input type="text"
+                       name="pick_bk_date"
+                       ng-click="open($event)"
+                       ng-model="upload_file_info.file_date"
+                       max-date="{{maxDate}}"
+                       class="form-control"
+                       show-button-bar="false"
+                       datepicker-popup="yyyy年MM月dd日"
+                       is-open="datepicker.opened"
+                       placeholder="时间选择"
+                       required
+                       style="min-width: 260px;"
+                       readonly="true"/>
+                <validate-msg tag-cn-name="日期" name="pick_bk_date"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key" style="padding-right:0;">节点</label>
+            <div class="col-sm-4">
+                    <bs-select name="node_name"
+                               items="data.node_ip_list"
+                               my-select="upload_file_info.node_ip"
+                               width="160"
+                               select-val="getipAndPath(upload_file_info.node_ip)"
+                               option-labal="soc_ip"
+                               option-key="soc_ip"
+                               class="label-value"
+                            ></bs-select>
+            </div>
+        </div>
+        <div class="from-group form-style" ng-if="data.file_list.length>0">
+            <label class="col-sm-3 control-label label-key" style="padding-right:7px;">已上传文件</label>
+            <div class="col-sm-9" style="margin-bottom: 10px;">
+                <table class="sub-table">
+                    <thead>
+                    <tr>
+                        <td  style="text-align: left;">
+                            文件名
+                        </td>
+                        <td  style="text-align: left;">
+                            大小
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="tr in data.file_list">
+                        <td  style="text-align: left;">
+                            {{tr.file_name}}
+                        </td>
+                      <td style="text-align: left;">
+                          {{tr.real_length}}
+                      </td>
+                    </tr>
+                    <tr ng-if="data.file_list.length==0 || !data.file_list">
+                        <td colspan="6" style="text-align:center;">
+                            暂无数据
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div ng-if="control.show_upload" class="row form-style">
+            <label class="col-sm-3 control-label label-font label-key" style="padding-right: 0">文件</label>
+            <div class="col-sm-8" ng-style="{'margin-top': !upload_file_info.file_name ? '0px':'10px'}">
+                <file-upload fileupload="log_fileupload" successthen="fileUploadSuccessThen();"></file-upload>
+            </div>
+        </div>
+        <div class="row" style="text-align: center ;margin-top: 40px;margin-bottom: 20px;">
+            <button class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+            <button class="save-btn btn-xl"  type="submit" ng-click="formSubmit()">确定
+            </button>
+        </div>
+    </form>
+</div>
+
+

@@ -1,0 +1,254 @@
+<!--工单处理--脚本处理-->
+<div  class="wo-script-handle">
+    <div class="container-fluid">
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-sm-8 script-excute-content left-content">
+                <div class="container-fluid" style="padding-top: 5px;">
+                    <form name="form.script_handle_form" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13)return false">
+                        <!-- 脚本方式-->
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-8 text-right">
+                                <div class="script-type"  ng-if="!sub_tab.script_info.form_control.is_rollback">
+                                    <bs-select width=100 name="impl_type"
+                                               items="sub_tab.script_info.data.impl_type_list"
+                                               select-val="selectScriptMethod(selectKey,sub_tab)"
+                                               option-key="key"
+                                               option-labal="value"
+                                               my-select="sub_tab.script_info.script_form.impl_type"
+                                               class="script-config-type"
+                                               disable="sub_tab.is_detail || sub_tab.control.is_task_author || sub_tab.script_info.form_control.executing"
+                                               no-border
+                                               required></bs-select>
+                                </div>
+                                <validate-msg tag-cn-name="脚本方式" type="select" model="sub_tab.script_info.script_form.impl_type" name="impl_type"></validate-msg>
+                            </div>
+                        </div>
+                        <div class="form-group form-style">
+                            <label class="col-sm-2 control-label label-key">脚本来源</label>
+                            <div class="col-sm-9" style="margin-top: 5px">
+                                <div ng-if="!sub_tab.is_detail && !sub_tab.control.is_task_author && !sub_tab.script_info.form_control.executing">
+                                    <div class="wo-handle-type label-value">
+                                        <input type="radio" name="script_source" i-check ng-model="sub_tab.script_info.script_form.script_source"
+                                               ng-change="changeScriptSource(sub_tab.script_info,1)" value="1" ng-disabled="false"/><span>输入</span>
+                                    </div>
+                                    <div class="wo-handle-type label-value">
+                                        <input type="radio" name="script_source" i-check ng-model="sub_tab.script_info.script_form.script_source"
+                                               ng-change="changeScriptSource(sub_tab.script_info,2)" value="2" ng-disabled="false"/><span>文件</span>
+                                    </div>
+                                </div>
+                                <div ng-if="sub_tab.is_detail || sub_tab.control.is_task_author || sub_tab.script_info.form_control.executing">
+                                    <div class="wo-handle-type label-value">
+                                        <div class="iradio_minimal-blue" style="cursor: default" ng-class="sub_tab.script_info.script_form.script_source==1 ? 'checked' : ''"></div>
+                                        <span style="padding: 0 30px 0 5px;">输入</span>
+                                    </div>
+                                    <div class="wo-handle-type label-value">
+                                        <div class="iradio_minimal-blue" style="cursor: default" ng-class="sub_tab.script_info.script_form.script_source==2 ? 'checked' : ''"></div>
+                                        <span style="padding: 0 30px 0 5px;">文件</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-style">
+                            <label class="col-sm-2 control-label text-right label-key">执行数据源</label>
+                            <div class="col-sm-10" style="padding-right: 30px;">
+                                <div style="display: inline-block;margin-right: 10px;" ng-if="!sub_tab.script_info.form_control.executing && (!sub_tab.is_detail && !sub_tab.control.is_task_author)" class="ordinary-btn text-center" ng-click="configExecuteDataSource(sub_tab.script_info.script_form)"><span class="fa fa-cog" style="margin-right: 6px"></span>配置</div>
+                                <div style="display: inline-block;margin-right: 10px;" ng-if="sub_tab.script_info.form_control.executing && (!sub_tab.is_detail && !sub_tab.control.is_task_author)" class="data-source-btn data-source-btn-disabled text-center"><span class="fa fa-cog" style="margin-right: 6px;"></span>配置</div>
+                                <div ng-if="!sub_tab.script_info.form_control.executing && !sub_tab.control.is_task_author && !sub_tab.is_detail" class="data-source-btn" style="position: relative;display: inline-block;" ng-repeat="soc in sub_tab.script_info.script_form.soc_list" title="{{soc.soc_ip}}">
+                                    <span><label style="color: #bbb;margin-right: 5px;">{{soc.protocol_type_cn}}</label>{{soc.soc_name}}</span>
+                                    <span ng-if="soc.ftp_soc_name">&nbsp;&nbsp;<label style="color: #bbb;margin-right: 5px;">|&nbsp;&nbsp;{{soc.ftp_protocol_type_cn}}</label>{{soc.ftp_soc_name}}</span>
+                                    <div class="data-source-delete-btn" ng-click="deleteSingleSoc($index,sub_tab.script_info.script_form.soc_list)"><i class="fa fa-times" style="font-size: 12px;"></i></div>
+                                </div>
+                                <div ng-if="sub_tab.script_info.form_control.no_sys_soc_show && sub_tab.script_info.script_form.soc_list.length == 0">
+                                    <span class="soc-null">数据源不能为空</span>
+                                </div>
+                                <div ng-if="sub_tab.script_info.form_control.executing || sub_tab.control.is_task_author || sub_tab.is_detail" class="data-source-btn" style="display: inline-block;" ng-repeat="soc in sub_tab.script_info.script_form.soc_list" title="{{soc.soc_ip}}">
+                                    <span><label style="color: #bbb;margin-right: 5px;">{{soc.protocol_type_cn}}</label>{{soc.soc_name}}</span>
+                                    <span ng-if="soc.ftp_soc_name">&nbsp;&nbsp;<label style="color: #bbb;margin-right: 5px;">|&nbsp;&nbsp;{{soc.ftp_protocol_type_cn}}</label>{{soc.ftp_soc_name}}</span>
+                                </div>
+                                <div ng-if="sub_tab.is_detail && sub_tab.script_info.script_form.soc_list.length == 0" class="none-content-font-color" style="padding-top: 5px;">
+                                    暂无数据
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-style">
+                            <div class="col-sm-9 col-sm-offset-2" ng-if="sub_tab.script_info.script_form.script_source == 2" style="padding-bottom: 10px">
+                                <div ng-if="!sub_tab.is_detail && !sub_tab.control.is_task_author && !sub_tab.script_info.form_control.executing">
+                                    <file-upload fileupload="sub_tab.script_info.script_fileupload" deletefile="removeScriptFile(sub_tab.script_info);" downfile="downloadScriptFile(sub_tab.script_info);" successthen="uploadScriptFileSuccessThen(sub_tab.script_info);"></file-upload>
+                                </div>
+                                <div ng-if="sub_tab.is_detail || sub_tab.control.is_task_author || sub_tab.script_info.form_control.executing">
+                                    <file-upload fileupload="sub_tab.script_info.script_fileupload" downfile="downloadScriptFile(sub_tab.script_info);" successthen="uploadScriptFileSuccessThen(sub_tab.script_info);"></file-upload>
+                                </div>
+                            </div>
+                            <div ng-if="(sub_tab.script_info.script_form.script_source == 1) || (sub_tab.script_info.script_form.script_source == 2 && sub_tab.script_info.script_fileupload.filename)">
+                                <label class="col-sm-2 control-label label-key" >执行脚本</label>
+                                <div class="col-sm-9" ng-if="sub_tab.script_info.script_form.impl_type != 2">
+                                    <textarea name="exe_script"
+                                              ui-codemirror="(sub_tab.script_info.script_form.script_source == 1 && !sub_tab.script_info.form_control.executing && !sub_tab.is_detail && !sub_tab.control.is_task_author) ?  sub_tab.script_info.python_options  : sub_tab.script_info.view_python_options"
+                                              ui-refresh="true"
+                                              ng-model="sub_tab.script_info.script_form.exe_script"
+                                              class="form-control"
+                                              required>
+                                    </textarea>
+                                    <validate-msg tag-cn-name="执行脚本" model="sub_tab.script_info.script_form.exe_script" name="exe_script"></validate-msg>
+                                </div>
+                                <div class="col-sm-9" ng-if="sub_tab.script_info.script_form.impl_type == 2">
+                                    <textarea name="exe_script"
+                                              ui-codemirror="(sub_tab.script_info.script_form.script_source == 1 && !sub_tab.script_info.form_control.executing && !sub_tab.is_detail && !sub_tab.control.is_task_author) ?  sub_tab.script_info.edit_options  : sub_tab.script_info.view_options"
+                                              ui-refresh="true"
+                                              ng-model="sub_tab.script_info.script_form.exe_script"
+                                              class="form-control"
+                                              required>
+                                    </textarea>
+                                    <validate-msg tag-cn-name="执行脚本" model="sub_tab.script_info.script_form.exe_script" name="exe_script"></validate-msg>
+                                </div>
+                            </div>
+                        </div>
+                        <!--任务授权-->
+                        <div ng-if="sub_tab.control.is_task_author && !sub_tab.control.finish_author" class="form-group form-style">
+                            <div class="col-sm-offset-2 col-sm-9">
+                                <span ng-show="!sub_tab.workflow_state" class="loading-font-color">
+                                     <span class="fa fa-spin fa-spinner"></span>
+                                     任务授权中
+                                </span>
+                                <span ng-show="sub_tab.workflow_state == 1">任务待复核</span>
+                                <span ng-show="sub_tab.workflow_state == 2" style="color: #FF0101;">
+                                    <span class="task-failure"></span>
+                                    任务复核拒绝
+                                </span>
+                                <span ng-show="sub_tab.workflow_state == 3" style="color: rgb(76, 174, 76);">任务待授权</span>
+                                <span ng-show="sub_tab.workflow_state == 4" style="color: #FF0101;">
+                                    <span class="task-failure"></span>
+                                    任务授权拒绝
+                                </span>
+                                <span ng-show="sub_tab.workflow_state == 5">
+                                     任务待执行
+                                </span>
+                                <span ng-show="sub_tab.workflow_state == 6" style="color: rgb(76, 174, 76);">任务执行完毕</span>
+                                <span ng-show="sub_tab.workflow_state == 7" style="color: #d9534f;">
+                                    任务关闭
+                                 </span>
+                                <a class="view-author-style" ng-click="viewTaskAuthorDetail(sub_tab)" style="cursor: pointer;">查看授权信息</a>
+                                <div class="exec-btn-group" ng-if="!sub_tab.is_detail" style="float: right; margin-top: -4px;">
+                                <span class="exec-btn" ng-click="execScriptBatchExeTask(sub_tab)" ng-if="sub_tab.workflow_state == 5 && !sub_tab.script_info.form_control.executing">
+                                    <i class="fa fa-play-circle-o"></i>&nbsp;执行
+                                </span>
+                                    <span ng-if="sub_tab.workflow_state == 5 && sub_tab.script_info.form_control.executing" class="exec-disable-btn" style="cursor: default">
+                                    <i class="fa fa-play-circle-o" ></i>&nbsp;执行
+                                </span>
+                                    <span ng-if="sub_tab.workflow_state == 5 && !sub_tab.script_info.form_control.executing" class="exec-btn" style="cursor: default"><i class="fa fa-stop-circle-o" style="color:#999;"></i>&nbsp;停止</span>
+                                    <span ng-if="sub_tab.workflow_state == 5 && sub_tab.script_info.form_control.executing" class="exec-btn" ng-click="stopScriptExecute(sub_tab)"><i class="fa fa-stop-circle-o"></i>&nbsp;停止</span>
+                                    <span class="exec-btn" ng-click="resetScriptHandle(sub_tab,sub_tab.script_info)" ng-if="sub_tab.workflow_state == 2 || sub_tab.workflow_state == 4">
+                                    <i class="fa fa-play-circle-o"></i>&nbsp;关闭
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 执行按钮-->
+                        <div class="form-group exec-btn-group" ng-if="(!sub_tab.is_detail && !sub_tab.control.is_task_author) || sub_tab.control.finish_author">
+                            <div class="col-sm-11 text-right">
+                                <div ng-if="!sub_tab.script_info.form_control.executing">
+                                    <span class="exec-btn" ng-click="submitScriptHandle(sub_tab,sub_tab.script_info)"><i class="fa fa-play-circle-o"></i>&nbsp;执行</span>
+                                    <span class="exec-disable-btn" style="cursor: default"><i class="fa fa-stop-circle-o"></i>&nbsp;停止</span>
+                                    <span class="exec-btn" ng-click="resetScriptHandle(sub_tab,sub_tab.script_info)"><i class="fa fa-rotate-left"></i>&nbsp;重置</span>
+                                </div>
+                                <div ng-if="sub_tab.script_info.form_control.executing">
+                                    <!-- 不可执行-->
+                                    <span class="exec-disable-btn" style="cursor: default"><i class="fa fa-play-circle-o"></i>&nbsp;执行</span>
+                                    <span class="exec-btn" ng-click="stopScriptExecute(sub_tab)"><i class="fa fa-stop-circle-o"></i>&nbsp;停止</span>
+                                    <span class="exec-disable-btn" style="cursor: default"><i class="fa fa-rotate-left"></i>&nbsp;重置</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 执行结果-->
+                        <div class="form-group exec-result-div" style="margin-right: 0px;" ng-if="sub_tab.script_info.form_control.exec_result_list.length > 0">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label" style="font-size: 16px;text-align: left">执行结果</label>
+                                    <div class="col-sm-10 text-right">
+                                        <span class="delete-icon" ng-click="deleteExecResult(sub_tab)" title="删除执行结果" ng-if="sub_tab.script_info.form_control.exec_result_list.length != 0 && sub_tab.script_info.form_control.exec_result && !sub_tab.is_detail">&times;</span>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 5px;cursor: pointer;" ng-click="exe.collapse_flag = !exe.collapse_flag" ng-repeat="exe in sub_tab.script_info.form_control.exec_result_list track by $index">
+                                    <div class="col-sm-12 exe-result-header">
+                                        <div class="col-sm-3 " style="text-align: left;" title="{{exe.exe_ip}}">{{exe.soc_ip}}</div>
+                                        <div class="col-sm-3" style="text-align: left;" title="{{exe.soc_name}}">{{exe.soc_name}}</div>
+                                        <div class="col-sm-4" style="text-align: left;">
+                                            <!-- 待执行-->
+                                            <span ng-if="exe.cmd_status == 1">待执行</span>
+                                            <!-- 执行耗时-->
+                                            <span ng-if="exe.cmd_status == 5">[{{exe.act_exec_time}}s]&nbsp;&nbsp;</span>
+                                            <span style="position: absolute;right: 0;top: 11px;width: 18px;height: 19px;font-size: 14px;" title="{{exe.cmd_status == 2 ? '执行中': exe.cmd_status == 3 ? '执行失败':exe.cmd_status == 4 ? '验证失败':exe.cmd_status == 5 ? '执行成功':exe.cmd_status == 6 ? '执行跳过':exe.cmd_status == 7 ? '执行停止':''}}"
+                                                  ng-class="{'fa fa-spin fa-spinner':exe.cmd_status == 2,
+                                                       'status-img list-fail-img exec-result-icon':exe.cmd_status == 3,
+                                                       'fa fa-exclamation-triangle':exe.cmd_status == 4,
+                                                       'status-img list-success-img exec-result-icon':exe.cmd_status == 5,
+                                                       'fa fa-step-forward':exe.cmd_status == 6,
+                                                       'fa fa-stop-circle-o':exe.cmd_status == 7}"></span>
+                                        </div>
+                                        <div class="col-sm-2" style="text-align: right;cursor: pointer;">
+                                            <i ng-if="!exe.collapse_flag" class="fa fa-angle-down"  ng-click="$event.stopPropagation();exe.collapse_flag = !exe.collapse_flag;"></i>
+                                            <i ng-if="exe.collapse_flag" class="fa fa-angle-up" ng-click="$event.stopPropagation();exe.collapse_flag = !exe.collapse_flag;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" collapse="!exe.collapse_flag" style="padding: 0;">
+                                        <div class="row exe-result-content" ng-click="$event.stopPropagation();">
+                                            <div class="col-sm-12">
+                                                <ul style="list-style: none;margin-right: 0;font-size: 12px;margin-bottom: 0;">
+                                                    <li ng-repeat="detail in exe.result_msg track by $index" style="padding: 3px 0;">{{detail}}</li>
+                                                </ul>
+                                                <div ng-if="!exe.result_msg || exe.result_msg.length == 0" style="color: #999999;">暂无数据</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-4" style="padding-right: 0;position: relative;">
+                <div class="row config-header-style"> 历史纪录</div>
+                <div class="col-sm-12 exe-config history-record-scroll" ng-style="calculateMaxHeight()">
+                    <div class="row config-step" ng-repeat="step in sub_tab.script_info.execute_list track by $index" >
+                        <div class="col-sm-10 history-record-script" title="{{step.str_script}}">
+                            <div class="script-type-icon">
+                                <span class="exec-icon" ng-if="!step.back_flag" ng-class="step.impl_type == 2 ? 'fa fa-cube' : (step.impl_type == 7 || step.impl_type == 8) ? 'fa fa-bars' : 'sql-icon'"></span>
+                            </div>
+                            <div class="execing-cmd">
+                                <span ng-show="step.impl_type == 7">phython2：{{step.str_script}}</span>
+                                <span ng-show="step.impl_type == 8">phython3：{{step.str_script}}</span>
+                                <span ng-show="step.impl_type == 2">SHELL：{{step.str_script}}</span>
+                            </div>
+                        </div>
+                        <!-- 执行成功-->
+                        <span ng-show="step.success_yn_flag == 1" class="status-img list-success-img script-exec-result"></span>
+                        <!-- 执行失败-->
+                        <span ng-show="step.success_yn_flag == 2" class="status-img list-success-img script-exec-result"></span>
+                        <!-- 查看脚本信息按钮-->
+                        <span class="view-step-btn" ng-click="viewExeInfo(sub_tab.basicData.order_seq,sub_tab.basicData.deal_bk_seq,step.script_bk_seq)">
+                            <i class="fa fa-eye" title="查看脚本信息"></i>
+                        </span>
+                        <!-- 引用按钮-->
+                        <span class="fa fa-reply reply" title="编辑" ng-if="!sub_tab.control.is_task_author && !sub_tab.is_detail" ng-click="rollbackScript(sub_tab,step,1)"></span>
+                        <span class="fa fa-reply reply" title="编辑" ng-if="sub_tab.control.is_task_author" style="cursor: default;"></span>
+                    </div>
+                    <div class="row" ng-show="sub_tab.script_info.execute_list.length == 0">
+                        <div class="col-sm-4 col-sm-offset-4 text-center" style="color: #CCC;line-height: 190px;">暂无数据</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="!sub_tab.is_detail && !sub_tab.control.is_task_author">
+            <div class="col-sm-12 text-center" style="padding-top: 20px;padding-bottom: 20px">
+                <button type="button" class="cancel-btn btn-md text-center" ng-click="abandonHandle(sub_tab)">放弃处理</button>
+                <button ng-if="sub_tab.script_info.form_control.has_exec_flag"  type="button" class="save-btn btn-md text-center" ng-click="finishDealWorkOrder(sub_tab)">完成处理</button>
+            </div>
+        </div>
+        <div class="row" ng-if="sub_tab.is_detail && !control.wo_detail_flag">
+            <div class="col-sm-12 text-center" style="padding: 20px 0 5px 0;">
+                <button type="button" class="cancel-btn btn-md text-center" ng-click="closeProcessOrder($index, sub_tab.wo_id)">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

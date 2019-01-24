@@ -1,0 +1,25 @@
+<div  class="modal-header" >
+    <h3 class="modal-title">复制流程</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all; overflow:hidden;">
+   <form name="form.flow" ng-submit="formSubmit()" class="form-horizontal">
+       <div class="form-group form_style">
+           <label class="col-sm-4 control-label label_key" >流程名称</label>
+           <div class="col-sm-7">
+               <input type="text"
+                      name="flow_cn_name"
+                      ng-model="flow_info.flow_cn_name"
+                      class="form-control label_value"
+                      placeholder="中文，不超过20个字符"
+                      required
+                      ng-maxlength=20>
+               <validate-msg tag-cn-name="流程名称" name="flow_cn_name"></validate-msg>
+           </div>
+       </div>
+   </form>
+    <div style="text-align: center;margin-top: 40px;">
+        <button class="save_cancel_btn cancel_btn btn_xl" ng-click="formCancel()">取消</button>
+        <button class="save_cancel_btn save_btn btn_xl" ng-click="formSubmit()">确定</button>
+    </div>
+</div>

@@ -1,0 +1,1747 @@
+/*公共基础样式*/
+/*按钮组公共样式*/
+.btn-lg {
+    font-size: 14px;
+    width: 138px;
+    height: 40px;
+}
+.btn-md {
+    height: 32px;
+    font-size: 14px;
+    width: 98px;
+}
+.btn-xl {
+    height: 28px;
+    font-size: 12px;
+    width: 78px;
+}
+.btn-lg:focus,
+.btn-md:focus,
+.btn-xl:focus{
+    outline: 0;
+}
+.save-btn {
+    background-color: #44dcfb;
+    color: #FFFFFF;
+    border:1px solid #44dcfb;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.save-btn:hover{
+    background-color:#19b7ec;
+    border-color: #19b7ec;
+}
+.save-btn:active{
+    background-color:#0084ad;
+    border-color: #0084ad;
+}
+.cancel-btn {
+    background-color: #5c697b;
+    color: #FFFFFF;
+    border:1px solid #5c697b;
+    margin-right: 14px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.cancel-btn:hover{
+    background-color:#424c5b;
+    border-color: #424c5b;
+}
+.cancel-btn:active{
+    background-color:#333c4c;
+    border-color: #333c4c;
+}
+.padding-top-7{
+    padding-top: 7px;
+}
+.padding-bottom-0{
+    padding-bottom: 0 !important;
+}
+.margin-bottom-15{
+    margin-bottom: 15px;
+}
+/*禁用按钮*/
+.disabled-btn{
+    background: #1c5c77;
+    color:#ccc;
+    border:1px solid #1c5c77;
+    cursor: not-allowed !important;
+    margin-right: 14px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+/*白色带边框按钮*/
+.hollow-btn{
+    border:1px solid #fc9e22;
+    color:#fc9e22;
+    background : transparent;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.hollow-btn i.fa-plus{
+    color: #fc9e22;
+}
+.hollow-btn:hover,.hollow-btn:hover i{
+    color:#FFF;
+    background : #fc9e22;
+}
+/*普通按钮特殊的样式(黄色)*/
+.ordinary-btn{
+    min-width: 80px;
+    background : transparent;
+    display: inline-block;
+    border : 1px solid rgba(252, 158, 34, 1);
+    height : 32px;
+    line-height: 30px;
+    cursor: pointer;
+    border-radius : 4px;
+    -moz-border-radius : 4px;
+    -webkit-border-radius : 4px;
+    font-size : 12px;
+    color: rgba(252, 158, 34, 1);
+    text-align: center;
+}
+.ordinary-btn:hover{
+    background : rgba(252, 158, 34, 1);
+    border-color : rgba(252, 158, 34, 1);
+    color : white;
+}
+.ordinary-btn:active{
+    background : rgba(161, 96, 0, 1);
+    border-color : rgba(161, 96, 0, 1);
+    color : white;
+}
+.ordinary-btn-disabled{
+    min-width: 80px;
+    display: inline-block;
+    height : 32px;
+    line-height: 30px;
+    cursor: not-allowed !important;
+    border-radius : 4px;
+    -moz-border-radius : 4px;
+    -webkit-border-radius : 4px;
+    font-size : 12px;
+    background: #E9EBF1;
+    color:#B3B4BA;
+    border:1px solid #E9EBF1;
+}
+/*普通按钮特殊的样式(蓝色)*/
+.ordinary-blue-btn{
+    min-width: 80px;
+    background : transparent;
+    display: inline-block;
+    border : 1px solid #44DCFD;
+    height : 32px;
+    line-height: 30px;
+    cursor: pointer;
+    border-radius : 4px;
+    -moz-border-radius : 4px;
+    -webkit-border-radius : 4px;
+    font-size : 12px;
+    color: #44DCFD;
+    text-align: center;
+}
+.ordinary-blue-btn:hover{
+    background : #44DCFD;
+    border-color : transparent;
+    color : white;
+}
+.ordinary-blue-btn:active{
+    background : #44DCFD;
+    border-color : transparent;
+    color : white;
+}
+.ordinary-blue-btn-disabled{
+    min-width: 80px;
+    display: inline-block;
+    height : 32px;
+    line-height: 30px;
+    cursor: not-allowed !important;
+    border-radius : 4px;
+    -moz-border-radius : 4px;
+    -webkit-border-radius : 4px;
+    font-size : 12px;
+    background: #E9EBF1;
+    color:#B3B4BA;
+    border:1px solid #E9EBF1;
+}
+.font-14{
+    font-size: 14px;
+}
+.font-18{
+    font-size: 18px;
+}
+/*节点下数据源的样式*/
+.data-source-btn{
+    min-width: 80px;
+    background : #0b1821;
+    display: inline-block;
+    border : 1px solid #396770;
+    height : 32px;
+    line-height: 30px;
+    cursor: default;
+    border-radius : 4px;
+    -moz-border-radius : 4px;
+    -webkit-border-radius : 4px;
+    font-size : 12px;
+    color : #d2f1fe;
+    padding: 0 10px;
+    margin: 5px 10px 5px 0;
+    position: relative;
+}
+.data-source-btn.data-source-btn-disabled{
+    background: #c17c21;
+    color:#B3B4BA;
+    border:1px solid #c17c21;
+}
+.data-source-btn:hover{
+    border : 1px solid #44DCFD;
+}
+.data-source-btn .data-source-procotol-type{
+    font-size: 12px;
+    border-radius: 4px;
+    color: #88B8FE;
+    background: #43e0f74d;
+    padding: 0 8px
+}
+/*数据源删除按钮*/
+.data-source-btn:hover >.data-source-delete-btn{
+    display: block;
+}
+.data-source-delete-btn{
+    position: absolute; background:#5c697b ; width: 20px;
+    color: #091016;
+    height: 20px; top: -10px; right: -10px; line-height: 19px; border-radius: 10px;display: none;
+    cursor: pointer;
+    text-align: center;
+}
+.data-source-delete-btn:hover{
+    background: #3090a8;
+    display: inherit;
+}
+.data-source-delete-btn:active{
+    background: #3090a8;
+    display: inherit;
+}
+/*上传控件*/
+/*最新-上传控件-按钮样式*/
+.a-upload{
+    text-align: center;
+    height: 24px;
+    line-height: 24px;
+    margin-top: 8px;
+    width: 114px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    position: relative;
+    cursor: pointer;
+}
+.a-upload  input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+.a-upload:hover{
+    text-decoration: none
+}
+.ac-upload{
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+    margin-top: 8px;
+    width: 44px;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    position: relative;
+    cursor: pointer;
+}
+.ac-upload:hover{
+    text-decoration: none
+}
+/*上传下载导出得到一些特殊btn样式*/
+.upload-btn{
+    background : #19b7ec;
+    border-color : #19b7ec;
+    font-size : 12px;
+    color : #091016;
+}
+.upload-btn:hover{
+    background : #19b7ec;
+    border :1px solid #19b7ec;
+    font-size : 12px;
+    color : #fff;
+}
+.upload-btn:active{
+    background : #0084ab;
+    border :1px solid #19b7ec;
+    font-size : 12px;
+    color : #091016;
+}
+/*故障方案一些按钮*/
+.general-btn{
+    border: 1px solid #f1b442;
+    font-size : 12px;
+    color : #f1b442;
+    border-radius: 12px;
+    text-align: center;
+}
+.general-btn :hover {
+    background: #f1b442;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 12px;
+}
+/*下载日志的按钮*/
+.logDownLoad{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0) url(../img/public/log_down.png) no-repeat scroll;
+    background-position: 0 -1px;
+    background-size: 98%;
+    height: 22px;
+    width: 24px;
+    cursor: pointer;
+    position:relative;
+    top:3px;
+    margin-right:4px;
+}
+
+
+/*数据源、系统标签等选中状态 默认尺寸32px*/
+/*选择执行人*/
+.tablecss {
+    /*width: 120px;*/
+    height: 32px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #D2F1FE;
+    text-align: center;
+    line-height: 32px;
+    background-color: #0a1017;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    padding: 0 8px;
+    display: inline-block;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tag-xl{
+    width: 80px;
+}
+.tag-md{
+    width: 120px;
+}
+.tag-lg{
+    width: 180px;
+}
+.check-tag{
+    background : #0a1017;
+    border :1px solid #407384;
+    font-size : 12px;
+    color : #D2F1FE;
+    position: relative;
+    cursor: pointer;
+}
+.check-tag:hover,
+.check-tag:active{
+    background : #0a1017;
+    border : 1px solid #44dcfd;
+    font-size : 12px;
+    color : #D2F1FE;
+}
+.check-tag:active div{
+    background: transparent;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+}
+.check-tag div{
+    display: none;
+}
+.check-tag div i{
+    display: none;
+    background: transparent;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+}
+.check-tag:active div i{
+    color: #fff;
+    position: absolute;
+    left: -11px;
+    font-size: 10px;
+    top: 8px;
+}
+.checked-tag div i{
+    display: inherit;
+    color: #fff;
+    position: absolute;
+    left: -11px;
+    font-size: 10px;
+    top: 8px;
+}
+.checked-tag{
+    cursor: pointer;
+    background : #0a1017;
+    border : 1px solid #44dcfd;
+    font-size : 12px;
+    color : #D2F1FE;
+    position: relative;
+}
+.checked-tag div{
+    background: transparent;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+}
+
+/*大表格样式*/
+/*模块列表-表格*/
+.lg-table thead{
+    background: rgba(0,0,0,0.4);
+    color: #F1B442;font-size: 12px;
+}
+.lg-table tbody tr {
+    border-top: 1px solid #262e3b !important;
+}
+.lg-table tbody tr td{
+    border: none!important;
+}
+.lg-table thead tr th{
+    border-bottom: 0 !important;
+}
+.lg-table tbody td div{
+    line-height: 24px;
+}
+.lg-table tbody td a{
+    line-height: 24px;
+}
+.lg-table tbody .table_col_Style td{
+    background : rgba(68, 220, 253, 0.15);
+    font-size : 12px;
+    color : #fff;
+}
+.lg-table tbody .table_col_Style td:last-child{
+    border-right: 1px solid #44dcfd !important;
+}
+
+.lg-table tbody td,
+.lg-table tbody div{
+    font-size: 12px;
+}
+.lg-table tbody tr{
+    background: rgba(0,0,0,0.3);
+    color: #ACE6FE;
+}
+.lg-table tbody tr.table_col_Style{
+    border-left: 1px solid #44dcfd!important;
+    border-top: 1px solid #44dcfd!important;
+    border-right: 1px solid #44dcfd!important;
+}
+
+.bootstrap-table .fixed-table-body .lg-table.table-no-bordered > tbody > .col_option > td{
+    border: none!important;
+}
+.bootstrap-table .table{
+    border-bottom: none;
+}
+.lg-table .col_option{
+    background: rgba(0,0,0,0.3)!important;
+    border-top: none!important;
+    border-left: 1px solid #44dcfd!important;
+    border-bottom: 1px solid #44dcfd!important;
+    border-right: 1px solid #44dcfd!important;
+}
+.lg-table .col_option td{
+    background: rgba(68, 220, 253, 0.15) !important;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    background-color: #44dcfd !important;
+    border-color : #44dcfd !important;
+    color:white !important;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus{
+    border-color : #44dcfd !important;
+    background-color: #44dcfd !important;
+    color: white !important;
+}
+.pagination > li > a,
+.pagination > li > span{
+    margin-left:0px !important;
+    color: #44dcfc !important;
+    background: #091016 !important;
+    border:none;
+}
+.pagination > .disabled > span,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+    background-color: #1c5c77 !important;
+    border-color: #1c5c77 !important;
+    color: #ccc !important;
+    cursor: not-allowed;
+}
+.fixed-table-pagination .pagination a{
+    padding: 6px 11px;margin-right:2px;background: #1a1f27;
+}
+.tabConDe{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0) url(../img/comm/tab_operate.png) no-repeat scroll -10px -90px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    position:relative;
+    top:2px;
+    margin-right:4px;
+}
+.tabConVi{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0) url(../img/comm/tab_operate.png) no-repeat scroll -10px -50px;
+    height: 20px;
+    cursor: pointer;
+    margin-right:4px;
+    width: 20px;
+    position:relative;
+    top:2px;
+}
+.tabConEd{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0) url(../img/comm/tab_operate.png) no-repeat scroll -10px -10px;
+    height: 20px;
+    margin-right:4px;
+    cursor: pointer;
+    width: 20px;
+    position:relative;
+    top:2px;
+}
+.tabConCl{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0) url(../img/comm/tab_operate.png) no-repeat scroll -10px -130px;
+    height: 20px;
+    margin-right:4px;
+    cursor: pointer;
+    width: 20px;
+    position:relative;
+    top:2px;
+}
+.tabConRs{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0) url(../img/comm/tab_operate.png) no-repeat scroll -10px -170px;
+    height: 20px;
+    margin-right:4px;
+    cursor: pointer;
+    width: 20px;
+    position:relative;
+    top:2px;
+}
+.tabConDn{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0) url(../img/public/log_down.png) no-repeat scroll 0 -1px;
+    background-size: 100%;
+    height: 21px;
+    width: 24px;
+    margin-right:5px;
+    cursor: pointer;
+    position:relative;
+    top:2px;
+    opacity: 0.5;
+}
+.tabConDe:hover{
+    background-position: -50px -90px;
+}
+.tabConDe:active{
+    background-position: -90px -90px;
+}
+.tabConVi:hover{
+    background-position: -50px -50px;
+}
+.tabConVi:active{
+    background-position: -90px -50px;
+}
+.tabConEd:hover{
+    background-position: -50px -10px;
+}
+.tabConEd:active{
+    background-position: -90px -10px;
+}
+.tabConCl:hover{
+    background-position: -50px -130px;
+}
+.tabConCl:active{
+    background-position: -90px -130px;
+}
+.tabConRs:hover{
+    background-position: -50px -170px;
+}
+.tabConRs:active{
+    background-position: -90px -170px;
+}
+.tabConDn:active{
+    opacity: 1;
+}
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th{
+    background : rgba(68, 220, 253, 0.15);
+}
+.table-hover > tbody > tr:hover > td .tabConDn,
+.table-hover > tbody > tr:hover > th .tabConDn{
+    opacity: 1;
+}
+.table-hover > tbody > tr:hover > td .tabConDe[disabled],
+.table-hover > tbody > tr:hover > th .tabConDe[disabled],
+.table-hover > tbody > tr:hover > td .tabConDe[disabled]:active,
+.table-hover > tbody > tr:hover > th .tabConDe[disabled]:active{
+    background: rgba(0, 0, 0, 0) url(../img/comm/tab_operate.png) no-repeat scroll -50px -90px;
+}
+.table-hover > tbody > tr:hover > td .tabConEd[disabled],
+.table-hover > tbody > tr:hover > th .tabConEd[disabled],
+.table-hover > tbody > tr:hover > td .tabConEd[disabled]:active,
+.table-hover > tbody > tr:hover > th .tabConEd[disabled]:active{
+    background: rgba(0, 0, 0, 0) url(../img/comm/tab_operate.png) no-repeat scroll -50px -10px;
+}
+/*列表中敏捷项目标志*/
+.quick-project-icon{
+    width: 17px;height: 18px;background: url("../img/publish/quick_img.png") no-repeat;display: inline-block;
+    position: absolute;left: 0;top: 5px;
+}
+
+/*小表格*/
+/*SUBTABLE表格*/
+.sub-table{
+    border-collapse:separate;
+    width: 100%;
+}
+.sub-table thead{
+    width: 100%;
+    border-collapse:separate;
+    border-top: 0;
+    background: #1f3144;
+    border-spacing: 0;
+}
+.sub-table thead  td,
+.sub-table thead  th{
+    color: #f1c891;
+    padding:6px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 12px;
+    height: 24px;
+}
+.sub-table tbody{
+    background: #101923;
+}
+.sub-table tbody tr td{
+    text-align: left;
+    padding:4px;
+    font-weight: normal;
+    font-size: 12px;
+    border-top: 2px solid #101923;
+}
+.sub-table tbody tr:last-child  td{
+    padding:4px;
+    font-weight: normal;
+    font-size: 12px;
+    border-bottom: none;
+}
+.sub-table tbody tr,.sub-table tfoot tr{
+    background: #253447;
+}
+.sub-table tfoot{
+    height:31px;
+}
+.sub-table tfoot tr td{
+    border-top: 2px solid #101923;
+}
+.sub-table tbody tr .fa{
+    color: #d2f1fe;
+    cursor: pointer;
+}
+.sub-table tbody tr .fa:hover{
+    color: #44dcfb;
+}
+.sub-table tfoot tr td:last-child{
+    width: 40px;
+}
+.sub-form-control {
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: 0 2px, 100% 1px;
+    background-image: linear-gradient(#44dcfd, #44dcfd), linear-gradient(#1f3144, #1f3144);
+    background-position: center bottom, center calc(100% - 1px);
+    background-repeat: no-repeat;
+    border: 0 none;
+    border-radius: 0;
+    float: none;
+    transition: background 0s ease-out 0s;
+    height: 26px;
+    line-height: 1.42857;
+    color: #61a1b8;
+    display: block;
+    width: 100%;
+    font-family: inherit;
+}
+.sub-form-control[disabled]:hover {
+    cursor: not-allowed;
+}
+
+.is-focused {
+    background-size: 100% 2px, 100% 1px;
+    outline: medium none;
+    transition-duration: 0.3s;
+}
+.sub-form-control::-moz-placeholder {
+    color: rgba(190, 201, 222, 0.2);
+}
+.sub-form-control:-ms-input-placeholder {
+    color: rgba(190, 201, 222, 0.2);
+}
+.sub-form-control::-webkit-input-placeholder {
+    color: rgba(190, 201, 222, 0.2);
+}
+
+/*表单*/
+/*输入框*/
+.form-style .label-key{
+    color:#61a1b8 !important;
+    font-size: 12px !important;
+    text-align: right;
+}
+.form-style .label-value{
+    color:#d2f1fe !important;
+    font-size: 12px !important;
+    vertical-align: middle;
+}
+.form-style .label-value input,
+.form-style .label-value textarea,
+.form-style .label-value button{
+    font-size: 12px !important;
+}
+.form-style input{
+    font-family : "Microsoft YaHei" !important;
+    color : #d2f1fe !important;
+    font-size: 12px;
+}
+.form-control{
+    background-color: #091016 !important;
+    border: 1px solid #26515c;
+}
+.form-control::-moz-placeholder {
+    color: rgba(190, 201, 222, 0.2);
+}
+.form-control:-ms-input-placeholder {
+    color: rgba(190, 201, 222, 0.2);
+}
+.form-control::-webkit-input-placeholder {
+    color: rgba(190, 201, 222, 0.2);
+}
+.form-control:focus {
+    border-color: rgba(68, 220, 253, 1);
+    outline: 0;
+    -webkit-box-shadow: 0 0 5px rgba(68, 220, 253, 0.6);
+    box-shadow: 0 0 5px rgba(68, 220, 253, 0.6);
+}
+/*密码框*/
+input.pass-input{
+    background-color: #091016;
+    border: 1px solid #26515c;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    display: block;
+    font-size: 12px;
+    line-height: 26px;
+    padding: 0px 12px;
+    width: 100%;
+}
+input.pass-input:hover{
+    border-color: #35a3ba;
+}
+
+/*
+下拉框
+指令 ul宽度需设置为100%
+typehead 里面同样需要设置
+*/
+/*bs-select样式*/
+.btn-select{
+    text-overflow: ellipsis; overflow: hidden;cursor:pointer;
+    background-color: #091016;border: 1px solid #1a4754;
+    border-right: none;color: #d2f1fe;
+}
+.btn-group:hover .btn-default,.btn-group:hover .btn-default.dropdown-toggle {
+    border-color: #44dcfd;
+}
+.btn-default.disabled, .btn-default[disabled], fieldset[disabled] .btn-default, .btn-default.disabled:hover, .btn-default[disabled]:hover, fieldset[disabled] .btn-default:hover, .btn-default.disabled:focus, .btn-default[disabled]:focus, fieldset[disabled] .btn-default:focus, .btn-default.disabled:active, .btn-default[disabled]:active, fieldset[disabled] .btn-default:active, .btn-default.disabled.active, .btn-default[disabled].active, fieldset[disabled] .btn-default.active{
+    background: #162230; border-color: #26515c !important;
+}
+.btn-group .btn-default.dropdown-toggle{
+    border: 1px solid #26515c;
+}
+.btn-group .btn-default[disabled].dropdown-toggle{
+    border-color: #ccc;
+}
+.btn-group:hover .btn-default[disabled].dropdown-toggle{
+    border-color: #44dcfd;
+}
+/* 下拉菜单样式（无边框） */
+.sub-bsselect {
+    border: 0 none;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+.dropdown-menu > li[ng-transclude] .btn-default:hover{
+    background-color: #44DCFD;
+    color: #333;
+}
+.dropdown-menu > li[ng-transclude] table th{
+    color: #61a1b8;
+}
+.dropdown-menu .text-muted{
+    color: #61a1b8;
+}
+.btn-date {
+    background: #1f3144;
+    color:#def1fe
+}
+.dropdown-menu{
+    border-color: #00bebc;
+    background-color:#091016!important;
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus{
+    background-color: #44dcfd;
+    color: #fff;
+    text-decoration: none;
+}
+.dropdown-menu  li > a{
+    color: #d2f1fe;
+    text-align: center;
+    padding: 0;
+}
+.dropdown-menu  li:hover > a{
+    color: #091016;
+}
+.dropdown-menu  li {
+    color: #d2f1fe;
+    text-align: left;
+    height: auto;
+    padding: 5px;
+    cursor: pointer;
+    line-height: 20px;
+}
+.dropdown-menu  li:hover{
+    background-color: #44dcfd;
+    color: #091016;
+    text-align: left;
+}
+.dropdown-menu  li > a:hover{
+    text-decoration: none;
+}
+.dropdown-menu  li > a:focus {
+    background-color: #00bebc;
+    text-decoration: none;
+}
+/*日期框*/
+.pick-date-common .dropdown-menu  li {
+    height: auto;
+}
+.pick-date-common .dropdown-menu  li:hover{
+    background-color: transparent;
+}
+.pick-date-common .dropdown-menu > li[ng-transclude]:hover{
+    background-color: transparent;
+}
+.pick-date-common .dropdown-menu  li small{
+    color: #333;
+}
+
+/* 滑动开关按钮样式 */
+.togglebutton label {
+    cursor: pointer;
+    line-height: 24px;
+}
+.togglebutton label input[type="checkbox"] {
+    height: 0;
+    opacity: 0;
+    width: 0;display: none;
+}
+.togglebutton label input[type="checkbox"]:checked + .toggle::after {
+    left: 18px;
+}
+.togglebutton label .toggle::after {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4);
+    content: "";
+    display: inline-block;
+    height: 12px;
+    left: -5px;
+    position: relative;
+    top: -9px;
+    transition: left 0.3s ease 0s, background 0.3s ease 0s, box-shadow 0.1s ease 0s;
+    width: 12px;
+}
+.togglebutton label input[type="checkbox"]:checked + .toggle {
+    background-color: #44dcfd;
+}
+.togglebutton label .toggle, .togglebutton label input[type="checkbox"][disabled] + .toggle {
+    background: #C2DEEA;
+    border-radius: 16px;
+    display: inline-block;
+    height: 5px;
+    margin-right: 15px;
+    transition: background 0.3s ease 0s;
+    vertical-align: middle;
+    width: 24px;
+}
+.togglebutton label .toggle {
+    text-align: left;
+}
+
+/*tab页*/
+.commonTabs .tab-content{
+    position: relative;
+    z-index: 1;
+    background-color: transparent;
+    padding-top: 16px;
+    margin-top: -1px;
+    padding-left: 0px !important;
+}
+.commonTabs .nav-tabs .active{
+    position: relative;
+    z-index: 2
+}
+.commonTabs .nav-tabs li  a,
+.commonTabs .nav-tabs li  span{
+    color: #d2f1fe !important;
+}
+.commonTabs .nav-tabs .active  a{
+    color: #FC9E22 !important;
+}
+.commonTabs .nav-tabs > li > a{
+    margin-right: 0;
+    border-width:0 !important;
+}
+.commonTabs .nav-tabs > li{
+    margin-right: 0;
+    border-bottom: none;
+    cursor: pointer;
+    width: 120px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0;
+}
+.commonTabs .nav-tabs > li.active{
+    margin-right: 0;
+    border-bottom: 1px solid #fc9e22;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+    background: transparent;
+}
+.nav-tabs{
+    border:none;
+    padding-left: 0 !important;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    *zoom: 1;
+}
+.nav-tabs:after{
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    bottom: 0;
+    border-bottom: 1px solid #d2f1fe;
+}
+.commonTabs .tab-content{
+    border:none!important;
+}
+
+/*模态框*/
+/*模态框距离顶部高度*/
+.modal .modal-dialog .modal-content{
+    margin-top: 100px !important;
+    background: rgba(29, 42, 58,0.95);
+}
+/*模态框尺寸*/
+.modal-sm{
+    width: 360px !important;
+}
+/*模态框头部*/
+.modal-header{
+    /*background-image: linear-gradient(-180deg,  #FEFEFE 0%, #F2F2F2 100%);*/
+    font-size : 14px;
+    color : #808080;
+    padding-left: 20px;
+    position: relative;
+    border-color: rgba(68,220,253,0.15);
+    background: transparent!important;
+}
+.modal-header div{
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 8px;
+    top: 8px;
+    text-align: center;
+    line-height: 24px;
+    cursor: pointer;
+    color: rgb(128, 128, 128);
+    background: url(../img/comm/modal_close.png)
+}
+.modal-header div:hover,.modal-header div:active{
+    background: url(../img/comm/modal_close.png) no-repeat 0 -24px;
+}
+.modal-title{
+    font-size: 14px;
+    color: rgba(68,220,253,1);
+}
+.modal{
+    overflow: auto;
+}
+.modal-open{
+    margin:0;
+}
+.modal-backdrop.in{
+    opacity: 0.75;
+}
+/*确认框*/
+.conform-modal{
+    font-size: 16px;
+    word-break: break-all;
+}
+.conform-modal .message{
+    color: #808080;
+    font-size: 12px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/*字体对齐方式及加载 暂无 出错 颜色*/
+.text-left{
+    text-align: left;
+    text-align: -moz-left;
+    text-align: -webkit-left;
+}
+.text-right{
+    text-align: right;
+    text-align: -moz-right;
+    text-align: -webkit-right;
+}
+.text-center{
+    text-align: center;
+    text-align: -moz-center;
+    text-align: -webkit-center;
+}
+.loading-font-color{
+    color:#44dcfd;
+}
+.none-content-font-color{
+    color: #6D7183;
+}
+.error-font-color{
+    color:#E9416E;
+}
+.success-font-color{
+    color:#43FC8C;
+}
+validate-msg {
+    font-size: 12px;
+}
+.CodeMirror pre.CodeMirror-placeholder { color: rgba(190, 201, 222, 0.2); }
+
+.container-fluid{
+    padding: 15px;
+}
+
+/*改版页面首页*/
+.new-page-content{
+    min-width:1080px;;margin-top:15px;margin-left: 138px;margin-right: 15px;
+}
+/*边框样式*/
+.index-border{
+    border: 1px solid #396770;
+    background-color: rgba(22,33,46,0.8);
+}
+/*组件模块样式*/
+.cmpt-module{
+    position: relative;
+    padding-bottom: 12px;
+}
+/*阶段公共样式*/
+.phase-container{
+    padding-bottom: 12px;
+    position: relative;
+    padding-right: 18px;
+}
+.phase-container-copy {
+    background: url("../img/comm/comm_program_config_icon.png") no-repeat -6px -358px;
+}
+.phase-container-copy:hover{
+    background: url("../img/comm/comm_program_config_icon.png") no-repeat -38px -358px;
+}
+.phase-module{
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 4px 20px;
+    background-color: #27364a;
+}
+.phase-module:hover{
+    border-color: #555f76;
+}
+.phase-container-header{
+    height:32px;
+    line-height: 32px;
+    margin-left:-15px;
+    border-bottom:1px solid #3eaac9;
+    margin-bottom: 10px;cursor: pointer;
+}
+.phase-container-header .cmpt-operator-delete{
+    background: url('../img/comm/public-cmpt-operator.png') no-repeat;
+    background-position: -6px -6px;
+}
+.group-phase-icon{
+    width:32px;
+    height:32px;
+    background: rgba(0, 0, 0, 0) url('../img/comm/group-type.png') no-repeat;
+}
+.common-group-icon{
+    background-position: 0 0;
+}
+.series-group-icon{
+    background-position: 0 -32px;
+}
+.condition-group-icon{
+    background-position: 0 -64px;
+}
+.cmpt-module-head{
+    background-color: #091016;
+    height: 32px;
+    line-height: 32px;
+    margin:0;
+    cursor: pointer;
+    border-radius: 20px;
+    border:1px solid #396770;
+    overflow: hidden;
+    position: relative;
+    z-index: 9;
+}
+.cmpt-module-head-active{
+    border-color: rgba(68, 220, 253, 1);
+}
+.cmpt-module-head:hover{
+    border-color: rgba(68, 220, 253, 1);
+    cursor: pointer;
+}
+.cmpt-module-head-hover{
+    border-color: rgba(68, 220, 253, 1);
+    cursor: pointer;
+}
+.cmpt-module-head .cmpt-operator-delete{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -5px -6px;
+}
+.cmpt-module-head .cmpt-operator-to-phase{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -5px -38px;
+}
+.cmpt-module-head  .cmpt-opetator-modify{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -5px -102px;
+}
+/*组件组,阶段的操作列*/
+.cmpt-module-head:hover  .cmpt-operator-delete{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -37px -6px;
+}
+.cmpt-module-head:hover  .cmpt-operator-to-phase{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -37px -38px;
+}
+.cmpt-module-head:hover  .cmpt-opetator-modify{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -37px -102px;
+}
+.cmpt-module-head:hover .cmpt-operator-delete:active{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -70px -6px;
+}
+.cmpt-module-head:hover .cmpt-operator-to-phase:active{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -70px -38px;
+}
+.cmpt-module-head:hover .cmpt-opetator-modify:active{
+    background: url('../img/comm/comm_cmpt_operator.png') no-repeat;
+    background-position: -70px -102px;
+}
+.cmpt-module-head:hover .cmpt_module_head:hover >.col-sm-9 > .col-sm-4 > input ,.module_head:hover >.col-sm-9 > .col-sm-4 > span{
+    color: #ffffff;
+}
+/*组件标签样式*/
+.cmpt-icon-common{
+    width: 15px;float: left;
+}
+.cmpt-icon-common i{
+    font-size: 16px;color:#93d9fd;
+}
+/*包围操作列div样式*/
+.operate-content{
+    padding-right: 10px;
+    height: 32px;
+    text-align: center;
+}
+/*操作列按钮样式*/
+.operate-btn{
+    float: right;
+}
+/*操作项样式*/
+.operate-style{
+    line-height: 31px;
+    margin-bottom: 0;
+}
+.operate-style li{
+    padding:0;cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    margin-top: 3px;
+}
+.operate-style li span{
+    font-size: 18px;display: inline-block;
+    width:20px;text-align: center;
+    height: 20px;
+}
+/*步骤圆的样式*/
+.step-circle-common{
+    display: inline-block;
+    background: #93d9fd;
+    border-radius: 15px;
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+    position: absolute;
+    top:3px;
+    text-align: center;
+    margin-left: -11px;
+}
+/*步骤圆圈中的字体颜色*/
+.step-circle-font{
+    color: #091016;
+    font-size: 14px;
+}
+/*步骤圆圈右侧线条*/
+.module-horizontal-common-line{
+    height: 1px;
+    position: absolute;
+    background: #CCC;
+    top: 15px;
+}
+/*步骤圆样式竖线*/
+.module-vertical-common-line{
+    width: 1px;
+    height: 30px;
+    bottom:-10px;
+    position: absolute;
+    background: #555f76;
+}
+/*展开收起主体部分*/
+.content-border{
+    border: 1px solid rgba(68, 220, 253, 1);
+    border-top: none;
+    position: relative;
+    top:-14px;
+    background-color: #091016;
+}
+/*组件协议类型样式*/
+.exec-type {
+    text-align: center;
+    font-size: 12px;
+    color: #FFF;
+    border-radius: 20px;
+    display: inline-block;
+    height: 24px;
+    width: 74px;
+    line-height: 25px;
+    margin-right: 5px;
+    vertical-align: top;
+    margin-top: 4px;
+}
+.ftp-color{
+    background-color: #492877;
+}
+.shell-color{
+    background-color:#268651;
+}
+.was-color{
+    background-color: #257286;
+}
+.svn-color{
+    background-color: #782829;
+}
+.weblogic-color{
+    background-color: #284177;
+}
+.jdbc-color{
+    background-color: #776128;
+}
+.python-color{
+    background-color: #782865;
+}
+.java-color{
+    background-color: #297862;
+}
+.c-color{
+    background-color: #5d7829;
+}
+.cl-color{
+    background-color: #3B4823;
+}
+.bgm-color{
+    background-color: #3B4857;
+}
+/*别名样式*/
+.cmpt-cn-name,.alias-name{
+    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+    color:#61a1b8;
+}
+/* 文件浏览 */
+.li-file {
+    clear: both;
+    height: 24px;
+    line-height: 24px;
+    list-style: none;
+}
+.li-file-trash {
+    float: right;
+    margin-right: 10px;
+    padding-top: 2px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #FFF;
+}
+/*表格搜索*/
+.table-search {
+    width: 416px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    zoom: 1;
+}
+.table-search-input{
+    width:308px;float: left;
+}
+.table-search-input input{
+    width:308px;
+    padding-right: 25px;
+    border-radius:0;
+    padding-left: 36px;
+    color: #d2f1fe;
+}
+.table-search-btn{
+    width: 108px;
+    position: relative;
+    float: right;
+}
+.table-search-logol{
+    position:absolute;
+    top:0;
+    left: -308px;
+    font-size:18px;
+    width:38px;
+    height:34px;
+    line-height:34px;
+    text-align:center;
+    background: url("../img/comm/search-input.png") no-repeat 2px 1px;
+}
+.table-clear-logol{
+    cursor: pointer;
+    position:absolute;
+    top:2px;
+    left:-32px;
+    width:32px;
+    z-index:10;
+    height: 32px;
+    font-size:16px;
+    color:#ccc;
+    background: url("../img/comm/search-input.png") no-repeat -2px -32px;
+}
+.table-clear-logol:hover{
+    background-position: -34px -32px;
+
+}
+.senior-btn-style{
+    height: 34px;font-size: 14px;border: 1px solid transparent;-moz-user-select: none; padding: 6px 12px;
+}
+.search-checked-flag {
+    background:#0084ab;
+    color: #fff;
+}
+.search-unchecked-flag{
+    color: #091016;
+    background: #19b7ec;
+}
+.search-unchecked-flag:hover{
+    color: #fff;
+    background: #0084ab;
+}
+.text-ellipse{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/*表格偶数行样式*/
+.tbl-odd{
+    background-color: #FFF;
+}
+/*行内元素垂直居中*/
+.vertical-middle{
+    vertical-align: middle;
+}
+/*旋转图片*/
+.run-img{
+    width: 24px;
+    height: 24px;
+    display:inline-block;
+    background: url(../img/publish/new_img/exec.png);
+}
+.rotate-img{
+    animation: rotateIcon 2s infinite linear;
+}
+@keyframes  rotateIcon{
+    0%{
+        transform: rotate(0deg);
+    }
+    50%{
+         transform: rotate(180deg);
+    }
+    100%{
+          transform: rotate(360deg);
+    }
+}
+
+.command-content .CodeMirror{
+    height: 43px;
+}
+.code-script-content .CodeMirror{
+    height:170px;
+}
+/*************************************数据源配置模态框样式************************************/
+.data-source-config-modal .was-data-source{
+    border: 1px solid transparent;
+    color: #d2f1fe;
+}
+.data-source-config-modal .was-data-source:hover{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+}
+.data-source-config-modal .was-data-source-delete{
+    border: 1px solid transparent;
+    color: #d2f1fe;
+}
+.data-source-config-modal .was-data-source-delete:hover{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+}
+.data-source-config-modal .was-data-source-selected{
+    border: 1px solid #565C73;
+    color: #d2f1fe;
+}
+.data-source-config-modal .was-data-source:hover span{
+    background: rgba(0, 0, 0, 0) url("../img/public/config-delete.png") no-repeat scroll 0 2px;
+    background-size: 95%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+}
+.data-source-config-modal .was-data-source:hover span:hover{
+    background: rgba(0, 0, 0, 0) url("../img/public/config-delete.png") no-repeat scroll 0 -17px;
+    background-size: 95%;
+}
+.data-source-config-modal .was-data-source-delete:hover span{
+    background: rgba(0, 0, 0, 0) url("../img/public/config-revoke.png") no-repeat scroll 0 2px;
+    background-size: 95%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+}
+.data-source-config-modal .was-data-source-delete:hover span:hover{
+    background: rgba(0, 0, 0, 0) url("../img/public/config-revoke.png") no-repeat scroll 0 -17px;
+    background-size: 95%;
+}
+.data-source-config-modal .data-source{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.data-source-config-modal .data-source:hover{
+    border: 1px solid #44dcfd;
+}
+.data-source-config-modal .data-source-selected{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.data-source-config-modal .search {
+    margin-bottom: 5px;
+    zoom: 1;
+}
+.data-source-config-modal .search-input{
+    width:108px;float: left;
+}
+.data-source-config-modal .search-input input{
+    width:125px;
+    padding-right: 25px;
+    border-radius:0;
+    padding-left: 14px;
+    font-size: 12px;
+    background-color: transparent;
+    border:1px solid #408195;
+    height: 27px;
+    color: #d2f1fe;
+}
+.data-source-config-modal .search-input input:hover{
+    border-color:#4A90E2;
+}
+.data-source-config-modal .search-logol{
+    position:absolute;
+    left: 10px;
+    top: -2px;
+    width:30px;
+    height:30px;
+    line-height:30px;
+    text-align:center;
+    font-size: 14px;
+    color: #408195;
+}
+.data-source-config-modal .search_del_icon{
+    cursor: pointer;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 2px;
+    right: 5px;
+    z-index:10;
+    background: url("../img/comm/search_del_icon.png") no-repeat;
+}
+.data-source-config-modal .checked_div{
+    background: transparent none repeat scroll 0 0;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.data-source-config-modal .checked_sign{
+    color: #D2F1FE;
+    position: absolute;
+    left: -10px;
+    font-size: 10px;
+    top: 7px;
+}
+.data-source-config-modal .data-source-config-modal{
+    border: 1px solid #408195;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.data-source-config-modal .modal-close-btn{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #000;
+}
+.data-source-config-modal .modal-close-btn .fa-times{
+    color: #3F4652;
+    vertical-align: middle;
+}
+.data-source-config-modal .modal-close-btn:hover{
+    background-color: #3495ae;
+}
+.data-source-config-modal .modal-close-btn:hover .fa-times{
+    color: #000;
+}
+.data-source-config-modal .config-container{
+    min-height:320px;
+    margin-top: 20px
+}
+
+/*左侧*/
+.data-source-config-modal .left-col{
+    width: 160px;
+    text-align: left;
+    height:300px;
+    padding-right: 0;
+}
+.data-source-config-modal .left-default-ip{
+    border:1px solid transparent;
+}
+.data-source-config-modal .left-default-ip:hover{
+    border: 1px solid #555f76;
+}
+.data-source-config-modal .left-checked-ip{
+    border: 1px solid #44dcfd;
+    background-color: #091016;
+}
+
+/*右侧*/
+.data-source-config-modal .right-col{
+    padding-right: 15px;
+    padding-left: 10px;
+    width: 410px;
+}
+.data-source-config-modal .checked-ip{
+    color:#6d7183;margin-bottom: 5px;
+}
+.data-source-config-modal .soc-name{
+    display: inline-block;color: #d2f1fe
+}
+.data-source-config-modal .protocol-type{
+    display: inline-block;font-size: 12px;
+    padding: 1px 8px;border-radius: 4px;color:#999;
+    margin-left: 2px;
+}
+.data-source-config-modal .ltp-color{
+    color:#43E0F7 !important;
+    background-color: rgba(67,224,247,0.3);
+}
+.data-source-config-modal .vertical-split-line{
+    display: inline-block;
+    height: 15px;
+    position: absolute;
+    top: 8px;
+    right: 0;
+    border-right: 1px solid #F1B442;
+}
+.data-source-config-modal .no-config-data-source{
+    width: 110px;
+    height: 130px;
+    background: url("../img/public/add_config_datasource.png") no-repeat;
+    margin: 100px auto 0;
+    position: relative;
+}
+.data-source-config-modal .no-config-data-source-font{
+    color: #6D7183;font-size: 12px;
+    position: absolute;bottom:5px;left: 10px
+}
+/*列表发布状态*/
+.list-success-img{
+    background-position: -7px -71px;
+    vertical-align: bottom;
+}
+.status-img{
+    background: url(../img/fault/status_img.png) no-repeat;
+    display: inline-block;
+    width: 18px;
+    height: 19px;
+    background-position: -7px -71px;
+}
+/*去除谷歌浏览器下 点击canvas区域出现的蓝色边框*/
+canvas{border:0;outline:none;}
+
+/*解决chrome 按钮点击后出现边框*/
+button:focus{outline:none;}
+
+/*去掉input type为number的调节按钮*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type="number"]{
+    -moz-appearance: textfield;
+}
+
+
+/*带协议类型数据源*/
+.srv-data-source{
+    float: left;
+    position: relative;
+    width: 250px;
+    border: 1px solid rgb(68, 220, 253);
+    padding: 5px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.protocol-type-style{
+    float: left;
+    color:#d2f1fe;
+    width: 35px;
+    background:rgba(67,224,247,0.3);
+    margin-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.data-soc-check{
+    background: transparent;
+    border-bottom: 18px solid #44dcfd;
+    border-left: 18px solid transparent;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*拖拽高度*/
+.resize-ball{
+    height: 4px;
+    background-color: transparent;
+    cursor: n-resize;
+    position: absolute;
+    top: -2px;left: 0;
+    z-index: 10000;width: 100%;
+}
+.resize-mask{
+    position: fixed;
+    top: 0;height: 100%;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}

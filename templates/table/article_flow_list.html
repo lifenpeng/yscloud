@@ -1,0 +1,14 @@
+<div class="table-search" style="margin-top: 15px">
+    <div class="table-search-input">
+        <input type="text"
+               ng-model="search.key_word"
+               class="form-control"
+               placeholder="请输入App名称进行搜索"
+               ng-enter="doSearch()">
+    </div>
+    <div class="table-search-btn">
+        <span class="table-clear-logol"  ng-if="search.key_word" ng-click="clear()"></span>
+        <span class="table-search-logol"></span>
+    </div>
+</div>
+<table bs-table-control="articleFlowListControl" class="table lg-table"></table>

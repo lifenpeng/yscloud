@@ -1,0 +1,45 @@
+<div class="container-fluid log-list">
+    <div  ng-repeat="log in data.logs" class="common-log-list">
+        <div class="common-log" style="overflow: hidden;position: relative;">
+            <!--删除-->
+            <div class="delete-style">
+                <span ng-click="deleteCurrentLog(log.log_name,log.log_id)"><i class="glyphicon glyphicon-trash"></i></span>
+            </div>
+            <!--第一行-->
+            <div>
+                <div class="log-img" style="display: inline-block"></div>
+                <div class="log-name-common">
+                    <span class="log-span log-img-span " title="{{log.log_name}}">{{log.log_name}}</span>
+                    <span class="log-span log-img-span" title="{{log.log_desc}}">{{log.log_desc}}</span>
+                </div>
+            </div>
+            <!--横线-->
+            <div class="line-horizon"></div>
+            <!--第二行-->
+            <div>
+                <div class="log-margin-left20">
+                    <div title="日志类型" class="log-manager-icon log-server-img log-block"></div><span class="log-img-span  log-width-120" title="{{log.log_type_cn}}">{{log.log_type_cn}}</span>
+                </div>
+                <div class="log-margin-left20">
+                    <div title="定时获取时间" class="log-manager-icon log-start-img log-block"></div><span class="log-img-span" style="width: 129px;margin-top: 5px;"  title="{{log.log_configs[0].pull_timing_str}}">{{log.log_configs[0].pull_timing_str}}</span>
+                </div>
+                <div class="log-margin-left20">
+                    <div class="log-manager-icon log-size-img log-block"></div>
+                    <span class="log-img-span log-width-120" style="padding-left: 7px;">{{log.size_str}}</span>
+                    <span ng-if="log.log_configs[0].pull_flag==1" title="正在拉取日志" class="running-img rotate-pub-list" style="text-align: right;margin-left:50px;vertical-align:top;"></span>
+                </div>
+            </div>
+            <!--bottom-->
+            <ul class="log-modify">
+                <li ng-if="log.log_configs[0].pull_flag==0" title="启动定时日志获取" ng-click="startLog($index)" class="log-width-per50">启动定时日志获取</li>
+                <li ng-if="log.log_configs[0].pull_flag==1" title="关闭定时日志获取" ng-click="startLog($index)" class="log-width-per50">关闭定时日志获取</li>
+                <li  title="查看" ng-click="judgeOtherLog(3,log);" class="log-width-per25">查看</li>
+                <li  title="修改" ng-click="judgeOtherLog(2,log);" class="log-width-per25">修改</li>
+            </ul>
+        </div>
+    </div>
+    <div  ng-click="judgeOtherLog(1)" class="common-log" style="margin-right: 6px;">
+        <div class="add-node-button" style="margin-top: 48px;"></div>
+        <div class="font-common"><span >新增日志</span></div>
+    </div>
+</div>

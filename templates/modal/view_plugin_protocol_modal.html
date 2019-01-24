@@ -1,0 +1,22 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">当前节点：{{ip}}</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<!--详细的信息-->
+<div class="modal-body view-ptotocol">
+    <div  class="row form-style">
+        <!--插件-->
+        <div class="label-key" style="display: inline-block;width: 50px;padding-left: 10px;" >
+            <span ng-if="flag==1">插件</span>
+            <span ng-if="flag==2">协议</span>
+        </div>
+        <div style="display: inline-block;width:200px;vertical-align:top">
+            <div class="content-empty-style" ng-repeat="plugin in lists">{{plugin}}</div>
+        </div>
+    </div>
+    <div style="text-align: center;margin-bottom: 20px;margin-top: 40px;">
+        <button  type="button" ng-click="cancel();" class="cancel-btn btn-xl">关闭</button>
+    </div>
+</div>
+<!--模态框按钮-->

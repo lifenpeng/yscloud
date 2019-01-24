@@ -1,0 +1,124 @@
+
+<div class="container-fluid wo-handle">
+    <div class="row none-processed-style" ng-if="data.sub_tabs.length == 0">
+        暂无处理工单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void (0)" ng-click="goToPendingList()" >去处理</a>
+    </div>
+    <tabset class="orderTabs" ng-if="data.sub_tabs.length != 0">
+        <tab ng-repeat="sub_tab in data.sub_tabs" active="sub_tab.active" select="select()">
+            <tab-heading>
+                <span title="{{sub_tab.basicData.order_bk_title}}" class="order-title">{{sub_tab.basicData.order_bk_title}}</span>&nbsp;
+                <span class="order-deal-closeBtn fault-delete-img" ng-if="sub_tab.active" ng-click="closeProcessOrder($index, sub_tab.wo_id);"></span>
+            </tab-heading>
+            <!--loading-->
+            <div ng-if="!sub_tab.wo_handle_loading" class="row">
+                <div class="col-sm-12 text-center workorder-handle-loading">
+                    <div>
+                        <span>正在获取工单处理信息&nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i></span>
+                    </div>
+                </div>
+            </div>
+            <!--加载完成-->
+            <div ng-if="sub_tab.wo_handle_loading">
+                <div collapse="sub_tab.show_all_detail" >
+                    <div class="row form-style" style="margin-bottom: 5px;">
+                        <label class="col-sm-1 control-label label-key">工单描述</label>
+                        <div class="col-sm-9 label-value">{{sub_tab.basicData.order_bk_desc}}</div>
+                    </div>
+                </div>
+                <div collapse="!sub_tab.show_all_detail">
+                    <div  class="row" style="padding-bottom: 20px;background: #0f161f;margin-left: 10px;">
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-4 workorder-detail-title">
+                                    <label ng-show="sub_tab.show_all_detail">工单信息</label>
+                                </div>
+                            </div>
+                            <div class="row form-style">
+                                <div class="col-sm-3 text-right">
+                                    <label class="label-key">故障单编号</label>
+                                </div>
+                                <div class="col-sm-6 text-left control-label">
+                                    <label class="label-value" ng-bind="sub_tab.basicData.order_seq"></label>
+                                </div>
+                                <div class="col-sm-3" ng-if="sub_tab.basicData.urgency_level == 2">
+                                    <label class="worder-detail-emergency">紧急</label>
+                                </div>
+                            </div>
+                            <div class="row form-style" style="margin-top:5px;">
+                                <div class="col-sm-3 text-right">
+                                    <label class="label-key">标题</label>
+                                </div>
+                                <div class="col-sm-6 text-left">
+                                    <label class="label-value" ng-bind="sub_tab.basicData.order_bk_title"></label>
+                                </div>
+                            </div>
+                            <!--故障单-->
+                            <div class="row form-style" style="margin-top:10px;" ng-if="sub_tab.basicData.workorder_type == 1">
+                                <div class="col-sm-3 text-right">
+                                    <label class="label-key">类型</label>
+                                </div>
+                                <div class="col-sm-8 text-left">
+                                    <label class="label-value" ng-bind="sub_tab.basicData.trouble_bk_desc"></label>
+                                </div>
+                            </div>
+                            <!--故障单-->
+                            <div class="row form-style" style="margin-top:10px;" ng-if="sub_tab.basicData.workorder_type == 1">
+                                <div class="col-sm-3 text-right">
+                                    <label class="label-key">系统</label>
+                                </div>
+                                <div class="col-sm-8 text-left">
+                                    <label class="label-value" ng-bind="sub_tab.basicData.business_cn_name"></label>
+                                </div>
+                            </div>
+                            <div class="row form-style" style="margin-top:10px;">
+                                <div class="col-sm-3 text-right">
+                                    <label class="label-key">描述</label>
+                                </div>
+                                <div class="col-sm-8 text-left control-label" style="word-break: break-all">
+                                    <label class="label-value" ng-bind="sub_tab.basicData.order_bk_desc"></label>
+                                </div>
+                            </div>
+                            <div class="row form-style" style="margin-top:10px;" ng-if="sub_tab.handle_type">
+                                <div class="col-sm-3 text-right">
+                                    <label class="label-key">处理方式</label>
+                                </div>
+                                <div class="col-sm-8 text-left control-label" style="word-break: break-all">
+                                    <label class="label-value" ng-if="sub_tab.handle_type == 2">固化方案</label>
+                                    <label class="label-value" ng-if="sub_tab.handle_type == 3">脚本维护</label>
+                                    <label class="label-value" ng-if="sub_tab.handle_type == 1 && sub_tab.basicData.sqlexe_type == 1">手工SQL</label>
+                                    <label class="label-value" ng-if="sub_tab.handle_type == 1 && sub_tab.basicData.sqlexe_type == 2">批量SQL</label>
+                                    <label class="label-value" ng-if="sub_tab.handle_type == 4">数据导出</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="col-sm-4 workorder-detail-title">
+                                    <label>工单流转</label>
+                                </div>
+                            </div>
+                            <work-order-flow data="sub_tab.flowData"></work-order-flow>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-8 text-right"  style="margin-top: -28px">
+                        <div class="workorder-slide-btn" ng-if="!sub_tab.show_all_detail"
+                             ng-click="sub_tab.show_all_detail = !sub_tab.show_all_detail;">查看详细&nbsp;<i class="fa fa-angle-down"></i></div>
+                        <div class="workorder-slide-btn" ng-if="sub_tab.show_all_detail"
+                             ng-click="sub_tab.show_all_detail = !sub_tab.show_all_detail;">收起详细&nbsp;<i class="fa fa-angle-up"></i></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div ng-if="sub_tab.handle_type == 1 && sub_tab.sqlexe_type == 1" ng-controller="woSqlHandCtrl"  ng-include="'views/fault/workorder/wo_sql_hand.html'">手工sql</div>
+                        <div ng-if="sub_tab.handle_type == 1 && sub_tab.sqlexe_type == 2" ng-controller="woSqlBatchCtrl" ng-include="'views/fault/workorder/wo_batch_sql_handle.html'">批量sql</div>
+                        <div ng-if="sub_tab.handle_type == 2" ng-controller="woSolidProgramCtrl" ng-include="'views/fault/workorder/solid_program.html'">固化方案</div>
+                        <div ng-if="sub_tab.handle_type == 3" ng-controller="woScriptHandleCtrl" ng-include="'views/fault/workorder/wo_script_handle.html'">脚本处理</div>
+                        <div ng-if="sub_tab.handle_type == 4" ng-controller="woExportDataCtrl" ng-include="'views/fault/workorder/wo_export_handle.html'">数据导出</div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</div>

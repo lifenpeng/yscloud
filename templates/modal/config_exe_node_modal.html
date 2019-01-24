@@ -1,0 +1,84 @@
+<style>
+
+    /*节点默认样式*/
+    .node_style{
+        height: 32px;line-height: 32px;position: relative;display: inline-block;
+        margin-right: 15px;width: 170px;margin-bottom: 15px;
+        cursor: pointer;
+    }
+    .node_def_style{
+        background: #293e55;border-radius: 5px;color: #61a1b8;
+    }
+    .node_def_style:hover{
+        background: #192635;
+        color: #def1fe;
+    }
+   .node_checked_style{
+        background: #192635;border-radius: 5px;color: #def1fe;
+    }
+
+    /*节点图片*/
+    .choose_node_img{
+        background: url('././img/publish/node_status_relate.png') no-repeat ;
+        width: 24px;height: 24px;
+        background-size: cover;
+
+    }
+    /*节点执行成功*/
+    .node_img_success_style{
+        position: absolute;top: 5px;right:10px;
+        background-position: 0 -2px;
+    }
+    /*节点执行失败*/
+    .node_img_fail_style{
+        position: absolute;top: 5px;right:10px;
+        background-position: 0 -50px;
+    }
+    /*节点手动改为执行成功*/
+    .node_img_handle_success_style{
+        position: absolute;top: 5px;right:10px;
+        background-position: 0 -25px;
+    }
+    /*节点执行跳过*/
+    .node_img_skip_style{
+        position: absolute;top: 5px;right:10px;
+        background-position: 0 -74px;
+    }
+    /*节点并行标志*/
+    .node_img_parallel_style{
+        position: absolute;top: 5px;right:60px;
+        background-position: 0 -147px;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title" >修改节点</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body form-horizontal"  style="padding:10px;">
+    <!--并行按钮标志-->
+    <div class="row" style="margin-top: 20px;text-align: right;position: relative;" ng-if="!phase_info.interactor_flag">
+        <toggle-button checked="control.is_parallel"></toggle-button>
+        <div  class="choose_node_img node_img_parallel_style"></div>
+    </div>
+    <!--节点-->
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-sm-12" style="padding-left: 30px;">
+            <div class="node_style"  ng-repeat="node in phase_info.node_list" ng-if="node.is_show" ng-class="node.is_exec ? 'node_checked_style':'node_def_style'" ng-click="changeNodeExec($index,node)">
+               <span style="padding-left: 15px;">
+                   <i class="fa fa-list-ul"></i>
+                   {{node.exec_node_ip}}
+               </span>
+                <!--执行成功-->
+                <!--node_status 1 未执行 2 执行中 3 执行出错 4 验证失败 5 执行成功 6 执行跳过 7 执行停止 8 手动修改执行成功-->
+                <div ng-if="node.node_status == 5" class="choose_node_img node_img_success_style"></div>
+                <div ng-if="node.node_status == 4 || node.node_status == 3" class="choose_node_img node_img_fail_style"></div>
+                <div ng-if="node.node_status == 8" class="choose_node_img node_img_handle_success_style"></div>
+                <div ng-if="node.node_status == 6" class="choose_node_img node_img_skip_style"></div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="margin-top: 30px;margin-bottom: 30px;">
+        <button  class="cancel-btn btn-xl" type="button" ng-click="cancel()" style="margin-left: 20px;">取消</button>
+        <button  class="save-btn btn-xl" ng-click="saveConfigInfo()" type="button">保存</button>
+    </div>
+</div>

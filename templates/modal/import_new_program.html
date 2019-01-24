@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h3 class="modal-title">导入方案</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<!-- 工单退回信息-->
+<div class="modal-body">
+    <div ng-show="import_program_btn_loading" class="form-group" style="height: 32px">
+        <div class="col-sm-12 text-center">
+            <file-upload fileupload="program_fileupload" successthen="uploadSuccessThen();"></file-upload>
+        </div>
+    </div>
+    <div ng-show="!import_program_btn_loading" class="form-group" style="height: 60px">
+        <div ng-if="!program_loading" class="col-sm-12 text-center" >
+            <div style="margin:0 auto;font-size: 20px;color:#CCC;border:1px dashed #CCC;height:80px;line-height:80px;width:240px;border-radius: 4px;">
+                <span style="color:#4cae4c;">正在上传至方案库&nbsp;&nbsp;<i style="fonr-weight: bolder; font-size: 24px;" class="fa fa-spinner fa-spin"></i></span>
+            </div>
+        </div>
+        <div ng-if="program_loading" class="col-sm-12 text-center" >
+            <div ng-if="program_error_upload" >
+                <div style="margin:0 auto;font-size: 14px;color:#CCC;border:1px dashed #CCC;height:90px;line-height:30px;width:240px;border-radius: 4px;">
+                    <span style="color:#d9534f;"><i style="font-weight: bolder; font-size: 24px;margin-right: 10px;transform: translateY(2px);margin-top: 26px;" class="fa fa-times"></i>导入方案库失败,请重新导入&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div ng-if="!program_error_upload" >
+                <div style="margin:0 auto;font-size: 14px;color:#CCC;border:1px dashed #CCC;height:80px;line-height:80px;width:240px;border-radius: 4px;">
+                    <span style="color:#4cae4c;"><i style="fonr-weight: bolder; font-size: 24px;" class="fa  fa-check"></i>上传成功,请返回方案库列表查看&nbsp;&nbsp;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center" style="margin:40px 0 20px;">
+            <button  class="cancel-btn btn-xl" type="button" ng-click="cancel()" style="margin-left: 20px;">关闭</button>
+        </div>
+    </div>
+</div>

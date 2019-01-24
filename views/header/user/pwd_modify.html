@@ -1,0 +1,74 @@
+
+<div class="container-fluid form-style">
+    <form name="pwd_form" ng-submit="formSubmit()" class="form-horizontal user pwd_modify" novalidate autocomplete="off" >
+        <div class="form-group">
+            <div class="col-sm-3 prompt-title-block">
+                <label class="prompt-title-font">密码修改</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">用户名</label>
+            <div class="col-sm-5 label-value">
+                <button class="btn custom-btn button-label" type="button">
+                    <span ng-bind="user_info.user_name"></span>
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">旧密码</label>
+            <div class="col-sm-5 label-value">
+                <input
+                        type="password"
+                        name="user_passwd"
+                        ng-model="user_info.pwd_info.user_passwd"
+                        class="form-control"
+                        required
+                        ng-minlength="6"
+                        ng-maxlength="30"
+                        ng-pattern="/[^\u4e00-\u9fa5]+/"
+                        placeholder="请输入6-30以内字符">
+                <validate-msg tag-cn-name="旧密码" name="user_passwd"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">新密码</label>
+            <div class="col-sm-5 label-value">
+                <input type="password"
+                       name="new_user_passwd"
+                       ng-model="user_info.pwd_info.new_user_passwd"
+                       class="form-control"
+                       required
+                       ng-minlength="6"
+                       ng-maxlength="30"
+                       ng-pattern="/[^\u4e00-\u9fa5]+/"
+                       placeholder="请输入6-30以内字符">
+                <validate-msg tag-cn-name="新密码" name="new_user_passwd"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label label-key">再次输入新密码</label>
+            <div class="col-sm-5 label-value">
+                <input type="password"
+                       name="new_sec_passwd"
+                       ng-model="user_info.pwd_info.new_sec_passwd"
+                       class="form-control"
+                       required
+                       ng-minlength="6"
+                       ng-maxlength="30"
+                       ng-pattern="/[^\u4e00-\u9fa5]+/"
+                       placeholder="请输入6-30以内字符">
+                <validate-msg tag-cn-name="再次输入新密码" name="new_sec_passwd"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group" style="margin-top: 30px;">
+            <div class="col-sm-12 text-center userBtn">
+                <button ng-hide="control.edit_btn_loading" type="submit" class="cancel-btn btn-md">密码修改</button>
+                <button ng-show="control.edit_btn_loading" disabled="disabled" class="cancel-btn btn-md">
+                    <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                </button>
+                <button ng-hide="control.edit_btn_loading" ng-click="reset()" class="save-btn btn-md">内容重置</button>
+                <button ng-show="control.edit_btn_loading" disabled="disabled" class="disabled-btn btn-md">内容重置</button>
+            </div>
+        </div>
+    </form>
+</div>

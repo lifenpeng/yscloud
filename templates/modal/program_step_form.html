@@ -1,0 +1,71 @@
+
+<form name="pgForm" ng-submit="FormSubmit();" class="form-horizontal" novalidate autocomplete="off" style="min-height: 24px;">
+    <div ng-repeat="one in param_obj_list" ng-init="outerIndex = $index">
+        <div class="row form-style"  ng-repeat="one_param in one.param_list" ng-init="innerIndex = $index" style="margin-bottom: 20px;">
+            <label class="col-sm-2 control-label" style="word-break: break-all;" ng-style="{'padding-top':(outerIndex==0 && innerIndex==0) ? '7px':'13px'}">
+                <span class="label-key">{{one_param.sparam_cn_name}}</span>
+            </label>
+            <div class="col-sm-8" ng-style="(outerIndex==0 && innerIndex==0) ? {}:{'padding-top':'6px'}">
+                <div style="position: absolute;right:-20%;font-size: 12px;background: #1c5c77;padding:2px;border-radius: 4px;margin-left: 10px;color:#61a1b8;width: 52px;text-align: center;"  ng-if="data.pgwork_status == 1 && $first && $parent.$first">待授权</div>
+                <div style="position: absolute;right:-20%;color:red;font-size: 12px;background: #1c5c77;padding:2px;border-radius: 4px;margin-left: 10px;color:#E9416E;width: 52px;text-align: center;"  ng-if="data.pgwork_status == 2 && $first && $parent.$first">授权拒绝</div>
+                <div style="position: absolute;right:-20%;font-size: 12px;background: #1c5c77;padding:2px;border-radius: 4px;margin-left: 10px;color:#43fc8c;width: 52px;text-align: center;"  ng-if="data.pgwork_status == 3 && $first && $parent.$first">待执行</div>
+                <div ng-if="one_param.sparam_type == 2" ng-repeat="sparam_val in  one_param.sparam_scope_list" ng-init="Index = $index" style="display: inline-block;float: left;margin-right: 20px;">
+                    <div  class="label-value" style="float: left;margin-top: 6px;height: 28px;cursor: default;line-height: 20px;" title="{{sparam_val.value}}">
+                        <input type="radio" name="radio{{Index}}{{innerIndex}}{{outerIndex}}" i-check ng-model="one_param.tag_ng_model" value="{{sparam_val.key}}" ng-disabled="read_only">
+                        <div style="position: relative;left: 23px;top:-20px;width:70px;padding-right: 16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{sparam_val.value}}</div>
+                    </div>
+                </div>
+                <div ng-if="one_param.sparam_type == 2" style="position: relative;clear: left;">
+                    <validate-msg tag-cn-name="单选框" type="radio" name="radio{{innerIndex}}{{outerIndex}}" model="one_param.tag_ng_model"></validate-msg>
+                </div>
+                <div ng-if="one_param.sparam_type == 3" ng-repeat="sparam_val in  one_param.sparam_scope_list" ng-init="Index = $index" style="display: inline-block;float: left;margin-right: 20px;">
+                    <div class="label-value" style="float: left;margin-top: 6px;height: 28px;cursor: default;line-height: 20px;" title="{{sparam_val.value}}">
+                        <input type='checkbox' name="checkbox{{Index}}{{innerIndex}}{{outerIndex}}" i-check ng-model="sparam_val.checked" ng-change="changeCheckbox(sparam_val,one_param);"  ng-disabled="read_only">
+                        <div  style='position: relative;left: 23px;top:-20px;width:70px;padding-right: 16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>{{sparam_val.value}}</div>
+                    </div>
+                </div>
+                <div ng-if="one_param.sparam_type == 3" style="clear: left;">
+                    <validate-msg tag-cn-name="复选框" type="checkbox" name="checkbox{{innerIndex}}{{outerIndex}}" model="one_param.sparam_scope_list_key"></validate-msg>
+                </div>
+                <div ng-if="one_param.sparam_type == 4" style="min-width: 200px">
+                    <bs-select width=200 name="select{{innerIndex}}{{outerIndex}}" items="data.select_items" my-select="one_param.tag_ng_model" required disable="read_only"></bs-select>
+                    <validate-msg tag-cn-name="下拉框" type="select" name="select{{innerIndex}}{{outerIndex}}" model="one_param.tag_ng_model"></validate-msg>
+                </div>
+                <div ng-if="one_param.sparam_type == 5">
+                    <label class="label-value" style="padding-top: 7px;">{{one_param.sparam_scope}}<i style="color: #d9d9d9;padding-left: 5px;">[固定值] </i></label>
+                </div>
+                <div ng-if="one_param.sparam_type == 1">
+                    <input type="text" class="form-control" name="text{{innerIndex}}{{outerIndex}}" ng-model="one_param.tag_ng_model" required ng-disabled="read_only">
+                    <validate-msg tag-cn-name="文本" name="text{{innerIndex}}{{outerIndex}}"></validate-msg>
+                </div>
+            </div>
+        </div>
+        <div ng-if="one.param_list.length == 0">
+            <div class="row form-style">
+                <div class="col-sm-offset-2 col-sm-8">
+                    <div style="padding-top:2px; color: #d9d9d9;">当前SQL语句暂无需要填写的参数</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div ng-if="data.viewFlow && (show_btn !='false')" class="col-md-2"  style="padding-left: 25px;padding-right: 0;">
+            <a type="button" ng-click="viewAuthPro()" style="cursor: pointer;color: #44dcfd;">查看授权流程</a>
+        </div>
+        <div ng-if="data.pgwork_status != 2 && !read_only" class="col-md-3 text-center"  style="position: absolute;right: 2px;bottom: 10px;">
+            <button ng-if="!authFlag.btn_loading && (show_btn !='false')" type="submit" class="save-btn btn-xl" style="width: 66px;height: 26px;">提交</button>
+            <button ng-show="authFlag.btn_loading" type="button" class="save-btn btn-xl" style="width: 66px;height: 26px;">
+                <i style="color: #fff" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+        <div ng-if="data.pgwork_status != 2 && read_only" class="col-md-3 text-center "  style="position: absolute;right: 2px;bottom: 10px;">
+            <button type="button" disabled="disabled" ng-if="show_btn !='false'" class="disabled-btn btn-xl" style="width: 66px;height: 26px;">提交</button>
+        </div>
+        <div ng-if="data.pgwork_status == 2" class="col-md-3 text-center btnStyle"  style="position: absolute;right: 2px;bottom: 30px;">
+            <button type="button" class="cancel-btn btn-xl" ng-click="closePgTask()" style="width: 66px;height: 26px;">关闭</button>
+        </div>
+    </div>
+</form>
+
+
+

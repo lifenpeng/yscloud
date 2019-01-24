@@ -1,0 +1,25 @@
+<div  class="modal-header" >
+    <h3 class="modal-title">发布原因</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all; overflow:hidden;">
+   <div class="form-horizontal">
+       <div class="form-group form_style">
+           <label class="col-sm-4 control-label label_key" >发布原因</label>
+           <div class="col-sm-7">
+              <textarea name="pub_reason"
+                        ng-model="data.pub_reason"
+                        class="form-control label_value"
+                        placeholder="发布原因（最多50个字）"
+                        style="min-width: 260px; resize:none;"
+                        ng-maxlength=50
+                        ng-model-options="{updateOn: 'blur'}">
+                        </textarea>
+           </div>
+       </div>
+   </div>
+    <div style="text-align: center;margin-top: 40px;">
+        <button class="save-cancel-btn cancel-btn btn-xl" ng-click="formCancel()">取消</button>
+        <button class="save-cancel-btn save-btn btn-xl" ng-click="formSubmit()">确定</button>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+<!--例行发布-->
+<div style="padding-left: 0px;padding-right:0px;">
+    <tabset class="commonTabs">
+        <!--<tab heading="方案统计" class="analysis-tab" select="selectTab('program')">
+            <div class="row">
+                <div class="col-lg-1 col-sm-1"></div>
+                <div class="col-lg-8 col-sm-8">
+                    <highchart config="config.programChartConfig" ng-if="config.programChartConfig.options"></highchart>
+                </div>
+                <div class="col-lg-3 col-sm-3" style="text-align: right;">
+                    <div class="row">
+                        <div class="col-lg-11  col-sm-11 analysis_publish">发布总量：{{info.programCount}}</div>
+                    </div>
+                    <div class="row" style="height: 20px;"></div>
+                    <div class="row">
+                        <div  class="col-lg-2 col-sm-2 analysis_stop">
+                            <i class="glyphicon glyphicon-stop analysis_stop_success"></i>
+                        </div>
+                        <div class="col-lg-10 col-sm-10 text-left analysis_stop_font">成功({{info.programSucc}})</div>
+                    </div>
+                    <div class="row">
+                        <div  class="col-lg-2 col-sm-2 analysis_stop">
+                            <i  class="glyphicon glyphicon-stop analysis_stop_failure"></i>
+                        </div>
+                        <div class="col-lg-10 col-sm-10 text-left analysis_stop_font">失败({{info.programFail}})</div>
+                    </div>
+                </div>
+            </div>
+        </tab>-->
+        <tab heading="月份统计" class="analysis-tab" select="selectTab('month')" ng-if="control.show">
+            <div class="row">
+                <div class="col-lg-1 col-sm-1"></div>
+                <div class="col-lg-8 col-sm-8" scroll-control>
+                    <highchart config="config.monthChartConfig" ng-if="config.monthChartConfig.options"></highchart>
+                </div>
+                <div class="col-lg-3 col-sm-3" style="text-align: right;">
+                    <div class="row">
+                        <div class="col-lg-11  col-sm-11 analysis_publish">年度发布总量：{{info.yearCount}}</div>
+                    </div>
+                    <div class="row" style="height: 20px;"></div>
+                    <div class="row">
+                        <div  class="col-lg-2 col-sm-2 analysis_stop">
+                            <i class="glyphicon glyphicon-stop analysis_stop_success"></i>
+                        </div>
+                        <div class="col-lg-10 col-sm-10 text-left analysis_stop_font">成功({{info.yearSucc}})</div>
+                    </div>
+                    <div class="row">
+                        <div  class="col-lg-2 col-sm-2 analysis_stop">
+                            <i  class="glyphicon glyphicon-stop analysis_stop_failure"></i>
+                        </div>
+                        <div class="col-lg-10 col-sm-10 text-left analysis_stop_font">失败({{info.yearFail}})</div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <tab heading="发布窗口统计" class="analysis-tab" select="selectTab('day')" ng-if="control.show">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-8" scroll-control>
+                    <highchart config="config.dayChartConfig" ng-if="config.dayChartConfig.options"></highchart>
+                </div>
+                <div class="col-sm-3" style="text-align: right;">
+                    <div class="row">
+                        <div class="col-sm-11 analysis_publish">年度发布总量：{{info.yearCount}}</div>
+                    </div>
+                    <div class="row" style="height: 20px;"></div>
+                    <div class="row">
+                        <div  class="col-sm-2 analysis_stop">
+                            <i  class="glyphicon glyphicon-stop analysis_stop_success"></i>
+                        </div>
+                        <div class="col-sm-10 text-left analysis_stop_font">成功({{info.yearSucc}})</div>
+                    </div>
+                    <div class="row">
+                        <div  class="col-sm-2 analysis_stop">
+                            <i  class="glyphicon glyphicon-stop analysis_stop_failure"></i>
+                        </div>
+                        <div class="col-sm-10 text-left analysis_stop_font">失败({{info.yearFail}})</div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <tab heading="历年统计" class="analysis-tab" select="selectTab('history')" ng-if="control.show">
+            <div class="row">
+                <div class="col-sm-2" style="text-align: left;">
+                    <bs-select width=120 items="info.yearList" my-select="info.historyYearString" select-val="changeYear(selectKey)" ></bs-select>
+                </div>
+                <div class="col-sm-7" scroll-control>
+                    <highchart config="config.historyChartConfig" ng-if="config.historyChartConfig.options"></highchart>
+                </div>
+                <div class="col-sm-3" style="text-align: right;">
+                    <div class="row">
+                        <div class="col-sm-11 analysis_publish">年度发布总量：{{info.yearCount}}</div>
+                    </div>
+                    <div class="row" style="height: 20px;"></div>
+                    <div class="row">
+                        <div  class="col-sm-2 analysis_stop">
+                            <i  class="glyphicon glyphicon-stop analysis_stop_success"></i>
+                        </div>
+                        <div class="col-sm-10 text-left analysis_stop_font">成功({{info.yearSucc}})</div>
+                    </div>
+                    <div class="row">
+                        <div  class="col-sm-2 analysis_stop">
+                            <i  class="glyphicon glyphicon-stop analysis_stop_failure"></i>
+                        </div>
+                        <div class="col-sm-10 text-left analysis_stop_font">失败({{info.yearFail}})</div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</div>

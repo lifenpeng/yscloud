@@ -1,0 +1,662 @@
+<span class="flow-attr dragRigth form-horizontal">
+   <div class="right_div">
+       <div class="attr-head">属性配置</div>
+        <form name="jobForm" ng-submit="saveJobConfig()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+            <div class="job_div" custom-scroll custom-config="config.drag_right_scroll">
+                 <div class="form-group form-style row-border-style" ng-if="info.current_node.type">
+                   <label class="col-sm-3 control-label label-key">类型</label>
+                   <div class="col-sm-5 label-value padding-top-15">
+                       <span ng-bind="info.current_node.templateLib_type_cn"></span>
+                   </div>
+                   <div class="col-sm-3 padding-top-12" ng-if="info.current_node.type > 6">
+                       <div class="set-btn-common set-btn" ng-click="addPrivateElement()">
+                           <span class="fa fa-heart-o" style="font-size: 14px;vertical-align: middle"></span>
+                           <span style="padding-left: 2px">私有</span>
+                       </div>
+                   </div>
+                 </div>
+               <div class="form-group form-style row-border-style" ng-if="info.current_node.type == 2">
+                   <label class="col-sm-3 control-label label-key">结束方式</label>
+                   <div class="col-sm-8 label-value control-right padding-top-15">
+                       <label>
+                           <input type="radio" name="over_type" i-check ng-model="info.attr_data.over_type" value=1>
+                           自动结束
+                       </label>
+                       <label style="margin-left:15px;">
+                           <input type="radio" name="over_type" i-check ng-model="info.attr_data.over_type" value=2>
+                           手动结束
+                       </label>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.current_node.type != 1 && info.current_node.type != 2">
+                   <label class="col-sm-3 control-label label-key">作业名称</label>
+                   <div class="col-sm-9 label-value control-right">
+                       <input type="text"
+                              name="sdwork_cn_name"
+                              ng-model="info.attr_data.sdwork_cn_name"
+                              class="sub-form-control"
+                              placeholder="不超过10个字符"
+                              required
+                              ng-maxlength=20>
+                       <validate-msg tag-cn-name="作业名称" name="sdwork_cn_name"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.current_node.type != 1 && info.current_node.type != 2">
+                   <label class="col-sm-3 control-label label-key">描述</label>
+                   <div class="col-sm-9 label-value control-right">
+                       <input type="text"
+                              name="job_bk_desc"
+                              ng-model="info.attr_data.job_bk_desc"
+                              class="sub-form-control"
+                              placeholder="不超过50个字符"
+                              ng-minlength=2
+                              ng-maxlength=50
+                              ng-model-options="{updateOn: 'blur'}">
+                       <validate-msg tag-cn-name="描述" name="job_bk_desc"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.current_node.type == 6">
+                   <label class="col-sm-3 control-label label-key">轮询间隔</label>
+                   <div class="col-sm-9 label-value control-right">
+                       <input type="text"
+                              name="polling_interval"
+                              ng-model="info.attr_data.polling_interval"
+                              class="sub-form-control"
+                              placeholder="单位为秒"
+                              ng-pattern="/^[0-9]+$/"
+                              ng-maxlength=20
+                       >
+                       <validate-msg tag-cn-name="轮询间隔" name="polling_interval"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.current_node.type == 6">
+                   <label class="col-sm-3 control-label label-key">最大次数</label>
+                   <div class="col-sm-9 label-value control-right">
+                       <input type="text"
+                              name="polling_max_times"
+                              ng-model="info.attr_data.polling_max_times"
+                              class="sub-form-control"
+                              placeholder="单位为次"
+                              ng-pattern="/^[0-9]+$/"
+                              ng-maxlength=20
+                       >
+                       <validate-msg tag-cn-name="最大次数" name="polling_max_times"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4 && info.current_node.type != 6" style="margin-left: -10px">
+                   <label class="col-sm-3 control-label label-key">超时时间(s)</label>
+                   <div class="col-sm-9 label-value control-right">
+                       <input type="text"
+                              name="timeout"
+                              ng-model="info.attr_data.timeout"
+                              class="sub-form-control"
+                              placeholder="单位为秒"
+                              ng-pattern="/^[0-9]+$/"
+                              ng-maxlength=20
+                       >
+                       <validate-msg tag-cn-name="超时时间" name="timeout"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4 && info.current_node.type != 6" style="margin-left: -10px">
+                   <label class="col-sm-3 control-label label-key">执行预时(s)</label>
+                   <div class="col-sm-9 label-value control-right">
+                       <input type="text"
+                              name="timeused"
+                              ng-model="info.attr_data.timeused"
+                              class="sub-form-control"
+                              placeholder="单位为秒"
+                              ng-pattern="/^[0-9]+$/"
+                              ng-maxlength=20>
+                       <validate-msg tag-cn-name="执行预时" name="timeused"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style" ng-style="{'height': info.attr_data.error_handle == 3 ? '75px' : ''}" ng-if="info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4">
+                   <label class="col-sm-3 control-label label-key" style="padding-bottom: 7px">出错处理</label>
+                   <div class="col-sm-9 label-value control-right">
+                       <div class="row padding-top-10" style="padding-left: 15px;">
+                           <bs-select  items="data.error_handle_list"
+                                       my-select="info.attr_data.error_handle"
+                                       option-labal="value"
+                                       option-key="key"
+                                       select-val="selectErrorHandle(selectKey)"
+                                       width="80"
+                                       no-border
+                           ></bs-select>
+                           <validate-msg tag-cn-name="出错处理" type="select" name="error_handle" model="info.attr_data.error_handle"></validate-msg>
+                       </div>
+                       <div class="row form-style err-retry-row"
+                            ng-if="info.attr_data.error_handle == 3 && info.attr_data.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4">
+                           <label class="col-sm-1 control-label label-key" style="width: 24px;padding-top: 5px;padding-left: 0;">次数</label>
+                           <div class="col-sm-4 label-value">
+                               <input type="text"
+                                      style="height: 25px;width: 45px;padding: 0 5px"
+                                      name="retry_times"
+                                      ng-model="info.attr_data.retry_times"
+                                      class="form-control"
+                                      placeholder="次"
+                                      ng-pattern="/^[1-9]{1}$/"
+                                      title="重试次数(1-9)"
+                                      required/>
+                               <validate-msg tag-cn-name="次数" name="retry_times"></validate-msg>
+                           </div>
+                           <label class="col-sm-1 control-label label-key" style="width: 38px;padding-top: 5px;padding-left: 0;">间隔(s)</label>
+                           <div class="col-sm-3 label-value" style="padding-right: 0">
+                               <input type="text"
+                                      name="retry_interval"
+                                      style="height: 25px;width: 45px;padding: 0 5px"
+                                      ng-model="info.attr_data.retry_interval"
+                                      class="form-control"
+                                      placeholder="秒"
+                                      ng-pattern="/^[0-9]{1,3}$/"
+                                      title="重试间隔"
+                                      required>
+                               <validate-msg tag-cn-name="间隔" name="retry_interval"></validate-msg>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style" ng-if="info.attr_data.pre_job_basic_data.length != 0 && info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4">
+                   <label class="col-sm-3 control-label label-key">新增前置</label>
+                   <div class="col-sm-9 label-value control-right padding-top-10" style="padding-right: 0px;" >
+                       <div ng-repeat="one_pre in info.attr_data.pre_job_list" style="position:relative;padding-bottom: 5px">
+                           <div ng-click="removePreJob($index)" class="remove-pre" title="删除"><i class="fa fa-times" aria-hidden="true"></i></div>
+                           <bs-select width="94" items="info.attr_data.pre_job_basic_data"
+                                      my-select="one_pre.job_id"
+                                      option-labal="sdwork_cn_name"
+                                      option-key="job_id"
+                                      select-val="choosePreJob(selectKey,one_pre)"
+                                      style="display: inline-block;"
+                           ></bs-select>
+                           <bs-select width="94" class="dropLeft" items="data.pre_error_handle_list"
+                                      my-select="one_pre.error_handle"
+                                      style="display: inline-block;"
+                           ></bs-select>
+                       </div>
+                       <div ng-hide="info.attr_data.pre_job_list.length == 1 && info.attr_data.pre_job_basic_data.length == 1">
+                           <div ng-click="addPreJobList()" class="add_pre_btn"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                       </div>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style" ng-if="info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4">
+                   <label class="col-sm-3 control-label label-key">时间条件</label>
+                   <div class="col-sm-8 control-right padding-top-10">
+                       <div class="set-btn-common set-btn" ng-if="!info.attr_data.date_condition" ng-click="setTimeCondition()">
+                           <span class="fa fa-cog"></span>&nbsp;&nbsp;设置
+                       </div>
+                       <!--时间条件日期-->
+                       <div class="set-btn-common" ng-if="info.attr_data.date_condition" ng-click="setTimeCondition()">
+                           <span class="fa fa-clock-o"></span>&nbsp;&nbsp;
+                           <span ng-bind="info.attr_data.date_condition"></span>
+                           <span>
+                               <!--时间条件输入-时/分-->
+                               <!--定位到此处--为避免输入验证不起作用-->
+                               <input type="text"
+                                      ng-show="info.attr_data.date_condition"
+                                      name="h_condition"
+                                      style="left: 136px;"
+                                      ng-click="$event.stopPropagation()"
+                                      ng-model="info.attr_data.h_condition"
+                                      placeholder="时"
+                                      class="sub-form-control time-input-condition"
+                                      ng-pattern="/^(([01]?[0-9])|(2[0-3])){1}$/"
+                                      ng-required="info.attr_data.date_condition">
+                               <validate-msg tag-cn-name="时" type="text" name="h_condition" style="position: absolute; right: 20px;top: 30px;z-index: 1;"></validate-msg>
+                           </span>:
+                           <span>
+                               <input type="text"
+                                      ng-show="info.attr_data.date_condition"
+                                      style="left: 162px;"
+                                      name="m_condition"
+                                      ng-click="$event.stopPropagation()"
+                                      ng-model="info.attr_data.m_condition"
+                                      class="sub-form-control time-input-condition"
+                                      placeholder="分"
+                                      ng-pattern="/^[0-5]?[0-9]{1}$/"
+                                      ng-required="info.attr_data.date_condition">
+                                <validate-msg tag-cn-name="分" type="text" name="m_condition" style="position: absolute; right: 20px;top: 43px;z-index: 1" ng-style="{'background':info.current_node.type == 1 ? '#fbfcfc':''}"></validate-msg>
+                           </span>
+                       </div>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style" ng-if="info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4">
+                   <label class="col-sm-3 control-label label-key" >作业方式</label>
+                   <div class="col-sm-9 control-right padding-top-10">
+                       <div class="set-btn-common set-btn" ng-if="!info.attr_data.job_method" ng-click="setJobMethod()">
+                           <span class="fa fa-cog"></span>&nbsp;&nbsp;设置
+                       </div>
+                       <div class="set-btn-common time-condition" ng-if="info.attr_data.job_method" ng-click="setJobMethod()">
+                           <div ng-if="info.attr_data.job_method == 1" class="comp-cn-name" title="{{info.attr_data.comp_cn_name}}">
+                               <span class="fa fa-cube" style="font-size: 16px;vertical-align: middle"></span>
+                               <span ng-bind="info.attr_data.comp_cn_name ? info.attr_data.comp_cn_name : '--'"></span>
+                           </div>
+                           <div ng-if="info.attr_data.job_method == 2">
+                               <span class="fa fa-pencil-square-o" style="font-size: 18px;vertical-align: middle;"></span>
+                               <span style="padding-left:4px;">[自定义]</span>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.attr_data.job_method==2 && info.current_node.type > 23 && info.current_node.type < 28">
+                   <label class="col-sm-3 control-label label-key" ng-if="info.current_node.type != 25">服务名称</label>
+                   <label class="col-sm-3 control-label label-key" ng-if="info.current_node.type == 25">服务器IP</label>
+                   <div class="col-sm-9 label-value control-right" ng-if="info.current_node.type != 25">
+                       <input type="text"
+                              name="service_name"
+                              ng-model="info.attr_data.service_name"
+                              class="sub-form-control"
+                              placeholder="输入服务名称"
+                              ng-model-options="{updateOn: 'blur'}"
+                              ng-maxlength=100
+                              required>
+                       <validate-msg tag-cn-name="服务名称" name="service_name"></validate-msg>
+                   </div>
+                   <div class="col-sm-9 label-value control-right" ng-if="info.current_node.type == 25">
+                       <input type="text"
+                              name="service_ip"
+                              ng-model="info.attr_data.service_ip"
+                              class="sub-form-control"
+                              placeholder="输入服务器IP"
+                              ng-model-options="{updateOn: 'blur'}"
+                              ng-maxlength=100
+                              required>
+                       <validate-msg tag-cn-name="服务器IP" name="service_ip"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style input-row" ng-if="info.attr_data.job_method==2 && info.current_node.type > 23 && info.current_node.type < 28">
+                   <div ng-if="info.current_node.type == 24">
+                        <label class="col-sm-3 control-label label-key">服务URL地址</label>
+                        <div class="col-sm-9 label-value control-right">
+                            <input type="text"
+                                   name="srv_url"
+                                   ng-model="info.attr_data.service_url"
+                                   class="sub-form-control"
+                                   placeholder="输入服务URL"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-maxlength=100
+                                   ng-disabled="is_detail"
+                                   required>
+                            <validate-msg tag-cn-name="服务URL地址" name="srv_url"></validate-msg>
+                        </div>
+                   </div>
+                   <div ng-if="info.current_node.type == 25">
+                        <label class="col-sm-3 control-label label-key">服务端口号</label>
+                        <div class="col-sm-9 label-value control-right">
+                            <input type="text"
+                                   name="srv_port"
+                                   ng-model="info.attr_data.service_port"
+                                   class="sub-form-control"
+                                   placeholder="输入服务端口号"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-maxlength=100
+                                   ng-disabled="is_detail"
+                                   required>
+                            <validate-msg tag-cn-name="服务端口号" name="srv_port"></validate-msg>
+                        </div>
+                   </div>
+                   <div ng-if="info.current_node.type == 26">
+                       <label class="col-sm-3 control-label label-key">请求方式</label>
+                       <div class="col-sm-9 label-value" style="padding-top: 5px">
+                               <bs-select width="80"
+                                          no-border
+                                          items="data.request_method_list"
+                                          my-select="info.attr_data.request_method"
+                               ></bs-select>
+                               <validate-msg tag-cn-name="请求方式" type="select" model="info.attr_data.request_method"></validate-msg>
+                        </div>
+                   </div>
+               </div>
+               <div class="form-group" ng-if="info.current_node.type == 4" style="border-bottom: none">
+                   <div class="col-sm-12" style="padding:0px 20px">
+                       <table class="sub-table" tbl-Data="info.attr_data.input" row-plus="addInputParam(2)">
+                           <thead>
+                           <tr class="cursor_default">
+                               <td>
+                                   参数名
+                               </td>
+                               <td>
+                                   参数值
+                               </td>
+                               <td>
+                                   操作
+                               </td>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           <tr ng-repeat="param in info.attr_data.input">
+                               <td >
+                                   <input type="text" class="sub-form-control" placeholder="输入参数名" ng-model="param.param_name" name="param_name{{$id}}" required/>
+                                   <validate-msg tag-cn-name="参数名" type="text" name="param_name{{$id}}" style="font-size: 10px;"></validate-msg>
+                               </td>
+                               <td style="text-align: left;position: relative" class="ref_node_td">
+                                   <div ng-if="param.param_source == 2" style="display: inline-block">
+                                       <span style="color: #61a1b8;padding-right: 5px">作业</span>
+                                       <bs-select items="info.attr_data.ref_job_list"
+                                                  width="90"
+                                                  style="display: inline-block"
+                                                  my-select="param.ref_job_id"
+                                                  option-labal="sdwork_cn_name"
+                                                  select-val="getRefJobParme(selectKey,param)"
+                                                  option-key="job_id" no-border></bs-select>
+                                       <validate-msg tag-cn-name="引用作业" type="select" name="ref_id_{{$index}}" model="param.ref_job_id" style="font-size: 10px;"></validate-msg>
+                                   </div>
+                                   <div  class="condition-job-ref-param-title" ng-if="param.param_source == 2 && info.current_node.type != 1 && param.ref_job_id">
+                                       <span class="select-job-node-title" ng-click="selectRefNode(param)" ng-show="param.ref_job_id && (!param.ref_job_list || param.ref_job_list.length == 0) && !param.is_no_node">点击选择作业节点</span>
+                                       <div class="modify-node-title" ng-show="param.ref_job_list && param.ref_job_list.length != 0" ng-click="selectRefNode(param)">
+                                           <span class="fa fa-ellipsis-h" title="修改节点"></span>
+                                       </div>
+                                       <div ng-repeat="ref_node in param.ref_job_list">
+                                           <span ng-bind="ref_node.exe_ip"></span>
+                                           <span ng-bind="ref_node.exe_soc_name"></span>
+                                       </div>
+                                   </div>
+                                   <div ng-if="param.param_source == 2" style="display: inline-block">
+                                        <span style="color: #61a1b8;padding-right: 5px">参数</span>
+                                       <bs-select items="info.attr_data.ref_job_param_list"
+                                                  width="90"
+                                                  style="display: inline-block"
+                                                  my-select="param.ref_param_name"
+                                                  option-labal="param_cn_name"
+                                                  option-key="param_name" no-border></bs-select>
+                                       <validate-msg tag-cn-name="引用作业参数" type="select" name="ref_param_{{$index}}" model="param.ref_param_name" style="font-size: 10px;"></validate-msg>
+                                   </div>
+                               </td>
+                               <td>
+                                   <div ng-click="removeInputParam($index)" style="text-align: center;">
+                                       <i class="fa fa-trash-o"></i>
+                                   </div>
+                               </td>
+                           </tr>
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
+               <div class="form-group" ng-if="info.attr_data.input.length != 0 && info.current_node.type != 1 && info.current_node.type != 2 &&  info.current_node.type != 5  && info.current_node.type != 4" style="border-bottom: none">
+                   <div class="col-sm-12" style="padding:0px 20px">
+                       <table class="sub-table">
+                           <thead>
+                           <tr class="cursor_default">
+                               <td width="80px">
+                                   输入参数名
+                               </td>
+                               <td style="padding:0;width: 50px">
+                                   值来源
+                               </td>
+                               <td>
+                                   参数值
+                               </td>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           <tr ng-repeat="param in info.attr_data.input">
+                               <td style="width:80px;word-break: break-all">
+                                   <div title="{{param.param_cn_name}}" style="text-align: left;">{{param.param_name}}</div>
+                               </td>
+                               <td class="value_source_td">
+                                   <bs-select width="80"
+                                              items="data.param_source_list"
+                                              my-select="param.param_source"
+                                              option-labal="value"
+                                              option-key="key" no-border></bs-select>
+                               </td>
+                               <td style="text-align: left;position: relative" class="ref_node_td">
+                                   <div ng-if="param.param_source == 1">
+                                       <input type="text"
+                                              name="input_param_value{{$index}}"
+                                              ng-model="param.param_value"
+                                              required
+                                              placeholder="输入参数值"
+                                              class="sub-form-control"
+                                              ng-maxlength="1000"/>
+                                       <validate-msg tag-cn-name="参数值" name="input_param_value{{$index}}"></validate-msg>
+                                   </div>
+                                   <div ng-if="param.param_source == 2">
+                                       <bs-select items="info.attr_data.ref_job_list"
+                                                  my-select="param.ref_job_id"
+                                                  option-labal="sdwork_cn_name"
+                                                  select-val="getRefJobParme(selectKey,param)"
+                                                  option-key="job_id" no-border></bs-select>
+                                       <validate-msg tag-cn-name="引用作业" type="select" name="ref_id_{{$index}}" model="param.ref_job_id"></validate-msg>
+                                   </div>
+                                   <div ng-if="param.param_source == 2 && info.current_node.type != 1">
+                                       <span class="select_node_font" ng-click="selectRefNode(param)" ng-show="(param.ref_job_id && !param.is_no_node) && (!param.ref_job_list || param.ref_job_list.length == 0)">选择节点</span>
+                                       <div class="modify_node" ng-show="param.ref_job_list && param.ref_job_list.length != 0" ng-click="selectRefNode(param)">
+                                           <span class="fa fa-ellipsis-h" title="修改节点"></span>
+                                       </div>
+                                       <div ng-repeat="ref_node in param.ref_job_list">
+                                           <span ng-bind="ref_node.exe_ip"></span>
+                                           <span ng-bind="ref_node.exe_soc_name"></span>
+                                       </div>
+                                   </div>
+                                   <div ng-if="param.param_source == 2">
+                                       <bs-select items="info.attr_data.ref_job_param_list"
+                                                  my-select="param.ref_param_name"
+                                                  option-labal="param_name,param_cn_name"
+                                                  option-key="param_name" no-border></bs-select>
+                                       <validate-msg tag-cn-name="引用作业参数" type="select" name="ref_param_{{$index}}" model="param.ref_param_name"></validate-msg>
+                                   </div>
+                               </td>
+                           </tr>
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
+               <div class="form-group" ng-if="info.attr_data.output.length !=0 && info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4" style="border-bottom: none">
+                   <div class="col-sm-12" style="padding:0px 20px">
+                       <table class="sub-table">
+                           <thead>
+                           <tr class="cursor_default">
+                               <td width="82px">
+                                   输出参数名
+                               </td>
+                               <td>
+                                   中文名
+                               </td>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           <tr ng-repeat="param in info.attr_data.output">
+                               <td style="max-width:140px;overflow: hidden">
+                                   <div class="param-name" title="{{param.param_name}}" style="text-align: left;">{{param.param_name}}</div>
+                               </td>
+                               <td>
+                                   <div class="param-name" style="text-align: left;" ng-bind="param.param_cn_name ? param.param_cn_name : '--'"></div>
+                               </td>
+                           </tr>
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
+               <div class="form-group" ng-if="info.current_node.type == 1" style="border-bottom: none">
+                   <div class="col-sm-12" style="padding:0px 20px">
+                       <table class="sub-table" row-plus="startAddSoc()"  tbl-Data="info.attr_data.input">
+                           <thead>
+                           <tr class="cursor_default">
+                               <td>
+                                   参数名
+                               </td>
+                               <td>
+                                   中文名
+                               </td>
+                               <td style="min-width: 60px;">
+                                   参数值
+                               </td>
+                               <td>
+                                   操作
+                               </td>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           <tr ng-repeat="param in info.attr_data.input">
+                               <td>
+                                   <input type="text"
+                                          class="sub-form-control"
+                                          ng-model="param.param_name"
+                                          name="param_name{{$id}}"
+                                          ensure-only="info.attr_data.input.input | param_name"
+                                          required/>
+                                   <validate-msg tag-cn-name="参数名" type="text" name="param_name{{$id}}" style="font-size: 10px;"></validate-msg>
+                               </td>
+                               <td>
+                                   <input type="text" class="sub-form-control" ng-model="param.param_cn_name" name="param_cn_name{{$id}}"/>
+                               </td>
+                               <td style="text-align: left;min-width: 60px;">
+                                   <input name="param_value{{$id}}" type="text"
+                                          ng-model="param.param_value"
+                                          ng-maxlength="250"
+                                          class="sub-form-control" ng-required="flow_basic_data.sddispatch_type == 2"/>
+                                   <validate-msg ng-if="flow_basic_data.sddispatch_type == 2" tag-cn-name="参数值" type="text" name="param_value{{$id}}" style="font-size: 10px;"></validate-msg>
+                               </td>
+                               <td>
+                                   <div ng-click="removeStartSoc($index)" style="text-align: center;">
+                                       <i class="fa fa-trash-o"></i>
+                                   </div>
+                               </td>
+                           </tr>
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
+               <div class="form-group" ng-if="info.current_node.type == 2" style="border-bottom: none">
+                   <div class="col-sm-12" style="padding:0px 20px">
+                       <table class="sub-table" tbl-Data="info.attr_data.input" row-plus="addInputParam(1)">
+                           <thead>
+                           <tr class="cursor_default">
+                               <td>
+                                   参数名
+                               </td>
+                               <td style="padding:0px;width: 50px">
+                                   值来源
+                               </td>
+                               <td>
+                                   参数值
+                               </td>
+                               <td width="50px">
+                                   操作
+                               </td>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           <tr ng-repeat="param in info.attr_data.input">
+                               <td style="max-width:160px;overflow: hidden">
+                                   <input type="text"
+                                          class="sub-form-control"
+                                          ng-model="param.param_name"
+                                          name="param_name{{$id}}"
+                                          ensure-only="info.attr_data.input.output | param_name"
+                                          required/>
+                                   <validate-msg tag-cn-name="参数名" model="param.param_name" name="param_name{{$id}}"></validate-msg>
+                               </td>
+                               <td class="value_source_td">
+                                   <bs-select items="data.param_source_list"
+                                              my-select="param.param_source"
+                                              option-labal="value"
+                                              option-key="key" no-border init-label></bs-select>
+                               </td>
+                               <td style="text-align: left;position: relative" class="ref_node_td">
+                                   <div ng-if="param.param_source == 1">
+                                       <input type="text"
+                                              name="input_param_value{{$index}}"
+                                              ng-model="param.param_value"
+                                              required
+                                              class="sub-form-control"
+                                              ng-maxlength="250"/>
+                                       <validate-msg tag-cn-name="参数值" name="input_param_value{{$index}}"></validate-msg>
+                                   </div>
+                                   <div ng-if="param.param_source == 2">
+                                       <bs-select items="info.attr_data.ref_job_list"
+                                                  my-select="param.ref_job_id"
+                                                  option-key="job_id"
+                                                  option-labal="sdwork_cn_name"
+                                                  select-val="getRefJobParme(selectKey,param)"
+                                                  no-border></bs-select>
+                                       <validate-msg tag-cn-name="引用作业" type="select" name="ref_id_{{$index}}" model="param.ref_job_id"></validate-msg>
+                                   </div>
+                                   <div style="width: 130px" ng-if="param.param_source == 2 && info.current_node.type != 1">
+                                       <span class="select_node_font" ng-click="selectRefNode(param)" ng-show="param.ref_job_id && (!param.ref_job_list || param.ref_job_list.length == 0) && !param.is_no_node">选择节点</span>
+                                       <div class="modify_node" ng-show="param.ref_job_list && param.ref_job_list.length != 0" ng-click="selectRefNode(param)">
+                                           <span class="fa fa-ellipsis-h" title="修改节点"></span>
+                                       </div>
+                                       <div ng-repeat="ref_node in param.ref_job_list">
+                                           <span ng-bind="ref_node.exe_ip"></span>
+                                           <span ng-bind="ref_node.exe_soc_name"></span>
+                                       </div>
+                                   </div>
+                                   <div ng-if="param.param_source == 2">
+                                       <bs-select items="info.attr_data.ref_job_param_list"
+                                                  my-select="param.ref_param_name"
+                                                  option-labal="param_name,param_cn_name"
+                                                  option-key="param_name" no-border></bs-select>
+                                       <validate-msg tag-cn-name="引用作业参数" type="select" name="ref_param_{{$index}}"  model="param.ref_param_name"></validate-msg>
+                                   </div>
+                               </td>
+                               <td>
+                                   <div ng-click="removeInputParam($index)" style="text-align: center;">
+                                       <i class="fa fa-trash-o"></i>
+                                   </div>
+                               </td>
+                           </tr>
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
+               <div class="form-group form-style result_exp" ng-if="info.attr_data.output.length !=0 && info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4">
+                   <label class="col-sm-3 control-label label-key"  style="margin-top: 5px">结果判定</label>
+                   <div class="col-sm-9 label-value control-right" style="padding-top: 5px">
+                        <textarea name="result_judge"
+                                  ui-codemirror="{onLoad : dispatchParamShellLoaded}"
+                                  ui-refresh="true"
+                                  ng-model="info.attr_data.result_judge"
+                                  placeholder="输入java表达式"
+                                  ng-required="info.current_node.type ==6"
+                                  class="form-control">
+                                        </textarea>
+                       <validate-msg tag-cn-name="结果判定" name="result_judge" ng-if="info.current_node.type ==6"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style row-border-style result_exp border-top-0F1C27" ng-if="info.current_node.type ==4">
+                   <label class="col-sm-3 control-label label-key">表达式</label>
+                   <div class="col-sm-9 label-value control-right" style="padding-top: 5px">
+                        <textarea name="expr"
+                                  ng-model="info.attr_data.expr"
+                                  class="form-control"
+                                  ui-codemirror="{onLoad : dispatchParamShellLoaded}"
+                                  placeholder="输入java表达式"
+                                  ui-refresh="true"
+                                  required>
+                                          </textarea>
+                       <validate-msg tag-cn-name="表达式" name="expr"></validate-msg>
+                   </div>
+               </div>
+               <div class="form-group form-style" ng-class="{'border-top-0F1C27':info.attr_data.input.length || info.attr_data.output.length}" ng-if="info.current_node.type != 1 && info.current_node.type != 2 && info.current_node.type != 5 && info.current_node.type != 4 && (info.current_node.type < 24 || info.current_node.type > 27)">
+                   <div class="col-sm-12 label-value" style="padding-left: 35px;padding-top: 10px">
+                       <div class="data-source-config-btn" ng-click="configSoc(info.attr_data.comp_impl_type)" style="margin-top: 0">
+                           <span class="fa fa-cog"></span>&nbsp;&nbsp;数据源
+                       </div>
+                   </div>
+                   <!-- 下一行-->
+                   <div class="col-sm-12 label-value" style="position: relative;padding-left: 25px;" ng-if="info.attr_data.source_list.length != 0">
+                       <div class="data-source-btn" ng-repeat="one in info.attr_data.source_list" ng-if="one.exe_soc_name && one.ver_soc_name && (info.attr_data.comp_impl_type >2 && info.attr_data.comp_impl_type < 6) || info.attr_data.comp_impl_type == 14 || info.attr_data.comp_impl_type == 15" title="{{one.exe_ip + ' | ' + one.ver_ip}}">
+                           <span class="protocol-type">{{getProtocolTypeCnName(one.exe_protocol_type)}}</span>
+                           <span>{{one.exe_soc_name}}</span>
+                           <span>|</span>
+                           <span class="protocol-type">{{getProtocolTypeCnName(one.ver_protocol_type)}}</span>
+                           <span>{{one.ver_soc_name}}</span>
+                           <div  class="data-source-delete-btn" ng-click="removeOneSoc($index)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                       </div>
+                       <div class="data-source-btn" ng-repeat="one in info.attr_data.source_list" ng-if="one.exe_soc_name && (info.attr_data.comp_impl_type <= 2 || (info.attr_data.comp_impl_type >=6 && info.attr_data.comp_impl_type != 14 && info.attr_data.comp_impl_type != 15))" title="{{one.exe_ip}}">
+                           <span class="protocol-type">{{getProtocolTypeCnName(one.exe_protocol_type)}}</span>
+                           <span>{{one.exe_soc_name}}</span>
+                           <div class="data-source-delete-btn" ng-click="removeOneSoc($index)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                       </div>
+                   </div>
+               </div>
+            </div>
+            <div class="row" style="padding-top: 15px;padding-bottom: 15px">
+                   <div class="col-sm-12 text-center">
+                       <button type="button" class="save-cancel-btn cancel-btn btn-xl" ng-click="cancelJobConfig()">取消</button>
+                       <button type="submit" class="save-cancel-btn save-btn btn-xl">保存</button>
+                   </div>
+            </div>
+       </form>
+   </div>
+</span>

@@ -1,0 +1,38 @@
+<div class="container-fluid release-exec" style="font-size: 12px;padding: 0">
+    <!--头部-->
+    <div style="min-width: 960px;position: relative;">
+        <div class="header-left-bg">
+            <span class="header-sys-name">项目SSSSS</span>
+            <div class="header-operate-area">
+                <!--一键执行-->
+                <div class="operate-btn-img auto-btn-default"></div>
+                <!--单步执行-->
+                <div class="operate-btn-img exec-btn-default"></div>
+                <!--更多-->
+                <div class="operate-btn-img more-btn-default"></div>
+            </div>
+        </div>
+        <div class="header-right-bg">
+            <div style="padding-left: 20px;padding-top: 5px;">
+                <span style="font-size: 16px;color: #5a90f8;"><i class="fa fa-clock-o"></i></span>
+                <span style="color: #5a90f8">倒计时  18:00:00</span>
+                <!--<span style="color: #5a90f8">正在执行</span>-->
+                <div style="width: 20px;height: 20px;float: right;font-size: 16px;margin-right: 25px;color: #5c697b" ng-click="backToList()">
+                    <span><i class="fa fa-reply"></i></span>
+                </div>
+                <div style="width:2px;height: 20px;float: right;background: #192837;margin-right: 10px;"></div>
+                <div style="width: 20px;height: 20px;float: right;font-size: 16px;margin-right: 10px;color: #5c697b" ng-click="changeView()" ng-if="control.show_view_flag">
+                    <span><i class="fa fa-tasks"></i></span>
+                </div>
+                <div style="width: 20px;height: 20px;float: right;font-size: 16px;margin-right: 10px;color: #5c697b" ng-click="changeView()" ng-if="!control.show_view_flag">
+                    <span><i class="fa fa-tasks"></i></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--中间内容视图-->
+    <div>
+        <ui-view></ui-view>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<style>
+    .datepick .btn-sm, .btn-group-sm > .btn  {
+        padding:9px 10px;
+    }
+    .autoBtn{
+        width: 80px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    .circleBtn{
+        width: 80px;
+        margin-left: -4px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    .btnBackNul{
+        color: #59a8f9;
+        background: #fff;
+        border:1px solid;
+    }
+    .btnBack{
+        background: #59a8f9;
+        color:white;
+    }
+
+
+    .left{
+        width: 360px;
+        height: 320px;
+        border:2px solid #eeeeee;
+        border-radius: 4px 0px 0px 4px;
+        float: left;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .right{
+        width: 300px;
+        height: 320px;
+        border:2px solid #eeeeee;
+        border-radius: 0px 4px 4px 0px;
+        display: inline-block;
+        margin-left: -2px;
+    }
+
+    .nulBack{
+        background-color: #FFFFFF;
+    }
+    .eeeBack{
+        background-color: #eee;
+    }
+    .autoStyle{
+        height: 46px;
+        width: 356px;
+        line-height: 46px;
+        padding:0px 10px;
+        position: relative;
+    }
+    .autoStyle .fa-trash-o{
+        font-size: 18px;
+        position: relative;
+        right: -94px;
+    }
+    .autoStyle input {
+        width: 22px;
+        height: 24px;
+        border-radius: 0px;
+        border:0px;
+        border-bottom: 1px solid #999;
+        text-align: center;
+        margin: 0px 6px;
+    }
+    .datepick{
+        display:inline-block;
+        min-height:290px;
+        position: absolute;
+    }
+
+</style>
+
+<div class="modal-header">
+    <h3 class="modal-title">阶段数据源查看</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all;>
+    <form name=">
+    <div style="position: relative;">
+        <!--头部-->
+        <div style="width: 50%;padding-left: 15px;padding-top: 25px;font-size: 16px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+            <span title="{phase.phase_cn_name}}"><i class="fa fa-cube" style="margin-right: 4px"></i>{{phase.phase_cn_name}}</span>
+        </div>
+        <!--串并行 数据源标识-->
+        <div style="position: absolute;right: 40px;top: 20px;">
+            <span style="color: #fc9e47;" class="show_detail_style source_color">{{getImplTypeCnName(phase.impl_type)}}</span>
+            <span style="color: #5A90F8;" ng-bind="phase.parallel_flag==1 ? '并行' : '串行'" class="show_detail_style method_style"></span>
+        </div>
+        <div style="width: 100%;margin-top: 20px;padding-left: 5px;overflow: hidden;height: 160px;overflow-y: auto;">
+            <div class="config_source_style" ng-repeat="node in phase.node_soc_list">
+                <span class="ip_span_style span_style">{{node.node_ip}}</span>
+                <span class="protocol_span_style span_style">{{getProtocolTypeCnName(node.protocol_type)}}</span>
+                <span class="source_span_style span_style" title="{{node.soc_name}}">{{node.soc_name}}</span>
+                <span ng-if="node.node_status == 5" class="success_span_style span_style"><i style="font-size: 18px;" class="fa fa-check"></i></span>
+                <span ng-if="node.node_status == 4" class="error_span_style span_style" style=""><i style="font-size: 18px;" class="fa fa-times"></i></span>
+                <span ng-if="node.node_status == 7" class="edit_success_span_style span_style"><i style="font-size: 18px;" class="fa fa-check"></i></span>
+                <span ng-if="node.node_status == 6" class="skip_span_style span_style"><i style="font-size: 18px;" class="fa fa-share"></i></span>
+                <span ng-if="node.node_status == 2" class="execting_span_style span_style"><i style="font-size: 18px;" class="fa fa-spinner fa-spin"></i></span>
+            </div>
+            <div ng-if="!phase.node_soc_list" style="height: 100%;text-align: center;line-height: 160px;color: #999;">无数据源</div>
+        </div>
+
+    </div>
+    <div style="text-align: center;margin-top: 40px;margin-bottom: 14px;">
+        <button class="cancel-btn btn-xl" ng-click="cancel()">返回</button>
+    </div>
+</div>
+

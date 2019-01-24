@@ -1,0 +1,148 @@
+<div class="container-fluid pub-application new-sys">
+    <form name="application_form" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="apply-wrap">
+            <div class="row">
+                <div class="col-sm-6" style="padding: 0;">
+                    <div class="row form-style row-distance">
+                        <label class="col-sm-3 label-key control-label text-right width-80">申请名称</label>
+                        <div class="col-sm-9 label-value">
+                            <input type="input" name="pjpublish_name"
+                                   class="form-control"
+                                   placeholder="申请名称"
+                                   required
+                                   ng-model="info.apply_info.pjpublish_name">
+                            <validate-msg tag-cn-name="申请名称"  name="pjpublish_name"></validate-msg>
+                        </div>
+                    </div>
+                    <div class="row form-style row-distance">
+                        <label class="col-sm-3 control-label label-key text-right width-80">发布日期</label>
+                        <div class="col-sm-6">
+                            <div style="margin-bottom: 10px">
+                                <label class="checkbox-inline padding-left-0">
+                                    <input type="radio" i-check name="publish_date_type"
+                                           ng-change="fmtPublishDate()"
+                                           ng-model="info.publish_date_type" value="1">&nbsp;&nbsp;&nbsp;上线窗口
+                                </label>
+                                <label class="checkbox-inline" style="margin-left: 20px">
+                                    <input type="radio" i-check name="publish_date_type"
+                                           ng-model="info.publish_date_type" value="2">&nbsp;&nbsp;&nbsp;自定义
+                                </label>
+                            </div>
+                            <div ng-if="info.publish_date_type==1">
+                                <bs-select name="window"
+                                           items="data.window_list"
+                                           my-select="info.apply_info.publish_win_id"
+                                           select-val="choosePubWindow(selectKey,selectValue)"
+                                           option-labal="open_date"
+                                           loading="control.business_loading"
+                                           option-key="window_id" required></bs-select>
+                                <validate-msg tag-cn-name="发布日期"  type="select" name="window" model="info.apply_info.publish_win_id"></validate-msg>
+                            </div>
+                            <div ng-if="info.publish_date_type==2" class="pick-date-common">
+                                <input type="text" name="crt_start_date" class="form-control"
+                                       ng-click="open(1,$event)" is-open="control.start_opened"
+                                       ng-model="info.apply_info.pjpublish_date"
+                                       show-button-bar="false"
+                                       show-weeks="false"
+                                       datepicker-popup="yyyy-MM-dd"
+                                       placeholder ="yyyy-mm-dd"
+                                       close-on-date-selection="false"
+                                       date-disabled="disabled(date, mode)"
+                                       close-text="关闭"
+                                       current-text="今天"
+                                       clear-text="清除"
+                                       style="padding-left:32px "
+                                       min-date="{{config.data_picker_max_date}}"
+                                       required  readonly="true"/>
+                                <validate-msg tag-cn-name="发布日期"  name="crt_start_date" model="info.apply_info.pjpublish_date"></validate-msg>
+                                <div style="color: #e9416e" ng-if="application_form.$error['date-disabled']">不小于当天日期</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" style="padding-left: 0;padding-top: 36px">
+                            <div class="" style="display: inline-block;">
+                                <input type="text" name="hour" cus-time-val error-mes="info.time_err_msg" class="form-control" ng-model="info.publish_hour" style="width: 40px;" ng-pattern="/^[\d]+$/" placeholder="时" required/>
+                            </div>
+                            <span style="display: inline-block;padding-left: 7px;vertical-align: top;margin-top: 8px">:</span>
+                            <div class="" style="display: inline-block;margin-left: 8px">
+                                <input type="text" name="minute" cus-time-val error-mes="info.time_err_msg" class="form-control" ng-model="info.publish_minute" ng-pattern="/^[\d]+$/" style="width: 40px;" placeholder="分" required/>
+                            </div>
+                            <validate-msg tag-cn-name="小时" name="hour"></validate-msg>
+                            <validate-msg tag-cn-name="分钟" name="minute"></validate-msg>
+                            <div class="autoStyle"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" style="padding-right: 0">
+                    <div class="row form-style row-distance">
+                        <label class="col-sm-3 control-label  label-key text-right">发布说明</label>
+                        <div class="col-sm-9" style="padding-right: 0">
+                             <textarea name="project_bk_desc"
+                                       ng-model="info.apply_info.pjpublish_desc"
+                                       class="form-control label-value"
+                                       placeholder="项目描述（最多50个字）"
+                                       style="min-width: 330px; resize:none;overflow:hidden;min-height: 72px;"
+                                       ng-maxlength=50
+                                       ng-model-options="{updateOn: 'blur'}">
+                                </textarea>
+                        </div>
+                    </div>
+                    <div class="row form-style row-distance">
+                        <label class="col-sm-3 control-label  label-key text-right">执行类型</label>
+                        <div class="col-sm-9" style="padding-right: 0">
+                            <label class="checkbox-inline padding-left-0">
+                                <input type="radio" i-check name="exe_type"
+                                       ng-model="info.apply_info.execute_type" value="1">&nbsp;&nbsp;&nbsp;手动执行
+                            </label>
+                            <label class="checkbox-inline" style="margin-left: 20px">
+                                <input type="radio" i-check name="exe_type"
+                                       ng-model="info.apply_info.execute_type" value="2">&nbsp;&nbsp;&nbsp;自动执行
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="apply-sys-msg">
+            <div class="row">
+                <div class="add-table-btn" ng-click="addProject()">
+                    <div class="add-btn-icon">
+                        添加项目
+                    </div>
+                </div>
+            </div>
+            <div class="sys-content" style="margin: 0 -15px 2px -15px" ng-repeat="proj in info.publish_proj_list">
+                <div class="single-sys-wrap" ng-class="{'single-sys-wrap-check': sys.state}">
+                    <div class="sys-wrap-item">
+                        <div class="proj-img-style"></div>
+                        <div class="sys-name" style="margin-top:0;position: absolute;top: 50%;-webkit-transform: translateY(-50%);-moz-transform: translateY(-50%);-ms-transform: translateY(-50%);-o-transform: translateY(-50%);transform: translateY(-50%);">
+                            {{proj.project_name}}
+                        </div>
+                        <div class="line-vertical">
+                            <div class="line-style"></div>
+                        </div>
+                    </div>
+                    <div class="sys-wrap-content">
+                        <div class="proj-sys-check-item" ng-class="{'proj-check-item-checked': !sys.checked && sys.sys_used_flag!=2}" ng-click="checkSystem(sys)" ng-repeat="sys in proj.business_sys_list">
+                            <div class="text-ellipse" style="width: 87px;margin-top: 12px">{{sys.business_cn_name}}</div>
+                            <div class="check-item-choose"></div>
+                        </div>
+                    </div>
+                    <div class="sys-delete delete-icon" ng-click="deleteProj($index,$event)"></div>
+                </div>
+            </div>
+            <div class="none-content-font-color text-center" style="height: 100px;font-size: 16px;padding-top: 15px" ng-if="info.publish_sys_list.length==0">
+                暂无项目
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-center" style="padding-top: 60px;padding-bottom: 5px">
+                <button ng-if="!control.save_btn_loading" type="button"  ng-click="formcancel()" class="cancel-btn btn-md">取消</button>
+                <button ng-if="control.save_btn_loading" disabled="disabled" type="button" class="btn-md disabled-btn" >取消</button>
+                <button ng-if="!control.save_btn_loading " type="submit" class="save-btn btn-md">保存</button>
+                <button ng-if="control.save_btn_loading" disabled="disabled" class="save-btn btn-md">
+                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

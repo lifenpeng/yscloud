@@ -1,0 +1,190 @@
+
+<div class="env-config env-config-new">
+    <form name="form.env_form"  novalidate autocomplete="off">
+        <div class="form-horizontal env-form-container">
+            <div class="row form-style">
+                <div class="col-sm-2 text-right">
+                    <label class="control-label label-key">环境名称</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text"
+                           class="form-control"
+                           name="env_name"
+                           placeholder="输入不超过60个字符或汉字"
+                           ng-model="info.basic_info.env_name"
+                           ng-maxlength="25"
+                           style="height: 32px;width:160px;"
+                           ng-disabled="control.basic_save || control.env_detail_flag"
+                           required/>
+                    <validate-msg tag-cn-name="环境名称" name="env_name"></validate-msg>
+                </div>
+                <div class="col-sm-2 text-right">
+                    <label class="control-label label-key">环境类型</label>
+                </div>
+                <div class="col-sm-3">
+                    <bs-select width=160 name="env_type" class="label-value" items="data.env_type_list" disable="control.basic_save"
+                               my-select="info.basic_info.env_type" required disable="control.env_detail_flag"></bs-select>
+                    <validate-msg tag-cn-name="环境类型" type="select" name="env_type" model="info.basic_info.env_type">
+                </div>
+                <div ng-class="info.struct_info.nodeDataArray.length==0 ? 'env-pub-btn-disabled':'env-pub-img'" ng-if="control.basic_save && info.env_info.pub_flag == 2"
+                     ng-click="info.struct_info.nodeDataArray.length==0 || envPub()" title="发布" style="position: absolute; right: 66px;"></div>
+                <div ng-class="info.struct_info.nodeDataArray.length==0 ? 'env-save-btn-disabled':'env-save-img'"  ng-click="info.struct_info.nodeDataArray.length==0 || saveAllMsg()"
+                     title="保存" style="position: absolute; right: 16px;"></div>
+            </div>
+            <div class="row" ng-if="control.basic_save_error">
+                <div class="col-sm-offset-2 col-sm-3 error-font-color">
+                    {{info.struct_error_msg}}
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row" ng-if="!control.struct_msg_loading" style="position: relative">
+        <div class="col-sm-12" env-drag style="padding:0 15px;min-height: 300px;" node-link-data="info.struct_info" config="configNode(key)" cancel="saveCancel()" clear="control.node_clear_flag" reflash="control.logic_node_reflash">
+            <div id="envDiagramDiv" class="diagram resize-parent"></div>
+        </div>
+        <!--配置-->
+        <div class="form-horizontal config-properties-container" resize-height="30">
+            <!--配置属性头部-->
+            <div class="row config-properties-header">
+                <div class="col-sm-12">{{info.logic_node.text}}</div>
+            </div>
+            <!--配置属性主体 style="height: calc(100% - 30px)"-->
+            <div class="row config-properties-body">
+                <div class="properties-body-left">
+                    <input type="text"
+                           ng-model="info.current_ip"
+                           typeahead="bs.server_ip for bs in data.server_list | filter:$viewValue | limitTo:10"
+                           typeahead-on-select = "addNode()"
+                           class="form-control label-value env-node-select"
+                           placeholder="模糊搜索"
+                           ng-if="!control.env_detail_flag">
+                    <div class="env-node-config-container" custom-scroll custom-config="config.scroll_info">
+                        <div class="env-node-config" ng-repeat="node in info.node_list" ng-click="configPhysicNode(node,2)" ng-class="{'config-active':node.active,'config-already':node.config_flag}">
+                            <div class="node-icon"></div>
+                            <div class="node-ip">{{node.ip}}</div>
+                            <div class="node-other" ng-if="node.main_standby_flag && info.logic_node.basic_msg.deploy_type == 1 && node.config_flag">主</div>
+                            <div class="node-other" ng-if="!node.main_standby_flag && info.logic_node.basic_msg.deploy_type == 1 && node.config_flag">备</div>
+                            <span class="fa fa-trash-o" ng-click="deleteNode(node.ip)" title="删除"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="properties-body-splitline"></div>
+                <div style="height: 100%;" ng-if="!info.node_info.ip"></div>
+                <div class="col-sm-12 properties-body-right" style="padding-right: 0" ng-if="info.node_info.ip" custom-scroll custom-config="config.scroll_info" >
+                    <form name="form.config_form"  novalidate autocomplete="off">
+                        <div class="row form-style" style="margin-top: 4px;">
+                            <div class="col-sm-2 text-right padding-left-0" ng-style="{'min-width':(info.node_info.agent_status == 3 && info.agent_flag == 1) ? '160px':'140px'}">
+                                <span ng-if="info.node_info.agent_status != 3 || info.agent_flag != 1" style="margin-right: 0;font-size: 14px;">{{info.node_info.ip}}</span>
+                                <span ng-if="info.node_info.agent_status == 3 && info.agent_flag == 1" style="margin-right: 20px;font-size: 14px;">{{info.node_info.ip}}</span>
+                                <div ng-if="info.node_info.agent_status == 3 && info.agent_flag == 1" class="agent-icon" title="已部署agent"></div>
+                            </div>
+                            <div class="col-sm-4" style="margin-top: -2px;">
+                                <div ng-if="info.logic_node.basic_msg.deploy_type == 1" class="main_standby_icon" ng-class="{'main_standby_active' : info.node_info.main_standby_flag, 'main_standby_no_active' : !info.node_info.main_standby_flag}" ng-click="info.node_info.main_standby_flag = true">主</div>
+                                <div ng-if="info.logic_node.basic_msg.deploy_type == 1" class="main_standby_icon" ng-class="{'main_standby_active' : !info.node_info.main_standby_flag, 'main_standby_no_active' : info.node_info.main_standby_flag}" ng-click="info.node_info.main_standby_flag = false">备</div>
+                            </div>
+                        </div>
+                        <div class="row form-style margin-t-padding-b-10"  ng-if="info.agent_flag == 2">
+                            <div class="col-sm-2 text-right">
+                                <label class="control-label label-key">文件数据源</label>
+                            </div>
+                            <div class="col-sm-4 padding-right-0">
+                                <bs-select max-width="236" name="file_soc_name" class="label-value" items="data.file_soc_list" option-labal="lable" option-key="soc_name" select-val="selectSoc(selectKey,1)"
+                                           my-select="info.node_info.file_soc_name" required disable="control.env_detail_flag"></bs-select>
+                                <validate-msg tag-cn-name="文件数据源" type="select" name="file_soc_name" model="info.node_info.file_soc_name"></validate-msg>
+                            </div>
+                            <div class="col-sm-2 text-right">
+                                <label class="control-label label-key">执行数据源</label>
+                            </div>
+                            <div class="col-sm-4 padding-left-0">
+                                <bs-select max-width="236" name="execute_soc_name" class="label-value" items="data.exe_soc_list" option-labal="lable" option-key="soc_name" select-val="selectSoc(selectKey,2)"
+                                           my-select="info.node_info.execute_soc_name" required disable="control.env_detail_flag"></bs-select>
+                                <validate-msg tag-cn-name="执行数据源" type="select" name="execute_soc_name" model="info.node_info.execute_soc_name"></validate-msg>
+                            </div>
+                        </div>
+                        <div class="row form-style margin-t-padding-b-10" ng-if="info.node_info.agent_status == 3 && info.agent_flag == 1" >
+                            <div class="col-sm-2 text-right padding-left-0 padding-right-0">
+                                <label class="control-label label-key">用户名</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <bs-select width=170 name="agent_user" class="label-value" items="data.agent_user_list"
+                                           my-select="info.node_info.agent_user" required disable="control.env_detail_flag"></bs-select>
+                                <validate-msg tag-cn-name="用户名" type="select" name="agent_user" model="info.node_info.agent_user"></validate-msg>
+                            </div>
+                        </div>
+                        <div class="row form-style" ng-if="info.node_info.fixed_param_list.length !=0" style="margin-top: 10px;">
+                            <div class="col-sm-2 text-right">
+                                <label class="control-label label-key">参数列表</label>
+                            </div>
+                            <div class="col-sm-10" style="padding-right: 30px">
+                                <div class="from-group">
+                                    <table class="sub-table">
+                                        <thead>
+                                        <tr>
+                                            <td width="30%">
+                                                <span>参数名</span>
+                                            </td>
+                                            <td>中文名</td>
+                                            <td width="30%">参数值</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-if="info.node_info.fixed_param_list.length !=0" ng-repeat="param in info.node_info.fixed_param_list">
+                                            <td style="text-align: left">
+                                                <div class="param-group-style">
+                                                    <div class="param-name">{{param.param_name}}</div>
+                                                </div>
+                                            </td>
+                                            <td style="min-width: 15px;">
+                                                <input type="text" ng-model="param.param_cn_name" ng-disabled="control.env_detail_flag" ng-maxlength="25" name="params_cn_name{{$id}}" class="sub-form-control" placeholder="输入中文名"/>
+                                            </td>
+                                            <td style="text-align: left;padding-right: 25px;position: relative">
+                                                <textarea name="param_value{{$index}}"
+                                                          ng-if="!param.sensitive_flag"
+                                                          ui-codemirror="{ onLoad : paramShellLoaded}"
+                                                          ui-refresh="true"
+                                                          ng-model="param.param_value"
+                                                          ng-maxlength="250"
+                                                          class="sub-form-control"
+                                                          required>
+                                                </textarea>
+                                                <!--只是为了兼容360浏览器阻止默认密码填写-->
+                                                <input type="password" style="display: none;" disabled autocomplete = "new-password"/>
+                                                <input type="password"
+                                                       name="param_value{{$index}}"
+                                                       class="form-control password-input"
+                                                       ng-model="param.param_value"
+                                                       ng-if="param.sensitive_flag"
+                                                       autocomplete="new-password"
+                                                       required/>
+                                                <validate-msg style="font-size: 10px;" tag-cn-name="参数值" name="param_value{{$index}}"></validate-msg>
+                                                <div class="password-eye">
+                                                    <i ng-if="!param.sensitive_flag" class="fa fa-eye" title="明文" ng-click="param.sensitive_flag=true;"></i>
+                                                    <i ng-if="param.sensitive_flag" class="fa fa-eye-slash" title="密文" ng-click="param.sensitive_flag=false;"></i>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="!info.node_info.fixed_param_list || info.node_info.fixed_param_list.length ==0">
+                                            <td colspan="3" style="text-align: center;color: #6d7183">暂无数据</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-style config-properties-btn-group" ng-style="{'margin-bottom': info.node_info.fixed_param_list.length ===0 ? '90px':''}">
+                            <div class="col-sm-12 text-center">
+                                <button  type="button" class="cancel-btn btn-xl" ng-click="cancelNodeConfig()" >取消</button>
+                                <button  class="save-btn btn-xl" ng-click="saveNode()" ng-if="!control.env_detail_flag">确定</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="control.struct_msg_loading && control.basic_save">
+        <div class="info-panel env-loading">
+            <i class="fa fa-spinner fa-spin loading-font-color"></i>
+        </div>
+    </div>
+</div>

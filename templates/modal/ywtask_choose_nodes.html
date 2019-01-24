@@ -1,0 +1,118 @@
+<style>
+    /*搜索框样式*/
+    .search_style{
+        width: 205px;
+        margin-left: 10px;
+    }
+    /*清除按钮样式*/
+    .clear_search_info{
+        background: rgba(0, 0, 0, 0) url("./img/dispatch/delete_node_lightyellow.png") no-repeat scroll 0 0 / 20px auto;
+        cursor: pointer;height: 20px;width: 20px;
+        position: absolute;top: 9px;left: 195px;
+    }
+    .clear_search_info:hover{
+        background: rgba(0, 0, 0, 0) url("./img/dispatch/delete_node_yellow.png") no-repeat scroll 0 0 / 20px auto;
+    }
+    /*节点显示样式*/
+    .node_show_style{
+        width: 200px;height: 68px;
+        border: 1px solid #D2F1FE;
+        padding: 10px;display: inline-block;
+        position: relative;
+        top: 0px;right: 0;
+        margin:0 11px 11px 0;cursor: pointer;
+    }
+    .node_show_style .left_img{
+        float: left;width: 40px;height: 40px;
+        margin-top: 4px;
+        background-image: url('./img/dispatch/node_server_circle.png'),url('./img/dispatch/node_server.png');
+        background-size: 40px auto,40px auto;
+        background-repeat: no-repeat;
+    }
+    .node_show_style .right_detail{
+        float: left;
+        padding-left: 10px;
+        width: 132px;
+        overflow: hidden;
+    }
+    .node_show_style .right_detail .node{
+        font-size: 14px;font-weight: bold;
+        padding: 2px 0;
+    }
+    .node_show_style .right_detail .sys_info{
+        color: #818181;padding: 3px 0;
+        white-space: nowrap;
+    }
+    .node_show_style .checked_div{
+        background: transparent none repeat scroll 0 0;
+        border-bottom: 18px solid #44dcfd;
+        border-left: 18px solid transparent;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+    .node_show_style .checked_sign{
+        color: #D2F1FE;
+        position: absolute;
+        left: -10px;
+        font-size: 10px;
+        top: 7px;
+    }
+    .loading_style{
+        position: absolute;top: 50%;left: 50%;
+        transform: translate(-50%,-50%);
+        width: 150px;height: 50px;line-height: 50px;
+        color: #44dcfd;
+        text-align: center; border-radius: 2px;
+    }
+    .loading_style i{
+        color: #44dcfd;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">选择节点</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body form-horizontal fontSize12" style="padding:10px;">
+    <form name="form.collect_item_form" style="padding-left: 0;" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="form-group">
+            <div class="col-sm-6">
+                <input name="node_name"
+                       type="text"
+                       placeholder="搜索节点"
+                       ng-model="node_info.node_ip"
+                       class="form-control search_style"/>
+                <span class="clear_search_info" ng-if="node_info.node_ip" ng-click="clearSearchInfo()"></span>
+            </div>
+        </div>
+        <div class="form-group" custom-scroll custom-config="config.scroll_bar" style="margin-left: 0px; margin-right: -10px; max-height: 335px;">
+            <div class="col-sm-12" style="padding-left:10px;padding-right: 0;">
+                <div ng-if="!node_control.loading" style="min-height: 100px;">
+                    <div class="node_show_style" title="{{node.node_detail}}" ng-repeat="node in data.node_list | filter: node_info.node_ip"
+                         ng-click="selectNode(node)" ng-style="node.state ? {'border-color':'#44dcfd','color':'#44dcfd'}:{}">
+                        <div class="left_img"></div>
+                        <div class="right_detail">
+                            <div class="node">{{node.node_ip}}</div>
+                            <div class="sys_info">{{node.node_detail ? node.node_detail:'暂无'}}</div>
+                        </div>
+                        <div ng-if="node.state" class="checked_div">
+                            <i class="fa fa-check checked_sign"></i>
+                        </div>
+                    </div>
+                    <div class="loading_style" ng-if="data.node_list.length == 0" style="color: #6d7183;height: 50px;">暂无数据</div>
+                </div>
+                <div ng-if="node_control.loading" style="min-height: 100px;">
+                    <div class="loading_style">
+                        数据加载中&nbsp;<i class='fa fa-spinner fa-spin'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-center">
+                <button  class="save-cancel-btn cancel-btn btn-xl cancel_button_marginRight" type="button" ng-click="cancel()" style="margin-left: 20px;">取消</button>
+                <button  class="save-cancel-btn save-btn btn-xl" ng-click="saveNodeList()" type="button">保存</button>
+            </div>
+        </div>
+    </form>
+</div>

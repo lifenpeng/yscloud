@@ -1,0 +1,394 @@
+<style>
+    /*模态框body样式*/
+    .modal-body{
+        font-size: 12px;
+        table-layout:fixed;
+        word-break: break-all;
+        overflow:hidden;
+        padding-top: 10px;
+    }
+    /*保存、取消按钮样式*/
+    .save-cancel{
+        text-align: right;
+        padding-bottom: 20px;
+        padding-right: 32px
+    }
+    .modal_btnCancel_disabled{
+        display:inline-block;
+        width: 60px;
+        height:32px;
+        line-height: 30px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius:4px;
+        border-radius: 4px ;
+        text-align: center;
+        background-color: #DDD;
+        border:1px solid #EC732C;
+        color:#EC732C;
+    }
+    .fa-times {
+        color:black;
+    }
+    .fa-trash-o:hover{
+        color:#ff9933;
+    }
+    .cursor_default{
+        cursor: default;
+    }
+</style>
+<form name="form.stepForm" ng-submit="formSubmit();" class="form-horizontal" novalidate autocomplete="off">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="!stepInfo.flag">阶段配置</h3>
+        <h3 class="modal-title" ng-if="stepInfo.flag">阶段查看</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body fontSize12" style="height: 260px;overflow-y: auto">
+        <div class="row form_style">
+            <label class="control-label col-sm-2 label_key">阶段</label>
+            <div class="col-sm-5">
+                <label class="control-label label_value" ng-bind="stepInfo.cn_name"></label>
+            </div>
+            <label class="control-label col-sm-2 label_key">执行类别</label>
+            <div class="col-sm-2" style="text-align: left;">
+                <label class="control-label label_value" ng-bind="stepInfo.impl_type_cn"></label>
+            </div>
+        </div>
+        <div class="row form_style" style="margin-top:20px;margin-bottom: 10px;" ng-if="stepInfo.type != 2">
+            <label class="control-label col-sm-2 label_key">发布包</label>
+                <div class="col-sm-8" ng-if="!stepInfo.flag">
+                    <div ng-if="stepInfo.package_list==0" class="label_value" style="margin-top: 6px;color: #bcbcbc !important;">
+                        暂无发布包
+                    </div>
+                    <div ng-if="stepInfo.package_list.length !=0" ng-repeat="i in stepInfo.package_list" style="display: inline-block;margin-right: 15px;height:34px;line-height: 34px;">
+                        <input type="checkbox" name="checkbox" i-check ng-change="selectItem(i);" ng-model="i.flag"  style="margin-right: 7px;">  {{i.package_name}}
+                    </div>
+                </div>
+                <div class="col-sm-8" ng-if="stepInfo.flag">
+                    <div ng-if="stepInfo.package_names.length==0" class="label_value" style="margin-top: 6px;color: #bcbcbc !important;">
+                        暂无发布包
+                    </div>
+                    <div ng-if="stepInfo.package_names.length !=0" ng-repeat="i in stepInfo.package_names" class="label_value" style="display: inline-block;margin-right: 15px;height:34px;line-height: 34px;">
+                       {{i}}
+                    </div>
+                </div>
+
+        </div>
+        <div class="row" style="margin-top:20px;margin-bottom: 10px;">
+            <div class="col-sm-2 form_style">
+                <label class="control-label label_key">数据源</label>
+            </div>
+            <div class="col-sm-9">
+                <button type="button" class="btn btn-default" ng-click="copySoc()" ng-if="!stepInfo.flag && preStepSoc.length != 0 && stepInfo.srv_soc.length == 0 && stepInfo.copy_soc">复制上一数据源</button>
+                <button type="button" class="btn btn-default" ng-click="stepInfo.copy_soc = false" ng-if="!stepInfo.flag && preStepSoc.length != 0 && stepInfo.srv_soc.length == 0 && stepInfo.copy_soc">手动新增</button>
+                <table class="table sub_table" row-plus="addSoc()" ng-if="!stepInfo.flag && (stepInfo.srv_soc.length != 0 || preStepSoc.length == 0 || !stepInfo.copy_soc) && stepInfo.impl_type != 4 && stepInfo.impl_type != 3 && stepInfo.impl_type != 5" tbl-Data="stepInfo.srv_soc">
+                    <thead>
+                    <tr class="cursor_default">
+                        <td>
+                            执行节点
+                        </td>
+                        <td>
+                            数据源
+                        </td>
+                        <td>
+                            删除
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr ng-repeat="tr in stepInfo.srv_soc">
+                        <td ng-if="stepInfo.testPreObj.isInput">
+                            <input type="text"
+                                   name="exe_ip{{$id}}"
+                                   ng-model="tr.exe_ip"
+                                   class="sub-form-control"
+                                   ng-blur="getSocByServer($index, stepInfo.impl_type)"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                                   required>
+                            <validate-msg tag-cn-name="服务器ip" name="exe_ip{{$id}}"></validate-msg>
+                        </td>
+                        <td style="text-align:center;" ng-if="!stepInfo.testPreObj.isInput">
+                            <bs-select items="stepInfo.testPreObj.soc_ip_list" width="140" my-select="tr.exe_ip" select-val="getSocByServer($index, stepInfo.impl_type)" no-border init-label loading=""></bs-select>
+                            <validate-msg tag-cn-name="服务器ip" type="select" name="exe_ip{{$index}}" model="tr.exe_ip"></validate-msg>
+                        </td>
+                        <td style="width: 170px">
+                            <bs-select items="tr.soc_list" width="140" my-select="tr.exe_soc_name" no-border init-label loading="tr.soc_list_loading"></bs-select>
+                            <validate-msg tag-cn-name="数据源" type="select" name="exe_soc_name{{$index}}" model="tr.exe_soc_name"></validate-msg>
+                        </td>
+                        <td>
+                            <div ng-click="removeOneSoc($index)" style="text-align: center;">
+                                <i class="fa fa-trash-o"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table sub_table" row-plus="addSoc()" ng-if="!stepInfo.flag && (stepInfo.srv_soc.length != 0 || preStepSoc.length == 0 || !stepInfo.copy_soc) && stepInfo.impl_type == 4" tbl-Data="stepInfo.srv_soc">
+                    <thead>
+                    <tr  class="cursor_default">
+                        <td>
+                            执行节点
+                        </td>
+                        <td>
+                            数据源
+                        </td>
+                        <td>
+                            版本节点
+                        </td>
+                        <td>
+                            SVN数据源
+                        </td>
+                        <td style="width: 49px;">
+                            删除
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr ng-repeat="tr in stepInfo.srv_soc">
+                        <td ng-if="stepInfo.testPreObj.isInput">
+                            <input type="text"
+                                   name="exe_ip{{$id}}"
+                                   ng-model="tr.exe_ip"
+                                   class="sub-form-control"
+                                   ng-blur="getSocByServer($index, stepInfo.impl_type)"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                                   required>
+                            <validate-msg tag-cn-name="服务器名" name="exe_ip{{$id}}"></validate-msg>
+                        </td>
+                        <td style="text-align:center;" ng-if="!stepInfo.testPreObj.isInput">
+                            <bs-select items="stepInfo.testPreObj.soc_ip_list" width="140" my-select="tr.exe_ip" no-border select-val="getSocByServer($index, stepInfo.impl_type)" init-label loading=""></bs-select>
+                            <validate-msg tag-cn-name="服务器ip" type="select" name="exe_ip{{$index}}" model="tr.exe_ip"></validate-msg>
+                        </td>
+                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                            <bs-select items="tr.soc_list" width="140" my-select="tr.exe_soc_name" no-border init-label loading="tr.soc_list_loading"></bs-select>
+                            <validate-msg tag-cn-name="数据源" type="select" name="exe_soc_name{{$index}}" model="tr.exe_soc_name"></validate-msg>
+                        </td>
+                        <td ng-if="stepInfo.testPreObj.isInput">
+                            <input type="text"
+                                   name="ver_ip{{$id}}"
+                                   ng-model="tr.ver_ip"
+                                   class="sub-form-control"
+                                   ng-blur="getShellSocByServer($index, stepInfo.impl_type)"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                                   required>
+                            <validate-msg tag-cn-name="服务器名" name="ver_ip{{$id}}"></validate-msg>
+                        </td>
+                        <td style="text-align:center;" ng-if="!stepInfo.testPreObj.isInput">
+                            <bs-select items="stepInfo.testPreObj.soc_ip_list" width="140" my-select="tr.ver_ip" select-val="getShellSocByServer($index, stepInfo.impl_type)" no-border init-label loading=""></bs-select>
+                            <validate-msg tag-cn-name="服务器ip" type="select" name="ver_ip{{$index}}" model="tr.ver_ip"></validate-msg>
+                        </td>
+                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                            <bs-select items="tr.shell_soc_list" width="140" my-select="tr.ver_soc_name" no-border init-label loading="tr.shell_soc_list_loading"></bs-select>
+                            <validate-msg tag-cn-name="数据源" type="select" name="ver_soc_name{{$index}}" model="tr.ver_soc_name"></validate-msg>
+                        </td>
+                        <td>
+                            <div ng-click="removeOneSoc($index)" style="text-align: center;">
+                                <i class="fa fa-trash-o"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table sub_table" row-plus="addSoc()" ng-if="!stepInfo.flag && (stepInfo.srv_soc.length != 0 || preStepSoc.length == 0 || !stepInfo.copy_soc) && stepInfo.impl_type == 3" tbl-Data="stepInfo.srv_soc">
+                    <thead>
+                    <tr  class="cursor_default">
+                        <td>
+                            执行节点
+                        </td>
+                        <td>
+                            数据源
+                        </td>
+                        <td>
+                            WAS节点
+                        </td>
+                        <td>
+                            WAS数据源
+                        </td>
+                        <td style="width: 49px;">
+                            删除
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr ng-repeat="tr in stepInfo.srv_soc">
+                        <td ng-if="stepInfo.testPreObj.isInput">
+                            <input type="text"
+                                   name="exe_ip{{$id}}"
+                                   ng-model="tr.exe_ip"
+                                   class="sub-form-control"
+                                   ng-blur="getSocByServer($index, stepInfo.impl_type)"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                                   required>
+                            <validate-msg tag-cn-name="服务器名" name="exe_ip{{$id}}"></validate-msg>
+                        </td>
+                        <td style="text-align:center;" ng-if="!stepInfo.testPreObj.isInput">
+                            <bs-select items="stepInfo.testPreObj.soc_ip_list" width="140" my-select="tr.exe_ip" no-border select-val="getSocByServer($index, stepInfo.impl_type)" init-label loading=""></bs-select>
+                            <validate-msg tag-cn-name="服务器ip" type="select" name="exe_ip{{$index}}" model="tr.exe_ip"></validate-msg>
+                        </td>
+                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                            <bs-select items="tr.soc_list" width="140" my-select="tr.exe_soc_name" no-border init-label loading="tr.soc_list_loading"></bs-select>
+                            <validate-msg tag-cn-name="数据源" type="select" name="exe_soc_name{{$index}}" model="tr.exe_soc_name"></validate-msg>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   name="ver_ip{{$id}}"
+                                   ng-model="tr.ver_ip"
+                                   class="sub-form-control"
+                                   ng-blur="getShellSocByServer($index, stepInfo.impl_type)"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                                   required>
+                            <validate-msg tag-cn-name="服务器名" name="ver_ip{{$id}}"></validate-msg>
+                        </td>
+                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                            <bs-select items="tr.shell_soc_list" width="140" my-select="tr.ver_soc_name" no-border init-label loading="tr.shell_soc_list_loading"></bs-select>
+                            <validate-msg tag-cn-name="数据源" type="select" name="ver_soc_name{{$index}}" model="tr.ver_soc_name"></validate-msg>
+                        </td>
+                        <td>
+                            <div ng-click="removeOneSoc($index)" style="text-align: center;">
+                                <i class="fa fa-trash-o"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--WEB_LOGIC-->
+                <table class="table sub_table" row-plus="addSoc()" ng-if="!stepInfo.flag && (stepInfo.srv_soc.length != 0 || preStepSoc.length == 0 || !stepInfo.copy_soc) && stepInfo.impl_type == 5" tbl-Data="stepInfo.srv_soc">
+                    <thead>
+                    <tr  class="cursor_default">
+                        <td>
+                            执行节点
+                        </td>
+                        <td>
+                            数据源
+                        </td>
+                        <td>
+                            WEB_LOGIC服务器
+                        </td>
+                        <td>
+                            WEB_LOGIC数据源
+                        </td>
+                        <td style="width: 49px;">
+                            删除
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr ng-repeat="tr in stepInfo.srv_soc">
+                        <td ng-if="stepInfo.testPreObj.isInput">
+                            <input type="text"
+                                   name="exe_ip{{$id}}"
+                                   ng-model="tr.exe_ip"
+                                   class="sub-form-control"
+                                   ng-blur="getSocByServer($index, stepInfo.impl_type)"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                                   required>
+                            <validate-msg tag-cn-name="服务器名" name="exe_ip{{$id}}"></validate-msg>
+                        </td>
+                        <td style="text-align:center;" ng-if="!stepInfo.testPreObj.isInput">
+                            <bs-select items="stepInfo.testPreObj.soc_ip_list" width="140" my-select="tr.exe_ip" no-border select-val="getSocByServer($index, stepInfo.impl_type)" init-label loading=""></bs-select>
+                            <validate-msg tag-cn-name="服务器ip" type="select" name="exe_ip{{$index}}" model="tr.exe_ip"></validate-msg>
+                        </td>
+                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                            <bs-select items="tr.soc_list" width="140" my-select="tr.exe_soc_name" no-border init-label loading="tr.soc_list_loading"></bs-select>
+                            <validate-msg tag-cn-name="数据源" type="select" name="exe_soc_name{{$index}}" model="tr.exe_soc_name"></validate-msg>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   name="ver_ip{{$id}}"
+                                   ng-model="tr.ver_ip"
+                                   class="sub-form-control"
+                                   ng-blur="getShellSocByServer($index, stepInfo.impl_type)"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   ng-pattern="/^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/"
+                                   required>
+                            <validate-msg tag-cn-name="服务器名" name="ver_ip{{$id}}"></validate-msg>
+                        </td>
+                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                            <bs-select items="tr.shell_soc_list" width="140" my-select="tr.ver_soc_name" no-border init-label loading="tr.shell_soc_list_loading"></bs-select>
+                            <validate-msg tag-cn-name="数据源" type="select" name="ver_soc_name{{$index}}" model="tr.ver_soc_name"></validate-msg>
+                        </td>
+                        <td>
+                            <div ng-click="removeOneSoc($index)" style="text-align: center;">
+                                <i class="fa fa-trash-o"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="table sub_table " ng-if="stepInfo.flag">
+                    <thead>
+                    <tr  class="cursor_default">
+                        <td class="first_td">
+                            执行节点
+                        </td>
+                        <td>
+                            数据源
+                        </td>
+                        <td ng-if="stepInfo.impl_type == 4 || stepInfo.impl_type == 3">
+                            WAS节点
+                        </td>
+                        <td ng-if="stepInfo.impl_type == 4 || stepInfo.impl_type == 3">
+                            WAS节点
+                        </td>
+                        <td ng-if="stepInfo.impl_type == 5">
+                            WEB_LOGIC数据源
+                        </td>
+                        <td ng-if="stepInfo.impl_type == 5">
+                            WEB_LOGIC节点
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="tr in stepInfo.srv_soc"  class="cursor_default">
+                        <td>
+                            <div  class="label_cur">
+                                {{tr.exe_ip}}
+                            </div>
+                        </td>
+                        <td >
+                            <div>
+                                {{tr.exe_soc_name}}
+                            </div>
+                        </td>
+                        <td ng-show="stepInfo.impl_type == 4 || stepInfo.impl_type == 3 || stepInfo.impl_type == 5">
+                            <div>
+                                {{tr.ver_ip}}
+                            </div>
+                        </td>
+                        <td ng-show="stepInfo.impl_type == 4 || stepInfo.impl_type == 3 || stepInfo.impl_type == 5">
+                            <div>
+                                {{tr.ver_soc_name}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="cursor_default" ng-show="stepInfo.srv_soc.length == 0 && stepInfo.impl_type != 4 && stepInfo.impl_type != 3">
+                        <td colspan="3" style="text-align:center;">
+                            暂无数据源信息
+                        </td>
+                    </tr>
+                    <tr  class="cursor_default" ng-show="stepInfo.srv_soc.length == 0 && (stepInfo.impl_type == 4 || stepInfo.impl_type == 3)">
+                        <td colspan="4" style="text-align:center;">
+                            暂无数据源信息
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <div class="col-sm-12" ng-if="!stepInfo.flag" style=" margin-top: 30px;margin-bottom: 20px;">
+                <button class=" cancel-btn btn-xl" type="button" ng-disabled="btnBus_loading"  ng-click="cancel()">取消</button>
+                <button class=" save-btn btn-xl" type="submit" ng-disabled="btnBus_loading" >保存</button>
+            </div>
+            <div class="col-sm-12" ng-if="stepInfo.flag " style=" margin-top: 30px;margin-bottom: 20px;">
+                <button class="cancel-btn btn-xl" type="submit" ng-disabled="btnBus_loading">关闭</button>
+            </div>
+        </div>
+    </div>
+</form>

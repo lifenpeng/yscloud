@@ -1,0 +1,140 @@
+<div class="container-fluid task-detail">
+    <div class="row">
+        <div class="col-sm-12 task-name">
+            <label class="control-label">任务:</label>
+            <label >【{{task_info.task_desc}}】</label>
+        </div>
+    </div>
+    <div class="row" ng-style="setContainerHeight(task_info.task_flow_list.length)">
+        <div class="col-sm-5 layout-left">
+            <div class="row padding-10">
+                <div class="col-sm-2 text-center"></div>
+                <div class="col-sm-2 text-center">
+                    <label>
+                        <div class="flow-container">
+                            <div class="vertical-line-style" ng-style="verticalLineStyle(task_info.task_flow_list.length)">
+                                <div ng-repeat="task in task_info.task_flow_list">
+                                    <div class="flow-circle-sm" ng-style="flowCircleSm(task.work_state,$index)">
+                                        <div class="out-triangle-style">
+                                            <div class="changeWith{{$index}} task-block-style" ng-mouseenter="mouseEnter(task.deal_bk_desc.length,$index)" ng-mouseleave="mouseLeave($index)">
+                                                <div class="padding-1-4" ng-if="task.deal_bk_date">{{task.deal_bk_date+" "+task.deal_bk_time}}</div>
+                                                <div class="padding-1-4" ng-if="!task.deal_bk_date" style="height: 28px;"></div>
+                                                <div class="handle-user-font" ng-if="task.pend_type == 1">提交人：{{task.deal_user_cn_name}}</div>
+                                                <div class="handle-user-font" ng-if="task.pend_type == 2">复核人：{{task.deal_user_cn_name}}</div>
+                                                <div class="handle-user-font" ng-if="task.pend_type == 3">授权人：{{task.deal_user_cn_name}}</div>
+                                                <div class="handle-user-font" ng-if="task.pend_type == 4">执行人：{{task.deal_user_cn_name}}</div>
+                                                <div class="handle-user-font" ng-if="task.pend_type == 5">关闭人：{{task.deal_user_cn_name}}</div>
+                                                <div class="handle-desc-font" ng-if="task.deal_bk_desc && !task.show">
+                                                    {{task.deal_bk_desc.substring(0,22)}}
+                                                    <span style="cursor: pointer;" ng-if="task.deal_bk_desc.length >= 28">......</span>
+                                                </div>
+                                                <div class="handle-desc-font" ng-if="task.deal_bk_desc && task.show">{{task.deal_bk_desc}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flow-circle-lg" ng-if="task.work_state == 3 ||  task.pend_type == 5" ng-style="flowCircleLg($index)"></div>
+                                </div>
+                            </div>
+                            <div class="task-state-cn-name" ng-repeat="task in task_info.task_flow_list" ng-style="taskStateCnName($index)" ng-bind="task.deal_type_name"></div>
+                        </div>
+                    </label>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <label class="font-14">任务进程</label>
+                </div>
+                <div class="col-sm-4 text-center"></div>
+            </div>
+        </div>
+        <div class="col-sm-6 layout-right">
+            <div class="row padding-10">
+                <div class="col-sm-12 text-center task-basic-info-title">
+                    <label class="font-14">任务信息</label>
+                </div>
+            </div>
+            <div class="row padding-10">
+                <div class="col-sm-12 task-basic-info">
+                    <div class="row">
+                        <div class="col-sm-12 text-left" >
+                            <label class="control-label">任务流水号：{{task_info.task_seq}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5 text-left" >
+                            <label class="control-label">提交人：{{task_info.task_flow_list[0].deal_user_cn_name}}</label>
+                        </div>
+                        <div class="col-sm-7 text-left">
+                            <label class="control-label">提交时间：{{task_info.task_flow_list[0].deal_bk_date +" "+task_info.task_flow_list[0].deal_bk_time}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row padding-10" style="margin-top:-20px;">
+                <div class="col-sm-12 task-apply-desc">
+                    <div class="row">
+                        <div class="col-sm-12 text-left" >
+                            <label class="control-label">任务申请说明：</label>
+                            <label class="control-label"  ng-bind="task_info.task_apply_desc ? task_info.task_apply_desc : '暂无任务说明'" ng-style="{'color': !task_info.task_apply_desc ? '#6d7183':''}"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="button" ng-click="viewInterfaceInfo()" class="btn btn-default view-task-interface-btn">接口信息查看</button>
+                </div>
+            </div>
+            <div class="row padding-10">
+                <div class="col-sm-12 text-center task-basic-info-title">
+                    <label>任务处理</label>
+                </div>
+            </div>
+            <div class="row" style="padding:15px 10px;">
+                <div class="col-sm-12 task-handle-container">
+                    <div class="row">
+                        <div class="col-sm-2 margin-top-12">
+                            <label  class="task-handle-label-font" ng-bind="control.task_handle_type == 2 ? '处理':'审批'"></label>
+                        </div>
+                        <label class="col-sm-4 margin-top-12">
+                            <input type="radio" name="agree" value="1" i-check ng-model="task_info.handle_flag" ng-disabled="task_info.task_handle_state != 5 && control.task_handle_type == 2">
+                            <span ng-style="{'color': task_info.task_handle_state != 5 && control.task_handle_type == 2 ? '#999':''}" ng-bind="control.task_handle_type == 2 ? '执行':'通过'"></span>
+                        </label>
+                        <label class="col-sm-4 margin-top-12">
+                            <input type="radio" name="agree" value="2" i-check ng-model="task_info.handle_flag">
+                            <span ng-bind="control.task_handle_type == 2 ? '终止':'退回'"></span>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2 margin-top-12">
+                            <label class="task-handle-label-font">说明</label>
+                        </div>
+                        <div class="col-sm-10 task-handle-desc-container">
+                                <textarea
+                                        style="height: 120px;
+                                        resize:none;
+                                        font-size: 12px;
+                                        color:#44dcfd;"
+                                        class="form-control"
+                                        ng-model="task_info.task_handle_desc"
+                                        name="deal_bk_desc"
+                                        ng-maxlength=100>
+                                </textarea>
+                            <validate-msg tag-cn-name="说明" name="deal_bk_desc"></validate-msg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <button class="cancel-btn btn-md" type="button"  ng-if="!control.btn_loading"  ng-click="cancel();">取消</button>
+            <button class="cancel-btn btn-md" type="button"  ng-if="control.btn_loading"  disabled="disabled">取消</button>
+            <button class="save-btn btn-md"   type="button"  ng-if="!control.btn_loading && control.task_handle_type == 2" ng-click="taskHandle()">处理</button>
+            <button class="save-btn btn-md"   type="button"  ng-if="!control.btn_loading && control.task_handle_type == 3" ng-click="taskReview()">复核</button>
+            <button class="save-btn btn-md"   type="button"  ng-if="!control.btn_loading && control.task_handle_type == 1" ng-click="taskAuth()">授权</button>
+            <button class="save-btn btn-md"   disabled="disabled" ng-if="control.btn_loading"  style="text-align:center;">
+                <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="container-fluid plan-sys-set">
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="col-sm-12"  style="position: absolute;width:124px;" ng-style="projStyle($index)" ng-repeat="task in info.item.group.proj_list">
+                    <span><i style="background:url(../app/img/publish/new_img/plan_publish_header_img.png) no-repeat ; height: 60px;width: 60px;position: absolute;background-size: 60px;top: 20px;left: 30px;"></i></span>
+                    <span title="{{task.business_cn_name}}" style="text-overflow:ellipsis;;white-space: nowrap;overflow: hidden; position: relative;display: block;top: 80px;height: 24px;line-height: 24px; text-align: center;">{{task.business_cn_name}}</span>
+                    <span title="{{task.manager_user_name}}" style="text-overflow:ellipsis;;white-space: nowrap;overflow: hidden; position: relative;display: block;top: 80px;height: 22px;line-height: 22px; text-align: center;color:#999;">{{task.manager_user_name}}</span>
+                    <!--<span style="position: relative;display: block;top: 80px;height: 22px;line-height: 22px; text-align: center;color:#999;">
+                        <i style="background:url(../app/img/publish/plan_publish_time_img.png) no-repeat ; height: 20px;width: 20px;position: absolute;background-size: 20px;top: 5px;left: 2px"></i>
+                        {{task.start_time}}
+                    </span>-->
+                </div>
+                <div style="width: 100%;padding-left: 124px;" ng-if="!control.data_loading">
+                    <div drag-monitor go-model="info.item.nodeLinkData" style="margin-top: 24px;width: 100%;" group-data="info.item.group" node-length="info.item.node_length" read-only="control.read_only">
+                        <div id="myEditDiagramDiv" style="width: 100%;"></div>
+                    </div>
+                </div >
+                <div style="height: 300px;text-align: center; line-height: 300px;font-size: 16px;color: #44dcfd" ng-if="control.data_loading">
+                    <i class="fa fa-spinner fa-spin" style="font-size: 34px;position: absolute; top: 60px;padding: 40px;color: #ccc;"></i>数据正在加载中...
+                </div>
+                <div style="height: 300px;text-align: center; line-height: 300px;font-size: 16px;color: #E9416E" ng-if="control.data_loading_error">
+                    <i  style="font-size: 34px;position: absolute; top: 60px;padding: 40px;color: #ccc;"></i>数据加载失败
+                </div>
+            </div>
+        </div>
+        <!-- 流程定制保存按钮 -->
+        <div class="form-group" ng-if="!control.data_loading && !control.data_loading_error">
+            <div class="col-sm-12 text-center btnStyle">
+                <button ng-if="!control.process_loading" class="save-btn btn-md" ng-click="saveProcess(info.item)">保存流程</button>
+                <button ng-if="control.process_loading" disabled="disabled" class="save-btn btn-md">
+                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

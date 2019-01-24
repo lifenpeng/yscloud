@@ -1,0 +1,282 @@
+
+<div class="container-fluid version-detail full-stream-detail version_publish" ng-show="!file_control.show_file_history && !file_control.show_file_compare && !control.show_fold_compare">
+    <!--头部-->
+    <div ng-if="!control.loading">
+        <div class="row version-detail-header-container">
+            <div class="col-sm-4 font_sise_big">
+                <div class="version_busys_img"></div>
+                <span class="version_span version-yellow-color">{{one_pub.business_cn_name}}({{one_pub.version_num}})</span>
+            </div>
+            <div class="col-sm-3 version_font_small">
+                <div class="version-common-icon version-num-icon version-margin-top-9"></div>
+                <span class="version_time_span">当前版本</span>
+                <span class="version_time_span">{{one_pub.version_num}}</span>
+            </div>
+            <div class="col-sm-3 version_font_small">
+                <div class="version-common-icon version-time-icon version-margin-top-9"></div>
+                <span class="version_time_span">变更时间</span>
+                <span class="version_time_span">{{one_pub.modify_bk_date}}  {{one_pub.modify_bk_time}}</span>
+            </div>
+            <div class="col-sm-2 text-right">
+                <span class="version-back-btn version-margin-top-9" ng-click="backFullStreamList()">
+                    <span class="fa fa-reply"></span>返回
+                </span>
+            </div>
+        </div>
+        <div ng-if="linkLength">
+            <div class="left-full-stream-position" version-tree go-model="goData" link-length="linkLength" change-Version="changeVersion(key)">
+                <div class="left-full-stream-container" id="versionDiagram"></div>
+                <div id="nodeDetail" style="display: none">
+                    <div class="proj-detail-angle-position"></div>
+                   <div>
+                       <span class="version-common-icon version-proj-icon"></span>
+                       <span class="bind-text-style" id="proj_cn_name"></span>
+                   </div>
+                    <div>
+                        <span class="version-common-icon version-num-icon"></span>
+                        <span class="bind-text-style" id="vsversion_id"></span>
+                    </div>
+                    <div>
+                        <span class="version-common-icon version-user-icon"></span>
+                        <span class="bind-text-style" id="operasion_user_name"></span>
+                    </div>
+                    <div>
+                        <span class="version-common-icon version-time-icon"></span>
+                        <span class="bind-text-style" id="date_time"></span>
+                    </div>
+                </div>
+                <div id="mask" class="proj-mask-position"></div>
+            </div>
+
+        </div>
+        <div class="row" style="padding-left:330px;">
+            <!--右边-->
+            <div class="col-sm-12 right-version-info-bg">
+                <div class="row" style="border-bottom: 1px solid #1E5465">
+                    <div class="col-sm-12" style="float: left;">
+                        <div class="version_font_small version_width">
+                            <div class="version_show_img" title="版本号"></div>
+                            <span class="version-icon-span version_font_important over_hidden" style="max-width: 50px;margin-top: 13px;" title="版本号{{one_pub.version_num}}">{{one_pub.version_num}}</span>
+                        </div>
+                        <div class="version_font_small version_width" >
+                            <div class="version-common-icon version-proj-icon" title="项目名"></div>
+                            <span class="version-icon-span over_hidden" style="max-width:58px;" title="项目名{{one_pub.project_name}}">
+                                <span ng-if="one_pub.project_name">{{one_pub.project_name}}</span>
+                                <span ng-if="!one_pub.project_name">--</span>
+                            </span>
+                        </div>
+                        <div  class="version_font_small version_width" style="width:7%">
+                            <div class="version-common-icon version-seq-icon" title="需求编号"></div>
+                            <span class="version-icon-span over_hidden" style="max-width: 14px;" title="需求编号{{one_pub.demand_id}}">
+                                <span ng-if="one_pub.demand_id">{{one_pub.demand_id}}</span>
+                                <span ng-if="!one_pub.demand_id">--</span>
+                            </span>
+                        </div>
+                        <div  class="version_font_small version_width">
+                            <div class="version-common-icon version-user-icon" title="用户名"></div>
+                            <span class="version-icon-span over_hidden" title="用户名:{{one_pub.operasion_user_name}}">{{one_pub.operasion_user_name}}</span>
+                        </div>
+                        <div  class="version_font_small version_width" style="width: 217px;">
+                            <div class="version-common-icon version-time-icon"  title="变更时间"></div>
+                            <span class="version-icon-span over_hidden" style="max-width: 172px;" title="{{one_pub.modify_bk_date}} {{one_pub.modify_bk_time}}">变更时间 {{one_pub.modify_bk_date}} {{one_pub.modify_bk_time}}</span>
+                        </div>
+                        <div  class="version_font_small version_width" ng-class="{'ve_no_input':one_pub.version_status==1,'ve_common':one_pub.version_status==2,'ve_back_color':one_pub.version_status==3}" style="width:40px;vertical-align: top;margin-top: 15px;margin-right: 0">
+                            <span class="version_time_span over_hidden" style="margin-top: 0;">{{one_pub.v_status_cn}}</span>
+                        </div>
+                        <div style="float: right; display: inline-block">
+                            <div ng-click="showVersionList()"  class="version_width right-header-btn-group">
+                                <div class="version_compare_common version_compare_img"></div>
+                            </div>
+                            <div class="modify_include_div" ng-if="control.show_version_flag" custom-scroll custom-config="config.scroll_config">
+                                <span ng-click="comparePubVersion(true,one_ve)" class="modify_span" ng-repeat="one_ve in version.version_list">
+                                    <a>{{one_ve.version_view}}</a>
+                                </span>
+                                <span class="no-compare-version-font" ng-if="version.version_list.length==0">无可比对版本</span>
+                            </div>
+                            <div  class="version_width right-header-btn-group">
+                                <div class="version_compare_common version_down_img" ng-click="downloadFile(1)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"  style="height: 580px;">
+                    <div class="col-sm-4 file-tree-container">
+                        <div class="file-path-full">
+                            <span style="font-size: 14px;">文件路径：</span>
+                            <span class="loading-font-color" title="{{'..'+version.file_absolute_path.substring(version.file_absolute_path.indexOf('/',1))}}">
+                            {{'..'+version.file_absolute_path.substring(version.file_absolute_path.indexOf('/',1))}}
+                            </span>
+                        </div>
+                        <div class="table-search">
+                            <div class="table-search-input">
+                                <input type="text"
+                                       ng-model="version.search_file_word"
+                                       class="form-control"
+                                       placeholder="输入关键字"
+                                       ng-enter="searchFile()">
+                            </div>
+                            <div class="table-search-btn">
+                                <span class="table-clear-logol" ng-if="version.search_file_word" ng-click="version.search_file_word = ''"></span>
+                                <span class="table-search-logol"></span>
+                            </div>
+                        </div>
+                        <div style="height: 510px;" custom-scroll custom-config="config.scroll_xy_config">
+                            <div ng-if="!control.search_mode_flag">
+                                <file-tree files="file_nodes" change-path="getRootFile()" get-file-content="getFileContent()" ng-if="version.file_absolute_path && !control.change_version_loading"></file-tree>
+                                <div class="no-file-font" ng-if="!version.file_absolute_path">
+                                    暂无文件信息
+                                </div>
+                            </div>
+                            <div ng-if="control.search_mode_flag">
+                                <div class="folder-loading-container" ng-if="search_info.loading">
+                                    <i class="fa fa-spinner fa-spin loading-font-color version-font-30"></i>
+                                </div>
+                                <div class="row config-file" ng-repeat="single_file in search_info.search_list">
+                                    <div class="col-sm-7 file-name" style="cursor: pointer" title="{{single_file.file}}" ng-click="getFileContent(single_file)"><span class="fa fa-file-text-o" style="margin-right: 6px"></span><span class="file-text">{{single_file.file}}</span></div>
+                                    <a class="col-sm-5 file-dir" ng-href="" style="cursor: pointer" title="{{single_file.file_path}}" ng-click="getDetailFold(single_file.file_path)">{{single_file.file_path}}</a>
+                                </div>
+                                <div class="no-file-font" ng-if="search_info.search_list.length==0 &&!search_info.loading">
+                                    暂无文件信息
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <!--文件夹查看-->
+                        <div class="folder" ng-if="file_nodes.curr_file && (file_nodes.curr_file.dir || (file_nodes.curr_file.file_type > 8 && file_nodes.curr_file.file_type < 14))">
+                            <div class="folder-title">
+                                <span ng-if="file_nodes.curr_file.file_path==file_nodes.curr_fold_path">版本{{one_pub.version_num}}根目录</span>
+                                <span ng-if="file_nodes.curr_file.file_path!=file_nodes.curr_fold_path && file_nodes.curr_file.dir">文件夹</span>
+                            </div>
+                            <div class="folder-container">
+                                <div class="folder-container-bg" ng-class="{'folder-container-bg-unknow':!file_nodes.curr_file.dir && file_nodes.curr_file.file_type!=9,'folder-container-bg-tar':!file_nodes.curr_file.dir && file_nodes.curr_file.file_type==9}">
+                                </div>
+                                <div class="folder-container-detail">
+                                    <div class="folder-name" style="overflow: hidden;text-overflow: ellipsis" title="{{file_nodes.curr_file.file}}">
+                                        {{file_nodes.curr_file.file}}
+                                    </div>
+                                    <div class="folder-path">
+                                        <span class="folder-path-label">文件路径：</span>
+                                        <span class="folder-path-font" title="{{file_nodes.curr_file.file_path ? file_nodes.curr_file.file_path.indexOf(one_pub.version_num)==-1 ? '.../' : (file_nodes.curr_file.file_path=='/'+version.file_absolute_path) ?  './':file_nodes.curr_file.file_path.replace(version.file_absolute_path+'/','') : '--'}}">{{file_nodes.curr_file.file_path ? file_nodes.curr_file.file_path.indexOf(one_pub.version_num)==-1 ? '.../' : (file_nodes.curr_file.file_path=='/'+version.file_absolute_path) ?  './':file_nodes.curr_file.file_path.replace(version.file_absolute_path+'/','') : '--'}}</span>
+                                        <div style="clear:both"></div>
+                                    </div>
+                                    <div class="folder-count">
+                                        <span class="folder-count-bg">
+                                            <span class="version-common-icon version-file-icon vertical-middle"></span>&nbsp;&nbsp;<span>文件个数</span>&nbsp;&nbsp;<span>{{file_nodes.curr_file.file_count ? file_nodes.curr_file.file_count:'--'}}</span>
+                                        </span>
+                                        <span class="version-font-12" ng-if="file_nodes.curr_file.size">{{file_nodes.curr_file.size}}</span>
+                                    </div>
+                                    <div class="folder-update-time">
+                                        <span class="folder-update-time-bg">
+                                            <span class="version-common-icon version-time-icon vertical-middle"></span>&nbsp;&nbsp;<span>变更时间</span>&nbsp;&nbsp;<span>{{file_nodes.curr_file.modify_time ? file_nodes.curr_file.modify_time :'--'}}</span>
+                                        </span>
+                                    </div>
+                                    <div class="folder-btn">
+                                        <div class="folder-compare-btn" style="margin-right: 20px;position: relative" ng-if="file_nodes.curr_file.dir && file_nodes.curr_file.file_path" ng-click="showFoldCompareList()" ng-mouseleave="control.fold_show_compare_flag=false">
+                                            <span class="version_compare_common version_compare_img version-margin-top--4"></span>
+                                            <span style="vertical-align: top">比对</span>
+                                            <div class="modify_include_div" ng-if="control.fold_show_compare_flag" style="left: -16px;top:31px;line-height: normal" custom-scroll custom-config="config.scroll_config">
+                                               <span ng-click="startFoldCompare(true,one_ve)" class="modify_span" ng-repeat="one_ve in version.version_list">
+                                                    <a>{{one_ve.version_view}}</a>
+                                                </span>
+                                                <span class="no-compare-version-font" ng-if="version.version_list.length==0">无可比对版本</span>
+                                            </div>
+                                        </div>
+                                        <div class="folder-down-btn" ng-if="!control.download_loading && file_nodes.curr_file.file_path" ng-click="downloadFile(2)">
+                                            <span class="version_compare_common version_down_img version-margin-top--4"></span>
+                                            <span style="vertical-align: top">下载</span>
+                                        </div>
+                                        <div class="folder-download-loading-btn" ng-if="control.download_loading && file_nodes.curr_file.file_path">
+                                            <span class="fa fa-spinner fa-spin loading-font-color version-font-18"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                        <!--文件查看-->
+                        <div class="file-detail" ng-if="file_control.show_file">
+                            <!--加载信息-->
+                            <div class="file-detail-loading-container"  ng-show="file_control.file_loading">
+                                <i class="fa fa-spinner fa-spin loading-font-color version-font-30"></i>
+                            </div>
+                            <div class="container-fluid version-dropdown-menu" ng-if="!file_control.file_loading">
+                                <div class="row" ng-if="!file_info.error_msg" style="height: 35px">
+                                    <div class="col-sm-3" style="overflow: hidden;white-space:nowrap;text-overflow: ellipsis;">
+                                        <span class="file-icon" ng-class="formatFileIconStyle()" ng-if="file_control.has_file_icon"></span>
+                                        <span class="fa fa-file-text-o file-default-icon" ng-if="!file_control.has_file_icon"></span>
+                                        <span class="file-name" ng-bind="file_info.file_name ? file_info.file_name : '--'" title="{{file_info.file_name}}"></span>
+                                    </div>
+                                    <div class="col-sm-4 file-size">
+                                        <span ng-bind="file_info.file_size ? file_info.file_size : '0B'" ng-show="file_info.file_size"></span>
+                                        <span style="padding:0 5px" ng-show="file_info.file_size">|</span>
+                                        <span ng-bind="file_info.file_update_time ? file_info.file_update_time : '--'" title="{{file_info.file_update_time}}" ng-show="file_info.file_update_time"></span>
+                                    </div>
+                                    <div class="col-sm-5 text-right" style="padding-right: 0">
+                                        <span class="code_method" title="切换编码方式" ng-click="file_control.codemethod_loading || changeCodeMethod()" ng-if="file_info.file_content">
+                                            {{file_post_header.encoding_type}}
+                                        </span>
+                                        <span class="file-operate" ng-click="!file_info.file_content || fullScreen()" ng-class="file_info.file_content ? 'full-screen':'full-screen-disabled'" title="全屏"></span>
+                                        <span class="file-operate" ng-click="(!file_info.file_content || version.version_list.length == 0) || viewHistory(1)"
+                                              ng-class="(file_info.file_content && version.version_list.length != 0) ? 'history':'history-disabled'" title="{{version.version_list.length === 0 ? '暂无历史版本':'历史查看'}}"></span>
+                                        <span class="file-operate compare" data-toggle="dropdown" title="{{version.version_list.length === 0 ? '暂无可比对版本':'比对'}}" ng-if="version.version_list.length != 0 && file_info.file_content"></span>
+                                        <span class="file-operate compare-disabled" title="{{version.version_list.length === 0 ? '暂无可比对版本':'比对'}}" ng-if="version.version_list.length === 0 || !file_info.file_content"></span>
+                                        <span class="file-operate download" ng-click="downloadFile(3)" title="下载"></span>
+                                        <!--版本弹窗-->
+                                        <div class="dropdown-menu" style="right: 0;left: auto" custom-scroll custom-config="config.scroll_config">
+                                            <span ng-click="selectSingleVersion(version.version_num)" class="single-version" ng-repeat="version in version.version_list">
+                                                <a>{{version.version_view}}</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" scroll-control ng-if="!file_info.error_msg && file_info.file_content">
+                                    <span class="fa fa-spinner code-loading loading-font-color" ng-show="file_control.codemethod_loading" ng-class="{'fa-spin':file_control.codemethod_loading}"></span>
+                                    <textarea
+                                            ui-codemirror="detailFileOptions"
+                                            ui-refresh="file_control.refresh"
+                                            ng-model="file_info.file_content"
+                                            class="form-control">
+                                    </textarea>
+                                </div>
+                                <!--错误信息-->
+                                <div class="row" ng-if="file_info.error_msg">
+                                    <div class="errormsg_style">{{file_info.error_msg}}</div>
+                                </div>
+                                <!--无文件内容-->
+                                <div class="unview" ng-if="!file_control.un_view && !file_info.file_content && !file_info.error_msg">
+                                    <span class="fa fa-file-text-o default-icon" ng-show="!file_control.is_excel"></span>
+                                    <div class="no-preview-file-font">无法浏览文件内容</div>
+                                </div>
+                                <!--无法浏览文件内容-->
+                                <div class="unview" ng-if="file_control.un_view && !file_info.error_msg">
+                                    <div class="file-icon unview-excel-icon" ng-show="file_control.is_excel"></div>
+                                    <span class="default-icon" ng-show="!file_control.is_excel"></span>
+                                    <div class="no-preview-file-font">无法浏览文件内容</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="control.loading" style="margin-top: 238px;">
+        <div class="col-sm-4 col-sm-offset-4 text-center">
+            <div style="">
+                <span class="loading-font-color"><i class="fa fa-spinner fa-spin version-font-30"></i></span>
+            </div>
+            <div class="version-margin-top-10">
+                <span class="loading-font-color">正在获取信息&nbsp;&nbsp;</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--文件历史查看-->
+<div ng-if="file_control.show_file_history" ng-include="'views/publish/version/file_history_detail.html'"></div>
+<!--文件对比查看-->
+<div ng-if="file_control.show_file_compare" ng-include="'views/publish/version/file_compare.html'"></div>
+
+<!--目录对比查看-->
+<div ng-if="control.show_fold_compare" ng-include="'views/publish/version/fold_compare.html'" ng-controller="foldController"></div>

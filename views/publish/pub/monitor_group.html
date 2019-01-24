@@ -1,0 +1,48 @@
+<div class="container-fluid monitor-group">
+    <div class="row" style="margin:8px;">
+        <div class="col-sm-12" ng-class="!$first ? 'first_group':''" style="height: 54px;position: relative;border-bottom: 1px solid #396770;">
+            <span class="img">
+                <i style="background:url(../app/img/publish/new_img/u815.png) no-repeat ; height: 30px;width: 30px;position: absolute;background-size: 30px;top: 12px;"></i>
+            </span>
+            <span style="position: absolute;left:50px;line-height: 53px;font-size: 14px;">{{info.pjpublish_name}}</span>
+            <div class="row" style="margin-left: 280px;margin-top: 12px;">
+                <div class="col-md-5" style="position: relative;">
+                    <p>
+                        <progressbar max="100" value="info.group.dynamic" type='info' class="progress-striped active monitor-pre-progress-bar" ></progressbar>
+                    </p>
+                </div>
+                <div class="col-sm-2" style="padding-left: 0px;text-align: left;font-size: 16px;">
+                    {{info.group.dynamic}}%
+                </div>
+            </div>
+            <span class="return-icon" ng-click="returnMonitorList()">
+                <i class="fa fa-reply"></i>
+            </span>
+        </div>
+        <div class="col-sm-12">
+            <div class="col-sm-12"  style="position: absolute;width:124px;" ng-style="projStyle($index)" ng-repeat="proj in info.group.proj_list">
+                <span>
+                    <i style="background:url(../app/img/publish/new_img/plan_publish_header_img.png) no-repeat ; height: 60px;width: 60px;position: absolute;background-size: 60px;top: 20px;left: 30px;"></i>
+                </span>
+                <span title="{{proj.business_cn_name}}" ng-click="goToSingleMonitor(proj)" class="monitor-sys-name">{{proj.business_cn_name}}</span>
+                <span title="{{proj.manager_user_name}}" class="monitor-manager-name">{{proj.manager_user_name}}</span>
+            </div>
+            <div style="width: 100%;padding-left: 124px;" ng-if="control.loadingData">
+                <div ng-if="!control.loading_error">
+                    <div drag-monitor go-model="info.nodeLinkData" style="margin-top: 24px;width: 100%" group-data="info.group" node-length="info.node_length" read-only="control.read_only">
+                        <div id="myEditDiagramDiv" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div ng-if="control.loading_error">
+                    <div style="height: 300px;text-align: center; line-height: 300px;font-size: 16px;" ng-if="control.loading_error">
+                        <span class="error-font-color">{{control.error_message}}</span>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 300px;text-align: center; line-height: 300px;font-size: 16px;color: #44dcfd" ng-if="!control.loadingData">
+                <i class="fa fa-spinner fa-spin" style="font-size: 34px;position: absolute; top: 60px;padding: 40px;color: #44dcfd;"></i>数据加载中...
+            </div>
+
+        </div>
+    </div>
+</div>

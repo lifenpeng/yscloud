@@ -1,0 +1,33 @@
+<form name="form.pub_window_form"   class="form-horizontal" novalidate="" autocomplete="off">
+    <div class="modal-header">
+        <h3 class="modal-title">关闭发布窗口</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body conform_modal">
+        <div class="row form-style">
+            <label class="col-sm-3 label-key text-right">关闭原因</label>
+            <div class="col-sm-7 ">
+                 <textarea name="result_msg"
+                           ng-model="result_info.msg"
+                           class="form-control label-value"
+                           placeholder="关闭原因，100字以内"
+                           style="min-height: 80px; resize:none;"
+                           ng-maxlength=100
+                           ng-disabled="control.save_loading"
+                           ng-model-options="{updateOn: 'blur'}"
+                           required
+                 >
+                                        </textarea>
+                <validate-msg tag-cn-name="关闭原因" name="result_msg"></validate-msg>
+            </div>
+        </div>
+        <div style="text-align: center;margin-top: 20px;">
+            <button  ng-if="!control.save_loading" class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+            <button ng-if="control.save_loading" disabled="disabled" type="button" class="btn-xl disabled-btn" >取消</button>
+            <button ng-if="!control.save_loading" class="save-btn btn-xl"  ng-click="saveResult()">确定</button>
+            <button ng-if="control.save_loading" disabled="disabled" class="save-btn btn-xl">
+                <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</form>

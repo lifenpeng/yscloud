@@ -1,0 +1,119 @@
+
+<div class="container-fluid dir-compare" id="fold-compare">
+    <div class="row dir-compare-basic-header">
+        <div class="col-sm-3 v_font_size_18" style="overflow: hidden;white-space: nowrap">
+            <div class="excel_file_img"></div>
+            <span class="version_span version-yellow-color" style="margin-top: 12px;">文件夹({{compare_data_info.fold_name}})</span>
+        </div>
+        <div class="col-sm-4 version_font_small v_font_color_c" title="{{compare_data_info.fold_path ? compare_data_info.fold_path.indexOf(one_pub.version_num)==-1 ? '.../' : (compare_data_info.fold_path=='/'+version.file_absolute_path) ?  './':compare_data_info.fold_path.replace('/'+version.file_absolute_path+'/','') : '--'}}" style="text-align: left;white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
+            <span class="version_time_span">{{compare_data_info.fold_path ? compare_data_info.fold_path.indexOf(one_pub.version_num)==-1 ? '.../' : (compare_data_info.fold_path=='/'+version.file_absolute_path) ?  './':compare_data_info.fold_path.replace('/'+version.file_absolute_path+'/','') : '--'}}</span>
+        </div>
+        <div class="col-sm-4 col-sm-offset-1 version_font_small" style="text-align: right">
+            <div class="version-btn-group">
+                <div class="version-btn-file-switch" ng-click="differ_compare_nodes.loading || showDifference(false)" ng-class="{'version-btn-file-switch-check':!fold_compare_control.show_differ_flag}" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px">
+                    全部
+                </div>
+                <div class="version-btn-file-switch" ng-click="compare_info_nodes.loading || showDifference(true)" ng-class="{'version-btn-file-switch-check':fold_compare_control.show_differ_flag}" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px">
+                    变更
+                </div>
+                <span class="part-line"></span>
+                <!--返回按钮-->
+                <span class="return-btn" ng-click="startFoldCompare(false)">
+                    <span class="fa fa-reply"></span>返回
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row file-container-bg-color" ng-show="!fold_compare_control.show_differ_flag">
+        <span class="fa fa-spinner code-loading"  ng-class="{'fa-spin':code_loading}" ng-show="code_loading"></span>
+        <div class="col-sm-6" class="fold-left">
+            <div class="row file-header border-right-1">
+                <div class="version_icon"></div>
+                <span class="version_label">版本:</span>
+                <span class="version_label version-font-12" ng-if="!control.pre_pub_flag" ng-bind="one_pub.version_num ? one_pub.version_num :''"></span>
+                <span class="version_label version-font-12" ng-if="control.pre_pub_flag">预发布版本({{version.pre_project_name}})</span>
+            </div>
+            <div class="row border-right-1 compare-container"  id="left_scroll_container_1" custom-scroll custom-config="config.scroll_xy_config"  callbacks="compare_left_scroll" ng-mouseover="leftScrollBarMouseover()"  ng-if="fold_compare_control.fold_load_flag">
+                <div class="file-tree-cover" ng-style="{'z-index':common_control.disabled_control ? '3':'0'}"></div>
+                <file-tree files="compare_info_nodes" change-path="getRootFile(compare_info_nodes)" go="compareData()" db-file="dbClickCompareFile(compare_info_nodes)" compare-config="leftConfig" common-control="common_control"></file-tree>
+                <div class="no-data-block" ng-if="!compare_info_nodes.compare_path1 && !compare_info_nodes.compare_path2">
+                    暂无文件
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6" class="fold-right">
+            <div class="row file-header">
+                <div class="version-common-icon version-num-icon version-margin-top-5"></div>
+                <span class="version_label">版本:</span>
+                <bs-select width=70
+                           no-border
+                           style="display: inline-block;vertical-align: top;margin-top: -2px"
+                           items="compare_data_info.version_list"
+                           disable="compare_info_nodes.loading"
+                           my-select="compare_data_info.compare_version_num"
+                           select-val="selectCompareVersion(selectKey)"
+                           option-labal="version_num"
+                           option-key="version_num">
+                </bs-select>
+            </div>
+            <div class="row compare-container" id="right_scroll_container_1" custom-scroll custom-config="config.scroll_xy_config"  callbacks="compare_right_scroll" ng-mouseover="rightScrollBarMouseover()" ng-if="fold_compare_control.fold_load_flag">
+                <div class="file-tree-cover" ng-style="{'z-index':common_control.disabled_control ? '3':'0'}"></div>
+                <file-tree files="compare_info_nodes" change-path="getRootFile(compare_info_nodes)" go="compareData()" db-file="dbClickCompareFile(compare_info_nodes)" compare-config="rightConfig" ng-if="compare_info_nodes.nodes.length!=0" common-control="common_control"></file-tree>
+                <div class="no-data-block" ng-if="compare_info_nodes.nodes.length==0 && !compare_info_nodes.loading" style="margin-top: 30px">
+                    暂无文件
+                </div>
+                <div class="loading-block" ng-show="compare_info_nodes.loading">
+                    <div style="text-align: center;">
+                        <i class="fa fa-spinner fa-spin version-font-30 loading-font-color"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row file-container-bg-color" ng-show="fold_compare_control.show_differ_flag">
+        <span class="fa fa-spinner code-loading"  ng-class="{'fa-spin':code_loading}" ng-show="code_loading"></span>
+        <div class="col-sm-6" id="diff-left">
+            <div class="row file-header border-right-1">
+                <div class="version-common-icon version-num-icon version-margin-top-5"></div>
+                <span class="version_label">版本:</span>
+                <span class="version_label version-font-12" ng-if="!control.pre_pub_flag" ng-bind="one_pub.version_num ? one_pub.version_num :''"></span>
+                <span class="version_label version-font-12" ng-if="control.pre_pub_flag">预发布版本({{version.pre_project_name}})</span>
+            </div>
+            <div class="row border-right-1 compare-container"  id="left_scroll_container_2" custom-scroll custom-config="config.scroll_xy_config"  callbacks="compare_left_scroll" ng-mouseover="leftScrollBarMouseover()"  ng-if="fold_compare_control.diff_load_flag">
+                <div class="diff-file-tree-cover" ng-style="{'z-index':diff_common_control.disabled_control ? '3':'0'}"></div>
+                <file-tree files="differ_compare_nodes" change-path="getRootFile(differ_compare_nodes)" go="goDiff()" diff="true" db-file="dbClickCompareFile(differ_compare_nodes)" compare-config="leftConfig" common-control="diff_common_control"></file-tree>
+                <div class="no-data-block" ng-if="!differ_compare_nodes.compare_path1 && !differ_compare_nodes.compare_path2">
+                    暂无文件
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6" id="fold-right">
+            <div class="row file-header">
+                <div class="version_icon"></div>
+                <span class="version_label">版本:</span>
+                <bs-select width=70
+                           no-border
+                           style="display: inline-block;vertical-align: top;margin-top: -2px"
+                           items="compare_data_info.version_list"
+                           disable="compare_info_nodes.loading"
+                           my-select="compare_data_info.diff_version_num"
+                           select-val="selectCompareVersion(selectKey)"
+                           option-labal="version_num"
+                           option-key="version_num">
+                </bs-select>
+            </div>
+            <div class="row compare-container" id="right_scroll_container_2" custom-scroll custom-config="config.scroll_xy_config"  callbacks="compare_right_scroll" ng-mouseover="rightScrollBarMouseover()"  ng-if="fold_compare_control.diff_load_flag">
+                <div class="diff-file-tree-cover" ng-style="{'z-index':diff_common_control.disabled_control ? '3':'0'}"></div>
+                <file-tree files="differ_compare_nodes" change-path="getRootFile(differ_compare_nodes)" go="goDiff()" db-file="dbClickCompareFile(differ_compare_nodes)" compare-config="rightConfig" diff="true" ng-if="differ_compare_nodes.nodes.length!=0" common-control="diff_common_control"></file-tree>
+                <div class="no-data-block" ng-if="differ_compare_nodes.nodes.length==0 && !differ_compare_nodes.loading" style="margin-top: 30px">
+                    暂无文件
+                </div>
+                <div class="loading-block" ng-show="differ_compare_nodes.loading">
+                    <div style="text-align: center;">
+                        <i class="fa fa-spinner fa-spin  version-font-30 loading-font-color"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

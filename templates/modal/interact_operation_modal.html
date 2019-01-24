@@ -1,0 +1,159 @@
+<style>
+    .line_style{
+        background: #555f76;height: 2px;width: 150px;position: absolute;top:8px;
+    }
+    .start_header{
+        color: #6d7183;font-size: 12px;text-align: center;
+    }
+    .session_content{
+        background: #182736;;
+        padding: 10px;color: #def1fe;margin-top: 10px;
+
+    }
+    .dialog_common_style{
+        position: relative; min-height: 45px;height:45px; display: table;
+    }
+    .dialog_computer_img{
+        background: transparent url('./img/publish/interact_computer.png') no-repeat scroll 2% 5px;
+        height: 45px;
+    }
+    .dialog_font{
+        display: table-cell;vertical-align: middle;
+    }
+    /*.dialog_line{*/
+        /*width:530px ;height: 1px;background: #e6e6e6;position: absolute;top: 110%;left: 18px;*/
+    /*}*/
+    .dialog_human_img{
+        background: transparent url('./img/publish/interact_human.png') no-repeat scroll 96% 5px;text-align: right;
+    }
+    .dialog_end{
+        padding: 20px;border-bottom: 1px solid #555f76;font-size: 12px;
+    }
+    .dialog_end  span:hover{
+        color: #CF000E;
+        cursor: pointer;
+    }
+    .send_btn{
+        width: 80px;height: 80px;border: 1px solid #555f76;
+        text-align: center;line-height: 80px;color: #6d7183;position: absolute;right: 10px;
+    }
+    .send_btn_disable{
+        width: 80px;height: 80px;border: 1px solid #555f76;opacity: 0.4;
+        text-align: center;line-height: 80px;color: #6d7183;position: absolute;right: 10px;
+    }
+    .send_btn:hover{
+        cursor: pointer;
+        background: #00bebc;
+        color: #def1fe;
+    }
+    .dialog_wrap{
+        height: 340px;max-height: 340px;overflow: hidden; overflow-y:auto;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">启动应用服务</h3>
+    <div ng-click="cancel(2)"></div>
+</div>
+<div class="modal-body" style="min-height: 500px;">
+   <!--会话开始-->
+   <div class="row" style="position: relative;">
+       <div class="line_style" style="left: 105px"></div>
+       <div class="start_header">会话开始</div>
+       <div class="line_style" style="left: 335px"></div>
+   </div>
+    <div class="dialog_wrap" custom-scroll custom-config="scroll_dialog_info">
+        <!--会话内容提示框-->
+        <div class="session_content">
+            <div class="row">
+                <div class="col-sm-12">
+                     <!--{{interact_info.interact_msg}}-->
+                    <div ng-repeat="msg in interact_info.interact_msg track by $index">
+                        {{msg}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--对话内容-->
+        <div ng-repeat="cmd in  data.interact_dialog_list">
+            <!--机器-->
+            <div class="row" style="border-bottom: 2px solid #555f76;padding: 5px 0" ng-if="cmd.type == 1">
+                <div class="col-sm-12  ">
+                    <div class="col-sm-2" style="padding:0;width: 45px">
+                        <div class="dialog_computer_img"></div>
+                    </div>
+                    <div class="col-sm-10" style="padding: 0;color: #def1fe;">
+                        <!--{{cmd.msg}}-->
+                        <div ng-repeat="msg in cmd.msg track by $index">
+                            {{msg}}
+                        </div>
+                    </div>
+                    <!--<div class="dialog_line"></div>-->
+                </div>
+            </div>
+            <!--输入的命令-->
+            <div class="row" style="border-bottom: 2px solid #555f76;padding: 5px 0" ng-if="cmd.type == 2">
+                <div class="col-sm-12 dialog_common_style dialog_human_img">
+                    <div ng-if="!cmd.show_flag" class="dialog_font" style="padding-right: 60px;text-align: right;">{{cmd.msg}}</div>
+                    <div ng-if="cmd.show_flag" class="dialog_font" style="padding-right: 60px;text-align: right;">**********</div>
+                    <!--<div class="dialog_line"></div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--结束提示-->
+    <div class="row dialog_end">
+        <div class="col-sm-12 text-center" style="color: #6d7183;" >
+            <div ng-if="interact_info.end_interact_flag">
+                操作完成系统已结束当前会话 <span style="color: #a40000" ng-click="cancel(1)">点此关闭</span>
+            </div>
+            <div ng-if="!interact_info.end_interact_flag">
+                正在交互中，请勿关闭此窗口！
+            </div>
+        </div>
+    </div>
+    <!--输入框-->
+    <div class="row form_style" style="position: relative;margin-top: 10px;">
+        <div class="col-sm-10" ng-if="!show_flag">
+            <div ng-if="interact_info.end_interact_flag || get_loading">
+                <textarea
+                        class="form-control label_value"
+                        style="height: 80px;resize: none;padding-right: 20px;word-break: break-all;"
+                        ng-model="interact_info.send_cmd_msg"
+                        placeholder="请输入命令"
+                        ng-disabled="interact_info.end_interact_flag || get_loading"></textarea>
+            </div>
+            <div ng-if="!interact_info.end_interact_flag && !get_loading">
+                <textarea
+                        class="form-control label_value"
+                        ui-codemirror="{ onLoad : paramShellLoaded}"
+                        ui-refresh="true"
+                        placeholder="请输入命令"
+                        ng-model="interact_info.send_cmd_msg"
+                        ng-enter="sendCmdMsg()"
+                        ></textarea>
+            </div>
+            <div style="position: absolute;top: 7px;right: 0px;cursor: pointer;">
+                <i ng-if="!show_flag" class="fa fa-eye" title="明文" ng-click="toggleShowStyle(true)"></i>
+            </div>
+        </div>
+        <div class="col-sm-10" ng-if="show_flag">
+            <!--只是为了兼容360浏览器阻止默认密码填写-->
+            <input type="password" style="display: none;" disabled autocomplete = "new-password"/>
+            <input
+                    class="form-control label_value"
+                    style="padding-right: 20px;"
+                    ng-model="interact_info.label_send_cmd_msg"
+                    placeholder="请输入命令"
+                    disabled
+                    autocomplete="new-password"
+                    type="password"/>
+
+            <div style="position: absolute;top: 7px;right: 0px;cursor: pointer;">
+                <i class="fa fa-eye-slash" title="密文" ng-click="toggleShowStyle(false)"></i>
+            </div>
+        </div>
+        <div    ng-style="show_flag ? {'height':'34px','line-height':'34px'}:{}"
+                ng-class="interact_info.end_interact_flag ? 'send_btn_disable' : 'send_btn'"
+                ng-click="interact_info.end_interact_flag || sendCmdMsg()">发送</div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<form name="info.form.rollback_form" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">工单退回</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <!-- 工单退回信息-->
+    <div class="modal-body">
+        <!-- 工单编号-->
+        <div class="row form-style">
+            <label class="col-sm-3 text-right control-label label-key">工单编号</label>
+            <label class="col-sm-6 label-value control-label" style="text-align: left;">{{info.workorder_rollback_info.order_seq}}</label>
+        </div>
+        <!-- 工单标题-->
+        <div class="row form-style" style="margin-top: 12px;">
+            <label class="col-sm-3 text-right control-label label-key">工单标题</label>
+            <label class="col-sm-6 label-value control-label" style="word-break: break-all;text-align: left;">{{info.workorder_rollback_info.workorder_title}}</label>
+        </div>
+        <!-- 退回说明-->
+        <div class="row form-style" style="margin-top: 12px;">
+            <label class="col-sm-3 text-right control-label label-key">说明</label>
+            <div class="col-sm-8 label-value" style="margin-top: 10px;">
+                <textarea class="form-control" name="rollback_desc" ng-model="info.workorder_rollback_info.deal_bk_expl" style="resize: none;color: #d2f1fe"
+                          placeholder="说明，(最多100个字)"
+                          ng-maxlength=100
+                          ng-pattern="/^[^\s]+$/"
+                          ng-model-options="{updateOn: 'blur'}"
+                          required></textarea>
+                <validate-msg tag-cn-name="说明" name="rollback_desc" model="info.workorder_rollback_info.deal_bk_expl"></validate-msg>
+            </div>
+        </div>
+        <!--按钮-->
+        <div class="row" style="margin: 40px 0 20px;">
+            <div class="col-sm-12 text-center">
+                <button ng-hide="control.save_rollback_btn_loading" class="cancel-btn btn-xl" type="button" ng-click="formCancel()">取消</button>
+                <button ng-hide="control.save_rollback_btn_loading" class="save-btn btn-xl" type="submit">退回</button>
+                <button ng-show="control.save_rollback_btn_loading" class="save-btn btn-xl">
+                    <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

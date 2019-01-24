@@ -1,0 +1,215 @@
+<div class="container-fluid scene-module scene-detail">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row form-style">
+                <label class="control-label col-sm-4 label-key text-right">场景名</label>
+                <div class="col-sm-8 label-value" ng-bind="info.basic_info.scene_name"></div>
+            </div>
+            <div class="row form-style">
+                <label class="control-label col-sm-4 label-key text-right">创建人</label>
+                <div class="col-sm-8 label-value" ng-bind="info.basic_info.crt_user_name ? info.basic_info.crt_user_name : '--'"></div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row form-style">
+                <label class="control-label col-sm-4 label-key text-right">场景描述</label>
+                <div class="col-sm-7 label-value" ng-bind="info.basic_info.scene_desc ? info.basic_info.scene_desc : '--'" style="padding-right: 0"></div>
+            </div>
+            <div class="row form-style">
+                <label class="control-label col-sm-4 label-key text-right">创建时间</label>
+                <div class="col-sm-8 label-value" ng-bind="info.basic_info.crt_bk_time ? info.basic_info.crt_bk_time : '--'"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-style element-list" ng-if="!control.config_element">
+        <label class="control-label col-sm-2 label-key text-right">场景元素</label>
+        <div class="col-sm-8 label-value">
+            <ul class="list-unstyled" ng-repeat="category in info.category_list">
+                <li ng-show="category.element_list.length">
+                    <span class="ele-category" ng-bind="category.category ? categoryTOCn(category.category) : '--'"></span>
+                </li>
+                <li>
+                    <span class="single-element" ng-repeat="ele in category.element_list" ng-click="configElement(category.category,ele,$index)">
+                        <span class="element-icon" ng-style="elementHightIcon(ele.type)"></span>
+                        <span class="element-text-name" ng-bind="ele.element_info.sdwork_cn_name ? ele.element_info.sdwork_cn_name : ele.text" title="{{ele.element_info.sdwork_cn_name}}"></span>
+                    </span>
+                </li>
+            </ul>
+            <span ng-if="info.category_list.length == 0">--</span>
+        </div>
+    </div>
+
+    <!--元素配置-->
+    <div class="row form-style" ng-if="control.config_element" style="padding-top: 5px">
+        <label class="control-label col-sm-2 label-key text-right">场景元素</label>
+        <div class="col-sm-10">
+            <form class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+                <div class="container-fluid ele-config-container">
+                    <div class="node-tabs">
+                        <div class="node-tab" ng-class="element.active ? 'tab_checked' : 'normal'" ng-repeat="element in control.tem_element_list" ng-click="tabOne($index);">
+                            <div ng-class="element.active ? 'checked-cover' : 'normal-cover'" style="padding-top: 3px;">
+                                <span class="element-icon" ng-style="elementHightIcon(element.type)"></span>
+                                <span class="element-text-name" ng-bind="element.element_info.sdwork_cn_name ? element.element_info.sdwork_cn_name : element.text" title="{{element.element_info.sdwork_cn_name}}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="node-content" ng-style="{'min-height' : (control.tem_element_list.length + 1) * 80}">
+                        <div class="container-fluid">
+                            <div class="row ele-type-block">
+                                <div class="ele-type-icon" ng-style="elementIcon()"></div>
+                                <div class="ele-type-font">元素类型</div>
+                                <div class="ele-type-font ele-type-cn" ng-bind="curr_ele_type ? eleTypeTOCn(curr_ele_type) : '--'"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-style">
+                                        <label class="control-label col-sm-4 label-key text-right">元素名称</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.sdwork_cn_name ? data.element_data.sdwork_cn_name : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style">
+                                        <label class="control-label col-sm-4 label-key text-right">元素描述</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.job_bk_desc ? data.element_data.job_bk_desc : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="curr_ele_category == 6">
+                                        <label class="col-sm-4 control-label label-key">服务名称</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.service_name ? data.element_data.service_name : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="curr_ele_category == 6">
+                                        <label class="col-sm-4 control-label label-key">请求方式</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.request_method ? requestMethodTOCn(data.element_data.request_method)  : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="curr_ele_category == 7">
+                                        <label class="control-label col-sm-4 label-key text-right">轮询间隔(s)</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.polling_interval ? data.element_data.polling_interval : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="curr_ele_category == 7">
+                                        <label class="control-label col-sm-4 label-key text-right">轮询次数</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.polling_max_times ? data.element_data.polling_max_times : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style">
+                                        <label class="control-label col-sm-4 label-key text-right">超时时间(s)</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.timeout ? data.element_data.timeout : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="curr_ele_category != 6 && curr_ele_category != 7">
+                                        <label class="control-label col-sm-4 label-key text-right">执行预时(s)</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.timeused ? data.element_data.timeused : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="curr_ele_category == 2">
+                                        <label class="control-label col-sm-4 label-key text-right">数据库类型</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.dataBase_type ? databaseTypeTOCn(data.element_data.dataBase_type) : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style">
+                                        <label class="col-sm-4 control-label label-key">出错处理</label>
+                                        <div class="col-sm-8 label-value" ng-bind="data.element_data.error_handle ? errorHandleTOCn(data.element_data.error_handle) : '--'"></div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="data.element_data.error_handle == 3">
+                                        <label class="col-sm-2 col-sm-offset-4 control-label label-key" style="padding-left: 0;width: 40px;padding-top: 5px">次数</label>
+                                        <div class="col-sm-2 text-left label-value" ng-bind="data.element_data.retry_times ? data.element_data.retry_times : '--'" style="width: 35px;"></div>
+                                        <label class="col-sm-2 control-label label-key" style="width: 55px;padding-left: 0;padding-top: 5px">间隔(s)</label>
+                                        <div class="col-sm-2 text-left label-value" ng-bind="data.element_data.retry_interval ? data.element_data.retry_interval : '--'" style="width: 45px;"></div>
+                                    </div>
+
+                                    <div class="form-group form-style">
+                                        <label class="col-sm-4 control-label label-key" >内容类型</label>
+                                        <div class="col-sm-8 label-value" style="padding-top: 0">
+                                            <span ng-if="!data.element_data.job_method" style="padding-top: 7px">--</span>
+                                            <div class="set-btn-common time-condition" ng-if="data.element_data.job_method" ng-style="{'width':data.element_data.job_method == 2 ? '110px':''}" ng-click="viewScript()">
+                                                <div ng-if="data.element_data.job_method == 1" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{jobData.comp_cn_name}}">
+                                                    <span class="fa fa-cube" style="font-size: 16px;vertical-align: middle"></span>
+                                                    <span ng-bind="data.element_data.comp_cn_name ? data.element_data.comp_cn_name : '--'"></span>
+                                                </div>
+                                                <div ng-if="data.element_data.job_method == 2">
+                                                    <span class="fa fa-pencil-square-o" style="font-size: 18px;vertical-align: middle;"></span>
+                                                    <span style="padding-left:4px;">[自定义]</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="row form-style" ng-if="curr_ele_category != 6">
+                                        <label class="control-label col-sm-3 label-key text-right">结果判定</label>
+                                        <div class="col-sm-9 label-value">
+                                            <!-- ui-codemirror="{onLoad : shellLoaded}"
+                                                     ui-refresh="true"-->
+                                            <textarea name="result_judge"
+                                                      style="resize: none;"
+                                                      rows="10"
+                                                      placeholder="java表达式"
+                                                      ng-model="data.element_data.result_judge"
+                                                      ng-disabled="true"
+                                                      class="form-control">
+											</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--输入输出参数-->
+                            <div class="form-group" ng-if="data.element_data.input.length || data.element_data.output.length">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-6" ng-if="data.element_data.input.length">
+                                    <table class="sub-table cus-param-table">
+                                        <thead>
+                                        <tr>
+                                            <td width="150px" style="text-align: left">输入参数名</td>
+                                            <td width="70px" style="text-align: left">值来源</td>
+                                            <td style="text-align: left">默认值</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in data.element_data.input">
+                                            <td style="text-align: left" title="{{tr.param_cn_name}}">
+                                                <span ng-bind="tr.param_name"></span>
+                                            </td>
+                                            <td>
+                                                <span ng-bind="tr.param_source == 2 ? '引用' : '固有'"></span>
+                                            </td>
+                                            <td style="text-align: left">
+                                                <span ng-bind="tr.param_value ? tr.param_value : '--'"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-sm-4 label-value" ng-if="data.element_data.output.length">
+                                    <table class="sub-table cus-param-table">
+                                        <thead>
+                                        <tr>
+                                            <td width="100px">输出参数名</td>
+                                            <td>参数中文名</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in data.element_data.output">
+                                            <td>
+                                                <span ng-bind="tr.param_name ? tr.param_name : '--'"></span>
+                                            </td>
+                                            <td>
+                                                <span ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!--关闭按钮-->
+                            <div class="form-group">
+                                <div class="col-md-12 text-center">
+                                    <button type="button" ng-click="closeElementConfig()" class="save-cancel-btn cancel-btn btn-md">关闭</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--返回-->
+    <div class="row form-style">
+        <div class="col-md-12 text-center">
+            <button type="button" ng-click="backToSceneList()" class="save-btn btn-md">返回</button>
+        </div>
+    </div>
+</div>

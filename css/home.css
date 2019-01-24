@@ -1,0 +1,1016 @@
+/*--------------------------------------------header.html Style----------------------------------------------*/
+/*
+    css 规范(书写顺序)
+    1.位置属性(position, top, right, z-index,display, float等)　　
+    2.大小(width, height, padding, margin)　
+    3.文字系列(font, line-height, letter-spacing, color- text-align等)　　
+    4.背景(background, border等)　　
+    5.其他(animation, transition等)
+*/
+.top-bar{
+    position: relative;
+    width: 100%;
+    padding-top:10px;
+    /*background: #091118*/
+}
+.top-bar .width-height-30{
+    width: 30px;
+    height: 30px;
+}
+.top-bar .display-inblock{
+    display: inline-block;
+}
+.top-bar .bread-crumb-block{
+    position: absolute;
+    bottom: 0;
+    left: 130px;
+    width:350px;
+    height: 30px;
+    line-height: 30px;
+    text-align: left;
+}
+.top-bar .breadcrumb-font{
+    margin: auto 3px;
+    cursor: pointer;
+    font-size: 14px;
+    color:#44Dcfd;
+    font-style:normal;
+    position: relative;
+    top: 2px
+}
+.top-bar .breadcrumb-font-last{
+    color: #61A1B8;
+    margin: auto 3px;
+    font-size: 14px;
+    font-style:normal;
+    position: relative;
+    top: 2px
+}
+.top_bar_lg{
+    height: 72px;
+}
+.top_bar_sm{
+    height: 62px;
+}
+.top-bar .top-bar-container{
+    position: absolute;
+    width: 100%;
+    height: 62px;
+    text-align: center;
+}
+.top-bar .top-bar-logo{
+    position: relative;
+    top: -62px;
+    width: 100px;
+    color: #44dcfd;
+}
+.top-bar .top-bar-logo-block{
+    position: relative;
+    display: inline;
+    width: 40px;
+}
+.top-bar  .top-bar-lg-font{
+    position: absolute;
+    width: 90px;
+    top: 14px;
+    left: -10px;
+}
+.top-bar .top-bar-sm-font{
+    position: relative;
+    width: 90px;
+}
+.top-bar .top-bar-home-icon{
+    position: absolute;
+    top: -7px;
+    display: inline-block;
+}
+/*用户图标*/
+.top-bar .top-bar-user-block{
+    position: absolute;
+    right: 28px;
+    bottom: 0px;
+    width:266px;
+    height: 30px;
+    text-align: left;
+}
+.top-bar .top-bar-user-container{
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 20px;
+    padding-left: 8px;
+}
+.top-bar .top-bar-user-icon{
+    position: relative;
+    z-index: 13;
+    display: inline-block;
+    width:30px;height: 30px;
+    cursor: pointer;
+}
+.top-bar .top-bar-user-menu{
+    top: 0;
+    z-index: 12 !important;
+    width:120px;
+    min-width:100px;
+    padding:28px 0 0 0;
+    margin:0;
+    border-radius: 0px;
+}
+.top-bar .top-bar-menu-font{
+    height:40px !important;
+    line-height: 40px !important;
+    padding: 0 !important;
+}
+.top-bar .top-bar-user-name{
+    position:absolute;
+    top: 3px;
+    z-index: 13;
+    display: inline-block;
+    height: 26px;
+    color:#ace6fe;
+}
+.top-bar .top-bar-log-menu{
+    left: 64px;
+    width:160px;
+    margin:0;
+    border-top: 0;
+    border-radius: 0;
+}
+.top-bar .bar_angle {
+    position: relative;
+    top: 0;
+    display: inline-block;
+    margin-right: 2px;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-left: 6px solid #4c85e2;
+    color: #4C85E2;
+}
+.top-bar .user-img {
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -8px -54px;
+}
+.top-bar .user-img:hover {
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -54px -54px;
+}
+.top-bar .message-img {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -8px -100px;
+}
+.top-bar .message-img:hover {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -54px -100px;
+    cursor: pointer;
+}
+.top-bar .task-img {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -8px -146px;
+}
+.top-bar .task-img:hover {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -54px -146px;
+    cursor: pointer;
+}
+.top-bar .search-img {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -8px -192px ;
+}
+.top-bar .search-img:hover {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -54px -192px ;
+    cursor: pointer;
+}
+.top-bar .open .search-img{
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -100px -192px;
+    cursor: pointer;
+}
+.top-bar .out-img {
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -8px -238px;
+    width: 30px;
+    height: 30px;
+}
+.top-bar .out-img:hover {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -54px -238px;
+    cursor: pointer;
+}
+.top-bar .home-img {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -8px -8px;
+}
+
+.top-bar .home-img:hover {
+    width: 30px;
+    height: 30px;
+    background: url("../img/comm/topbar-operate-sm-icon.png") no-repeat -54px -8px;
+    cursor: pointer;
+}
+.top-bar .user-img-sm {
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat 0px -19px !important;
+}
+.top-bar .user-img-sm:hover {
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat -20px -19px !important;
+}
+.top-bar .message-img-sm {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat 0px -39px !important;
+}
+.top-bar .message-img-sm:hover {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat -20px -39px !important;
+    cursor: pointer;
+}
+.top-bar .task-img-sm {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat 0px -59px !important;
+}
+.top-bar .task-img-sm:hover {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat -20px -59px !important;
+    cursor: pointer;
+}
+.top-bar .search-img-sm {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat 0px -79px !important;
+}
+.top-bar .search-img-sm:hover {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat -20px -79px !important;
+    cursor: pointer;
+}
+.top-bar .open .search-img-sm{
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat -40px -79px !important;
+    cursor: pointer;
+}
+.top-bar .out-img-sm {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat 0px -99px !important;
+}
+.top-bar .out-img-sm:hover {
+    width: 20px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat -20px -99px !important;
+    cursor: pointer;
+
+}
+.top-bar .home-img-sm {
+    width: 22px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat 3px 6px !important;
+}
+.top-bar .home-img-sm:hover {
+    width: 22px;
+    height: 24px;
+    background: url("../img/comm/topbar-operate-lg-icon.png") no-repeat -17px 6px !important;
+    cursor: pointer;
+}
+.top_bar_lg .dropdown-menu>li,.top_bar_sm .dropdown-menu>li{
+    padding:0;
+    margin: 0 10px;
+    border-bottom: 1px solid #35a3ba;
+}
+.top-bar .dropdown-menu>li > a{
+    color: #ACE6FE;
+    text-align: left;
+}
+.top-bar .dropdown-menu>li > a:hover,.top-bar .dropdown-menu>li:hover,.top-bar .dropdown-menu>li > a:focus{
+    color: #44DCFD;
+    background-color: transparent;
+}
+.top-bar .dropdown-menu>li:last-child{
+    border:none;
+}
+.top-bar  .dropdown-menu>div.line_style{
+    height: 1px;
+    position: relative;
+    top: -5px;
+    background-color: #00bebc;
+}
+.top_bar_lg .dropdown-menu>div.line_style:after{
+    position: absolute;
+    top: -30px;
+    right: -1px;
+    width: 32px;
+    height: 31px;
+    display: block;
+    content: "";
+    border: 1px solid #00bebc;
+    border-bottom-color: #091016;
+
+}
+.top_bar_sm .dropdown-menu>div.line_style:after{
+    position: absolute;
+    top: -25px;
+    right: -1px;
+    display: block;
+    width: 25px;
+    height: 26px;
+    content: "";
+    border: 1px solid #00bebc;
+    border-bottom-color: #091016;
+}
+.top-bar  a.dropdown_icon>i{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    background: url("../img/header/header-icon-group.png") no-repeat;
+}
+.top-bar a.dropdown_icon.log>i{
+    background-position: -30px -5px;
+}
+.top-bar a.dropdown_icon.log:hover>i{
+    background-position: -54px -5px;
+}
+.top-bar a.dropdown_icon.task>i{
+    background-position: -30px -54px;
+}
+.top-bar  a.dropdown_icon.task:hover>i{
+    background-position: -54px -54px;
+}
+.top-bar a.dropdown_icon.mail>i{
+    background-position: -30px -30px;
+}
+.top-bar a.dropdown_icon.mail:hover>i{
+    background-position: -54px -30px;
+}
+/*小背景样式*/
+.top_bar_sm .width-height-30{
+    width: 20px;
+    height: 24px;
+}
+.top_bar_sm .top-bar-container{
+    height: 42px;
+}
+.top_bar_sm .top-bar-logo{
+    top: -40px;
+}
+.top_bar_sm .top-bar-user-block{
+    width:226px;
+    padding-top:5px;
+}
+.top_bar_sm .top-bar-user-icon{
+    width:22px;
+    height: 24px;
+}
+.top_bar_sm .top-bar-user-menu{
+    width:110px;
+    padding:32px 0 0 0;
+}
+.top_bar_sm .top-bar-user-name{
+    top: 1px;
+}
+.top_bar_sm .top-bar-log-menu{
+    top: 30px;
+    left: 34px;
+}
+/*------------------------------------首页(home_page.html)---------------------------------*/
+.home-page{
+    width:100%;
+}
+.home-page .sys-label-font{
+    color: #44dcfd;
+    font-size: 16px;
+    padding-left: 5px;
+}
+.home-page .sys-block-position{
+    position: absolute;
+    width: 100%;
+    padding-right: 260px;
+    margin-top: 10px;
+    z-index: 10;
+    padding-left: 15px;
+}
+/*应用系统块*/
+.home-page .index_sys_block{
+    height: 120px;
+    background-color: rgba(92,122,169,0.25);
+    position: relative;
+    padding: 2px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    display: inline-block;
+    margin-left: 5px;
+    border: 1px solid rgba(92,122,169,0.25);
+    cursor: pointer;
+}
+.home-page .sys-name-container-position{
+    position: absolute;
+    width: 55%;
+    top: 25px;
+    left: 100px;
+}
+.home-page .disable_poniter{
+    cursor: not-allowed;
+}
+.home-page .disable_poniter .index_sys_block:hover{
+    cursor: not-allowed;
+    border: 1px solid rgba(92,122,169,0.25);
+}
+.home-page .index_sys_block_font_color{
+    color: #69aa9b;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.home-page .index_sys_block:hover{
+    border: 1px solid #44DCFD;
+}
+.home-page .index_sys_block:hover .index_sys_block_font_color{
+    color: #87AAB7 !important;
+}
+.home-page .index_sys_block:hover .index_sys_static_img{
+    background: url("../img/public/home-sys-active-img.png") no-repeat center;
+    animation: sys_icon_spin 3s infinite linear;
+    -moz-animation: sys_icon_spin 3s infinite linear;	/* Firefox */
+    -webkit-animation: sys_icon_spin 3s infinite linear;	/* Safari 和 Chrome */
+    -o-animation: sys_icon_spin 3s infinite linear;	/* Opera */
+}
+@keyframes sys_icon_spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/* Firefox */
+@-moz-keyframes sys_icon_spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/* Safari 和 Chrome */
+@-webkit-keyframes sys_icon_spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/* Opera */
+@-o-keyframes sys_icon_spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+/*应用系统图片*/
+.home-page .index_sys_img{
+    width: 100px;height: 100px;position: absolute;top: 10px;
+    background: url("../img/public/home-sys-img.png") no-repeat center;
+}
+.home-page .index_sys_static_img{
+    width: 100px;height: 100px;position: absolute;top: 10px;
+    background: url("../img/public/home-sys-static-img.png") no-repeat center;
+}
+/*环形图区域头部标题*/
+.home-page .pie_header{
+    padding:10px;color: #44dcfd;
+}
+/*环形图块样式*/
+.home-page .task_block{
+    margin-top: 22px;width: 240px;height: 170px;background-color: rgba(92,122,169,0.25);;position: relative;cursor: pointer;
+}
+/*环形图位置*/
+.home-page .pie_position{
+    position: absolute;top: 45px;left: 20px
+}
+/*环形图数据显示位置上*/
+.home-page .pie_date_show_up{
+    position:absolute;bottom: 70px;right: 55px;text-align: center
+}
+/*环形图数据显示位置下*/
+.home-page .pie_date_show_down{
+    position:absolute;bottom: 30px;right: 55px;text-align: center
+}
+/*环形图无数据时字体颜色*/
+.home-page .pie_none_date_font{
+    color:#415d73 ;
+}
+/*环形图数据时已发布字体颜色*/
+.home-page .pie_pub_finish_font{
+    color: #43e0f7
+}
+/*环形图数据时未发布字体颜色*/
+.home-page .pie_pub_unfinish_font{
+    color: #f8d838;
+}
+/*环形图数据时处理中字体颜色*/
+.home-page .pie_fault_handling_font{
+    color: #4faeff;
+}
+/*环形图数据时未处理字体颜色*/
+.home-page .pie_fault_unhandle_font{
+    color: #ed416e;
+}
+/*环形图数据时已完成字体颜色*/
+.home-page .pie_dispatch_finish_font{
+    color: #f458b7;
+}
+/*环形图数据时未完成字体颜色*/
+.home-page .pie_dispatch_unfinish_font{
+    color: #ff9a00;
+}
+.home-page .sys_arrow_left{
+    position: absolute;left: 0px;top: 44%;color: #666;font-size: 30px;cursor: pointer;
+}
+.home-page .sys_arrow_right{
+    position: absolute;right: 260px;top: 44%;color: #666;font-size: 30px;cursor: pointer;
+}
+.home-page .sys_arrow_left:hover , .sys_arrow_right:hover{
+    color: #ccc;
+}
+.home-page .home-page-right-container{
+    position: absolute;
+    right: 0px;
+    top: 11px;
+    z-index: 11;
+    /*background-color: #091118;*/
+    padding-right: 8px;
+}
+
+/*---------------任务列表--大圆/小圆动画样式-------------*/
+#动画
+@keyframes breath {
+    from {color: black;}
+    to {color: white;}
+}
+/* Firefox */
+@-moz-keyframes breath  {
+    from {color: black;}
+    to {color: white;}
+}
+/* Safari 和 Chrome */
+@-webkit-keyframes breath {
+    from {color: black;}
+    to {color: white;}
+}
+/* Opera */
+@-o-keyframes breath {
+    from {color: black;}
+    to {color: white;}
+}
+.loading {
+    animation: breath 1s;
+    -moz-animation: breath 1s;	/* Firefox */
+    -webkit-animation: breath 1s;	/* Safari 和 Chrome */
+    -o-animation: breath 1s;	/* Opera */
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/*-------------------------任务/历史任务查看页面-样式--------------------------------*/
+#text .row{
+    height:30px;
+    line-height: 30px;
+}
+#text .col-lg-4{
+    text-align: right;
+}
+#text .col-lg-7{
+    text-align: left;
+}
+#log .row div{
+    text-align:center;
+}
+#text .row div {
+    padding-left: 0px;
+
+}
+/*任务圆样式*/
+@keyframes cbreath {
+    from { opacity: 0.1; }    /* 动画开始时的不透明度 */
+    50%  { opacity:   1; }    /* 动画50% 时的不透明度 */
+    to   { opacity: 0.1; }    /* 动画结束时的不透明度 */
+}
+
+@-webkit-keyframes cbreath {
+    from { opacity: 0.1; }      /* 动画开始时的不透明度 */
+    50%  { opacity:   1; }      /* 动画50% 时的不透明度 */
+    to   { opacity: 0.1; }      /* 动画结束时的不透明度 */
+}
+
+/*任务查看--按钮*/
+.taskStyle{
+    margin-top:0;
+    margin-bottom:14px;
+}
+
+/*任务列表-故障单任务-过滤按钮样式*/
+.filter-btn-style{
+    float:left;
+    border:1px solid #F85B27;
+    padding: 5px 10px;
+    color: #F85B27;
+    background-color: #fff;
+}
+.filter-btn-style:hover{
+    color:#fff;
+    background-color: #FF8B46;
+}
+.filter-btn-style:active{
+    color: #fff;
+    background-color: #EC732C;
+}
+.filter-btn-left{
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-right:none;
+}
+.filter-btn-middle{
+    border-right: none;
+}
+.filter-btn-right{
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+/*--------------------------------------------UserStyle----------------------------------------------*/
+.user .custom-btn{
+    width: 180px;
+    color: #fff;
+    text-align: left;
+    background-color: #44DCFD;
+    border-color: #44DCFD;
+    box-shadow: none !important;
+    cursor: default;
+}
+.user .custom-btn:hover{
+    background-color: #19B7EC;
+    border-color: #19B7EC;
+    color: #fff;
+    box-shadow: none !important;
+}
+.user .custom-btn:active ,.user .custom-btn:focus{
+    background-color: #0084AD;
+    border-color: #0084AD;
+    color: #fff;
+    box-shadow: none !important;
+}
+.user .prompt-title-block{
+    padding-right: 100px;
+    text-align: right;
+}
+.user .prompt-title-font{
+    font-size: 16px;
+    border-bottom: 2px solid #555F76;
+    color: #555F76;
+}
+/*--------------------------------------------ContactsStyle----------------------------------------------*/
+.contacts-list .padding-10{
+    padding:10px;
+}
+.contacts-list .icon-color{
+    color:#93d9f9;
+}
+.contacts-list .text-padding{
+    padding-right: 2px;
+    padding-left:4px;
+}
+.contacts-list .contact-row{
+    padding:0 16px 0 1px;
+}
+.contacts-list .contacts-block{
+    padding-top: 10px;
+    padding-bottom: 10px
+}
+.contacts-list .contacts-container{
+    margin-left: 1px;
+    padding: 10px 2px 10px 18px;
+    background: #26354a;
+}
+.contacts-list .contacts-left-container{
+    width:50px;
+    margin-left: -12px;
+    text-align: center;
+    color:#AAAAAA;
+}
+.contacts-list .contacts-right-container{
+    padding: 4px 6px 4px 15px;
+    font-size: 14px;
+    text-align: left;
+}
+/*--------------------------------------------LogListStyle----------------------------------------------*/
+.log-list .icon-font{
+    font-size: 20px;
+    cursor: pointer;
+}
+.log-list .select-date-font{
+    text-align: right;
+}
+.log-list .select-date-input{
+    min-width: 300px;
+    margin-top:-8px;
+}
+.log-list .log-dialog-container{
+    position: relative;
+    float:left;
+    margin-top:-10px;
+}
+.log-list .log-dialog{
+    position:absolute;
+    top:39px;
+    left: -300px;
+    z-index: 10;
+    width:400px;
+    height: 250px;
+    border: 1px solid #396770;
+    -moz-box-shadow: 3px 3px 5px #444444;
+    box-shadow: 3px 3px 5px #091016;
+    background-color: #091016;
+}
+.log-list .log-dialog-title{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    font-size: 18px;
+}
+.log-list .log-tab-header-tr{
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    border-top: 2px solid #44dcfd;
+    color: #999;
+    background:#091016;
+}
+.log-list .log-tab-header-td{
+    padding-right: 2px;
+    padding-left: 2px;
+    color: #44dcfd;
+    font-weight: bold;
+}
+.log-list .log-tab-body-tr1{
+    height: 38px;
+    line-height: 38px;
+    margin-top:2px;
+    font-size:12px;
+    border-bottom: 1px solid #172432;
+    background-color:#0e161d;
+}
+.log-list .log-tab-body-tr2{
+    min-height: 40px;
+    font-size: 12px;
+    border-bottom: 1px solid #396770;
+    background: #0e161d;
+}
+.log-list .log-tab-body-td{
+    padding-right: 2px;padding-left: 2px;
+}
+.log-list .log-detail-dialog{
+    position: absolute;
+    top: 32px;
+    left: -325px;
+    z-index: 10;
+    width: 590px;
+    height: 220px;
+    padding-top: 20px;
+    font-size: 12px;
+    border: 1px solid #396770;
+    border-radius: 5px;
+    background-color: #0e151d;
+}
+.log-list .log-detail-dialog-row{
+    height: 30px;
+    line-height: 30px;
+    padding:0 32px;
+    text-align: left;
+}
+.log-list .log-detail-dialog-odd{
+    background-color: #213042;color: #E8EAF0;
+}
+.log-list .log-detail-dialog-even{
+    background: #16202d;color:#d2f1fe;
+}
+.log-list .log-detail-text{
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.log-list .log-detail{
+    color: #d2f1fe;
+}
+.log-list .no-log-detail{
+    color: #6d7183;
+}
+/*--------------------------------------------tasksListStyle----------------------------------------------*/
+.tasks-list .commonTabs .nav-tabs > li{
+    border-bottom: 1px solid #ace6fe;
+}
+.tasks-list .commonTabs .nav-tabs .active{
+    border-color: #fc9e22 !important;
+}
+.tasks-list .task-container{
+    min-height: 300px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 100px;
+}
+.tasks-list .task-title{
+    margin-left: 6px;
+}
+
+.tbl-even {
+    background-color: #F6F7FC;
+}
+.tbl-unhandle {
+    color:#56B1B9 !important;
+}
+.displayNone{
+    display: none;
+}
+.tbl-odd {
+    background-color: #FFF;
+}
+.tbl-diff {
+    background-color: #FFFFCC;
+}
+.tbl-active {
+    background-color: #DBE6FC;
+}
+/*--------------------------------------------taskDetailStyle----------------------------------------------*/
+.task-detail {
+    margin-left: 20px;
+    margin-right:20px;
+}
+.task-detail .padding-10{
+    padding:10px;
+}
+.task-detail .font-14{
+    font-size: 14px;
+}
+.task-detail .padding-1-4{
+    padding: 1px 4px;
+}
+.task-detail .margin-top-12{
+    margin-top: 12px;
+}
+.task-detail .out-triangle-style{
+    position      : relative;
+    border-top    : 8px solid transparent;
+    border-bottom : 8px solid transparent;
+    border-right  : 12px solid #1e2b3c;
+    top           : -3px;
+    left          : 30px;
+}
+.task-detail .task-block-style{
+    position          : absolute;
+    height            : 100px;
+    width             : 220px;
+    padding-left      : 10px;
+    background-color  : #1e2b3c;
+    left              : 8px;
+    top               : -14px;
+    border            : 1px solid #1e2b3c;
+    z-index           :  4;
+    border-radius     : 4px;
+    font-size         : 12px;
+}
+.task-detail .flow-circle-sm{
+    position          : relative;
+    width             : 12px;
+    height            : 12px;
+    border-radius     : 100%;
+    left              : -5px;
+    z-index           : 6;
+}
+.task-detail .flow-circle-lg{
+    position          : absolute;
+    width             : 24px;
+    height            : 24px;
+    background-color  : #75C6D1;
+    border-radius     : 100%;
+    left              : -11px;
+    z-index           : 1;
+    animation-name    : cbreath;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    -webkit-animation-name   :  cbreath;
+    -webkit-animation-duration : 3s;
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+}
+.task-detail .vertical-line-style{
+    margin-left       : 50px;
+    background-color  : #5c697b;
+    width             : 2px;
+    position          : absolute;
+}
+.task-detail .task-state-cn-name{
+    position   : relative;
+    width      : 40px;
+    height     : 20px;
+    color      : #5c697b;
+    font-size  : 14px;
+}
+.task-detail .task-name{
+    margin-left: 20px;
+    font-size: 16px;
+}
+.task-detail .layout-left{
+    padding-left: 30px;
+}
+.task-detail .layout-left .col-sm-2{
+    background-color:#5c697b;
+    height: 28px;
+    line-height: 28px;
+    font-size:20px;
+}
+.task-detail .handle-user-font{
+    margin-top:-9px;
+    padding: 1px 4px;
+}
+.task-detail .handle-desc-font{
+    margin-top:-6px;
+    line-height: 22px;
+    padding:1px 4px;
+}
+.task-detail .flow-container{
+    padding-top:70px;
+    text-align: left;
+    margin-left: -78px;
+    color: #d2f1fe;
+}
+.task-detail .layout-left .col-sm-4{
+    background-color:#5c697b;
+    height: 28px;
+    line-height: 28px;
+    font-size:16px;
+}
+.task-detail .layout-right{
+    margin-left: 20px;
+}
+.task-detail .layout-right .task-basic-info-title{
+    background-color:#5c697b;
+    height: 28px;
+    line-height: 28px;
+    font-size:16px;
+}
+.task-detail .layout-right .task-basic-info{
+    background-color: #1e2b3c;
+    border: 1px solid #1e2b3c;
+    height: 90px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    padding:20px;
+    font-size: 12px;
+    color:#def1fe;
+}
+.task-detail .layout-right .task-apply-desc{
+    color:#def1fe;
+    background-color: #1e2b3c;
+    border: 1px solid #1e2b3c;
+    height: 100px;padding:20px;
+    font-size: 12px;
+}
+.view-task-interface-btn {
+    margin-right: 10px;
+    font-size: 12px;
+    color: #44dcfc;
+    border-color: #091016;
+    background-color: #091016;
+}
+.view-task-interface-btn:hover{
+    color: #fff;
+    border-color: #00bebc;
+    background-color: #00bebc;
+}
+/*--------------------------------------------taskHandleStyle----------------------------------------------*/
+.task-detail .task-handle-container{
+     height:200px;
+     border-radius: 4px;
+     font-size: 12px;
+     background: #1e2b3c;
+}
+.task-detail .task-handle-desc-container{
+    padding-left:0px;
+    margin-top: 14px;
+}
+.task-detail .task-handle-label-font{
+    color: #5c697b;
+}
+.task-detail .trouble-task-handle-label{
+    width: 100px;
+    text-align: right
+}
+.task-detail .trouble-task-handle-flow-desc{
+    overflow: hidden;
+    position: relative
+}
+.task-detail .auth-introduce{
+    position: absolute;
+    height:20px;
+    display: inline-block;
+    white-space: nowrap;
+}

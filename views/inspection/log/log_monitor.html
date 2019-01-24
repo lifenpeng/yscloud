@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html ng-app="LogModule">
+<head>
+    <meta charset="UTF-8">
+   <!-- <link href="../../../css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/inspection.css"/>
+    <link rel="stylesheet" href="../../../css/comm.css"/>
+    <link href="../../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../css/comm/mCustomScrollbar.css" rel="stylesheet">-->
+
+    <script src="../../../js/components/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../../js/components/angularjs/angular.min.js"></script>
+    <script src="../../../js/components/angularjs/angular-cookies.js"></script>
+    <script src="../../../js/components/boostrap/bootstrap.min.js"></script>
+    <script src="../../../js/components/boostrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="../../../js/components/jquery/mCustomScrollbar.js"></script>
+   <!-- <script src="../../../js/services/GlobalData.js"></script>
+    <script src="../../../js/services/CvService.js"></script>
+    <script src="../../../js/directives/Directives.js"></script>
+    <script src="../../../js/services/http/CommHttpSrv.js"></script>
+    <script src="../../../js/services/http/InspectionHttpSrv.js"></script>
+    <script src="../../../js/controllers/common/ModalCtrl.js"></script>
+    <script src="../../../js/controllers/inspection/LogViewController.js"></script>-->
+    <!--第一种方案-->
+    <link href="../../../css/cl.min.css" rel="stylesheet">
+    <script src="../../../js/cl.min.js"></script>
+</head>
+<!--主体-->
+<body style="background-color: #141e2a;overflow-y: hidden;" ng-controller="LogViewCtrl">
+<div class="row inspection index-border" custom-scroll custom-config="config.scroll_config"  style="background-color: #141e2a;margin: 0">
+    <div class="col-sm-12 log-analysis" >
+        <div class="row text-center" style="font-size: 16px;margin-top: 20px;">
+            <label >日志名</label>
+            <label >{{info.log_analysis_info.log_name}}</label>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <!--头-->
+                <div class="row log-analysis-header-container">
+                    <div class="col-sm-3" style="margin-top: 8px;">
+                        <div class="log-keyword-search-container">
+                            <div class="log-keyword-search-input">
+                                <input type="text"
+                                       ng-model="info.log_analysis_info.search_key_word"
+                                       class="form-control"
+                                       placeholder=""
+                                       style="color:#D2F1FE"
+                                       ng-enter="searchByKeyword(info.log_analysis_info.search_key_word)">
+                                <span class="fa fa-search log-keyword-search-logo"></span>
+                                <span class="fa fa-times log-keyword-search-del-icon" ng-click="clearKeyword()"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 margin-top-10">
+                  <span>
+                      <label>每页显示</label>
+                      <input type="text"
+                             class="form-control show-page-num-input"
+                             ng-model="info.log_analysis_info.page_size"
+                             name="page_count"
+                             ng-blur="changeSinglePageKeywordContent(info.log_analysis_info.page_size,2)"
+                             ng-maxlength="25"
+                             required/>
+                  </span>
+                    </div>
+                    <!--操作按钮-->
+                    <div class="col-sm-2 col-sm-offset-3 margin-top-10" style="font-size: 21px;">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div ng-click="firstHighLight(info.log_analysis_info.search_key_word)" class="log-keyword-search-operate log-keyword-search-first-icon display-inblock" title="第一个关键字">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div ng-click="preHighLight(info.log_analysis_info.search_key_word)" title="上一个关键字" class="log-keyword-search-operate log-keyword-search-prev-icon display-inblock">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div title="下一个关键字" ng-click="nextHighLight(info.log_analysis_info.search_key_word)" class="log-keyword-search-operate log-keyword-search-next-icon display-inblock">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div title="最后一个关键字" ng-click="lastHighLight(info.log_analysis_info.search_key_word)" class="log-keyword-search-operate log-keyword-search-last-icon display-inblock">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <!-- <div title="生成报告" class="col-sm-1" style="margin-top: 9px;cursor: pointer">
+                        <span ng-click="generateReportChart()"  class="generate-report-btn display-inblock"></span>
+                    </div>-->
+                </div>
+                <!--主体-->
+                <div class="row" style="position: relative;">
+                    <div class="line-num-absolute" ng-style="changeHeight(1)" style="width:41px;">
+                        <div class="line-num-container">
+                            <div class="line-num-div" ng-repeat="line in info.log_analysis_info.log_detail">
+                                <span>{{line.row_num}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="log-data-container" ng-style="changeHeight(1)" ng-class="control.show_hide_view ? 'col-sm-9':'col-sm-12'" custom-scroll custom-config="config.scroll_xy_config" func="{scroll:'scrollToView'}" callbacks="scollbar_callbacks">
+                        <div class="log-data-row" ng-if="!control.file_loading && info.log_analysis_info.log_detail.length>0"  ng-repeat="line in info.log_analysis_info.log_detail">
+                            <span dataid={{$index}} class="inner-row-num" >{{line.row_num}}</span>
+                            <span>{{line.lines}}</span>
+                        </div>
+                        <div class="row log-loading-row" ng-if="control.file_loading || control.error_loading">
+                            <div class="col-sm-12 log-loading-container">
+                                <div>
+                                    <span class="loading-font"><i class="fa fa-spinner fa-spin" style="fonr-weight: holder; font-size: 30px;"></i></span>
+                                </div>
+                                <div style="margin-top: 10px;">
+                                    <span class="loading-font">正在获取日志信息&nbsp;&nbsp;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row log-loading-row" ng-if="!control.file_loading && info.log_analysis_info.log_detail.length==0">
+                            <div class="col-sm-12 log-loading-container">
+                                <div class="log-error-container">
+                                    <span class="error-font-color" ng-if="info.log_analysis_info.error_message">{{info.log_analysis_info.error_message}}</span>
+                                    <span class="no-data-font"  ng-if="!info.log_analysis_info.error_message && info.log_analysis_info.show_result">日志内容为空</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" ng-if= "control.show_hide_view" style="top: -8px;">
+                        <div class="row">
+                            <div class="match-keyword-table-header">匹配数据</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 match-keyword-table-container">
+                                <div ng-style="changeHeight(2)" style="min-height: 440px;" custom-scroll custom-config="config.scroll_y_config">
+                                    <table class="sub-table text-left">
+                                        <thead>
+                                        <tr>
+                                            <td style="text-align: left;width:50px;"><span>行号</span></td>
+                                            <td style="text-align: left"><span>关键字</span></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr  ng-repeat="one in data.search_key_list" style="cursor: pointer" ng-click="scrollByLineCount(one.key_word,one.line_count,one.index_count,one,$index)"  ng-class="one.checked ? 'keyword-table-checked':'keyword-table-default'">
+                                            <td style="text-align: left;width:50px;">
+                                                {{one.line_count}}
+                                            </td>
+                                            <td style="text-align: left;">
+                                                {{one.key_word}}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="keyword-expand-icon-position" title="{{control.show_hide_view ? '点击收起':'点击展开'}}">
+                        <div class="keyword-expand-icon-container" ng-click="toggleKeywordTable()">
+                            <span class="fa" ng-class="{'fa-angle-left':!control.show_hide_view,'fa-angle-right':control.show_hide_view}" style="padding-right: 9px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--分析图表，搜索结果分析，尾页点击-->
+                <div class="row margin-top-10">
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-7" style="text-align: right" ng-if="control.page_show && !control.file_loading && !control.no_move && !info.log_analysis_info.error_message">
+                        <!--分页-->
+                        <div  style="padding-left: 13px;">
+                            <nav aria-label="Page navigation">
+                                <div class="footer-page-container">
+                                    <input type="text"
+                                           class="form-control show-page-num-input"
+                                           ng-model="info.log_analysis_info.offset"
+                                           name="page_off"
+                                           ng-blur="changeCurPage(info.log_analysis_info.page_size,2,info.log_analysis_info.offset)"
+                                           ng-maxlength="25"
+                                            />
+                                    <label>/{{info.page_info.total_page}}</label>
+                                </div>
+                                <ul class="pagination footer-page-num-container">
+                                    <li>
+                                        <a ng-click="nextPage(0,info.page_info)">‹</a>
+                                    </li>
+                                    <li ng-repeat="p in info.page_info.page.show_page" ng-class="p.value == info.page_info.page.current_page ? 'active':''">
+                                        <a ng-click="p.value == page.current_page ? 'return;':switchPageToPageNum(p,info.page_info)">{{p.value}}</a>
+                                    </li>
+                                    <li>
+                                        <a ng-click="nextPage(1,info.page_info)">›</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

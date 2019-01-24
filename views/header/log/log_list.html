@@ -1,0 +1,147 @@
+
+<div class="container-fluid log-list">
+    <div class="row form-style" style="margin:20px 0;">
+        <div class="col-lg-1 col-md-1 col-sm-1">
+            <div><i class="icon-font" ng-class="log_info.submit_info.log_label == 0 ?'glyphicon glyphicon-heart-empty':'glyphicon glyphicon-heart';" ng-click="toggleAllLogAttention()"></i></div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2">
+            <div class="select-date-font">日期选择</div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 select-date-input label-value pick-date-common">
+            <input class="form-control"
+                   type="text"
+                   name="log_bk_date"
+                   ng-change="selectLogDate()"
+                   ng-click="log_info.datepicker.opened = true;"
+                   is-open="log_info.datepicker.opened"
+                   ng-model="log_info.log_date"
+                   datepicker-popup="yyyy年MM月dd日"
+                   date-disabled="disabled(date, mode)"
+                   show-weeks="false"
+                   close-text="关闭"
+                   current-text="今天"
+                   clear-text="清除"
+                   style="min-width: 260px;"
+                   readonly="true"/>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <div>
+                <i class="icon-font" title="日志级别一" ng-class="log_info.submit_info.log_level >=1 ? 'fa fa-star':'fa fa-star-o';" ng-click="changeLogLevel(1);"></i>
+                <i class="icon-font" title="日志级别二" ng-class="log_info.submit_info.log_level >=2 ? 'fa fa-star':'fa fa-star-o';" ng-click="changeLogLevel(2);"></i>
+                <i class="icon-font" title="日志级别三" ng-class="log_info.submit_info.log_level >=3 ? 'fa fa-star':'fa fa-star-o';" ng-click="changeLogLevel(3);"></i>
+                <i class="icon-font" title="日志级别四" ng-class="log_info.submit_info.log_level >=4 ? 'fa fa-star':'fa fa-star-o';" ng-click="changeLogLevel(4);"></i>
+            </div>
+        </div>
+        <div class="log-dialog-container form-style">
+            <div class="ordinary-btn"  ng-click="control.show_log_menu = !control.show_log_menu">下载日志</div>
+            <div class="log-dialog" ng-show="control.show_log_menu">
+                <div class="log-dialog-title">日志文件下载</div>
+                <div class="row form-horizontal" style="padding-bottom: 10px">
+                    <label class="col-sm-3 control-label label-key">起始日期</label>
+                    <div class="col-sm-6 label-value pick-date-common">
+                        <input class="form-control"
+                               type="text"
+                               name="start_bk_date"
+                               ng-click="log_info.datepicker.download_start_opened = true;"
+                               is-open="log_info.datepicker.download_start_opened"
+                               ng-model="log_info.download_log_info.start_bk_date"
+                               datepicker-popup="yyyy年MM月dd日"
+                               show-weeks="false"
+                               close-text="关闭"
+                               current-text="今天"
+                               clear-text="清除"
+                               date-disabled="disabled(date, mode)"
+                               style="min-width: 260px;"
+                               readonly="true"/>
+                    </div>
+                </div>
+                <div class="row form-horizontal">
+                    <label class="col-sm-3 control-label label-key">结束日期</label>
+                    <div class="col-sm-6 label-value pick-date-common">
+                        <input type="text"
+                               name="end_bk_date"
+                               ng-click="log_info.datepicker.download_end_opened = true;"
+                               is-open="log_info.datepicker.download_end_opened"
+                               ng-model="log_info.download_log_info.end_bk_date"
+                               class="form-control"
+                               datepicker-popup="yyyy年MM月dd日"
+                               date-disabled="disabled(date, mode)"
+                               show-weeks="false"
+                               close-text="关闭"
+                               current-text="今天"
+                               clear-text="清除"
+                               style="min-width: 260px;"
+                               readonly="true"/>
+                    </div>
+                </div>
+                <div class="ordinary-btn" style="margin-top: 20px;margin-left: 190px;" type="button"  ng-click="downloadLog();">下载</div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin:20px;">
+        <div class="col-sm-12">
+            <div class="row log-tab-header-tr">
+                <div class="col-lg-1 col-md-1 col-sm-2"><div class="log-tab-header-td">时间</div></div>
+                <div class="col-lg-2 col-md-2 col-sm-2"><div class="log-tab-header-td">用户</div></div>
+                <div class="col-lg-2 col-md-1 col-sm-1"><div class="log-tab-header-td">部门</div></div>
+                <div class="col-lg-4 col-md-4 col-sm-3"><div class="log-tab-header-td">服务名</div></div>
+                <div class="col-lg-3 col-md-3 col-sm-3"><div class="log-tab-header-td">详细信息</div></div>
+            </div>
+            <div ng-repeat="log in log_info.log_list">
+                <div class="row log-tab-body-tr1">
+                    <div class="col-lg-1 col-md-1 col-sm-2"><div class="log-tab-body-td">{{log.crt_bk_time}}</div></div>
+                    <div class="col-lg-2 col-md-2 col-sm-2" ><div class="log-tab-body-td">{{log.crt_user_cn_name}}</div></div>
+                    <div class="col-lg-2 col-md-1 col-sm-1"><div class="log-tab-body-td">{{log.crt_dept_cn_name}}</div></div>
+                    <div class="col-lg-4 col-md-4 col-sm-3"><div class="log-tab-body-td">{{log.org_srv_bk_desc}}</div></div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        详细信息
+                        <div class="log-detail-dialog" ng-show="log.show_detail">
+                            <div class="row log-detail-dialog-row">
+                                <div class="col-sm-5 log-detail-dialog-odd">任务流水号：{{log.work_seq}}</div>
+                                <div class="col-sm-7 log-detail-dialog-odd">待处理流水号：{{log.pend_work_seq}}</div>
+                            </div>
+                            <div class="row log-detail-dialog-row">
+                                <div class="col-sm-5 log-detail-dialog-even">问题单编码：{{log.pbl_code}}</div>
+                                <div class="col-sm-7 log-detail-dialog-even">待处理任务编码：{{log.pend_work_code}}</div>
+                            </div>
+                            <div class="row log-detail-dialog-row">
+                                <div class="col-sm-5 log-detail-dialog-odd">发起渠道：{{log.org_channel_code}}</div>
+                                <div class="col-sm-7 log-detail-dialog-odd">待处理服务名称：{{log.pend_srv_name}}</div>
+                            </div>
+                            <div class="row log-detail-dialog-row">
+                                <div class="col-sm-5 log-detail-dialog-even">发起终端：{{log.org_term_no}}</div>
+                                <div class="col-sm-7 log-detail-dialog-even">待处理资源编码：{{log.pend_rs_code}}</div>
+                            </div>
+                            <div class="row log-detail-dialog-row">
+                                <div class="col-sm-5 log-detail-dialog-odd">发起资源编码：{{log.org_rs_code}}</div>
+                                <div class="col-sm-7 log-detail-dialog-odd">待处理数据源名：{{log.pend_ary_socname}}</div>
+                            </div>
+                            <div class="row log-detail-dialog-row">
+                                <div class="col-sm-5 log-detail-dialog-even">发起数据源名：{{log.org_ary_socname}}</div>
+                                <div class="col-sm-7 log-detail-dialog-even">待处理任务说明：{{log.pendwk_bk_expl}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1">
+                        <div style="text-align: center;">
+                            <i ng-click="showLogDetail(log)" ng-class="log.show_detail?'glyphicon glyphicon-chevron-up':'glyphicon glyphicon-chevron-down';" style="cursor: pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row log-tab-body-tr2">
+                    <div class="col-lg-1 col-md-2 col-sm-2">
+                        <div style="line-height: 40px">
+                            <i ng-click="toggleLogAttention(log)" ng-class="log.log_label==0?'glyphicon glyphicon-heart-empty':'glyphicon glyphicon-heart';" style="cursor: pointer"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-11 col-md-10 col-sm-10">
+                        <div class="log-detail-text" ng-bind="log.log_txt ? log.log_txt : '暂无日志描述'" ng-class="{'log-detail':log.log_txt,'no-log-detail':!log.log_txt}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="text-align:center;">
+        <pagination total-items="log_info.log_total_recd" ng-model="control.current_page" ng-change="refreshLogList()" max-size="5" items-per-page="5"></pagination>
+    </div>
+</div>

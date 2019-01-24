@@ -1,0 +1,75 @@
+<form name="form.strategy_form"  ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">新增策略组</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body" style="padding-top: 30px;padding-bottom: 2px;">
+        <div class="form-group form-style">
+             <label class="col-sm-3 control-label label-key">策略组名称</label>
+            <div class="col-sm-6">
+                <input type="text"
+                       class="form-control label-value"
+                       name="sdstrategy_name"
+                       ng-model="strategy_info.sdstrategy_name"
+                       placeholder="输入限制20个字符"
+                       ng-maxlength="20"
+                       ng-model-options="{updateOn: 'blur'}"
+                       required/>
+                <validate-msg tag-cn-name="策略组名称" name="sdstrategy_name" model="strategy_info.sdstrategy_name"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key">策略组描述</label>
+            <div class="col-sm-6 label-value">
+                <textarea type="text"
+                       class="form-control"
+                       style="resize:none;color: #d2f1fe;"
+                       name="sdstrategy_desc"
+                       ng-model="strategy_info.sdstrategy_desc"
+                       placeholder="输入限制100个字符"
+                       ng-maxlength="100"
+                       ng-model-options="{updateOn: 'blur'}">
+                </textarea>
+                <validate-msg tag-cn-name="策略组描述" name="sdstrategy_desc" model="strategy_info.sdstrategy_desc"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key">策略组类型</label>
+            <div class="col-sm-6 label-value">
+                <bs-select
+                           name="sdstrategy_type"
+                           items="data.strategy_type_list"
+                           my-select="strategy_info.sdstrategy_type">
+                </bs-select>
+                <validate-msg tag-cn-name="策略组类型" type="select" name="sdstrategy_type" model="strategy_info.sdstrategy_type"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group form-style" ng-if="strategy_info.sdstrategy_type == 3">
+            <label class="col-sm-3 control-label label-key">优先级范围</label>
+            <div class="col-sm-6 label-value" style="padding-top:7px">1 - 10</div>
+        </div>
+        <div class="form-group form-style" ng-if="strategy_info.sdstrategy_type == 2">
+            <label class="col-sm-3 control-label label-key">并发度</label>
+            <div class="col-sm-6 label-value">
+                <input type="text"
+                       class="form-control label-value"
+                       name="sdstrategy_concurrent"
+                       ng-model="strategy_info.sdstrategy_concurrent"
+                       placeholder="并发度2-100"
+                       ng-pattern="/^([2-9]|[1-9]\d|100)$/"
+                       ng-maxlength="3"
+                       required/>
+                <validate-msg tag-cn-name="并发度" name="sdstrategy_concurrent" model="strategy_info.sdstrategy_concurrent"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-center" style="margin:20px 0;">
+                <button class="save-cancel-btn cancel-btn btn-xl" ng-if="!btn_loading" type="button" ng-click="formCancel()" >取消</button>
+                <button class="save-cancel-btn save-btn btn-xl" ng-if="!btn_loading" type="submit">保存</button>
+                <button class="save-cancel-btn save-btn btn-xl" ng-if="btn_loading" type="button" >
+                    <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

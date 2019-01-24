@@ -1,0 +1,143 @@
+<!--新增阶段-->
+<style>
+</style>
+<form name="form.new_phase_form"  ng-submit="savePhase()" class="form-horizontal" novalidate="" autocomplete="off">
+    <div class="modal-header">
+        <h3  ng-if="phase_info.is_update == 1" class="modal-title">添加脚本</h3>
+        <h3  ng-if="phase_info.is_update == 2" class="modal-title">修改脚本</h3>
+        <h3  ng-if="!phase_info.is_update" class="modal-title">转换成脚本</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body">
+        <div class="form-group form-style">
+            <label  class="col-sm-2 control-label label-key">脚本名</label>
+            <div class="col-sm-4 label-value">
+                <input class="form-control" name="cn_name" required ng-model="phase_info.cn_name" placeholder="脚本名" ng-maxlength="25"/>
+                <validate-msg tag-cn-name="脚本名" name="cn_name"></validate-msg>
+            </div>
+            <label class="col-sm-2 control-label label-key">执行类别</label>
+            <div class="col-sm-4 label-value">
+                <bs-select  name="type" width=150 required items="data.subgroup_list"
+                           my-select="phase_info.impl_type" select-val="chooseImplType(selectKey)"></bs-select>
+                <validate-msg tag-cn-name="执行类别" type="select" name="type" model="phase_info.impl_type"></validate-msg>
+            </div>
+        </div>
+        <!--语言版本-->
+        <div class="form-group form-style" ng-if="phase_info.impl_type==14"><!--|| phase_info.impl_type==7 || phase_info.impl_type==8-->
+            <div class="col-sm-2 text-right">
+                <label class="control-label label-key">语言版本</label>
+            </div>
+            <div class="col-sm-4">
+                    <bs-select width=200 name="language_no" class="label-value" items="data.language_version_list" my-select="phase_info.language_version" required></bs-select>
+                    <validate-msg tag-cn-name="语言版本" type="select" name="language_no" model="phase_info.language_version"></validate-msg>
+            </div>
+        </div>
+        <!--附件-->
+        <div class="form-group form-style" ng-if="phase_info.impl_type==15 || phase_info.impl_type==17">
+            <div class="col-sm-2 text-right" style="margin-top: 6px">
+                <label class="control-label label-key">执行程序</label>
+            </div>
+            <div class="col-sm-4">
+                <file-upload fileupload="cmpt_accessory_fileupload" successthen="ImportAccessorySuccessThen();" deletefile="removeAccessoryFile();" downfile="downloadAccessoryFile();"></file-upload>
+            </div>
+        </div>
+        <!--command-->
+        <div ng-if="phase_info.impl_type == 15" class="form-group form-style" >
+            <label class="col-sm-2 control-label label-key">执行命令</label>
+            <div class="col-sm-10 command-content">
+                <textarea name="command_exec_script"
+                          ui-codemirror="{onLoad : commandNoneShellLoaded}"
+                          ui-refresh="true"
+                          ng-model="phase_info.command.exec_script"
+                          required
+                          class="form-control label-value">
+                </textarea>
+                <validate-msg tag-cn-name="COMMAND" name="command_exec_script"></validate-msg>
+            </div>
+        </div>
+        <div ng-if="phase_info.impl_type == 17" class="form-group form-style" >
+            <label class="col-sm-2 control-label label-key">执行命令</label>
+            <div class="col-sm-10 command-content">
+                <textarea name="command_exec_script"
+                          ui-codemirror="{onLoad : commandShellLoaded}"
+                          ui-refresh="true"
+                          ng-model="phase_info.command.exec_script"
+                          required
+                          class="form-control label-value">
+                </textarea>
+                <validate-msg tag-cn-name="COMMAND" name="command_exec_script"></validate-msg>
+            </div>
+        </div>
+        <!--执行脚本-->
+        <div ng-if="phase_info.impl_type != 15" class="form-group form-style" >
+            <label class="col-sm-2 control-label label-key">执行脚本</label>
+            <div class="col-sm-10 code-script-content">
+                <textarea name="exec_script"
+                           ui-codemirror="{onLoad : shellLoaded}"
+                           ui-refresh="true"
+                           ng-model="phase_info.exec_script"
+                           required
+                           class="form-control label-value">
+                </textarea>
+                <validate-msg tag-cn-name="执行脚本" name="exec_script"></validate-msg>
+                <div class="row" ng-if="phase_info.script_msg">
+                    <div class="col-sm-12" style=" color:#e9416e;">{{phase_info.script_msg}}</div>
+                </div>
+            </div>
+        </div>
+        <!--插件列表-->
+        <div class="form-group form-style" ng-if="data.plugin_list.length !=0">
+            <div class="col-sm-2 text-right">
+                <label class="control-label label-key">插件列表</label>
+            </div>
+            <div class="col-sm-10">
+                <table class="sub-table table text-center" style="font-size: 12px;" tbl-Data="phase_info.plugin_list" row-plus="addAvailablePlugin()">
+                    <thead>
+                    <tr>
+                        <td  style="text-align: left;width: 170px;min-width: 170px;max-width: 170px;">插件名</td>
+                        <td  width="200px" style="text-align: left">插件类型</td>
+                        <td  style="text-align: left">插件描述</td>
+                        <td style="width: 60px;text-align: left;">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="tr in phase_info.plugin_list">
+                        <td>
+                            <div  style="text-align: left;">
+                                <bs-select
+                                        width="180"
+                                        name="plugin_name{{$id}}"
+                                        items="data.plugin_list"
+                                        select-val="bindPluginInfo(selectKey,$index ,tr)"
+                                        option-key="plugin_name"
+                                        option-labal="plugin_name"
+                                        no-border
+                                        my-select="tr.plugin_name"
+                                        required
+                                ></bs-select>
+                                <validate-msg type="select" tag-cn-name="插件名" name="plugin_name{{$id}}" model="tr.plugin_name"></validate-msg>
+                            </div>
+                        </td>
+                        <td style="text-align: left;">
+                            <span>{{getPluginTypeCnName(tr.plugin_type)}}</span>
+                        </td>
+                        <td style="text-align: left;max-width: 200px;overflow: hidden;white-space: nowrap">
+                            <span>{{tr.plugin_bk_desc}}</span>
+                        </td>
+                        <td style="text-align: left;">
+                            <span class="fa fa-trash-o" style="cursor: pointer;padding-left: 10px;" ng-click="deleteSinglePlugin($index)"></span>
+                            <span class="fa fa-download" title="下载插件" style="cursor: pointer;padding-left: 10px;" ng-class="{'stop-click':!tr.plugin_name}" ng-click="!tr.plugin_name || downLoadPlugin(tr.plugin_file_name)"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="text-align: center;margin-top: 40px;margin-bottom: 20px;">
+            <button class="cancel-btn btn-xl" type="button" ng-disabled="btn_loading" ng-click="formCancel()">取消</button>
+            <button ng-if="!control.cmpt_save_disabled && !btn_loading" class="save-btn btn-xl" type="submit">确定</button>
+            <button ng-if="control.cmpt_save_disabled" class="save-btn btn-xl disabled-btn" style="background: #ccc;border: 1px solid #ccc;" type="button" disabled>确定</button>
+        </div>
+    </div>
+
+</form>

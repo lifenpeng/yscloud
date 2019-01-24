@@ -1,0 +1,167 @@
+<style>
+    .modal-content{
+        border-radius: 0;
+        margin-top: 120px !important;
+    }
+    #progressInfo .ope-delete{
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        line-height: 24px;
+        cursor: pointer;
+        color: rgb(128, 128, 128);
+        background: url(../../../img/dispatch/model_remove.png);
+        vertical-align: middle;
+    }
+    #progressInfo .ope-delete:hover{
+        background: url(../../../img/dispatch/model_remove.png) no-repeat -24px 0px;
+    }
+    #progressInfo .ope-delete:active{
+        background: url(../../../img/dispatch/model_remove.png) no-repeat -48px 0px;
+    }
+    #progressInfo .commonTabs .tab-content{
+        margin-bottom: 0;
+        padding-right: 0;
+        padding-left: 0;
+        background-color: transparent;
+    }
+    #progressInfo .commonTabs .nav-tabs > li{
+        width: 120px;
+    }
+    #progressInfo table thead, tbody tr {
+        display:table;
+        width:100%;
+        table-layout:fixed;
+    }
+    #progressInfo .sub-table tbody {
+        display: block;
+        max-height: 330px;
+        overflow: auto;
+    }
+    #progressInfo .sub-table tbody tr td{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+<form name="progressForm" id="progressInfo" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div  class="modal-header">
+        <h3 class="modal-title">查看运行信息</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body">
+        <tabset class="border-style-white commonTabs">
+            <tab heading="查看任务线程" class="analysis-tab" active="tabs[0]" select="selectType(1)">
+                <table class="sub-table" ng-show="data.task_thread_list.length != 0">
+                    <thead>
+                    <tr>
+                        <td width="100px">任务编号</td>
+                        <td>任务名称</td>
+                        <td>线程ID</td>
+                        <td width="70px">状态</td>
+                        <td width="75px">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="task in data.task_thread_list">
+                        <td width="100px" title="{{task.task_id}}"><span ng-bind="task.task_id ? task.task_id : '--'"></span></td>
+                        <td title="{{task.task_cn_name}}"><span ng-bind="task.task_cn_name ? task.task_cn_name : '--'"></span></td>
+                        <td title="{{task.task_pid }}"><span ng-bind="task.task_pid ? task.task_pid : '--'"></span></td>
+                        <td width="90px"><span ng-bind="task.task_pstatus ? task.task_pstatus == 1 ? '运行中':'关闭': '--'"></span></td>
+                        <td width="50px">
+                            <span class="ope-delete" title="回收任务线程" ng-click="meddleTask(task.task_id,13,task.task_pid)"
+                                              ng-style="{'pointer-events':task.task_pstatus == 2 ? 'none':''}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div ng-show="data.task_thread_list.length == 0">
+                    <div style="color: #6d7183;font-size: 16px;width: 150px;margin: 40px auto;text-align: center">
+                        暂无任务线程信息
+                    </div>
+                </div>
+            </tab>
+            <tab heading="查看作业线程" class="analysis-tab" active="tabs[1]" select="selectType(2)">
+                <table class="sub-table" ng-show="data.job_thread_list.length != 0">
+                    <thead>
+                    <tr>
+                        <td width="100px">任务编号</td>
+                        <td width="80px">作业编号</td>
+                        <td width="100px">作业实例号</td>
+                        <td width="75px">作业名称</td>
+                        <td>线程ID</td>
+                        <td>状态</td>
+                        <td width="50px">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="job in data.job_thread_list">
+                        <td width="100px" title="{{job.task_id}}"><span ng-bind="job.task_id ? job.task_id : '--'"></span></td>
+                        <td width="80px"><span ng-bind="job.job_id ? job.job_id : '--'"></span></td>
+                        <td width="100px" title="{{job.job_seq}}"><span ng-bind="job.job_seq ? job.job_seq : '--'"></span></td>
+                        <td title="{{job.job_cn_name}}"><span ng-bind="job.job_cn_name ? job.job_cn_name : '--'"></span></td>
+                        <td title="{{job.job_pid}}"><span ng-bind="job.job_pid ? job.job_pid : '--'"></span></td>
+                        <td><span ng-bind="job.job_pstatus ? job.job_pstatus == 1 ? '运行中':'关闭' : '--'"></span></td>
+                        <td width="50px">
+                                <span class="ope-delete" title="回收作业线程" ng-click="meddleJob(job.task_id,14,job.job_id,job.job_pid)"
+                                      ng-style="{'pointer-events':job.job_pstatus == 2 ? 'none':''}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div ng-show="data.job_thread_list.length == 0">
+                    <div style="color: #6d7183;font-size: 16px;width: 150px;margin: 40px auto;text-align: center">
+                        暂无作业线程信息
+                    </div>
+                </div>
+            </tab>
+            <tab heading="查看任务队列" class="analysis-tab" active="tabs[2]" select="selectType(3)">
+                <table class="sub-table" ng-show="data.task_queue_list.length != 0">
+                    <thead>
+                    <tr>
+                        <td width="100px">任务编号</td>
+                        <td>任务名称</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="task in data.task_queue_list">
+                        <td width="100px" title="{{task.task_id}}"><span ng-bind="task.task_id ? task.task_id : '--'"></span></td>
+                        <td title="{{task.task_cn_name}}"><span ng-bind="task.task_cn_name ? task.task_cn_name : '--'"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div ng-show="data.task_queue_list.length == 0">
+                    <div style="color: #6d7183;font-size: 16px;width: 150px;margin: 40px auto;text-align: center">
+                        暂无任务队列信息
+                    </div>
+                </div>
+            </tab>
+            <tab heading="查看作业队列" class="analysis-tab" active="tabs[3]" select="selectType(4)">
+                <table class="sub-table" ng-show="data.job_queue_list.length != 0">
+                    <thead>
+                    <tr>
+                        <td width="100px">任务编号</td>
+                        <td width="80px">作业编号</td>
+                        <td width="100px">作业实例号</td>
+                        <td>作业名称</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="job in data.job_queue_list">
+                        <td width="100px" title="{{job.task_id}}"><span ng-bind="job.task_id ? job.task_id : '--'"></span></td>
+                        <td width="80px"><span ng-bind="job.job_id ? job.job_id : '--'"></span></td>
+                        <td width="100px" title="{{job.job_seq}}"><span ng-bind="job.job_seq ? job.job_seq : '--'"></span></td>
+                        <td title="{{job.job_cn_name}}"><span ng-bind="job.job_cn_name ? job.job_cn_name : '--'"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div ng-show="data.job_queue_list.length == 0">
+                    <div style="color: #6d7183;font-size: 16px;width: 150px;margin: 40px auto;text-align: center">
+                        暂无作业队列信息
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</form>

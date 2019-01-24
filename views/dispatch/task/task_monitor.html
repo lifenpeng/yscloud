@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html ng-app="taskMonitorController">
+<head>
+    <title>任务监控</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="Page-Enter" contect="revealTrans(duration=1.0,transtion=4)">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!--<link href="../../../css/bootstrap.css" rel="stylesheet">-->
+    <!--<link href="../../../css/font-awesome.min.css" rel="stylesheet">-->
+    <!--<link href="../../../css/comm.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="../../../css/cl.min.css"/>
+
+
+    <script src="../../../js/components/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../../js/components/angularjs/angular.min.js"></script>
+    <script src="../../../js/components/angularjs/angular-cookies.js"></script>
+    <script src="../../../js/components/other/highcharts.js"></script>
+    <script src="../../../js/components/other/highcharts-ngv0.0.12.js"></script>
+    <script src="../../../js/components/other/highcharts-more.js"></script>
+    <script src="../../../js/components/other/solid-gauge.src.js"></script>
+    <script src="../../../js/components/boostrap/bootstrap.min.js"></script>
+    <script src="../../../js/components/boostrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <!--<script src="../../../js/services/GlobalData.js"></script>
+    <script src="../../../js/services/CvService.js"></script>
+    <script src="../../../js/services/ChartsService.js"></script>
+    <script src="../../../js/services/http/DispatchHttpSrv.js"></script>
+    <script src="../../../js/controllers/common/CommController.js"></script>
+    <script src="../../../js/controllers/common/ModalCtrl.js"></script>
+    <script src="../../../js/controllers/dispatch/DispatchTaskMonitorController.js"></script>-->
+    <script src="../../../js/cl.min.js"></script>
+
+
+    <style type="text/css">
+        /******************start模态框样式********************/
+        /************end公共旋转样式***************/
+        @keyframes spin {
+            0% {transform: rotate(0deg)}
+            100% {transform: rotate(360deg)}
+        }
+        /* Firefox */
+        @-moz-keyframes spin {
+            0% {transform: rotate(0deg)}
+            100% {transform: rotate(360deg)}
+        }
+        /* Safari 和 Chrome */
+        @-webkit-keyframes spin {
+            0% {transform: rotate(0deg)}
+            100% {transform: rotate(360deg)}
+        }
+        /* Opera */
+        @-o-keyframes spin {
+            0% {transform: rotate(0deg)}
+            100% {transform: rotate(360deg)}
+        }
+        /*背景旋转*/
+        .bg-spin{
+            animation: spin 3s infinite linear;
+            -moz-animation: spin 3s infinite linear;	/* Firefox */
+            -webkit-animation: spin 3s infinite linear;	/* Safari 和 Chrome */
+            -o-animation: spin 3s infinite linear;	/* Opera */
+        }
+
+        @keyframes breath {
+            0% {opacity: 1}
+            50%{opacity: 0.1}
+            100% {opacity: 1}
+        }
+        /* Firefox */
+        @-moz-keyframes breath {
+            0% {opacity: 1}
+            50%{opacity: 0.1}
+            100% {opacity:1}
+        }
+        /* Safari 和 Chrome */
+        @-webkit-keyframes breath {
+            0% {opacity: 1}
+            50%{opacity: 0.1}
+            100% {opacity: 1}
+        }
+        /* Opera */
+        @-o-keyframes breath {
+            0% {opacity: 1}
+            50%{opacity: 0.1}
+            100% {opacity: 1}
+        }
+        /*背景呼吸*/
+        .breath{
+            animation: breath 3s  infinite ease-in-out;
+            -moz-animation: breath 3s infinite ease-in-out;	/* Firefox */
+            -webkit-animation: breath 3s  infinite ease-in-out;	/* Safari 和 Chrome */
+            -o-animation: breath 3s infinite ease-in-out;	/* Opera */
+        }
+        .breath-circle{
+            position: absolute;top: 75px;right: 20px;width: 4px;height: 4px;
+            background: green;border-radius:50%
+        }
+        /*数据加载中样式*/
+        .page_loading{
+            width: 200px;height: 100px;line-height:100px;
+            color: #FFF;margin: 150px auto;text-align: center;
+            font-size: 16px;
+        }
+        /************end公共旋转样式***************/
+        body {
+            padding: 20px;
+            background: #162A40;
+            color: #FFF;
+            overflow: auto;
+        }
+        .task-panel{
+            min-width: 1250px;
+            position: relative;
+        }
+        .corslares_icon{
+            position: absolute; top:-10px;left: 20px;
+            cursor: pointer;z-index: 10;
+        }
+        /*任务/节点切换导航*/
+        .task-navs{
+            position: absolute;right: -19px;top: -17px
+        }
+        .change-bg{
+            background: url("../../../img/dispatch/task/nav-change-bg.png") no-repeat;
+            width: 20px;height: 260px;position: absolute;right: 0;top: 10px;
+        }
+        .nav-task-checked{
+            background: url("../../../img/dispatch/task/nav-task-checked.png") no-repeat;
+            background-size: 70px 87px; width: 70px;height: 87px;
+            position: absolute;right: 15px;top:68px;
+            z-index: 5;cursor: pointer;
+        }
+        .nav-task-default{
+            background: url("../../../img/dispatch/task/nav-task-default.png") no-repeat;
+            background-size: 40px 60px; width: 40px;height:60px;
+            position: absolute;right: 30px;top:83px;
+            z-index: 5;cursor: pointer;
+        }
+        .nav-task-default:hover{
+            background: url("../../../img/dispatch/task/nav-task-checked.png") no-repeat;
+            background-size: 70px 87px; width: 70px;height:87px;
+            position: absolute;right: 14px;top:68px;
+        }
+        .nav-node-checked{
+            background: url("../../../img/dispatch/task/nav-node-checked.png") no-repeat;
+            background-size: 70px 87px; width: 70px;height:87px;
+            position: absolute;right: 14px;top:168px;
+            z-index: 5;cursor: pointer;
+        }
+        .nav-node-default{
+            background: url("../../../img/dispatch/task/nav-node-default.png") no-repeat;
+            background-size: 32px 62px;width: 32px;height:62px;
+            position: absolute;top:170px;right: 33px;
+            cursor: pointer; z-index: 5;
+        }
+        .nav-node-default:hover{
+            background: url("../../../img/dispatch/task/nav-node-checked.png") no-repeat;
+            background-size: 70px 87px; width: 70px;height:87px;
+            position: absolute;right: 14px;top:165px;
+        }
+        /******start任务头部***********/
+        .task-header{
+            height: 290px;position: relative;margin-top: -20px;
+        }
+        .row-border{
+            border-bottom:1px solid rgba(102, 255, 255,0.4);
+            margin-right: -35px;
+            margin-left:-35px;
+        }
+        .exe-header-bg-container{
+            display: inline-block;margin-left: 65px;margin-top: 60px;
+        }
+        .exe-header-bg-container:hover .exe-header-bg{
+            animation: spin 3s infinite linear;
+            -moz-animation: spin 3s infinite linear;	/* Firefox */
+            -webkit-animation: spin 3s infinite linear;	/* Safari 和 Chrome */
+            -o-animation: spin 3s infinite linear;	/* Opera */
+        }
+        .exe-header-bg{
+            background: url("../../../img/dispatch/task/header_exe_icon.png") no-repeat;
+            background-size: 240px;width: 240px;height: 220px;
+            display: inline-block;opacity: 0.4;
+        }
+        .exe-header-circle{
+            position: absolute;left: 96px;bottom: 29px;
+        }
+        .task-total-count{
+            font-size: 42px;color: #FF6600;width: 95px;height:60px;text-align: center
+        }
+        .task-total-count-small{
+            font-size: 30px;padding-top: 7px;
+        }
+        .exe-count{
+            display: inline-block;vertical-align: bottom;
+            margin-bottom: 25px;margin-left:13px;width: 200px;
+        }
+        .exe-count li{
+            padding-bottom: 10px;
+        }
+        .exe-count li span{
+            vertical-align: middle;
+        }
+        .exe-count li span:last-child{
+            color: #FF6600;font-size: 28px;
+        }
+        .exe-count li span:first-child{
+            display: inline-block;width: 20px;height: 20px;
+            border-radius: 50%;
+        }
+        .exe-count .exe-finished{
+            background-color:#26E9EE;
+        }
+        .exe-count .executing{
+            background-color: #F46EB6;
+        }
+        .exe-count .will-execute{
+            background-color: #07B9FD;
+        }
+        .exe-sucOrfail{
+            display: inline-block;vertical-align: bottom;
+            width: 230px;margin-bottom: 7px;
+        }
+        .all-exe-suc-icon{
+            position: relative;
+        }
+        .exe-sucOrfail-icon{
+            background: url("../../../img/dispatch/task/exe-sucorfail.png") no-repeat;
+            background-size: 80px;
+        }
+        .exe-suc{
+            background-position: 0 0; width: 80px;height: 80px;
+            position: absolute; top: 10px;left:11px;
+        }
+        .exe-fail{
+            background-position: 0 -100px; width: 80px;height: 80px;
+            position: absolute; top: 10px;left: 11px;
+        }
+        .exe-sucOrfail-spin-icon{
+            background: url("../../../img/dispatch/task/exe-sucorfail-spin.png") no-repeat;
+            background-size: 82px;
+        }
+        .exe-suc-spin{
+            background-position: 0 0; width: 82px;height: 82px;
+            position: absolute; top: 9px;left: 10px;
+        }
+        .exe-suc-spin:hover{
+            animation: spin 3s infinite linear;
+            -moz-animation: spin 3s infinite linear;	/* Firefox */
+            -webkit-animation: spin 3s infinite linear;	/* Safari 和 Chrome */
+            -o-animation: spin 3s infinite linear;	/* Opera */
+        }
+        .exe-fail-spin{
+            background-position: 0 -102px; width: 82px;height: 82px;
+            position: absolute; top: 9px;left: 10px;
+        }
+        .exe-fail-spin:hover{
+            animation: spin 3s infinite linear;
+            -moz-animation: spin 3s infinite linear;	/* Firefox */
+            -webkit-animation: spin 3s infinite linear;	/* Safari 和 Chrome */
+            -o-animation: spin 3s infinite linear;	/* Opera */
+        }
+        .appOrNode-container{
+            display: inline-block;position: relative;
+        }
+        .appOrNode-bg{
+            background: url("../../../img/dispatch/task/statistics-icon.png") no-repeat;
+            background-size: 180px;display: inline-block;width: 180px;height: 180px;
+            margin-bottom: 30px;
+        }
+        .app-count-icon{
+            background-position: 0 0;
+        }
+        .node-count-icon{
+            background-position: 0 -187px;
+            margin-left: 50px;
+        }
+        .app-count-font{
+            font-size: 28px;color: #FF6600;vertical-align: middle;padding-bottom: 5px
+        }
+        /******end任务头部***********/
+
+        /****start任务操作列************/
+        .first-operation{
+            margin-left: 20px;margin-top: 5px;
+            position: relative;
+        }
+        .first-operation .navbar-nav li{
+            margin-right: 18px;
+        }
+        .tooltip{
+            width: auto;
+            white-space: nowrap;
+            top: -32px !important;
+        }
+        .tooltip.top .tooltip-arrow{
+            border-top-color:#14477B;
+        }
+        .tooltip .tooltip-inner{
+            background-color:#14477B;
+            border:1px solid #0B5FB3;
+            color: #3DA3BC;
+            border-radius: 4px !important;
+        }
+        .task-operate-bg{
+            background: url("../../../img/dispatch/task/task-operate.png");
+            background-size: 30px; width: 30px;height: 30px;cursor: pointer;
+            border-radius: 50%;
+        }
+        .split-line{
+            height: 20px;border-left: 1px solid #66FFFF;
+            position: absolute;left: 50px;top: 6px; opacity: 0.5;
+        }
+        .split-line-left{
+            margin-left: 18px;
+        }
+        .task-opicon-1{
+            background-position: 0 -5px;
+            background-color:#0080FF
+        }
+        .task-opicon-2{
+            background-position: 0 -37px;
+        }
+        .task-opicon-3{
+            background-position: 0 -68px;
+        }
+        .task-opicon-4{
+            background-position: 0 -99px;
+        }
+        .task-opicon-5{
+            background-position: 0 -130px;
+        }
+        .task-opicon-6{
+            background-position: 0 -161px;
+        }
+        .view-task-progress{
+            color: #66FFFF; vertical-align: middle;
+            margin-top: 4px; font-size: 22px;opacity: 0.9;
+            cursor:pointer;
+        }
+        .view-task-progress:hover{
+            opacity: 1;
+        }
+        /****end任务操作列************/
+
+        /*****start任务执行内容******/
+        .expand_row_style{
+            zoom: 1;overflow: hidden;height: 120px;
+            padding-left: 20px;position: relative;
+        }
+        .expand-or-collapse-icon{
+            background: url("../../../img/dispatch/task/expand-icon.png") no-repeat;
+            background-size: 30px;cursor: pointer;
+        }
+        .expand-icon{
+            width: 30px;height: 30px;display: inline-block;
+        }
+        .collapse-icon{
+            width: 30px;height: 30px;display: inline-block;
+            transform: rotate(180deg);opacity: 0.4;
+        }
+        .task-exe-block{
+            width:210px;
+            height: 100px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+            border: 1px solid #00B8FE;
+            border-radius: 4px;
+            vertical-align: top;
+            padding: 5px 0 0 10px;
+            position: relative;
+            background:rgba(7, 23, 35,0.4);
+        }
+        .handle-exe-icon{
+            background: url("../../../img/dispatch/task/handle-exe-icon.png") no-repeat;
+            background-size: 45px;width: 45px;height: 26px;display: inline-block;
+            opacity: 0.4;margin-left: -10px;margin-top:5px;
+        }
+        .auto-exe-icon{
+            background: url("../../../img/dispatch/task/auto-exe-icon.png") no-repeat;
+            background-size: 26px;width: 26px;height: 26px;display: inline-block;
+            opacity: 0.4;margin-top:5px;
+        }
+        .exe-time-icon{
+            background: url("../../../img/dispatch/task/exe-time-icon.png") no-repeat;
+            background-size: 26px;width: 26px;height: 26px;display: inline-block;
+            opacity: 0.4;
+        }
+        .task-exe-block .task_name{
+            display: inline-block;max-width: 190px;
+            color: #66FFFF;font-size: 16px;opacity: 0.9;
+            text-overflow: ellipsis; white-space: nowrap;
+            overflow: hidden;vertical-align: middle;
+        }
+        .task-exe-block .time_used{
+            display: block;width: 100px;
+            position: absolute;bottom: 10px;
+            left: 44px;text-overflow: ellipsis;
+            overflow: hidden; white-space: nowrap;
+            color: #8A949F;
+        }
+        /*背景#FF7974透明度0.1*/
+        .single-task-fail{
+            border: 1px solid #FF7974;
+            background:rgba(255, 121, 116, 0.1);
+        }
+        .single-task-suspend{
+            border: 1px solid #FFA350;
+            background:rgba(255, 163, 80,0.1);
+        }
+        .single-task-wait{
+            border: 1px solid rgba(1, 204, 212,0.4);
+        }
+        .single-task-suc-circle{
+            background: url("../../../img/dispatch/task/single-task-suc.png") no-repeat;
+            background-size: 44px;width: 44px;height: 44px;opacity: 0.2;
+        }
+        .single-task-fail-circle{
+            background: url("../../../img/dispatch/task/single-task-fail.png") no-repeat;
+            background-size: 44px;width: 44px;height: 44px;
+        }
+        .single-task-suc-icon{
+            background: url("../../../img/dispatch/task/exe-suc.png") no-repeat;
+            background-size: 18px;width: 18px;height: 18px;position:absolute;
+            bottom:13px;right: 13px;
+        }
+        .single-task-fail-icon{
+            background: url("../../../img/dispatch/task/exe-fail.png") no-repeat;
+            background-size: 18px;width: 18px;height: 18px;position:absolute;
+            bottom:13px;right: 13px;
+        }
+        .single-task-suspend-icon{
+            background: url("../../../img/dispatch/task/exe_suspend.png") no-repeat;
+            background-size: 18px; height:18px;width: 18px;  position:absolute;
+            bottom:14px;right: 14px;
+        }
+        /*****end任务执行内容******/
+
+
+        /************start节点*****************/
+        /*监控头部搜索框*/
+        .search-style {
+            width: 397px;display: inline-block;
+            position: absolute; top:-2px;right: 7%;
+            overflow: hidden;
+        }
+        .search-style:hover input,.node-search-style:hover input{
+            border: 1px solid #4290E2;
+            border-right: 1px solid rgba(1, 204, 212,0.4);
+        }
+        .search-style:hover .search-logo,.node-search-style:hover .search-logo{
+            border: 1px solid #4290E2;
+        }
+        .search-input{
+            width:350px;float: left;
+        }
+        .search-input input{
+            width:356px;
+            padding-right: 20px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            background: rgba(9, 16, 22,0.5)!important;
+            border: 1px solid rgba(1, 204, 212,0.4) !important;
+            color:#FFF;
+        }
+        .search-input input:hover,.node-search-style input:hover{
+            border-color: #4290E2 !important;
+        }
+        .search-btn{
+            position: relative;
+            width:42px;float: right;
+        }
+        /*搜索图标样式*/
+        .search-logo{
+            position:absolute; top:0; left:0;
+            font-size:18px;border:1px solid rgba(1, 204, 212,0.4);
+            width:42px;height:34px; line-height:34px;
+            text-align:center; border-left:none;
+            border-bottom-right-radius:4px;
+            border-top-right-radius:4px;
+            cursor:pointer;
+        }
+        .search-icon{
+            background: url("../../../img/dispatch/task/search-icon.png") no-repeat 0/16px;
+            display: inline-block;width: 16px;height: 16px;margin: 9px 0 0 13px;
+        }
+        /*查看节点-搜索框*/
+        .node-search-style {
+            width: 182px;display: inline-block;
+            overflow: hidden; zoom: 1;
+            position: absolute; top: 35px;left: 24px;
+        }
+        .node-search-style input{
+            width:141px;
+            height: 30px;
+            padding: 5px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            background: rgba(9, 16, 22,0.5)!important;
+            border: 1px solid rgba(1, 204, 212,0.4) !important;
+            color:#FFF;
+        }
+        .node-search-style .search-logo{
+            height:30px; line-height:30px;width: 40px;
+        }
+        .node-search-style .search-input{
+            width: 140px;
+        }
+        .node-search-style .search-icon{
+            margin-top: 7px;
+        }
+
+
+        /***节点块***/
+        .node-block{
+            width: 400px;height: 280px;border: 1px solid rgba(1, 204, 212,0.4);
+            margin-right: 10px;margin-bottom: 20px;border-radius: 4px;
+            overflow: hidden;cursor: pointer;
+        }
+        .node-block:hover{
+            border-color: #01CCD4;
+        }
+        .node-block-left{
+            display: inline-block;
+        }
+        .node-block-left .sever-bg{
+            background: url("../../../img/dispatch/task/server-bg.png") no-repeat;
+            background-size: 116px; width: 116px;height: 116px;opacity: 0.6;
+            position: absolute;top: 10px;left: 20px;  z-index: 2;
+        }
+        .node-block-left .sever-bg:hover{
+            background: url("../../../img/dispatch/task/server-bg-spin.png") no-repeat;
+            background-size: 116px; width: 116px;height: 116px;opacity: 0.9;
+            position: absolute;top: 10px;left: 20px;z-index: 2;
+            animation: spin 3s infinite linear;
+            -moz-animation: spin 3s infinite linear;	/* Firefox */
+            -webkit-animation: spin 3s infinite linear;	/* Safari 和 Chrome */
+            -o-animation: spin 3s infinite linear;	/* Opera */
+        }
+        .node-block-left .sever-icon{
+            background: url("../../../img/dispatch/task/server-icon.png") no-repeat;
+            background-size: 116px; width: 116px;height: 116px;
+            position: absolute;top: 10px;left: 20px; z-index: 1;
+        }
+        .node-block-left .node-ip{
+            position: absolute;
+            top: 128px;left: 0;
+            display: inline-block;
+            width: 155px;
+            text-align: center;
+            color: #66FFFF;
+        }
+        .node-block-verline{
+            display: inline-block; width: 1px; height: 70px;
+            background-color: #F2F2F2;margin-left: 150px;margin-top: 70px;
+        }
+        .node-block-horline{
+            display: inline-block;width: 100%;
+            height: 1px;  margin-top:20px;
+            background-color: rgba(1, 204, 212,0.4);
+        }
+        .node-block-right{
+            position: absolute;right: 10px;top: 0px;min-height: 165px;
+            width: 240px;vertical-align: top;overflow: hidden;
+        }
+        /*操作系统-icon*/
+        .node-block-opsys-icon{
+            background: url('../../../img/dispatch/task/operation-sys.png') no-repeat;
+            width: 20px;  height: 20px;
+            display: inline-block;
+        }
+        .node-block-opversion{
+            display: inline-block; vertical-align: top;
+            width: 200px; overflow: hidden; cursor:default;
+            white-space: nowrap;font-size: 16px;color:#B6BCC1;
+        }
+        .node-hardware-block{
+            padding-top: 2px;
+            white-space: nowrap;
+        }
+        .node-block-hardware-icon{
+            background: url('../../../img/dispatch/task/total_node.png') no-repeat;
+            display: inline-block; width: 20px; height: 20px;vertical-align: middle;
+        }
+        .no_rate_data{
+            padding-top: 8px;
+            padding-left: 3px;
+            display:inline-block;
+            vertical-align: top;
+            font-size: 12px;
+            color: #CCC;
+        }
+        .cpu-icon{
+            background-position:  -8px -2px;
+            margin-left: 5px;
+        }
+        .mem-icon{
+            background-position: -11px -51px;
+            margin-left: 8px;
+        }
+        .hard-disk-icon{
+            background-position: -8px -27px;
+            margin-left: 5px;
+        }
+        .span_font_style{
+            width: 200px; color: #CCC;font-size: 12px;opacity: 0.6;vertical-align: middle;
+        }
+        .node-block-bottom{
+
+        }
+        .node-block-bottom ul li{
+            display: inline-block;padding-left: 20px;
+            margin-top: 7px;
+        }
+        .node-block-bottom ul li:first-child{
+            width: 200px;
+        }
+        .node-block-bottom-icon{
+            background: url('../../../img/dispatch/task/hardware-icon.png') no-repeat;
+            display: inline-block;background-size: 30px;width: 30px;height: 30px;
+        }
+        .cpu-monitor-icon{
+            background-position: 0 -10px;
+        }
+        .net-monitor-icon{
+            background-position: 0 -127px;
+        }
+        .hard-disk-monitor-icon{
+            background-position: 0 -49px;
+        }
+        .hard-IO-monitor-icon{
+            background-position: 0 -88px;
+        }
+        .hardware-progress-block{
+            display:inline-block;
+            padding-left: 5px
+        }
+        .hardware-progress-font{
+            color: rgba(204, 204, 204,0.6);font-size: 12px;
+        }
+        .hardware-progress-bar{
+            background-color: #162A40;
+            border: 1px solid  #00B8FE !important;
+            border-radius: 5px!important;
+            height: 10px; width: 120px;
+            margin-bottom: 0;margin-top: 5px;
+        }
+        .hardware-progress-bar  .progress-bar{
+            background-color: #00B8FE;
+        }
+        .net-icon-com{
+            width: 13px;height: 13px;display: inline-block; margin-right: 8px;
+        }
+        .net-up-icon{
+            background: url("../../../img/dispatch/task/net-up-icon.png") no-repeat 0/13px;
+        }
+        .net-down-icon{
+            background: url("../../../img/dispatch/task/net-down-icon.png") no-repeat 0/13px;
+            transform: rotate(180deg);opacity: 0.6;
+        }
+        /*节点查看*/
+        .node-detail-container{
+            margin-top: 75px;
+            padding-left: 8px;
+            padding-right: 5%
+        }
+        .node-tabs {
+            position: absolute;
+        }
+        .node-tab {
+            height: 120px;
+            margin: 0 10px 10px 0;
+            cursor: pointer;
+        }
+        .normal {
+            border-radius: 4px;
+            width: 180px;
+            border: 1px solid #096674;
+            background: #0E2031;
+        }
+        .tab_checked {
+            background: #102234;
+            border: none;
+            width: 188px;
+            box-shadow:none;
+            pointer-events: none;
+        }
+        .normal-cover {
+            padding: 14px;
+            margin-top: -15px;
+        }
+        .checked-cover {
+            background: #102234;
+            width: 191px;
+            height: 120px;
+            border: 1px solid #66FFFF;
+            border-right: none;
+            padding: 14px;
+            margin: -15px;
+        }
+        .node-tab:hover {
+            box-shadow: none;
+            border-color: rgba(9, 102, 116,0.7);
+        }
+        .node-content {
+            background: #102234;
+            border: 1px solid #66FFFF;
+            margin-left: 190px;
+            box-shadow:none;
+            padding: 8px;
+            margin-top: 0;
+        }
+        .view-node-srv{
+            width: 64px;
+            height: 64px;
+            margin: 0 auto;
+        }
+        .view-node-srvbg-icon{
+            background: url("../../../img/dispatch/task/server-bg.png") no-repeat 0/64px;
+            opacity: 0.7;
+        }
+        .view-node-srvbg-spin-icon{
+            background: url("../../../img/dispatch/task/server-bg-spin.png") no-repeat 0/64px;
+            opacity: 0.9;
+        }
+        .view-node-srv-icon{
+            background: url("../../../img/dispatch/task/server-icon.png") no-repeat  0/64px;
+            margin-top: -64px;
+        }
+        .view-node-ip{
+            margin: 0 auto;color: #66FFFF;text-align: center;
+            padding-top: 7px;font-weight: bold;
+        }
+        .close-view-node-icon{
+            background: url("../../../img/dispatch/task/view-node-del-icon.png") no-repeat 0/24px;
+            width: 24px;height: 24px;float: right;cursor: pointer;
+        }
+        .row table{
+            width: 100%;
+        }
+        .row table tr td{
+            border: 1px solid #096674;
+            padding: 7px;text-align: center;
+            word-break: break-all;color: #66FFFF;
+        }
+        .row table tr td:last-child{
+            text-align: left;
+        }
+        .row label{
+            color: rgba(225,225,225,0.8);padding-top: 7px;
+            text-align: center;
+        }
+        .node-basic-info{
+            padding-top: 25px;
+        }
+        .node-basic-info table tr td:first-child{
+            min-width: 77px;color: rgba(225,225,225,0.8);
+        }
+        .node-basic-info table tr td:last-child{
+            padding-left: 25px;
+        }
+        .node-sys-info{
+            padding-top: 20px;padding-bottom: 7px;
+        }
+        .node-sys-info .hardware-progress-font{
+            color: #FFF;
+        }
+        .node-sys-info ul li{
+            display: inline-block;padding-right: 30px;
+        }
+        .node-progress-info{
+
+        }
+        .node-progress-info table thead tr td{
+            color: rgba(225,225,225,0.8);white-space: nowrap;
+        }
+        .exe-fail-transparent-icon{
+            background: url("../../../img/dispatch/task/exe-fail-transparent.png") no-repeat 0/18px;
+            display: inline-block;width: 18px;height: 18px;vertical-align: middle;
+        }
+        /************end节点*****************/
+    </style>
+</head>
+<body>
+<div class="container-fluid task-panel" ng-controller="taskMonitorCtrl">
+    <!-- logo-->
+    <div class="corslares_icon" title="返回">
+        <img src="../../../img/dispatch/task/logo.png" ng-click="back()"/>
+    </div>
+    <!-- 数据加载中-->
+    <div ng-show="control.loading">
+        <div class="page_loading">
+            <span class="fa fa-spinner fa-pulse" style="font-size: 24px;color: #FFF"></span>
+            正在加载中...
+        </div>
+    </div>
+    <!--数据加载失败 -->
+    <div class="page_loading" ng-show="control.err_msg" style="line-height: 20px">
+        <div ng-bind="control.err_msg" style="color: #F37889;word-break: break-all"></div>
+    </div>
+    <div ng-if="!control.loading && !control.err_msg">
+        <!-- 头部切换节点/任务操作列-->
+        <div class="task-navs">
+            <div ng-class="control.loading ? '':'breath-circle'" class="breath" ng-style="{'background':control.monitor_error ? 'red':'green'}"></div>
+            <div ng-class="control.loading ? '':'change-bg'"></div>
+            <div ng-class="control.loading ? '':'nav-task-checked'" ng-if="control.change_flag == 1" style="pointer-events: none"></div>
+            <div ng-class="control.loading ? '':'nav-node-default'" ng-if="control.change_flag == 1" ng-click="changeTask(2)"></div>
+            <div ng-class="control.loading ? '':'nav-task-default'" ng-if="control.change_flag == 2" ng-click="changeTask(1)"></div>
+            <div ng-class="control.loading ? '':'nav-node-checked'" ng-if="control.change_flag == 2" style="pointer-events: none"></div>
+        </div>
+        <!-- 节点任务监控搜索框-->
+        <div ng-class="control.loading ? '':'search-style'" ng-if="control.change_flag==2 && !control.view_node && !control.node_err_msg && info.node_info.node_basic_list.length != 0 || info.search_info.is_search">
+            <div class="search-input">
+                <input type="text"
+                       ng-model="info.search_info.key_word"
+                       class="form-control"
+                       ng-keydown="($event.which === 13) ? searchNodeByKeyword(): false"
+                       placeholder="输入ip或任务名进行搜索">
+            </div>
+            <div class="search-btn">
+                <span class="search-icon"></span>
+                <span class="search-logo" ng-click="searchNodeByKeyword()"></span>
+            </div>
+        </div>
+        <!-- 查看节点搜索框-->
+        <div ng-class="control.loading ? '':'node-search-style'" ng-if="control.change_flag==2 && control.view_node">
+            <div class="search-input">
+                <input type="text"
+                       ng-model="info.search_info.node_ip"
+                       class="form-control"
+                       placeholder="输入ip进行搜索"
+                       ng-keydown="($event.which === 13) ? searchNodeByIp(): false">
+            </div>
+            <div class="search-btn">
+                <span class="search-icon"></span>
+                <span class="search-logo" ng-click="searchNodeByIp()"></span>
+            </div>
+        </div>
+
+        <!-- 任务-->
+        <div ng-if="control.change_flag == 1">
+            <div class="row task-header row-border">
+                <div class="exe-header-bg-container" ng-mouseleave="clearAnimate('exe-header-bg')">
+                    <div class="exe-header-bg"></div>
+                    <div class="exe-header-circle">
+                        <div style="position: relative;top: 144px;left: 43px;z-index: 5">
+                            <div style="font-size: 16px;padding-left: 16px">任务总数</div>
+                            <div class="task-total-count" ng-class="info.statistics_info.task_count > 999 ? 'task-total-count-small':''"
+                                 ng-bind="info.statistics_info.task_count"></div>
+                        </div>
+                        <highchart config="circleConfig"></highchart>
+                    </div>
+                </div>
+                <div class="exe-count">
+                    <ul class="list-unstyled">
+                        <li>
+                            <span class="exe-finished"></span>
+                            <span>已完成的</span>
+                            <span ng-bind="info.statistics_info.finished_count"></span>
+                        </li>
+                        <li>
+                            <span class="executing"></span>
+                            <span>正在运行</span>
+                            <span ng-bind="info.statistics_info.executing_count"></span>
+                        </li>
+                        <li>
+                            <span class="will-execute"></span>
+                            <span>将要运行</span>
+                            <span ng-bind="info.statistics_info.will_execute_count"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="exe-sucOrfail">
+                    <ul class="list-unstyled">
+                        <li>
+                            <div class="all-exe-suc-icon">
+                                <highchart config="exeSucConfig"></highchart>
+                                <div class="exe-sucOrfail-icon exe-suc"></div>
+                                <div class="exe-sucOrfail-spin-icon exe-suc-spin" ng-mouseleave="clearAnimate('exe-suc-spin')"></div>
+                                <div style="position: absolute;top: 25px;left: 100px">
+                                    运行成功
+                                    <div style="color: #FF6600;font-size: 28px;" ng-bind="info.statistics_info.success_count"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="all-exe-suc-icon">
+                                <highchart config="exeFailConfig"></highchart>
+                                <div class="exe-sucOrfail-icon exe-fail"></div>
+                                <div class="exe-sucOrfail-spin-icon exe-fail-spin" ng-mouseleave="clearAnimate('exe-fail-spin')"></div>
+                                <div style="position: absolute;top: 25px;left: 100px">
+                                    运行失败
+                                    <div style="color: #FF6600;font-size: 28px;" ng-bind="info.statistics_info.fail_count"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="appOrNode-container">
+                    <div class="appOrNode-bg app-count-icon"></div>
+                    <div style="position: absolute;bottom: 57px;" ng-style="{'left':info.statistics_info.application_count > 99 ? '43px':'50px'}">
+                        涉及应用
+                            <span class="app-count-font"
+                                  ng-style="{'font-size':info.statistics_info.application_count > 99 ? '20px':''}"
+                                  ng-bind="info.statistics_info.application_count"></span>
+                    </div>
+                    <div class="appOrNode-bg node-count-icon"></div>
+                    <div style="position: absolute;bottom: 57px;;right: 43px">
+                        节点总数
+                            <span class="app-count-font"
+                                  ng-style="{'font-size':info.statistics_info.node_count > 99 ? '20px':''}"
+                                  ng-bind="info.statistics_info.node_count"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" >
+                <!-- 任务执行操作列-->
+                <div class="first-operation">
+                    <!-- op_type：1全部的，2收藏的，3正在执行的，4待执行的，5执行异常的，6执行成功的-->
+                    <ul class="nav navbar-nav" ng-style="{'pointer-events':control.change_optype_loading ? 'none':''}">
+                        <div class="split-line"></div>
+                        <li ng-repeat="op in data.operation_data">
+                            <div data-toggle="tooltip" data-placement="top" title="{{op.text}}" class="task-operate-bg task-opicon-{{op.op_type}}" ng-click="changeTaskOpType(op.op_type)"
+                                 ng-class="{'split-line-left': op.op_type == 2}"
+                                 ng-mouseover="showTaskOpeTip(op.op_type)" ng-mouseleave="hideTaskOpeTip(op.op_type)"></div>
+                        </li>
+                        <li>
+                            <div data-toggle="tooltip" data-placement="top"  title="查看运行信息">
+                                <span class="fa fa-eye view-task-progress" ng-click="viewTaskProgress()"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row row-border" ng-repeat="task in info.task_list track by $index" ng-style="{'border-bottom':$last ? 'none':''}" ng-cloak>
+                <div class="col-sm-12">
+                    <!-- 任务执行监控-->
+                    <div class="row" style="padding: 10px 0 10px 40px">
+                        <span class="task-exe-state" ng-style="{'opacity': task.is_expand || !task.show_toggle_btn ? '' : '0.4'}">{{task.task_cn_status}}</span>
+                    </div>
+                    <div class="row expand_row_style" ng-style="taskHeight(task,$index)" id="row-container-{{$index}}">
+                        <ul class="list-unstyled" id="mointor-task-{{$index}}" style="margin-bottom: 0">
+                            <li ng-repeat="exe_task in task.exe_list | orderBy:'-start_bk_datetime' track by $index" style="display: inline-block;">
+                                <ul  class="task-exe-block list-unstyled" title="{{exe_task.start_bk_datetime ? '开始时间：' + exe_task.start_bk_datetime.substring(exe_task.start_bk_datetime.lastIndexOf('.'),-1) : ''}}"
+                                     ng-class="(exe_task.task_status == 3 || exe_task.task_status == 10 || exe_task.task_status == 5) ? 'single-task-fail': exe_task.task_status == 7 ? 'single-task-suspend': (exe_task.task_status == 4 || exe_task.task_status == 8) ? 'single-task-wait':''">
+                                    <li>
+                                        <span class="task_name" title="{{exe_task.task_cn_name}}" ng-bind="exe_task.task_cn_name ? exe_task.task_cn_name : '--'"></span>
+                                    </li>
+                                    <li>
+                                        <span ng-class="exe_task.exe_types == 1 ? 'handle-exe-icon':'auto-exe-icon'"></span>
+                                        <span style="color: #8A949F;position: absolute;top: 35px;left: 44px" ng-bind="exe_task.exe_types == 1 ? exe_task.user_cn_name:'系统执行'"></span>
+                                    </li>
+                                    <li>
+                                        <span class="exe-time-icon"></span>
+                                        <span class="time_used" title="耗时：{{exe_task.time_used_cn}}" ng-bind="exe_task.time_used_cn ? exe_task.time_used_cn : '0秒'"></span>
+                                    </li>
+                                    <li style="position: absolute;right: 18px;bottom:10px" ng-show="exe_task.task_status">
+                                        <div class="single-task-suc-circle" ng-if="exe_task.task_status == 4"></div>
+                                        <div class="single-task-suc-icon" ng-if="exe_task.task_status == 4"></div>
+                                        <div class="single-task-fail-circle" ng-if="exe_task.task_status == 5"></div>
+                                        <div class="single-task-fail-icon breath" ng-if="exe_task.task_status == 5"></div>
+                                        <div class="single-task-suspend-icon breath" ng-if="exe_task.task_status == 7"></div>
+                                        <div ng-if="exe_task.task_status && (exe_task.task_status != 4 && exe_task.task_status != 5)">
+                                            <highchart config="exe_task.exeConfig"></highchart>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- 展开与收起-->
+                        <div style="position: absolute;right: 20px;top: 50%;transform: translateY(-50%)">
+                            <span class="expand-or-collapse-icon expand-icon" title="点击收起" ng-if="task.show_toggle_btn && task.is_expand" ng-click="recordExpandStatus(task,$index)"></span>
+                            <span class="expand-or-collapse-icon collapse-icon" title="点击展开" ng-if="task.show_toggle_btn && !task.is_expand" ng-click="recordExpandStatus(task,$index)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="info.task_list.length == 0">
+                <div class="col-sm-4 col-sm-offset-4 text-center">
+                    <div style="font-size: 16px;color: #CCC;padding-top: 40px" ng-show="!control.change_optype_loading">
+                        <span ng-if="control.task_optype == 1 || !control.task_optype">暂无任务信息</span>
+                        <span ng-if="control.task_optype == 2">暂无收藏的任务</span>
+                        <span ng-if="control.task_optype == 3">暂无正在执行的任务</span>
+                        <span ng-if="control.task_optype == 4">暂无待执行的任务</span>
+                        <span ng-if="control.task_optype == 5">暂无执行异常的任务</span>
+                        <span ng-if="control.task_optype == 6">暂无执行成功的任务</span>
+                    </div>
+                    <div style="font-size: 14px;padding-top: 40px" ng-show="control.change_optype_loading">
+                        <span class="fa fa-spinner fa-pulse" style="font-size: 22px;color: #FFF;vertical-align: bottom"></span>
+                        <span>数据加载中...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 节点监控-->
+        <div class="page_loading" ng-show="control.change_flag ==2 && !control.view_node && control.node_err_msg" style="line-height: 20px">
+            <div ng-bind="control.node_err_msg" style="color: #F37889;word-break: break-all"></div>
+        </div>
+        <div ng-show="control.change_flag ==2 && !control.view_node && !control.node_err_msg" style="margin-top: 42px" ng-cloak>
+            <div ng-repeat="one_node in info.node_info.node_basic_list" style="display: inline-block;position: relative;" >
+                <div class="node-block" ng-click="viewNode($index)">
+                    <!-- left-->
+                    <div class="node-block-left">
+                        <div class="sever-bg"></div><div class="sever-icon"></div>
+                        <span class="node-ip" ng-bind="one_node.node_soc_ip"></span>
+                    </div>
+                    <!-- 竖线-->
+                    <div class="node-block-verline"></div>
+                    <!-- right-->
+                    <div class="node-block-right">
+                        <div style="margin-top: 25px;margin-bottom:15px;padding-left: 8px">
+                            <span class="node-block-opsys-icon" ng-style="operationSysIcon(one_node.nodeBasicBean.node_soft_msg.op_system_flag,20)"></span>
+                                <span class="node-block-opversion">
+                                    {{one_node.nodeBasicBean.node_soft_msg.op_system_name ? one_node.nodeBasicBean.node_soft_msg.op_system_name : '未知'}}
+                                    <label title="{{one_node.nodeBasicBean.node_soft_msg.op_system}}" style="font-size: 12px;color:#B6BCC1;padding-left: 8px">
+                                        {{one_node.nodeBasicBean.node_soft_msg.op_system_version}}
+                                    </label>
+                                </span>
+                        </div>
+                        <div class="node-hardware-block">
+                            <span class="node-block-hardware-icon cpu-icon" title="cpu信息"></span>
+                                <span class="span_font_style" title="{{one_node.nodeBasicBean.node_hard_msg.cpu}}"
+                                      ng-bind="one_node.nodeBasicBean.node_hard_msg.cpu ? one_node.nodeBasicBean.node_hard_msg.cpu : '--'"></span>
+                        </div>
+                        <div class="node-hardware-block">
+                            <span class="node-block-hardware-icon mem-icon" title="内存信息"></span>
+                                <span class="span_font_style" title="{{one_node.nodeBasicBean.node_hard_msg.mem}}"
+                                      ng-bind="one_node.nodeBasicBean.node_hard_msg.mem ? one_node.nodeBasicBean.node_hard_msg.mem :'--'"></span>
+                        </div>
+                        <div class="node-hardware-block">
+                            <span class="node-block-hardware-icon hard-disk-icon" title="硬盘信息"></span>
+                            <span class="span_font_style" ng-bind="one_node.nodeBasicBean.node_hard_msg.disk ? one_node.nodeBasicBean.node_hard_msg.disk :'--'"></span>
+                        </div>
+                    </div>
+                    <!-- 分割线-->
+                    <div class="node-block-horline"></div>
+                    <!-- bottom-->
+                    <div class="node-block-bottom">
+                        <ul class="list-unstyled">
+                            <li>
+                                <span class="node-block-bottom-icon cpu-monitor-icon" title="CPU占用率"></span>
+                                <div class="hardware-progress-block" ng-if="one_node.used_info">
+                                    <div class="hardware-progress-font">CPU占用率( {{one_node.used_info.cpu_rate}}% )</div>
+                                    <progressbar class="hardware-progress-bar" max="100" value="one_node.used_info.cpu_rate ? one_node.used_info.cpu_rate : 0" ></progressbar>
+                                </div>
+                                <span class="no_rate_data" ng-if="!one_node.used_info">暂无CPU占用率</span>
+                            </li>
+                            <li>
+                                <span class="node-block-bottom-icon net-monitor-icon" title="网络流量"></span>
+                                <div class="hardware-progress-block" ng-if="one_node.used_info">
+                                    <div style="color: #EE7231;font-size: 12px">
+                                        <span class="net-icon-com net-up-icon"></span>
+                                        <span style="padding-right: 10px">{{one_node.used_info.network_up}}</span>
+                                        <span>{{one_node.used_info.network_up_rate}}%</span>
+                                    </div>
+                                    <div class="hardware-progress-font">
+                                        <span class="net-icon-com net-down-icon"></span>
+                                        <span style="padding-right: 10px">{{one_node.used_info.network_down}}</span>
+                                        <span>{{one_node.used_info.network_down_rate}}%</span>
+                                    </div>
+                                </div>
+                                <span class="no_rate_data" ng-if="!one_node.used_info">暂无网络流量</span>
+                            </li>
+                        </ul>
+                        <ul class="list-unstyled">
+                            <li>
+                                <span class="node-block-bottom-icon hard-disk-monitor-icon" title="磁盘占用率"></span>
+                                <div class="hardware-progress-block" ng-if="one_node.used_info">
+                                    <div class="hardware-progress-font">磁盘占用率( {{one_node.used_info.disk_rate}}% )</div>
+                                    <progressbar class="hardware-progress-bar" max="100" value="one_node.used_info.disk_rate ? one_node.used_info.disk_rate : 0" ></progressbar>
+                                </div>
+                                <span class="no_rate_data" ng-if="!one_node.used_info">暂无磁盘占用率</span>
+                            </li>
+                            <li>
+                                <span class="node-block-bottom-icon hard-IO-monitor-icon" title="磁盘IO使用率"></span>
+                                <div class="hardware-progress-block" ng-if="one_node.used_info">
+                                    <div class="hardware-progress-font">磁盘IO( {{one_node.used_info.io_rate}}% )</div>
+                                    <progressbar class="hardware-progress-bar" max="100" value="one_node.used_info.io_rate ? one_node.used_info.io_rate : 0" ></progressbar>
+                                </div>
+                                <span class="no_rate_data" ng-if="!one_node.used_info">暂无磁盘IO使用率</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 暂无数据-->
+            <div ng-show="info.node_info.node_basic_list.length == 0">
+                <div style="width: 100px;height:100px;margin: 150px auto;text-align: center;color: #CCC;font-size: 16px">暂无节点信息</div>
+            </div>
+        </div>
+        <!-- 查看节点-->
+        <div class="container-fluid node-detail-container" ng-show="control.change_flag == 2 && control.view_node">
+            <div class="node-tabs">
+                <div class="node-tab" ng-class="node.active ? 'tab_checked' : 'normal'" ng-repeat="node in info.node_info.node_basic_list" ng-click="tabOne($index);">
+                    <div ng-class="node.active ? 'checked-cover' : 'normal-cover'">
+                        <div class="view-node-srv view-node-srvbg-icon" ng-class="node.active ? 'view-node-srvbg-spin-icon bg-spin':''"></div>
+                        <div class="view-node-srv view-node-srv-icon"></div>
+                        <div class="view-node-ip" ng-bind="node.node_soc_ip"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="node-content" ng-style="{'min-height' : (info.node_info.node_basic_list.length + 1) * 128}">
+                <div class="close-view-node-icon" ng-click="closeNodeView()" title="关闭"></div>
+                <div class="container-fluid">
+                    <div class="row node-basic-info">
+                        <label class="control-label col-sm-2">基本信息</label>
+                        <div class="col-sm-8" style="padding-left: 0">
+                            <table class="table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td width="80">主机</td>
+                                    <td>{{info.node_info.single_node.basic_info.node_soc_ip}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="80">操作系统</td>
+                                    <td>{{info.node_info.single_node.basic_info.nodeBasicBean.node_soft_msg.op_system_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="80">CPU</td>
+                                    <td>{{info.node_info.single_node.basic_info.nodeBasicBean.node_hard_msg.cpu}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="80">内存</td>
+                                    <td>{{info.node_info.single_node.basic_info.nodeBasicBean.node_hard_msg.mem}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="80">硬盘</td>
+                                    <td>{{info.node_info.single_node.basic_info.nodeBasicBean.node_hard_msg.disk}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row node-sys-info">
+                        <label class="control-label col-sm-2">系统信息</label>
+                        <div class="col-sm-10" style="padding-left: 0">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="node-block-bottom-icon cpu-monitor-icon" title="CPU占用率"></span>
+                                    <div class="hardware-progress-block" ng-if="info.node_info.single_node.sys_info">
+                                        <div class="hardware-progress-font">CPU占用率( {{info.node_info.single_node.sys_info.cpu_rate}}% )</div>
+                                        <progressbar class="hardware-progress-bar" max="100"
+                                                     value="info.node_info.single_node.sys_info.cpu_rate ? info.node_info.single_node.sys_info.cpu_rate : 0" ></progressbar>
+                                    </div>
+                                    <span class="no_rate_data" ng-if="!info.node_info.single_node.sys_info">暂无CPU占用率</span>
+                                </li>
+                                <li>
+                                    <span class="node-block-bottom-icon net-monitor-icon" title="网络流量"></span>
+                                    <div class="hardware-progress-block" ng-if="info.node_info.single_node.sys_info">
+                                        <div style="color: #EE7231;font-size: 12px">
+                                            <span class="net-icon-com net-up-icon"></span>
+                                            <span style="padding-right: 10px">{{info.node_info.single_node.sys_info.network_up}}</span>
+                                            <span>{{info.node_info.single_node.sys_info.network_up_rate}}%</span>
+                                        </div>
+                                        <div class="hardware-progress-font">
+                                            <span class="net-icon-com net-down-icon" style="opacity: 1"></span>
+                                            <span style="padding-right: 10px">{{info.node_info.single_node.sys_info.network_down}}</span>
+                                            <span>{{info.node_info.single_node.sys_info.network_down_rate}}%</span>
+                                        </div>
+                                    </div>
+                                    <span class="no_rate_data" ng-if="!info.node_info.single_node.sys_info">暂无网络流量</span>
+                                </li>
+                                <li>
+                                    <span class="node-block-bottom-icon hard-disk-monitor-icon" title="磁盘占用率"></span>
+                                    <div class="hardware-progress-block" ng-if="info.node_info.single_node.sys_info">
+                                        <div class="hardware-progress-font">磁盘占用率( {{info.node_info.single_node.sys_info.disk_rate}}% )</div>
+                                        <progressbar class="hardware-progress-bar" max="100"
+                                                     value="info.node_info.single_node.sys_info.disk_rate ? info.node_info.single_node.sys_info.disk_rate : 0 " ></progressbar>
+                                    </div>
+                                    <span class="no_rate_data" ng-if="!info.node_info.single_node.sys_info">暂无磁盘占用率</span>
+                                </li>
+                                <li>
+                                    <span class="node-block-bottom-icon hard-IO-monitor-icon" title="磁盘IO使用率"></span>
+                                    <div class="hardware-progress-block" ng-if="info.node_info.single_node.sys_info">
+                                        <div class="hardware-progress-font">磁盘IO( {{info.node_info.single_node.sys_info.io_rate}}% )</div>
+                                        <progressbar class="hardware-progress-bar" max="100"
+                                                     value="info.node_info.single_node.sys_info.io_rate ? info.node_info.single_node.sys_info.io_rate : 0" ></progressbar>
+                                    </div>
+                                    <span class="no_rate_data" ng-if="!info.node_info.single_node.sys_info">暂无磁盘IO使用率</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row node-progress-info">
+                        <label class="control-label col-sm-2">进程信息</label>
+                        <div class="col-sm-10" style="padding-left: 0">
+                            <table class="table-bordered">
+                                <thead>
+                                <tr>
+                                    <td width="44px">序号</td>
+                                    <td width="80px">用户ID</td>
+                                    <td>进程ID</td>
+                                    <td>父进程ID</td>
+                                    <td>CPU占用</td>
+                                    <td>启动时间</td>
+                                    <td>运行时间</td>
+                                    <td>状态</td>
+                                    <td style="min-width:190px">命令</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="pres in info.node_info.single_node.process_list track by $index">
+                                    <td>{{$index + 1}}</td>
+                                    <td><span ng-bind="pres.user_id ? pres.user_id : '--'"></span></td>
+                                    <td><span ng-bind="pres.pid ? pres.pid : '--'"></span></td>
+                                    <td><span ng-bind="pres.ppid ? pres.ppid : '--'"></span></td>
+                                    <td><span ng-style="{'color': pres.cpu_rate >= 50 ? '#FF7974':'#B0F85D'}"><span  ng-bind="pres.cpu_rate ? pres.cpu_rate : '0'"></span>%</span></td>
+                                    <td><span ng-bind="pres.start_time ? pres.start_time : '--'"></span></td>
+                                    <td title="{{pres.time_used}}" >
+                                        <span ng-bind="pres.time_used ? pres.time_used : '--'" style="white-space: nowrap;overflow: hidden"></span>
+                                    </td>
+                                    <td>
+                                        <!--<span class="fa fa-circle-o" style="color: #B0F85D;font-size: 20px" ng-if="pres.progerss_status == 1"></span>-->
+                                        <!--<span class="exe-fail-transparent-icon" style="color: #FF7974;font-size: 20px" ng-if="pres.progerss_status == 3"></span>-->
+                                        <span class="fa fa-spinner fa-pulse" style="color: #00B8FE;font-size: 20px" ng-if="pres.progerss_status == 1" title="运行"></span>
+                                        <span class="fa fa-pause-circle" style="color: #FFA350;font-size: 20px" ng-if="pres.progerss_status > 1 && pres.progerss_status < 5" title="{{pres.progerss_status == 4 ? '暂停':'睡眠'}}"></span>
+                                            <span class="fa-stack" style="top: 5px" ng-if="pres.progerss_status == 5" title="僵死">
+                                                <i class="fa fa-spinner fa-stack-2x" style="font-size: 19px;color: #999"></i>
+                                                <i class="fa fa-ban fa-stack-1x" style="font-size: 15px;left: 1px;top:-3px;transform: rotate(90deg);color: #FF7974"></i>
+                                            </span>
+                                    </td>
+                                    <td title="{{pres.cmd}}">
+                                        <div style="max-height: 100px;overflow: hidden;text-overflow: ellipsis">{{pres.cmd}}</div>
+                                    </td>
+                                </tr>
+                                <tr ng-if="info.node_info.single_node.process_list.length == 0">
+                                    <td colspan="9" style="text-align: center;color: rgba(225,225,225,0.8)">暂无数据</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

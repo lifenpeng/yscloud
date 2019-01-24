@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="table-search" style="margin-top: 15px">
+            <div class="table-search-input">
+                <input type="text"
+                       ng-model="search.key_word"
+                       class="form-control"
+                       placeholder="请输入场景名称进行搜索"
+                       ng-enter="doSearch()">
+            </div>
+            <div class="table-search-btn">
+                <span class="table-clear-logol"  ng-if="search.key_word" ng-click="clear()"></span>
+                <span class="table-search-logol"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<dispatch-scene-list></dispatch-scene-list>

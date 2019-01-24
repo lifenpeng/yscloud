@@ -1,0 +1,119 @@
+<!--添加SQL-->
+<div class="modal-header">
+    <h3 class="modal-title">添加SQL</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<!-- 输入SQL-->
+<form name="info.form.sql_handle_form" ng-submit="formSubmit()"  novalidate autocomplete="off" onKeyPress="if(event.keyCode==13)return false">
+    <div class="modal-body">
+        <!--应用系统-->
+        <div class="row form-style">
+            <label class="control-label col-sm-2 label-key" style="padding-top: 8px">应用系统</label>
+            <div class="col-sm-8 label-value">
+                <bs-select width="240" name="select_database" items="data.sql_sys_list"
+                                 select-val="selectSys(selectKey)"
+                                 option-key="business_sys_name" option-labal="business_cn_name"
+                                 my-select="info.sql_info.sys_name"
+                                 disable="control.save_btn_loading"
+                                 loading="control.get_sys_loading"
+                                 required></bs-select>
+                <validate-msg type="select" name="select_database" tag-cn-name="应用系统" model="info.sql_info.sys_name"></validate-msg>
+            </div>
+        </div>
+        <!--服务器-->
+        <div class="row form-style" style="padding-top: 20px;">
+            <label class="control-label col-sm-2 label-key" style="padding-top: 8px">服务器</label>
+            <div class="col-sm-8 label-value">
+                <bs-select width="240" name="select_srv_name" items="data.sql_srv_list"
+                                 select-val="selectSrv(selectKey)"
+                                 my-select="data.srv_name"
+                                 disable="control.save_btn_loading"
+                                 loading="control.get_srv_loading"
+                                 required></bs-select>
+                <validate-msg type="select" name="select_srv_name" tag-cn-name="服务器" model="data.srv_name"></validate-msg>
+            </div>
+        </div>
+        <!--数据库-->
+        <div class="row form-style" style="padding-top: 20px;">
+            <label class="control-label col-sm-2 label-key" style="padding-top: 8px">数据库</label>
+            <div class="col-sm-8 label-value">
+                <div ng-if="info.error_message" ng-bind="info.error_message" style="padding-top:8px;color:#E9416E"></div>
+                <div ng-if="!info.error_message">
+                    <bs-select width="240" name="select_soc_name" items="data.sql_soc_list"
+                                     my-select="info.sql_info.soc_name"
+                                     disable="control.save_btn_loading"
+                                     loading="control.get_soc_loading"
+                                     required>
+                    </bs-select>
+                </div>
+                <validate-msg type="select" name="select_soc_name" tag-cn-name="数据库" model="info.sql_info.soc_name"></validate-msg>
+            </div>
+        </div>
+        <!--sql语句-->
+        <div class="row form-style" style="padding-top: 20px;">
+            <label class="control-label col-sm-2 label-key">SQL</label>
+            <div class="col-sm-9" ng-if="!detail">
+                    <textarea name="sql_statement" class="form-control label-value" style="resize: none" placeholder="输入SQL语句"
+                              ui-codemirror="config.editorOptions"
+                              ui-refresh="true"
+                              ng-model="info.sql_info.sql_txt"
+                              ng-maxlength="1000"
+                              required></textarea>
+                <validate-msg name="sql_statement" tag-cn-name="SQL语句" model="info.sql_info.sql_txt"></validate-msg>
+            </div>
+        </div>
+        <!--敏感字段-->
+        <div class="row form-style"style="padding-top: 20px;" ng-if="info.sensite_info.show_table_flag">
+            <label class="control-label col-sm-2 label-key" style="padding-top: 8px">脱敏字段</label>
+            <div class="col-sm-9">
+                <table class="sub-table" row-plus="addSensitiveParam(info.sensite_info.sensitive_list)" tbl-data="info.sensite_info.sensitive_list">
+                    <thead>
+                    <tr>
+                        <td class="first_td">脱敏字段</td>
+                        <td>字段值</td>
+                        <td class="last_td" style="width: 70px;">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="td in info.sensite_info.sensitive_list">
+                        <td>
+                            <input type="text"
+                                   name="param_name{{$id}}"
+                                   ng-model="td.param_name"
+                                   class="sub-form-control"
+                                   placeholder="输入字段名"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   required>
+                            <validate-msg tag-cn-name="脱敏字段" name="param_name{{$id}}"></validate-msg>
+                        </td>
+                        <td style="text-align: center;width: 160px;">
+                            <input type="text"
+                                   name="param_value{{$id}}"
+                                   ng-model="td.param_value"
+                                   class="sub-form-control"
+                                   placeholder="输入字段名"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   required>
+                            <validate-msg tag-cn-name="字段值" name="param_value{{$id}}"></validate-msg>
+                        </td>
+                        <td class="align-center">
+                            <i class="fa fa-trash-o" ng-click="removeSensitiveParam($index,info.sensite_info.sensitive_list)"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--按钮-->
+        <div class="row">
+            <div class="col-md-12 text-center" style="margin: 40px 0 20px;">
+                <button ng-if="!control.save_btn_loading" type="button" ng-click="formCancel();" class="cancel-btn btn-xl">取消</button>
+                <button ng-if="control.save_btn_loading" disabled="disabled" type="button" class= "disabled-btn btn-xl" >取消</button>
+                <button ng-if="!control.save_btn_loading" type="submit" class="save-btn btn-xl">保存</button>
+                <button ng-if="control.save_btn_loading" disabled="disabled" class="save-btn btn-xl">
+                    <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

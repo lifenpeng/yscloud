@@ -1,0 +1,51 @@
+<style>
+    li:hover {
+        color: #FF6600;
+    }
+</style>
+<div class="row"  ng-show="!read_only && data.tbodys">
+    <div class="col-md-12">
+        <ul style="list-style: none; float: right; margin: 4px 0;border: none;">
+            <li ng-show="can_insert" style="display:inline; cursor: pointer;" ng-click="newLine()"><i class="fa fa-plus-circle" style="font-size: 18px;"></i>新增</li>
+            <li style="display:inline; cursor: pointer; margin: 0 20px;" ng-click="undoAllLines()"><i class="fa fa-refresh"></i>恢复</li>
+            <li style="display:inline; cursor: pointer;" ng-click="deleteLines()"><i class="fa fa-trash"></i>删除</li>
+        </ul>
+    </div>
+</div>
+<div class="row" style="min-width: 500px;"  ng-show="data">
+    <div class="col-md-12"  style="padding:0;">
+        <table class="sub-table td-nowrap">
+            <thead>
+            <tr>
+                <td style="min-width: 60px;">行号</td>
+                <td style="min-width: 200px;" ng-repeat="head in data.theads | filter: head.display">
+                    <i ng-show="head.primary_key" title="主键" style="display: inline-block;width:16px;height: 16px;background: url('./img/fault/key.png') no-repeat;vertical-align: middle;margin-bottom: 2px;"></i>
+                    <span ng-bind="head.value ? head.value : head.key"></span>&nbsp;
+                    <i ng-show="(!head.primary_key) && head.read_only" style="color: #ebebeb;">[只读]</i>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="!data.tbodys" class="tbl-odd">
+                <td colspan="{{data.theads.length + 1}}" style="text-align: center;">暂无数据</td>
+            </tr>
+            <tr ng-repeat="tr in data.tbodys" ng-class="tr.checked ? 'tbl-active' : ($index % 2 == 0 ? 'tbl-odd' : 'tbl-even')">
+                <td style="font-size: 15px;text-align: center;cursor: pointer;" ng-click="tr.checked = !tr.checked;" ng-style="tr.checked ? {'font-weight':'bold','color':'#000','font-style':'italic'}:{}">
+                    <span>{{$index + 1}}</span>
+                </td>
+                <td ng-repeat="head in data.theads | filter: head.display" ng-dblclick="(!head.read_only && tr.row_status != 4) || tr.row_status == 3 ? tr['updating_'+head.key] = true : console.log('read only')" ng-style="tdStyle(tr, head);">
+                    <span ng-hide="tr['updating_'+head.key]">{{tr[head.key]}}</span>
+                    <div class="form-group has-feedback" ng-show="tr['updating_'+head.key]" style="margin-bottom: 0;">
+                        <input
+                                type="text"
+                                class="sub-form-control"
+                                ng-model="tr[head.key]"
+                                ng-blur="updateTd($parent.$index, head.key);"
+                                style="margin-top: 1px;padding:0;background-image: linear-gradient(#f1b442, #f1b442), linear-gradient(#1f3144, #1f3144);">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

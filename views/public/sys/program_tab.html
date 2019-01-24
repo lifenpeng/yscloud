@@ -1,0 +1,20 @@
+<div class="node-tabs program-tab">
+    <div class="node-tab"  ng-click="changeCurProgram(1)" ng-if="control.modify_type != 3">
+        <div>
+            <div class="program-img new-img"></div>
+            <div  class="new-text">新增方案</div>
+        </div>
+    </div>
+    <div class="node-tab" ng-class="prog.active ? 'tab-checked' : 'normal'" ng-repeat="prog in data.progs" ng-click="changeCurProgram(control.modify_type,prog)">
+        <div ng-class="prog.active ? 'checked-cover' : 'normal-cover'">
+            <div class="program-img prog-img"></div>
+            <div  class="prog-name" ng-bind="prog.prog_cn_name"></div>
+        </div>
+    </div>
+</div>
+<div class="node-content" ng-style="{'min-height' : (data.progs.length + 1) * 128}">
+    <div class="container-fluid" style="padding: 0">
+        <!-- 这里是单个方案页面主体 -->
+        <div ui-view></div>
+    </div>
+</div>

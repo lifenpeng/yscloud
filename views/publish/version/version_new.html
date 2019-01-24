@@ -1,0 +1,284 @@
+
+<div class="version_publish container-fluid version-new">
+    <div class="row header-container version-border-color">
+        <div class="col-sm-4 font_sise_big">
+            <div class="version_busys_img"></div>
+            <span class="version_span">{{info.version_app_info.business_cn_name}}</span>
+        </div>
+        <div class="col-sm-3 version_font_small">
+            <div class="version-common-icon version-num-icon version-margin-top-10"></div>
+            <span class="version_time_span">当前版本</span>
+            <span class="version_time_span v_font_color_c">暂无</span>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3 text-right version-padding-top-9">
+             <span class="version-back-btn" ng-click="cancel()">
+                <span class="fa fa-reply"></span>返回
+            </span>
+        </div>
+    </div>
+    <div  class="row" style="height: 400px;padding-right: 20px;padding-top: 10px;">
+        <div ng-if="!control.show_add_type">
+            <div class="row" style="margin-top: 150px;">
+                <div class="col-sm-6 col-sm-offset-5">
+                    <div style="margin-left: 11px;" class="none_pub_img"></div>
+                    <div>
+                        <button class="hollow-btn btn-lg" type="button" ng-click="control.show_add_type = true" >
+                            <i class="fa fa-plus"></i>
+                            新增初始版本
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="control.show_add_type" style="padding-bottom: 20px;">
+            <div class="row"  style="margin-left: 6px;">
+                <tabset class="commonTabs" style="padding:0px 10px;">
+                    <tab  heading="应用包" class="analysis-tab" active="ptabs[0]">
+                        <div class="row" style="margin-left: 10px;height: 34px;">
+                            <div class="col-sm-5">
+                                <div class="row">
+                                    <div class="col-sm-6" style="padding-right: 0">
+                                        <label class="label_value">
+                                            <input type="radio" name="add_version_type_1" i-check ng-model="info.version_app_info.add_type" ng-change="changeAppPackUploadType(1)" value="1">
+                                            从本地
+                                        </label>
+                                        <label class="label_value" style="margin-left:25px;">
+                                            <input type="radio" name="add_version_type_1" i-check ng-model="info.version_app_info.add_type" ng-change="changeAppPackUploadType(2)" value="2">
+                                            FTP服务器
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" style="padding-left: 0;text-align: left;vertical-align: top;top:-6px;">
+                                        <div ng-show="info.version_app_info.add_type==2"  style="display: inline-block;">
+                                            <bs-select width=130
+                                                       name="version_soc_name"
+                                                       class="label_value"
+                                                       items="info.app_data.ver_soc_list"
+                                                       option-key="soc_name"
+                                                       option-labal="soc_name"
+                                                       select-val="changeAppSoc(selectKey)"
+                                                       my-select="info.version_app_info.soc_name"
+                                                    >
+                                            </bs-select>
+                                            <validate-msg tag-cn-name="数据源" type="select" name="soc_name" model="info.version_app_info.soc_name"></validate-msg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row version-horizontal-line"></div>
+                        <div ng-if="info.version_app_info.add_type==1" class="row"  style="margin-left: 6px;">
+                            <div class="col-sm-6" style="min-height: 50px;">
+                                <file-upload  fileupload="info.app_fileupload"  successthen="fileUploadSuccessThen(1);" downfile="downloadAppPackFile();"  deletefile="removeVersionFile();"></file-upload>
+                            </div>
+                        </div>
+                        <div  ng-if="info.version_app_info.add_type==1 && info.app_fileupload.filename">
+                            <label  style="margin-left: 26px;margin-top:5px;">编码格式</label>
+                                <bs-select width=130
+                                           style="display: inline-block;margin-left:10px"
+                                           name="encoding"
+                                           class="label_value"
+                                           items="info.app_data.encoding_list"
+                                           my-select="info.version_app_info.encoding">
+                                </bs-select>
+                        </div>
+                        <div ng-if="info.version_app_info.add_type==2">
+                            <div ng-show="!control.show_Ftp" style="min-height:300px;line-height: 300px;">
+                                <div class="row"  style="position: relative;margin-left: 0">
+                                    <div ng-show="info.version_app_info.soc_name"  class="col-sm-12" style="padding-left: 0px;padding-right: 0px;text-align: center;border-top:0px;position: relative;">
+                                        <div class="loading-font-color" style="height: 18px">
+                                            <span class="fa fa-spinner fa-spin version-font-30"></span>
+                                        </div>
+                                        <div class="loading-font-color version-margin-top-10" style="height: 18px">
+                                            <span>正在获取信息&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <div ng-show="!info.version_app_info.soc_name"  class="col-sm-12" style="padding-left: 0px;padding-right: 0px;text-align: center;border-top:0px;position: relative;">
+                                        <div class="loading-font-color" style="margin-top: 10px;height: 18px;">
+                                            <span>请选择数据源</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="control.show_Ftp && info.version_app_info.soc_name" style="min-height:400px;">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <file-browse  check="2" node="info.version_app_info" change-path="changeFilePath(info.version_app_info);"></file-browse>
+                                    </div>
+                                    <!--已选择的文件-->
+                                    <div class="col-sm-6" style="padding-left: 0">
+                                        <div style="width: 100%;height:350px;">
+                                            <div style="width: 100%;height: 33px;background: #091118;line-height: 33px;padding-left: 10px;font-size: 12px;">
+                                                已选文件&nbsp;&nbsp;
+                                            </div>
+                                            <div class="version-no-data-icon-container" ng-if="info.version_app_info.checked_files && info.version_app_info.checked_files.length ==0">
+                                                <div class="version-no-data-icon">
+                                                    <span class="version-no-data-icon-font">暂无文件</span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="info.version_app_info.checked_files && info.version_app_info.checked_files.length !=0">
+                                                <div ng-repeat="file in info.version_app_info.checked_files" style="height: 40px;width: 100%;margin-top: 5px">
+                                                    <div class="col-sm-5 col-sm-offset-1" style="padding:5px 0 0 0">
+                                                        <span style="float: left;"><i class="fa fa-file-text-o"></i></span>
+                                                        <span style="position: relative;display: inline-block;font-size: 12px; max-width: 140px;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;margin-left: 10px;padding-right: 28px;" title="{{file.file}}">
+                                                             {{file.file}}
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label  style="margin-top:5px;">编码格式</label>
+                                                        <bs-select width=130
+                                                                   style="display: inline-block;margin-left: 10px;"
+                                                                   name="encoding"
+                                                                   class="label_value"
+                                                                   items="info.app_data.encoding_list"
+                                                                   my-select="file.encoding"
+                                                                >
+                                                        </bs-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="配置包" class="analysis-tab" active="ptabs[1]">
+                        <div class="row" style="margin-left: 10px;height: 34px;">
+                            <div class="col-sm-5">
+                                <div class="row">
+                                    <div class="col-sm-6" style="padding-right: 0">
+                                        <label class="label_value">
+                                            <input type="radio" name="add_version_type_3" i-check ng-model="info.version_config_info.add_type" ng-change="changeConfigPackUploadType(1)" value="1">
+                                            从本地
+                                        </label>
+                                        <label class="label_value" style="margin-left:25px;">
+                                            <input type="radio" name="add_version_type_3" i-check ng-model="info.version_config_info.add_type" ng-change="changeConfigPackUploadType(2)" value="2">
+                                            FTP服务器
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" style="padding-left: 0;text-align: left;vertical-align: top;top:-6px;">
+                                        <div ng-if="info.version_config_info.add_type==2"  style="display: inline-block;">
+                                            <bs-select width=130
+                                                       name="version_soc_name_1"
+                                                       class="label_value"
+                                                       items="info.config_data.ver_soc_list"
+                                                       option-key="soc_name"
+                                                       option-labal="soc_name"
+                                                       select-val="changeConfigSoc(selectKey)"
+                                                       my-select="info.version_config_info.soc_name"
+                                                    >
+                                            </bs-select>
+                                            <validate-msg tag-cn-name="数据源" type="select" name="soc_name" model="info.version_config_info.soc_name"></validate-msg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row version-horizontal-line"></div>
+                        <div ng-if="info.version_config_info.add_type==1" class="row" style="margin-left: 6px;">
+                            <div class="col-sm-6" style="min-height: 50px;" >
+                                <file-upload  fileupload="info.config_fileupload"  successthen="fileUploadSuccessThen(2);"></file-upload>
+                            </div>
+                        </div>
+                        <div ng-if="info.version_config_info.add_type==1" class="row"  style="margin-left: 6px;">
+                            <div class="col-sm-3"  style="margin-top:20px;" ng-repeat="propackage in submit_info.config_base.file_list">
+                                <div class="addPackageBorder">
+                                    <div class="proj_packageTarFile_image"></div>
+                                    <div class="proj_packPath">
+                                        <a  class="plan_preFullPath">{{propackage.file_name}}</a>
+                                    </div>
+                                    <div style="margin-left: 32px;margin-top: -6px;">
+                                        <a  class="ac-upload" ng-click="downloadConfigPackage(propackage)" style="margin-right: 12px;">下载</a>
+                                        <span  class="plan_preDown_seperateLine">|</span>
+                                        <a ng-click="removeConfigPackage($index)" class="ac-upload">删除</a>
+                                    </div>
+                                </div>
+                                <div  ng-if="propackage.file_name" style="margin-top: 10px;">
+                                    <label  style="margin-top:5px;margin-left:5px;">编码格式</label>
+                                    <bs-select  width=130
+                                                style="display: inline-block;margin-left: 10px;"
+                                               name="encoding"
+                                               items="info.config_data.encoding_list"
+                                               my-select="propackage.encoding"
+                                            >
+                                    </bs-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="info.version_config_info.add_type==2">
+                            <div ng-show="!control.show_config_ftp" style="min-height:300px;line-height: 300px;">
+                                <div class="row"  style="position: relative;margin-left: 0">
+                                    <div ng-show="info.version_config_info.soc_name"  class="col-sm-12" style="padding-left: 0px;padding-right: 0px;text-align: center;border-top:0px;position: relative;">
+                                        <div class="loading-font-color" style="height: 18px">
+                                            <span class="fa fa-spinner fa-spin version-font-30"></span>
+                                        </div>
+                                        <div class="loading-font-color version-margin-top-10"  style="height: 18px">
+                                            <span>正在获取信息&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <div ng-show="!info.version_config_info.soc_name"  class="col-sm-12" style="padding-left: 0px;padding-right: 0px;text-align: center;border-top:0px;position: relative;">
+                                        <div style="margin-top: 10px;height: 18px;">
+                                            <span class="none-content-font-color">请选择数据源</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="control.show_config_ftp && info.version_config_info.soc_name" style="min-height:400px;">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                       <file-browse check="2"  node="info.version_config_info" change-path="changeFilePath(info.version_config_info);"></file-browse>
+                                    </div>
+                                    <!--已选择的文件-->
+                                    <div class="col-sm-6" style="padding-left: 0">
+                                        <div style="width: 100%;height:350px;">
+                                            <div style="width: 100%;height: 33px;background: #091118;line-height: 33px;color: #999;padding-left: 10px;font-size: 12px;">
+                                                已选文件&nbsp;&nbsp;
+                                            </div>
+                                            <div ng-if="info.version_config_info.checked_files && info.version_config_info.checked_files.length ==0" style="width: 100%;height:290px;background: url('./img/no_monitor_log.png') no-repeat 50% 50% ;position: relative;text-align: center;">
+                                                <div  style="position: relative;color: #ccc;top: 65%;font-size: 12px;">暂无文件</div>
+                                            </div>
+                                            <div ng-if="info.version_config_info.checked_files && info.version_config_info.checked_files.length !=0">
+                                                <div ng-repeat="file in info.version_config_info.checked_files" style="height: 40px;width: 100%;margin-top: 5px">
+                                                    <div class="col-sm-5 col-sm-offset-1" style="padding:5px 0 0 0">
+                                                        <span style="float: left;"><i class="fa fa-file-text-o"></i></span>
+                                                        <span style="position: relative;display: inline-block;font-size: 12px; max-width: 140px;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;margin-left: 10px;padding-right: 28px;" title="{{file.file}}">
+                                                             {{file.file}}
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label  style="margin-top:5px;">编码格式</label>
+                                                        <bs-select width=130
+                                                                   style="display: inline-block;margin-left: 10px;"
+                                                                   name="encoding"
+                                                                   class="label_value"
+                                                                   items="info.app_data.encoding_list"
+                                                                   my-select="file.encoding"
+                                                                >
+                                                        </bs-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-12 text-center">
+                    <button type="button" ng-click="cancel()" class="cancel-btn btn-md">取消</button>
+                    <button  type="button" ng-click="save()" class="save-btn btn-md">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--初始化遮罩层-->
+<div class="version-new-layer-container" ng-if="control.layers_loading" ng-style="calculateLayerHeight()">
+    <div class="layer-inner-container">
+        <span>正在构建初始化版本&nbsp;</span>
+        <span class="fa fa-spinner fa-spin"></span>
+    </div>
+</div>

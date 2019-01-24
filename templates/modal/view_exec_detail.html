@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-show="info.impl_type == 2">SHELL</h3>
+    <h3 class="modal-title" ng-show="info.impl_type == 7">PYTHON2</h3>
+    <h3 class="modal-title" ng-show="info.impl_type == 8">PYTHON3</h3>
+    <div ng-click="close()"></div>
+</div>
+<div class="modal-body view-exec-detail">
+    <!--正在获取信息-->
+    <div class="row" ng-if="control.loading_flag">
+        <div class="col-sm-12 text-center" style="margin-top: 50px;margin-bottom: 50px">
+            <div style="margin:0 auto;font-size: 20px;border:1px dashed #44dcfd;height:100px;line-height:100px;width:320px;border-radius: 4px;">
+                <span style="color:#44dcfd;"><i style="font-size: 24px;" class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;正在获取详细信息</span>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center error-font-color" ng-show="info.error_msg && !control.loading_flag">
+        <p>请求服务异常</p>
+        <p style="word-break: break-all;" ng-bind="info.error_msg"></p>
+    </div>
+    <div class="row form-style" ng-if="!control.loading_flag && !info.error_msg">
+        <div class="col-sm-12">
+            <label class="col-sm-2 label-key">脚本</label>
+            <div class="col-sm-10">
+                <textarea
+                        ui-codemirror=" info.impl_type == 2 ? config.detailOptionShell : config.detailOptionPython"
+                        ui-refresh="true"
+                        ng-model="info.script_text"
+                        class="form-control label-value"
+                        >
+                </textarea>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <label class="col-sm-2 label-key" style="margin-top: 15px;">执行结果</label>
+            <div class="col-sm-10">
+                <div class="container-fluid">
+                    <div class="row" style="margin-bottom: 5px;" ng-repeat="exe in info.exe_msg_list"  ng-click="exe.collapse_flag = !exe.collapse_flag">
+                        <div class="col-sm-12 exe-result-header" >
+                            <div class="col-sm-3 label-value" style="text-align: left">{{exe.soc_ip}}</div>
+                            <div class="col-sm-3 label-value" style="text-align: left">{{exe.soc_name}}</div>
+                            <div class="col-sm-4">
+                                <span class="label-value" ng-show="exe.cmd_status == 1">未执行</span>
+                                <span class="label-value" ng-show="exe.cmd_status == 5">[{{exe.act_exec_time}}s]</span>
+                                <span style="position: absolute;right: 0;top: 11px;width: 18px;height: 19px;font-size: 14px;" title="{{exe.cmd_status == 2 ? '执行中': exe.cmd_status == 3 ? '执行失败':exe.cmd_status == 4 ? '验证失败':exe.cmd_status == 5 ? '执行成功':exe.cmd_status == 6 ? '执行跳过':exe.cmd_status == 7 ? '执行停止':''}}"
+                                      ng-class="{'fa fa-spin fa-spinner':exe.cmd_status == 2,
+                                               'status-img list-fail-img':exe.cmd_status == 3,
+                                               'fa fa-exclamation-triangle':exe.cmd_status == 4,
+                                               'status-img list-success-img':exe.cmd_status == 5,
+                                               'fa fa-step-forward':exe.cmd_status == 6,
+                                               'fa fa-stop-circle-o':exe.cmd_status == 7}"></span>
+                            </div>
+                            <div class="col-sm-2" style="text-align: right;cursor: pointer;">
+                                <i ng-if="!exe.collapse_flag" class="fa fa-angle-down" ng-click="$event.stopPropagation();exe.collapse_flag = !exe.collapse_flag;"></i>
+                                <i ng-if="exe.collapse_flag" class="fa fa-angle-up" ng-click="$event.stopPropagation();exe.collapse_flag = !exe.collapse_flag;"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" collapse="!exe.collapse_flag" style="padding: 0;">
+                            <div class="row form-style exe-result-content" ng-click="$event.stopPropagation();" >
+                                <div class="col-sm-12">
+                                    <ul style="list-style: none;margin-right: 0;font-size: 12px;margin-bottom: 0;">
+                                        <li ng-repeat="detail in exe.result_msg track by $index" style="padding: 3px 0;">{{detail}}</li>
+                                    </ul>
+                                    <div ng-if="!exe.result_msg || exe.result_msg.length == 0" class="none-content-font-color">暂无数据</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div style="text-align: center;margin: 40px 0 20px 0">
+    <button class="cancel-btn btn-md" type="button" ng-click="close()">关闭</button>
+</div>
+</div>

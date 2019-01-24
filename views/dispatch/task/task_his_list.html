@@ -1,0 +1,121 @@
+
+<div class="table-search" style="margin-top: 15px;margin-bottom: 0">
+    <div class="table-search-input">
+        <input type="text"
+               class="form-control"
+               ng-model="control.search_keyword"
+               placeholder="请输入任务编号或名称进行搜索"
+               ng-enter="searchTaskByKeyword(search_keyword)">
+    </div>
+    <div class="table-search-btn">
+        <span class="table-clear-logol" ng-if="control.search_keyword" ng-click="clear()"></span>
+        <span class="table-search-logol"></span>
+        <button type="button" ng-click="openSeniorSearch()" ng-class="control.open_senior_flag ? 'search_checked_flag' : 'search_unchecked_flag'" class="senior-btn-style">高级搜索</button>
+    </div>
+</div>
+<div class="senior-panel">
+    <div class="senior-search form-horizontal" ng-show="control.open_senior_flag">
+        <div class="form-group">
+            <div class="col-sm-6">
+                <div class="row form_style">
+                    <label class="control-label col-sm-3 label_key">任务名</label>
+                    <div class="col-sm-9 label_value">
+                        <input type="text" class="form-control" ng-model="info.task_name" placeholder="任务名">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row form_style">
+                    <label class="control-label col-sm-3 label_key">执行类型</label>
+                    <div class="col-sm-9 label_value" ng-if="control.open_senior_flag">
+                        <bs-select name="type{{$id}}"
+                                   items="data.execute_type_list"
+                                   option-labal="value"
+                                   option-key="key"
+                                   width="230"
+                                   my-select="info.exe_type"
+                                   required></bs-select>
+                        <validate-msg tag-cn-name="类型" type="select" name="type{{$id}}" model="info.exe_type"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <div class="row form_style">
+                    <label class="control-label col-sm-3 label_key">执行人</label>
+                    <div class="col-sm-9 label_value" ng-if="control.open_senior_flag">
+                        <bs-select name="user_name"
+                                   items="data.user_list"
+                                   option-labal="user_cn_name"
+                                   option-key="user_id"
+                                   width="237"
+                                   my-select="info.exe_user_id">
+                        </bs-select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row form_style">
+                    <label class="control-label col-sm-3 label_key">任务类型</label>
+                    <div class="col-sm-9 label_value" ng-if="control.open_senior_flag">
+                        <bs-select name="task_type"
+                                   items="data.task_type_list"
+                                   option-labal="value"
+                                   option-key="key"
+                                   width="230"
+                                   my-select="info.task_type"
+                                   required>
+                        </bs-select>
+                        <validate-msg tag-cn-name="任务类型" type="select" name="task_type" model="info.task_type"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form_style">
+            <label class="control-label col-sm-3 label_key" style="padding-right: 20px;width: 94px;">开始时间</label>
+            <div class="col-sm-3 label_value pick-date-common" style="padding-left: 10px;padding-right: 10px;width: 262px;">
+                <input type="text" name="startDate" class="form-control" style="min-width: 260px;"
+                       ng-click="open($event)"
+                       ng-change="selectDate()"
+                       max-date="{{maxDate}}"
+                       ng-model="info.start_date"
+                       show-button-bar="true"
+                       datepicker-popup="yyyy年MM月dd日"
+                       close-on-date-selection="false"
+                       is-open="control.datepicker_open"
+                       readonly="true"/>
+                <div class="calendar-icon">
+                    <i class="fa fa-calendar calendar"></i>
+                </div>
+            </div>
+            <label class="control-label col-sm-1 label_key" style="width: 58px;">至</label>
+            <div class="col-sm-3 label_value pick-date-common" style="width: 270px;">
+                <input type="text"
+                       name="endDate"
+                       ng-click="open($event)"
+                       ng-change="selectDate()"
+                       max-date="{{maxDate}}"
+                       ng-model="info.end_date"
+                       class="form-control"
+                       show-button-bar="true"
+                       datepicker-popup="yyyy年MM月dd日"
+                       close-on-date-selection="false"
+                       is-open="control.datepicker_open"
+                       required
+                       style="min-width: 260px;"
+                       readonly="true"/>
+                <div class="calendar-icon">
+                    <i class="fa fa-calendar calendar"></i>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-right" style="padding-top: 5px;padding-right: 20px">
+                <button class="save-cancel-btn save-btn btn-xl" type="button" ng-click="advancedSearch()">搜索</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="transparentLayer" ng-if="control.open_senior_flag" ng-click="collapseAdvSearch()"></div>
+<yw-history-task-list></yw-history-task-list>

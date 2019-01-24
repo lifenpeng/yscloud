@@ -1,0 +1,30 @@
+<div class="container-fluid proj_history_plan">
+    <div class="row" ng-show="info.his_plan_items.length == 0" style="padding:10px;height: 280px;position: relative;">
+        <div style="position: absolute;top:21%;left:45%;">
+            <div class="plan_empty_img pre_empty_position">
+                <div style="position: absolute;bottom: -10px;left:35px;color: #a0a0a0">暂无历史计划</div>
+            </div>
+        </div>
+    </div>
+    <div class="history_plan_list">
+    <accordion close-others="false">
+        <accordion-group ng-class="item.show ? 'focus_heading':'common_heading'" is-open="item.show" ng-repeat="item in info.his_plan_items">
+            <accordion-heading ng-class="background-color">
+                <div class="row">
+                    <div class="col-md-2 plan-panel-date" style="margin-top: 6px;">{{item.pro_bk_date}}  <span class="item_plan_num" ng-bind="item.plan_sum" style="display: inline-block;top:0px;left: 140px"></span></div>
+                    <div class="plan-panel-head-ico col-md-offset-10" style="text-align: right;padding-right: 20px;">
+                        <i style="font-size: 14px;" ng-if="item == items[0]"  ng-class="{'fa fa-chevron-up': item.show, 'fa fa-chevron-down': !item.show}"></i>
+                        <i style="font-size: 14px;" ng-if="item != items[0]"  ng-class="{'fa fa-chevron-up': item.show, 'fa fa-chevron-down': !item.show}"></i>
+                    </div>
+                </div>
+            </accordion-heading>
+            <div class="row" ng-if="item.show">
+                <div class="col-md-12">
+                    <prodplan history="true" date="item.pro_bk_date"></prodplan>
+                </div>
+            </div>
+        </accordion-group>
+    </accordion>
+    </div>
+</div>
+

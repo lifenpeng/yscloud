@@ -1,0 +1,422 @@
+.server .srv-ip{
+    float: left;
+    width:auto;
+}
+.server .soc-name-style{
+    float: left;
+    width: 186px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.server .deploy-agent-btn{
+    float: left;
+    margin-top: 2px;
+}
+.server .view-deploy-agent-btn{
+    float: left;
+    margin-top: -4px;
+}
+.server .deploy-agent-font{
+    float: left;
+    margin-top: 4px;
+    margin-left: 4px;
+}
+.server .srv-agent-mention{
+    width:24px;
+    height:24px;
+    float: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.server .srv-agent-deploy{
+    background-image: url("../img/service/agent-deploy.png");
+}
+.server .srv-agent-undeploy{
+    background-image: url("../img/service/agent-undeploy.png");
+}
+.server .deploy-agent-font.agent-undeploy-color{
+    color: #999;
+}
+.server .agent-deploy-color{
+    color: #00AAEE;
+}
+.server .deploy-agent-btn .ordinary-btn{
+    height:24px;
+    line-height: 23px;
+}
+.server .basic-info-btn{
+    width:68px;
+    height:24px;
+    line-height:23px;
+}
+.server .srv-data-source{
+    border: 1px solid rgb(68, 220, 253);cursor: default;
+}
+.server .change-flag-style{
+    position: absolute;
+    top: -8px;
+    left: -9px;
+    border:8px solid transparent;
+    border-right-color: #4A90E2;
+    transform: rotate(45deg);
+}
+.server .basic-info-table{
+   /* border-left: 1px solid;*/
+}
+.server .basic-info-table td{
+    /*border-right: 1px solid;*/position: relative;
+    height:26px;
+}
+/*数据源基本信息样式*/
+.server .content-loading{
+    position: absolute;
+    top: 0;bottom: 0;
+    left: 0;right: 0;
+    margin: 0 15px;
+    background: rgba(255, 255, 200, 0.1);
+    z-index: 2;
+}
+.server .content-loading>i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+/*****************************agent部署模态框****************************************************/
+.server .agent-deploy-icon{
+    width:200px;
+    margin: 20px auto;
+    position: relative;
+}
+.server .agent-deploy-status{
+    background-repeat: no-repeat;
+    background-position: center;
+    height:100px;
+}
+.server .agent-deploy-arc{
+    width:100px;
+    height:100px;
+    margin:0 auto;
+    background: #E4E4E4;
+    border-radius: 50%;
+    position: relative;
+}
+.server .agent-deploy-sector{
+    width:0;
+    height:0;
+    border-radius:50px;
+    border-width:50px;
+    border-style:solid;
+    border-color: transparent #00aaee transparent transparent;
+}
+.server .rotate-c{
+    animation: rotateColck 2s linear infinite;
+}
+.server .rotate-u{
+    animation: rotateUnColck 2s linear infinite;
+}
+@keyframes rotateColck {
+    0%{
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        -ms-transform: rotate(0);
+        -o-transform: rotate(0);
+        transform: rotate(0);
+    }50%{
+         -webkit-transform: rotate(180deg);
+         -moz-transform: rotate(180deg);
+         -ms-transform: rotate(180deg);
+         -o-transform: rotate(180deg);
+         transform: rotate(180deg);
+     }100%{
+          -webkit-transform: rotate(360deg);
+          -moz-transform: rotate(360deg);
+          -ms-transform: rotate(360deg);
+          -o-transform: rotate(360deg);
+          transform: rotate(360deg);
+      }
+}
+@keyframes rotateUnColck {
+    0%{
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        -ms-transform: rotate(0);
+        -o-transform: rotate(0);
+        transform: rotate(0);
+    }50%{
+         -webkit-transform: rotate(-180deg);
+         -moz-transform: rotate(-180deg);
+         -ms-transform: rotate(-180deg);
+         -o-transform: rotate(-180deg);
+         transform: rotate(-180deg);
+     }100%{
+          -webkit-transform: rotate(-360deg);
+          -moz-transform: rotate(-360deg);
+          -ms-transform: rotate(-360deg);
+          -o-transform: rotate(-360deg);
+          transform: rotate(-360deg);
+      }
+}
+.server .agent-deploy-loading{
+    width:80px;
+    height:80px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top:10px;
+    left:10px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.server .agent-undeploy-icon{
+    background-image: url("../img/service/undeploy.png");
+}
+.server .agent-deploy-succ{
+    background-image: url("../img/service/deploy-succ.png");
+}
+.server .agent-deploy-failed{
+    background-image: url("../img/service/deploy-failed.png");
+}
+.server .agent-undeploy-succ{
+    background-image: url("../img/service/undeploy-succ.png");
+}
+.server .agent-undeploy-failed{
+    background-image: url("../img/service/undeploy-failed.png");
+}
+.server .agent-deploy-loading-icon{
+    background-image: url("../img/service/deploy-loading.png");
+}
+.server .agent-undeploy-loading-icon{
+    background-image: url("../img/service/undeploy-loading.png");
+}
+.server .agent-operate-btn{
+    width:100px;
+    margin: 12px;
+}
+
+
+
+/**start插件部署*/
+.server .plugin-deploy-wrap{
+    background-color: #253447;
+    padding: 10px 0 0 10px;min-height: 185px;
+}
+
+.server .plugin-env-btn-div{
+    margin-bottom:10px;
+}
+.server .plugin-env-btn{
+    width: 80px;
+    height: 24px;
+    background-color: transparent;
+    border-radius: 45px;
+    font-size: 12px;
+    color: rgba(252, 158, 34, 1);
+    border:1px solid rgba(252, 158, 34, 1);
+    cursor: pointer;
+    text-align: left;
+    padding-right: 5px;
+    line-height: 22px;
+}
+.server .plugin-env-btn:hover{
+    background-color: rgba(252, 158, 34, 1);
+    color: #fff;
+}
+.server .env-container{
+    width:100px;height: 100px;overflow: hidden;
+    border:1px solid;position: relative;display: inline-block;margin-right: 10px;margin-bottom: 10px;
+    border-color: rgba(68, 220, 253,0.3);background: rgba(92, 122, 169,0.15);border-radius: 4px;
+}
+.server .env-container:hover{
+    border-color:  #44dcfd;
+}
+.server .env-container-succ{
+    border-color: rgba(68, 220, 253,0.3);
+    background: rgba(92, 122, 169,0.15);
+}
+.server .env-container-fail{
+    border-color: rgba(68, 220, 253,0.3);
+    background: rgba(92, 122, 169,0.15);
+}
+.server .env-container-mid{
+    border-color: rgba(68, 220, 253,0.3);
+    background-color: #091016;
+    opacity: 0.6;
+}
+.server .env-img-style{
+    display: inline-block;
+    width:50px;
+    height:50px;
+    background: url("../img/service/sys_node_plugin_icon.png") no-repeat;
+    background-size: 50px;
+    margin-top:15px;
+}
+.server .env-name{
+    color: #6D7183;
+}
+.server .env-container-succ .env-name{
+    color: #49B048;
+}
+.server .env-container-fail .env-name{
+    color: #E9416E;
+}
+.server .env-container-mid .env-name{
+    color: #d2f1fe;
+}
+.server .env-deploy-loading{
+    border-color: rgba(68, 220, 253,0.3);
+    position: absolute;
+    top:0;
+    background-color: #091016;
+    height:100%;opacity: 0.6;
+    width:100%;border-radius: 4px;
+    text-align: center;
+}
+.server .env-deploy-status{
+    position: absolute;
+    top:3px;left:3px;
+    width:20px;height:20px
+}
+.server .evn-deploy-succ{
+    background: url("../img/service/sys_node_success.png") no-repeat 0 0;
+    background-size: 16px;
+}
+.server .evn-deploy-failed{
+    background: url("../img/service/sys_node_deploy_fault.png") no-repeat -7px -10px;background-size: 32px;
+}
+.server .plugin-empty-style{
+    background: url("../img/service/sys_node_empty.png") no-repeat;
+    padding-top: 86px;
+    background-size: 90px;
+}
+.server .plugin-deploy-disabledbtn{
+    background: #E9EBF1;
+    color:#B3B4BA;
+    border:1px solid #E9EBF1;
+    pointer-events: none;
+}
+.server .config-basic-info .sub-table tbody .change-basic-info{
+    background: #3e5373;
+}
+.server .config-basic-info .sub-table tbody .change-basic-info td{
+    color:#d2f1fe;
+}
+.server ::-ms-clear,.node-content ::-ms-reveal{display:none;}
+
+/*************************************************检查项**************************************************/
+.server .status-check-delete{
+    width:20px;height:20px;cursor: pointer;
+    display: inline-block;vertical-align: top;
+    background: url("../img/public/sys_node_cmpt_operator.png") no-repeat -5px -6px;
+}
+.server .status-check-delete:hover{
+    background-position: -37px -6px;
+}
+.server .status-check-operate{
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url("../img/public/sys_node_wreach.png") no-repeat scroll 3px 3px / 10px 10px;
+    border: 1px solid #5c697b;
+    border-radius: 50%;
+    margin-top: 1px;
+}
+.server .status-check-operate:hover{
+    background: url("../img/public/sys_node_wreach_hover.png") no-repeat scroll 3px 3px / 10px 10px;
+}
+
+.server .deploy-step{
+    padding: 6px;
+    margin-left: 15px;
+}
+.server .step-name{
+    display: inline-block;
+    width: 18px;height: 18px;
+    margin-right: 15px;
+    border-radius: 50%;
+    line-height: 18px;
+    text-align: center;
+}
+.server .step-value{
+    width: 140px;
+}
+.server .step-status{
+    font-size: 14px;
+}
+.server .deploy-unstart{
+    color: #999;
+}
+.server .deploy-unstart .step-name{
+    color: #fff;
+    background-color: #999;
+}
+.server .deploy-executing{
+    color: #00ABED;
+}
+.server .deploy-executing .step-name{
+    color: #fff;
+    background-color: #00ABED;
+}
+.server .deploy-success{
+    color: #00D3A2;
+}
+.server .deploy-success .step-name{
+    color: #fff;
+    background-color: #00D3A2;
+}
+.server .deploy-failed{
+    color: #E9416E;
+}
+.server .deploy-failed .step-name{
+    color: #fff;
+    background-color: #E9416E;
+}
+.server .step-status .status-flag-true{
+    display: inline-block;
+}
+.server .step-status .status-flag-false{
+    display: none;
+}
+/***************************************************部署插件模态框*********************************************************/
+.config-plugin-modal{}
+.config-plugin-modal .plugin-type {
+    display: inline-block;
+    width:116px;height: 22px;margin-right: 14px;margin-bottom: 10px;
+}
+.config-plugin-modal .search-btn{
+    width:30px;height: 32px;text-align: center;line-height: 30px;font-size: 16px;
+    position: absolute;
+    top:1px;border-top-right-radius: 2px;border-bottom-right-radius: 2px;
+    right:16px;cursor: default;border-left: 1px solid #26515c;
+}
+.config-plugin-modal .search-btn i{
+    color:#408195;
+}
+.config-plugin-modal .choose-item{
+    width:100px;
+    height:30px;line-height: 28px;
+    padding-right: 20px;padding-left:10px;position: relative;
+    border-radius: 4px;margin-right: 10px;margin-bottom: 10px;
+    display: inline-block;
+    border:1px solid #1e5363;
+}
+.config-plugin-modal .delete-env{
+    color: #d2f1fe;
+    cursor: pointer;
+}
+.config-plugin-modal .delete-env:hover{
+    color: #00A2E3;
+}
+.config-plugin-modal .no-plugin{
+    background: rgba(0, 0, 0, 0) url("../img/public/sys_program_empty.png") no-repeat scroll center center / 105px auto;
+    color: #6D7183;padding-top: 40px;text-align: center;opacity: 0.8;
+}
+.config-plugin-modal .plugin-modal-border-bottom{
+    border-bottom: 1px solid #44dcfd
+}
+.config-plugin-modal .plugin-input-wrap{
+    border-right:1px solid #44dcfd;padding-top: 8px;padding-right: 0
+}

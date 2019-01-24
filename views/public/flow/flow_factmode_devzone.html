@@ -1,0 +1,1272 @@
+<style>
+    /* .handle{
+        background: red
+    } */
+    .custom-tab ul > li {
+    list-style: none;
+    float: left;
+    width: 160px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-bottom: 1px solid #d2f1fe;
+    padding: 0 30px;
+    cursor: pointer;
+    margin-top:20px;
+}
+.custom-tab ul > li.active > a {
+    text-decoration: none;
+    color: #fc9e22;
+}
+.custom-tab ul > li.active {
+    border-bottom: 1px solid #fc9e22;
+}
+.font-style-init{
+    color:white
+}
+.font-style{
+    color:#FFB03F
+}
+.page-body{
+    height:800px;
+    /* border: 1px solid red */
+}
+.left-tree{
+    height: 100%;
+    border: 1px solid #1D3C4E;
+    padding: 0;
+}
+.tree-title{
+    width: 100%;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 6%;
+    margin-bottom:6%;
+    background: #fc9e22;
+}
+.work-bench{
+    height: 100%;
+    /* border: 1px solid yellow */
+}
+.work-bench-heard{
+    background:#5fc1df52;
+    height: 50px;
+}
+.work-head-name{
+    line-height: 50px;
+    text-align: center;
+    font-size: 15px;
+}
+.btn-text{
+    text-align: center;
+    line-height: 32px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 3%;
+    width: 70px;
+    cursor: pointer;
+}
+.work-bench-body{
+    width: 100%;
+    height: 100%;
+    /* border: 1px solid red; */
+    position: relative;
+}
+.work-bench-table{
+    position: absolute;
+    width: 42%;
+    height: 30%;
+    right: -2%;
+    top: 0;
+    z-index: 999;
+    /* border: 1px solid blue; */
+}
+.title2{
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    line-height: 30px;
+}
+.title2:hover{
+    background-color: #3E6879;
+}
+.dev-color{
+    color:#fc9e22;
+    border-bottom: 1px solid #fc9e22;
+}
+    .save-div{
+        width: 500px;
+        height: 330px;
+        /*border: 1px solid red;*/
+        position: absolute;
+        z-index: 99;
+        top: 10%;
+        left: 35%;
+        background: #1C2837;
+    }
+    .set-mode-name{
+        width: 100%;
+        line-height: 58px;
+        border-bottom: 1px solid #1D3C4E;
+        font-size: 18px;
+        padding-left: 8px;
+        color: #44DBFC;
+        /*text-align: center;*/
+
+    }
+    .set-input-div{
+        margin-left: 40px;
+        margin-top: 64px;
+    }
+    .set-input{
+        width: 300px;
+        height: 40px;
+        background-color: #243346;
+        border-color: #243346;
+        font-size: 18px;
+        padding-left: 5px;
+        display: inline-block;
+    }
+    .set-btn-common{
+        height: 28px;
+        line-height: 28px;
+        border-radius: 15px;
+        color: #FC9E22;
+        cursor: pointer;
+        text-align: center;
+        border: 1px solid #FC9E22;
+    }
+    .set-btn-common:hover{
+        background-color: #FC9E22;
+        color: #fff;
+    }
+
+    .two_creat {
+        width: 300px;
+        height: 200px;
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        margin: 0 -150px 0 -150px;
+        background: #1C2837;
+        z-index: 3000;
+    }
+
+    .t_c_tit {
+        width: 100%;
+        height: 50px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 50px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .two_creat table tr {
+        display: block;
+        margin: 15px 30px;
+    }
+
+    .two_creat input {
+        color: #fff;
+        padding-left: 10px;
+        background: #091016;
+        border: 1px solid #26515C;
+    }
+
+	.right_t_tab {
+		width: 500px;
+		height: 700px;
+		border: 1px solid #4B4B4B;
+		position: absolute;
+		right: 0;
+		top: 130px;
+		background: #1C2837;
+		z-index: 100;
+	}
+
+	.right_t_tab .title {
+		width: 100%;
+		height: 50px;
+		padding-left: 30px;
+		line-height: 50px;
+		border-bottom: 1px solid #4B4B4B;
+		font-size: 16px;
+	}
+
+	.right_t_tab .tb1 {
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		border-bottom: 1px solid #4B4B4B;
+	}
+	.right_t_tab .tb1 tr{
+        display: block;
+        margin-left: 15px;
+        margin:15px 15px;
+    }
+
+    .right_t_tab .tb1 input,.right_t_tab .tb1 textarea {
+        padding-left: 10px;
+        color: #fff;
+        background: #091016;
+        border: 1px solid #26515C;
+    }
+
+    .a_tab_list {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 45px;
+        list-style-type: none;
+        margin-top: 10px;
+        overflow: hidden;
+    }
+
+    .a_tab_list li {
+        float: left;
+        width: 20%;
+        height: 35px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 35px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        margin: 5px 10px;
+        color: #fff;
+    }
+
+    .a_tab_list li:hover {
+        background: #fff;
+        color: #2D5265;
+    }
+
+    #tab_active {
+        background: #fff;
+        color: #2D5265;
+    }
+
+    .tab_con {
+        width: 100%;
+        height: 380px;
+        border-top: 1px solid #4B4B4B;
+        margin-top: 10px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .t_c_p {
+        width: 100%;
+        height: 100%;
+    }
+
+    .t_c_p_l {
+        width: 80%;
+        height: 98%;
+        border: 1px solid #4B4B4B;
+        float: left;
+    }
+
+    .t_c_p_r {
+        width: 20%;
+        height: 98%;
+        border: 1px solid #4B4B4B;
+        float: right;
+    }
+
+    .t_c_p_l table {
+        border-collapse:separate;
+        border-spacing:10px 10px;
+    }
+
+    .t_c_p_l table input {
+        width: 80px;
+        color: #fff;
+        background:#091016;
+        border: 1px solid #26515C;
+    }
+
+    .file_p {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .file_main {
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    .t-l {
+        float: left;
+    }
+
+
+
+
+
+
+
+    .work-table-title{
+        width: 100%;
+        height: 70px;
+        /*border: 1px solid red;*/
+    }
+    .work-title-name{
+        width: 50%;
+        line-height: 70px;
+        float: left;
+        font-size: 18px;
+    }
+    .work-btn{
+        width: 50px;
+        height: 30px;
+        float: right;
+        /*background: #000;*/
+        margin-top: 6%;
+    }
+    .input-list{
+        width: 100%;
+        /*height: 300px;*/
+        /*border: 1px solid red;*/
+    }
+    .div-input-list{
+        width:180px;
+        height: 50px;
+        float: left;
+        border: 1px solid blue;
+    }
+    .span-list{
+        width: 50px;
+        height: 30px;
+        border: 1px solid yellow;
+        font-size: 18px;
+    }
+    .input-list-style{
+        width: 120px;
+        height: 30px;
+        background:black;
+        border-color: #60C2E1;
+        margin-left: 5px;
+    }
+    .bs-div-style{
+        width: 200px;
+    }
+    .input-list tr{
+        height: 50px;
+    }
+    .input-list tr td{
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-left: 5px;
+    }
+    .tab-btn-table{
+        width: 70px;
+        line-height: 40px;
+        float: left;
+        border: 1px solid #44DBFA;
+        border-radius: 10%;
+        text-align: center;
+        font-size: 17px;
+        cursor: pointer;
+    }
+    .tab-btn-table:hover{
+        background-color: #1BB6EB;
+    }
+    .btn-background{
+        background-color: #1DB5EA;
+    }
+</style>
+
+<div class="container-fluid flow-list searchBox" cus-flow-made undo="configs.undoOpreation" redo="configs.redoOpreation"  array="configs.layoutArray" select-key="control.selectKeyFromIns" pal-data="data" get-instance="getInstance()"  config="config(key)" reflash-node="control.reflash_node" job-config="control.job_config" go-model="flow_info" config-no-data="goToNoDataPage()">
+    <div class="custom-tab row">
+        <ul>
+                <li ng-class="tab_no==1&&'active'"  ng-click="tab_show(1)"><a>工厂建模</a></li>
+                <li ng-class="tab_no==2&&'active'"  ng-click="tab_show(2)"><a>工艺建模</a></li>
+                <li ng-class="tab_no==3&&'active'"  ng-click="tab_show(3)"><a>产品建模</a></li>
+        </ul>
+    </div>
+    <div class="page-body row">
+        <div class="left-tree col-md-2" custom-scroll >
+            <div>
+                <div style="height: 100%">
+                        <div style="cursor: pointer;width: 100%;">
+                            <div style="padding-left:1px;" class="flow-made">
+                                <!--工厂模型库-->
+                                <div ng-show="tab_no==1">
+                                    <div class="basic_element" ng-click="control.basic_ele = !control.basic_ele" ng-class="{'basic_element_bottom':control.basic_ele}" ng-show="true">
+                                        基础元素
+                                    </div>
+                                    <div collapse="control.basic_ele" ng-show="true">
+                                        <div class="sort_name" ng-click="control.palette0 = !control.palette0" ng-class="{'sort_name_border_bottom':!control.palette0}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette0}"></i>条件
+                                        </div>
+                                        <div collapse="control.palette0">
+                                            <div id="myPaletteDiv0" class="pal_title"  style="height:205px;"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette1 = !control.palette1" ng-class="{'sort_name_border_bottom':!control.palette1}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette1}"></i>轮询
+                                        </div>
+                                        <div collapse="control.palette1">
+                                            <div id="myPaletteDiv1"  style="height:65px;" class="pal_title"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette2 = !control.palette2" ng-class="{'sort_name_border_bottom':!control.palette2}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette2}"></i>文件
+                                        </div>
+                                        <div collapse="control.palette2">
+                                            <div id="myPaletteDiv2" class="pal_title"   style="height:276px;"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette3 = !control.palette3" ng-class="{'sort_name_border_bottom':!control.palette3}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette3}"></i>数据库
+                                        </div>
+                                        <div collapse="control.palette3">
+                                            <div id="myPaletteDiv3" class="pal_title"  style="height:65px;"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette4 = !control.palette4" ng-class="{'sort_name_border_bottom':!control.palette4}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette4}"></i>网络
+                                        </div>
+                                        <div collapse="control.palette4">
+                                            <div id="myPaletteDiv4" class="pal_title"  style="height:65px;"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette5 = !control.palette5" ng-class="{'sort_name_border_bottom':!control.palette5}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette5}"></i>应用
+                                        </div>
+                                        <div collapse="control.palette5">
+                                            <div id="myPaletteDiv5" class="pal_title"  style="height:65px;"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette6 = !control.palette6" ng-class="{'sort_name_border_bottom':!control.palette6}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette6}"></i>脚本
+                                        </div>
+                                        <div collapse="control.palette6">
+                                            <div id="myPaletteDiv6" class="pal_title"  style="height:205px;"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette7 = !control.palette7" ng-class="{'sort_name_border_bottom':!control.palette7}">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette7}"></i>服务
+                                        </div>
+                                        <div collapse="control.palette7">
+                                            <div id="myPaletteDiv7" class="pal_title"  style="height:135px;"></div>
+                                        </div>
+                                        <div class="sort_name" ng-click="control.palette8 = !control.palette8" ng-class="{'sort_name_border_bottom':!control.palette8}" style="border-bottom: 1px solid #1D3D4F;">
+                                            <i class="fa fa-angle-right" ng-class="{'fa-angle-right-animate90':!control.palette8}"></i>其他
+                                        </div>
+                                        <div collapse="control.palette8">
+                                            <div id="myPaletteDiv8"  class="pal_title"  style="height:65px;border-bottom: 1px solid #1D3D4F;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="basic_element" ng-click="control.basic_ele1 = !control.basic_ele1;control.basic_ele1&&initTree('hf');" ng-class="{'basic_element_bottom':control.basic_ele1}">
+                                        恒丰纸业工厂模型
+                                    </div>
+                                    <div ng-if="!control.basic_ele1">
+                                        <div ng-repeat="(key,item) in data.hf" style="position: relative;">
+                                            <div ng-click="treeOne(key,item.name)"  id="myTree{{item.num}}"  class="pal_title"  style="width:180px;height:25px;" re-load sum="data.hf.length" name="item.name"></div>
+                                            <img src="img/dispatch/fl/palette/site.png" style="position: absolute; top:1px; left:5px;">
+                                            <img src="img/dispatch/fl/palette/{{item.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:60px;">
+                                            <div ng-if="item.stu">
+                                                <div ng-repeat="(key1,one) in item.child" style="position: relative;">
+                                                    <div id="myTreeOne{{one.num}}" ng-click="treeTwo(key,key1,item.name)"  style="width:180px;height:25px;" re-load-one sum="item.child.length" name="item.name"></div>
+                                                    <img src="img/dispatch/fl/palette/area.png" style="position: absolute; top:2px; left:15px;">
+                                                    <img src="img/dispatch/fl/palette/{{one.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:90px;">
+                                                    <div ng-if="one.stu">
+                                                        <div ng-repeat="(key2,two) in one.child" style="position: relative;">
+                                                            <div id="myTreeTwo{{two.num}}" ng-click="treeInfo(key,key1,key2,item.name)"  style="width:180px;height:25px;" re-load-two sum="one.child.length" name="item.name"></div>
+                                                            <img src="img/dispatch/fl/palette/cell.png" style="position: absolute; top:2px; left:45px;">
+                                                            <img src="img/dispatch/fl/palette/{{two.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:100px;">
+                                                            <div ng-if="two.stu">
+                                                                <div ng-repeat="(key2,info) in two.child" style="position: relative;">
+                                                                    <div id="info{{info.num}}" style="width:180px;height:25px;" re-load-info sum="two.child.length" name="item.name"></div>
+                                                                    <img src="img/dispatch/fl/palette/unit.png" style="position: absolute; top:2px; left:75px;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="basic_element" ng-click="control.basic_ele2 = !control.basic_ele2;control.basic_ele2&&initTree('paperma');" ng-class="{'basic_element_bottom':control.basic_ele2}">
+                                        造纸行业模型
+                                    </div>
+                                    <div collapse="!control.basic_ele2">
+                                        <div id="zaozhi" class="pal_title"  style="height:205px;"></div>
+                                    </div>
+
+                                    <div class="basic_element" ng-click="control.basic_ele3 = !control.basic_ele3;control.basic_ele3&&initTree('tobacco');" ng-class="{'basic_element_bottom':control.basic_ele3}">
+                                        烟草行业模型库
+                                    </div>
+                                    <div collapse="!control.basic_ele3">
+                                        <div id="yancao" class="pal_title"  style="height:300px;"></div>
+                                    </div>
+
+                                    <div class="basic_element" ng-click="control.basic_ele4 = !control.basic_ele4;control.basic_ele4&&initTree('s95');" ng-class="{'basic_element_bottom':control.basic_ele4}">
+                                        S95
+                                    </div>
+                                    <div collapse="!control.basic_ele4">
+                                        <div id="s95" class="pal_title"  style="height:205px;"></div>
+                                    </div>
+                                </div>
+                                <div ng-show="tab_no==2">
+                                    <div class="basic_element" ng-click="control.basic_ele5 = !control.basic_ele5;control.basic_ele5&&initTree('Process');" ng-class="{'basic_element_bottom':control.basic_ele5}">
+                                        工艺建模
+                                    </div>
+                                    <div ng-if="!control.basic_ele5">
+                                        <div ng-repeat="(key,item) in data.Process" style="position: relative;">
+                                            <div ng-click="treeOne(key,item.name)"  id="myTree{{item.num}}"  class="pal_title"  style="width:180px;height:25px;" re-load sum="data.Process.length" name="item.name"></div>
+                                            <img ng-src="img/dispatch/fl/palette/site.png" style="position: absolute; top:1px; left:5px;">
+                                            <img ng-src="img/dispatch/fl/palette/{{item.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:60px;">
+                                            <div ng-if="item.stu">
+                                                <div ng-repeat="(key1,one) in item.child" style="position: relative;">
+                                                    <div id="myTreeOne{{one.num}}" ng-click="treeTwo(key,key1,item.name)"  style="width:180px;height:25px;" re-load-one sum="item.child.length" name="item.name"></div>
+                                                    <img ng-src="img/dispatch/fl/palette/area.png" style="position: absolute; top:2px; left:15px;">
+                                                    <img ng-src="img/dispatch/fl/palette/{{one.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:90px;">
+                                                    <div ng-if="one.stu">
+                                                        <div ng-repeat="(key2,two) in one.child" style="position: relative;">
+                                                            <div id="myTreeTwo{{two.num}}" ng-click="treeInfo(key,key1,key2,item.name)"  style="width:180px;height:25px;" re-load-two sum="one.child.length" name="item.name"></div>
+                                                            <img ng-src="img/dispatch/fl/palette/cell.png" style="position: absolute; top:2px; left:45px;">
+                                                            <img ng-src="img/dispatch/fl/palette/{{two.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:100px;">
+                                                            <div ng-if="two.stu">
+                                                                <div ng-repeat="(key2,info) in two.child" style="position: relative;">
+                                                                    <div id="info{{info.num}}" style="width:180px;height:25px;" re-load-info sum="two.child.length" name="item.name"></div>
+                                                                    <img ng-src="img/dispatch/fl/palette/unit.png" style="position: absolute; top:2px; left:75px;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="basic_element" ng-click="control.basic_ele6 = !control.basic_ele6;control.basic_ele6" ng-class="{'basic_element_bottom':control.basic_ele6}">
+                                        建模组件
+                                    </div>
+                                    <div ng-show="tab_no == 2 && !control.basic_ele6">
+                                        <div id="Modeling" class="pal_title"  style="height:295px;"></div>
+                                    </div>
+                                </div>
+                                <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+                                <div ng-show="tab_no==3">
+                                    <div class="basic_element" ng-click="control.basic_ele7 = !control.basic_ele7;control.basic_ele7&&initTree('Process');" ng-class="{'basic_element_bottom':control.basic_ele7}">
+                                        产品建模
+                                    </div>
+                                    <div ng-if="!control.basic_ele7">
+                                        <div ng-repeat="(key,item) in data.Product" style="position: relative;">
+                                            <div ng-click="treeOne(key,item.name)"  id="myTree{{item.num}}"  class="pal_title"  style="width:250px;height:25px;" re-load sum="data.Product.length" name="item.name"></div>
+                                            <img ng-src="img/dispatch/fl/palette/site.png" style="position: absolute; top:1px; left:5px;">
+                                            <img ng-src="img/dispatch/fl/palette/{{item.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:130px;">
+                                            <div ng-if="item.stu">
+                                                <div ng-repeat="(key1,one) in item.child" style="position: relative;">
+                                                    <div id="myTreeOne{{one.num}}" ng-click="treeTwo(key,key1,item.name)"  style="width:180px;height:25px;" re-load-one sum="item.child.length" name="item.name"></div>
+                                                    <img ng-src="img/dispatch/fl/palette/area.png" style="position: absolute; top:2px; left:15px;">
+                                                    <img ng-src="img/dispatch/fl/palette/{{one.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:90px;">
+                                                    <div ng-if="one.stu">
+                                                        <div ng-repeat="(key2,two) in one.child" style="position: relative;">
+                                                            <div id="myTreeTwo{{two.num}}" ng-click="treeInfo(key,key1,key2,item.name)"  style="width:180px;height:25px;" re-load-two sum="one.child.length" name="item.name"></div>
+                                                            <img ng-src="img/dispatch/fl/palette/cell.png" style="position: absolute; top:2px; left:45px;">
+                                                            <img ng-src="img/dispatch/fl/palette/{{two.stu?'close':'open'}}.png" style="position: absolute; top:3px; left:100px;">
+                                                            <div ng-if="two.stu">
+                                                                <div ng-repeat="(key2,info) in two.child" style="position: relative;">
+                                                                    <div id="info{{info.num}}" style="width:180px;height:25px;" re-load-info sum="two.child.length" name="item.name"></div>
+                                                                    <img ng-src="img/dispatch/fl/palette/unit.png" style="position: absolute; top:2px; left:75px;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="basic_element" ng-click="control.basic_ele6 = !control.basic_ele6;control.basic_ele6" ng-class="{'basic_element_bottom':control.basic_ele6}">
+                                        建模组件
+                                    </div>
+                                    <div ng-show="tab_no == 3 && !control.basic_ele6">
+                                        <div id="Modelings" class="pal_title"  style="height:295px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="work-bench col-md-10">
+            <div class="row work-bench-heard" ng-show="tab_no==1">
+                <div class="work-head-name col-md-2">{{title_name}}</div>
+                <div class="col-md-6" style="line-height: 50px;font-size: 15px;">状态 ：{{title_zhuangt}}</div>
+                <div class="col-md-4">
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="saveBtn()">保存</div>
+                    <!--<div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="formSubmit(1)">发布</div>-->
+                </div>
+            </div>
+            <div class="row work-bench-heard" ng-show="tab_no==2">
+                <div class="work-head-name col-md-3">盘纸工艺路线V1.0</div>
+                <div class="col-md-3" style="line-height: 50px;font-size: 15px;">编辑 ：{{title_zhuangt}}</div>
+                <div class="col-md-3" style="line-height: 50px;font-size: 15px;">时间：</div>
+                <div class="col-md-3">
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="creact_suc('提交成功！')">提交</div>
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="Section('open')">保存</div>
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="creat('open')">+新建</div>
+                </div>
+            </div>
+            <div class="row work-bench-heard" ng-show="tab_no==3">
+                <div class="work-head-name col-md-3">产品模板V1.0</div>
+                <div class="col-md-2" style="line-height: 50px;font-size: 15px;">编辑 ：编辑</div>
+                <div class="col-md-3" style="line-height: 50px;font-size: 15px;">创建时间：{{product.create_time}}</div>
+                <div class="col-md-4">
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="">提交</div>
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="">批量导入</div>
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="Section('open')">保存</div>
+                    <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="creat('open')">+新建</div>
+                </div>
+            </div>
+            <div class="work-bench-body row">
+                <div class="" style="height:700px;">
+                    <div id="myEditDiagramDiv" class="grid_bg" style="height: 700px;"></div>
+                </div>
+                <div class="work-bench-table" ng-show="tab_no==1">
+                    <form class="form-horizontal" ng-controller="sceneNewCtrl" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+                        <div class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="formSubmit(1)" style="position: absolute;top: -23%;right: 20%;">发布</div>
+                        <div class="container-fluid ele-config-container">
+                            <div class="node-tabs">
+                                <div class="node-tab" ng-class="element.active ? 'tab_checked' : 'normal'" ng-repeat="element in control.tem_element_list" ng-click="tabOne($index);">
+                                    <div ng-class="element.active ? 'checked-cover' : 'normal-cover'" style="padding-top: 3px;">
+                                        <span class="element-icon" ng-style="element.element_info.config ? elementHightIcon(element.type) : elementOriginalIcon(element.type)"></span>
+                                        <span class="element-text-name" ng-bind="element.element_info.sdwork_cn_name ? element.element_info.sdwork_cn_name : element.text" title="{{element.element_info.sdwork_cn_name}}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="node-content" ng-style="{'min-height' : (control.tem_element_list.length + 1) * 80}" style="margin-left: -105px;">
+                                <div class="close-icon" ng-click="removeCurrConfigElement()" title="删除"></div>
+                                <div class="container-fluid">
+                                    <div class="row ele-type-block">
+                                        <div class="ele-type-icon" ng-style="elementIcon()"></div>
+                                        <!--<div class="ele-type-font">元素类型</div>-->
+                                        <!--<div class="ele-type-font ele-type-cn" ng-bind="curr_ele_type ? eleTypeTOCn(curr_ele_type) : '&#45;&#45;'"></div>-->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-style">
+                                                <label class="control-label col-sm-4 label-key text-right">元素名称</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <input type="text"
+                                                           name="sdwork_cn_name"
+                                                           ng-model="data.element_data.sdwork_cn_name"
+                                                           class="form-control"
+                                                           placeholder="输入元素名"
+                                                           ng-maxlength=20
+                                                           required>
+                                                    <validate-msg tag-cn-name="元素名称" name="sdwork_cn_name"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style">
+                                                <label class="control-label col-sm-4 label-key text-right">元素描述</label>
+                                                <div class="col-sm-8 label-value">
+											<textarea name="job_bk_desc"
+                                                      ng-model="data.element_data.job_bk_desc"
+                                                      class="form-control"
+                                                      placeholder="输入不超过250个字符或汉字"
+                                                      style="resize:none;color: #d2f1fe;"
+                                                      ng-maxlength=250
+                                                      ng-model-options="{updateOn: 'blur'}">
+												</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style" ng-if="curr_ele_category == 6">
+                                                <label class="col-sm-4 control-label label-key">服务名称</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <input type="text"
+                                                           name="service_name"
+                                                           ng-model="data.element_data.service_name"
+                                                           class="form-control"
+                                                           placeholder="输入服务名称"
+                                                           ng-model-options="{updateOn: 'blur'}"
+                                                           ng-maxlength=100
+                                                           required>
+                                                    <!--	placeholder="输入xxx.do"
+                                                        ng-pattern="/^\S.*\.do+$/"-->
+                                                    <validate-msg tag-cn-name="服务名称" name="service_name"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style" ng-if="curr_ele_category == 7">
+                                                <label class="control-label col-sm-4 label-key text-right">轮询间隔</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <input type="text"
+                                                           name="polling_interval"
+                                                           ng-model="data.element_data.polling_interval"
+                                                           class="form-control"
+                                                           placeholder="单位为秒"
+                                                           ng-pattern="/^[0-9]+$/"
+                                                           ng-maxlength=3>
+                                                    <validate-msg tag-cn-name="轮询间隔" name="polling_interval"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style" ng-if="curr_ele_category == 7">
+                                                <label class="control-label col-sm-4 label-key text-right">最大次数</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <input type="text"
+                                                           name="polling_max_times"
+                                                           ng-model="data.element_data.polling_max_times"
+                                                           class="form-control"
+                                                           placeholder="单位为次"
+                                                           ng-pattern="/^[0-9]+$/"
+                                                           ng-maxlength=3>
+                                                    <validate-msg tag-cn-name="最大次数" name="polling_max_times"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style" ng-if="curr_ele_category != 7">
+                                                <label class="control-label col-sm-4 label-key text-right">超时时间(s)</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <input type="text"
+                                                           name="timeout"
+                                                           ng-model="data.element_data.timeout"
+                                                           class="form-control"
+                                                           placeholder="单位秒"
+                                                           ng-pattern="/^[\d]+$/"
+                                                           ng-maxlength=5>
+                                                    <validate-msg tag-cn-name="超时时间" name="timeout"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style" ng-if="curr_ele_category != 6 && curr_ele_category != 7">
+                                                <label class="control-label col-sm-4 label-key text-right">执行预时(s)</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <input type="text"
+                                                           name="timeused"
+                                                           ng-model="data.element_data.timeused"
+                                                           class="form-control"
+                                                           placeholder="单位秒"
+                                                           ng-pattern="/^[\d]+$/"
+                                                           ng-maxlength=5>
+                                                    <validate-msg tag-cn-name="执行预时" name="timeused"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style" ng-if="curr_ele_category == 2">
+                                                <label class="control-label col-sm-4 label-key text-right">数据库类型</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <bs-select name="database_type" items="data.database_type_list" my-select="data.element_data.dataBase_type"></bs-select>
+                                                    <validate-msg tag-cn-name="数据库类型" type="select" name="database_type" model="data.element_data.dataBase_type"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style">
+                                                <label class="col-sm-4 control-label label-key">出错处理</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <bs-select  items="data.error_handle_list"
+                                                                my-select="data.element_data.error_handle"
+                                                                option-labal="value"
+                                                                option-key="key"
+                                                                select-val="selectErrorHandle(selectKey)"></bs-select>
+                                                    <validate-msg tag-cn-name="出错处理" type="select" name="error_handle" model="data.element_data.error_handle"></validate-msg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-style" ng-if="data.element_data.error_handle == 3">
+                                                <label class="col-sm-2 col-sm-offset-4 control-label label-key" style="padding-left: 0;width: 40px;padding-top: 5px">次数</label>
+                                                <div class="col-sm-2 label-value">
+                                                    <input type="text"
+                                                           style="height: 25px;width: 45px;padding: 0 2px"
+                                                           name="retry_times"
+                                                           ng-model="data.element_data.retry_times"
+                                                           class="form-control"
+                                                           placeholder="次(1-9)"
+                                                           ng-pattern="/^[1-9]{1}$/"
+                                                           title="重试次数(1-9)"
+                                                           required/>
+                                                    <validate-msg tag-cn-name="次数" name="retry_times"></validate-msg>
+                                                </div>
+                                                <label class="col-sm-2 control-label label-key" style="width: 55px;padding-left: 0;padding-top: 5px">间隔(s)</label>
+                                                <div class="col-sm-2 label-value">
+                                                    <input type="text"
+                                                           name="retry_interval"
+                                                           style="height: 25px;width: 45px;padding: 0 5px"
+                                                           ng-model="data.element_data.retry_interval"
+                                                           class="form-control"
+                                                           placeholder="秒"
+                                                           ng-pattern="/^[0-9]{1,3}$/"
+                                                           title="重试间隔"
+                                                           required/>
+                                                    <validate-msg tag-cn-name="间隔" name="retry_interval"></validate-msg>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-style">
+                                                <label class="col-sm-4 control-label label-key" >内容类型</label>
+                                                <div class="col-sm-8 label-value">
+                                                    <div class="set-btn-common set-btn" ng-if="!data.element_data.job_method" ng-click="setJobMethod()">
+                                                        <span class="fa fa-cog"></span>&nbsp;&nbsp;设置
+                                                    </div>
+                                                    <div class="set-btn-common time-condition" ng-if="data.element_data.job_method" ng-click="setJobMethod()" ng-style="{'width':data.element_data.job_method == 2 ? '110px':''}">
+                                                        <div ng-if="data.element_data.job_method == 1" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{jobData.comp_cn_name}}">
+                                                            <span class="fa fa-cube" style="font-size: 16px;vertical-align: middle"></span>
+                                                            <span ng-bind="data.element_data.comp_cn_name ? data.element_data.comp_cn_name : '--'"></span>
+                                                        </div>
+                                                        <div ng-if="data.element_data.job_method == 2">
+                                                            <span class="fa fa-pencil-square-o" style="font-size: 18px;vertical-align: middle;"></span>
+                                                            <span style="padding-left:4px;">[自定义]</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row form-style">
+                                                <label class="control-label col-sm-3 label-key text-right">结果判定</label>
+                                                <div class="col-sm-9 label-value">
+											<textarea name="result_judge"
+                                                      style="resize: none;color: #d2f1fe;"
+                                                      rows="13"
+                                                      placeholder="输入java表达式"
+                                                      ng-model="data.element_data.result_judge"
+                                                      class="form-control">
+											</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--输入输出参数-->
+                                    <div class="form-group form-style" ng-if="data.element_data.input.length || data.element_data.output.length">
+                                        <label class="col-sm-2"></label>
+                                        <div class="col-sm-6 label-value" ng-if="data.element_data.input.length">
+                                            <table class="sub-table cus-param-table">
+                                                <thead>
+                                                <tr>
+                                                    <td width="150px" style="text-align: left">输入参数名</td>
+                                                    <td width="70px" style="text-align: left">值来源</td>
+                                                    <td style="text-align: left">默认值</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="tr in data.element_data.input">
+                                                    <td style="text-align: left" title="{{tr.param_cn_name}}">
+                                                        <span ng-bind="tr.param_name"></span>
+                                                    </td>
+                                                    <td>
+                                                        <bs-select items="data.param_source_list"
+                                                                   my-select="tr.param_source"
+                                                                   option-labal="value"
+                                                                   option-key="key"
+                                                                   no-border></bs-select>
+                                                    </td>
+                                                    <td style="text-align: left">
+                                                        <input type="text" class="sub-form-control" ng-model="tr.param_value" ng-if="tr.param_source == 1"/>
+                                                        <span ng-if="tr.param_source == 2">--</span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-4 label-value" ng-if="data.element_data.output.length">
+                                            <table class="sub-table cus-param-table">
+                                                <thead>
+                                                <tr>
+                                                    <td width="100px">输出参数名</td>
+                                                    <td>参数中文名</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="tr in data.element_data.output">
+                                                    <td>
+                                                        <span ng-bind="tr.param_name ? tr.param_name : '--'"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!--保存配置按钮-->
+                                    <div class="form-group">
+                                        <div class="col-md-12 text-center">
+                                            <button type="button" ng-click="closeElementConfig()" class="save-cancel-btn cancel-btn btn-md">取消</button>
+                                            <button type="button" ng-click="formSubmit(2)" class="save-cancel-btn save-btn btn-md">保存</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table class="sub-table table text-center output-param-table" tbl-Data="init.out_param_list" row-plus="addOutputParam()">
+                        <thead>
+                        <tr>
+                            <td width="140px">属性名称</td>
+                            <td width="150px">属性类型</td>
+                            <td>默认值</td>
+                            <td width="60px">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in init.param_list">
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_name"   name="output_param_name{{$id}}" required/>
+                                <validate-msg style="font-size: 10px;" tag-cn-name="输出参数名"  name="output_param_name{{$id}}"></validate-msg>
+                            </td>
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_cn_name"   name="output_param_cn_name{{$id}}"/>
+                            </td>
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_bk_desc"   name="output_param_bk_desc{{$id}}" />
+                            </td>
+                            <td>
+                                <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deleteOutputParam($index,tr,1)"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="work-bench-table"  ng-if="tab_no==3">
+                    <div class="work-table-title">
+                        <div class="work-title-name">详细信息</div>
+                        <div style="float: right;width: 47%;line-height: 70px;">
+                            <div class="save-cancel-btn save-btn btn-md btn-text work-btn" ng-click="ProsaveBtn()">确定</div>
+                            <div class="save-cancel-btn save-btn btn-md btn-text work-btn" ng-click="hideDiv()">取消</div>
+                        </div>
+                    </div>
+                    <div class="input-list">
+                        <table>
+                            <tr>
+                                <td>序号</td>
+                                <td><input type="text" class="input-list-style" ng-model="product.serial_no"></td>
+                                <td>名称</td>
+                                <td><input type="text" class="input-list-style" ng-model="product.pro_name"></td>
+                                <td>版本</td>
+                                <td><input type="text" class="input-list-style" style="margin-left: 10px" ng-model="product.pro_edition"></td>
+                            </tr>
+                            <tr>
+                                <td>工艺路线</td>
+                                <td><bs-select items="product.pro_rote" my-select="product.pro_rote_selected"></bs-select></td>
+                                <td>承制工厂</td>
+                                <td><bs-select items="product.pro_factory" my-select="product.pro_factory_selected"></bs-select></td>
+                            </tr>
+                            <tr>
+                                <td>基础数量</td>
+                                <td><input type="text" class="input-list-style" ng-model="product.pro_num"></td>
+                                <td>单位</td>
+                                <td><input type="text" class="input-list-style" ng-model="product.pro_company"></td>
+                                <td><input type="checkbox"></td>
+                                <td>关重件</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="margin-top: 20px;border-top: 1px dashed gray;padding-top: 15px">
+                        <div style="font-size: 18px;">物料信息</div>
+                        <div>
+                            <table class="sub-table table text-center output-param-table" tbl-Data="init.out_param_list" row-plus="addOutputParamList(1)">
+                                <thead>
+                                <tr>
+                                    <td width="100px">序号</td>
+                                    <td width="100px">名称</td>
+                                    <td width="100px">编码</td>
+                                    <td width="100px">单位</td>
+                                    <td width="100px">基本用量</td>
+                                    <td width="100px">实际用量</td>
+                                    <td width="100px">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="tr in product.material_infor_list">
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.no"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.name"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.code"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.company"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.basic_consumption"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.actual_consumption"/>
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deleteOutputParamA($index,tr,1,1)"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;border-top: 1px dashed gray;padding-top: 15px">
+                        <div>
+                            <div class="tab-btn-table" ng-click="tabBtnTable(1)" ng-class="product.tab_isShow==1 && 'btn-background'">替代件</div>
+                            <div class="tab-btn-table" ng-click="tabBtnTable(2)" ng-class="product.tab_isShow==2 && 'btn-background'" style="margin-left: 20px;">虚拟件</div>
+                        </div>
+                        <div ng-if="product.tab_isShow == 1">
+                            <table class="sub-table table text-center output-param-table" tbl-Data="init.out_param_list" row-plus="addOutputParamList(2)">
+                                <thead>
+                                <tr>
+                                    <td width="100px">序号</td>
+                                    <td width="100px">名称</td>
+                                    <td width="100px">编码</td>
+                                    <td width="100px">单位</td>
+                                    <td width="100px">基本用量</td>
+                                    <td width="100px">实际用量</td>
+                                    <td width="100px">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="tr in product.substitute_list">
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.no"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.name"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.code"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.company"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.basic_consumption"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.actual_consumption"/>
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deleteOutputParamA($index,tr,1,2)"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-if="product.tab_isShow == 2">
+                            <table class="sub-table table text-center output-param-table" tbl-Data="init.out_param_list" row-plus="addOutputParamList(3)">
+                                <thead>
+                                <tr>
+                                    <td width="100px">序号</td>
+                                    <td width="100px">名称</td>
+                                    <td width="100px">编码</td>
+                                    <td width="100px">单位</td>
+                                    <td width="100px">基本用量</td>
+                                    <td width="100px">实际用量</td>
+                                    <td width="100px">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="tr in product.virtual_parts_list">
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.no"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.name"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.code"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.company"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.basic_consumption"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="sub-form-control" ng-model="tr.actual_consumption"/>
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deleteOutputParamA($index,tr,1,3)"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="save-div" ng-if="save_sishow">
+    <div class="set-mode-name">模型名称设置</div>
+    <div style="width: 100%;height: 86%;">
+        <div style="width: 100%;height: 50%;">
+            <div class="set-input-div">
+                <span style="font-size: 18px;">模型名称：</span>
+                <input class="sub-form-control set-input" type="text" ng-model="init.input_name_mode">
+            </div>
+        </div>
+        <div style="width: 100%;height: 50%;">
+            <div style="width: 300px;height: 60px;margin-top: -30px;margin-left: 27px;">
+                <span class="save-cancel-btn save-btn btn-md btn-text" ng-click="sureBtn()">确定</span>
+                <span class="save-cancel-btn save-btn btn-md btn-text" ng-click="hideBtn()">取消</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="two_creat" ng-if="creat_alert">
+   <div class="t_c_tit">新建</div>
+   <table>
+       <tr>
+           <td width="60">名称：</td>
+           <td><input type="text"></td>
+       </tr>
+       <tr>
+           <td width="60">版本号：</td>
+           <td><input type="text" value="v1.0"></td>
+       </tr>
+       <tr style="padding-left: 55px;">
+           <td><div style="height: 25px; line-height: 25px;" class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="creact_suc('新建成功！')">确定</div></td>
+           <td><div style="height: 25px; line-height: 25px;" class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="creat('close')">取消</div></td>
+       </tr>
+   </table> 
+</div>
+<div class="two_creat" ng-if="Section_alert">
+    <div class="t_c_tit">工段</div>
+    <table>
+        <tr>
+            <td width="60">工段名称：</td>
+            <td><input type="text"></td>
+        </tr>
+        <tr>
+            <td width="60">产能：</td>
+            <td><input type="text"></td>
+        </tr>
+        <tr style="padding-left: 55px;">
+            <td><div style="height: 25px; line-height: 25px;" class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="Section('close')">取消</div></td>
+            <td><div style="height: 25px; line-height: 25px;" class="save-cancel-btn save-btn btn-md btn-text" ng-if="is_showtable" ng-click="creact_suc('保存成功！')">确定</div></td>
+        </tr>
+    </table>
+</div>
+<div ng-if="data.right_tab_show"  class="right_t_tab" ng-show="tab_no==2">
+    <div class="title">
+        <div class="t-l">详细信息</div>
+        <div style="height: 25px; line-height: 25px; float: right;" class="save-cancel-btn save-btn btn-md btn-text" ng-click="">取消</div>
+        <div style="height: 25px; line-height: 25px; float: right;" class="save-cancel-btn save-btn btn-md btn-text" ng-click="">确定</div>
+    </div>
+    <table class="tb1">
+        <tr>
+            <td width="80" align="center">序号</td>
+            <td><input type="text"></td>
+            <td width="80" align="center">名称</td>
+            <td><input type="text"></td>
+        </tr>
+        <tr>
+            <td width="80" align="center">工时</td>
+            <td><input type="text"></td>
+            <td width="80" align="center">检验</td>
+            <td><bs-select width="100" class="label-value" items="code" my-select="code_info"></bs-select></td>
+        </tr>
+        <tr>
+            <td width="80" align="center">工序描述</td>
+            <td><textarea name="" id="" cols="25" rows="5"></textarea></td>
+            <td width="40" align="center"><input type="checkbox"></td>
+            <td>关重件追溯</td>
+        </tr>
+    </table>
+    <ul class="a_tab_list">
+        <li ng-click="tab_chose=1" id={{tab_chose==1&&'tab_active'}}>材料</li>
+        <li ng-click="tab_chose=2" id={{tab_chose==2&&'tab_active'}}>工位</li>
+        <li ng-click="tab_chose=3" id={{tab_chose==3&&'tab_active'}}>工艺文件</li>
+        <li ng-click="tab_chose=4" id={{tab_chose==4&&'tab_active'}}>检验项</li>
+    </ul>
+    <div class="tab_con">
+        <table ng-if="tab_chose==1" class="sub-table table text-center output-param-table" tbl-Data="init.out_param_list" row-plus="addList(1)">
+            <thead>
+            <tr>
+                <td width="100px">名称</td>
+                <td width="100px">编码</td>
+                <td width="100px">数量</td>
+                <td width="100px">物料种类</td>
+                <td width="100px">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="tr in material_list">
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.no"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.name"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.code"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.company"/>
+                </td>
+                <td>
+                    <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deletList($index,tr,1,1)"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table ng-if="tab_chose==2" class="sub-table table text-center output-param-table" tbl-Data="init.out_param_list" row-plus="addList(2)">
+            <thead>
+            <tr>
+                <td width="100px">名称</td>
+                <td width="100px">父级</td>
+                <td width="100px">编码</td>
+                <td width="100px">状态</td>
+                <td width="100px">产能</td>
+                <td width="100px">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="tr in Station_list">
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.no"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.name"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.name"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.code"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.company"/>
+                </td>
+                <td>
+                    <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deletList($index,tr,1,2)"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table ng-if="tab_chose==4" class="sub-table table text-center output-param-table" tbl-Data="init.out_param_list" row-plus="addList(3)">
+            <thead>
+            <tr>
+                <td width="100px">检验项</td>
+                <td width="100px">理论值</td>
+                <td width="100px">单位</td>
+                <td width="100px">备注</td>
+                <td width="100px">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="tr in test_list">
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.no"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.name1"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.name"/>
+                </td>
+                <td>
+                    <input type="text" class="sub-form-control" ng-model="tr.code"/>
+                </td>
+                <td>
+                    <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deletList($index,tr,1,3)"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-if="tab_chose==3"  class="file_p">
+            <div class="file_main">
+                <file-upload fileupload="file_path" successthen="ImportSuccessThen();" deletefile="removeCmptFile();"></file-upload>
+            </div>
+            <div style="height: 25px; line-height: 25px; position: absolute; left: 50%; bottom: 100px; transform: translate(-50%);" class="save-cancel-btn save-btn btn-md btn-text" ng-click="">确定</div>
+        </div>
+    </div>
+</div>

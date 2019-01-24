@@ -1,0 +1,102 @@
+<div class="container-fluid node-list">
+    <div ng-if="info.node_load_error_message">
+        <div class="node-list-error error-font-color">{{info.node_load_error_message}}</div>
+    </div>
+    <div ng-if="!info.node_load_error_message">
+        <div ng-repeat="one_node in data.nodes" class="single-node">
+            <div class="node-list-common scheme" style="overflow: hidden;position: relative;">
+                <div class="delete-style">
+                    <span ng-click="deleteCurrentNode(one_node.node_soc_ip,$event)"><i class="glyphicon glyphicon-trash"></i></span>
+                </div>
+                <!--left-->
+                <div class="node-config-card-left-part">
+                    <div class="node-icon"></div>
+                    <span class="card-left-part-icon">{{one_node.node_soc_ip}}</span>
+                </div>
+                <!--竖线-->
+                <div class="line-vertical"></div>
+                <!--right-->
+                <div class="card-right-part">
+                    <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag">
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==1" class="common-operator operator-image"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==2" class="common-operator operator-image-windows"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==3" class="common-operator operator-image-ios"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==4" class="common-operator operator-image-none"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==5" class="common-operator operator-image-AIX"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==6" class="common-operator operator-image-HPUX"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==7" class="common-operator operator-image-freeBSD"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==8" class="common-operator operator-image-SCO"></div>
+                        <div ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_flag==9" class="common-operator operator-image-solaris"></div>
+                        <span class="span-operator-font-style">{{one_node.nodeBasicBean.node_soft_msg.op_system_stype}} <label title="{{one_node.nodeBasicBean.node_soft_msg.op_system_version}}" style="font-size: 12px;color:#44dcfd">{{one_node.nodeBasicBean.node_soft_msg.op_system_version}}</label></span>
+                    </div>
+                    <div ng-if="!one_node.nodeBasicBean.node_soft_msg.op_system_flag">
+                        <div class="operator-image-none common-operator"></div>
+                        <span ng-if="!one_node.nodeBasicBean.node_soft_msg.op_system_stype">系统未知</span>
+                        <span ng-if="one_node.nodeBasicBean.node_soft_msg.op_system_stype" class="span-operator-font-style">{{one_node.nodeBasicBean.node_soft_msg.op_system_stype}} <label title="{{one_node.nodeBasicBean.node_soft_msg.op_system_version}}" style="font-size: 12px;">{{one_node.nodeBasicBean.node_soft_msg.op_system_version}}</label></span>
+                    </div>
+                    <div class="node-common-font">
+                        <div title="cpu信息" class="cpu-image"></div>
+                        <span class="span-font-style" title="{{one_node.nodeBasicBean.node_hard_msg.cpu}}" ng-if="one_node.nodeBasicBean.node_hard_msg.cpu">{{one_node.nodeBasicBean.node_hard_msg.cpu}}</span>
+                        <span class="span-font-style" ng-if="!one_node.nodeBasicBean.node_hard_msg.cpu">--</span>
+                    </div>
+                    <div class="node-common-font">
+                        <div title="内存信息" class="memory-image"></div>
+                        <span class="span-font-style" title="{{one_node.nodeBasicBean.node_hard_msg.mem}}" ng-if="one_node.nodeBasicBean.node_hard_msg.mem">{{one_node.nodeBasicBean.node_hard_msg.mem}}</span>
+                        <span class="span-font-style" ng-if="!one_node.nodeBasicBean.node_hard_msg.mem">--</span>
+                    </div>
+                    <div class="node-common-font">
+                        <div  title="硬盘信息" class="sata-image"></div>
+                        <span class="span-font-style" title="{{one_node.nodeBasicBean.node_hard_msg.disk}}" ng-if="one_node.nodeBasicBean.node_hard_msg.disk">{{one_node.nodeBasicBean.node_hard_msg.disk}}</span>
+                        <span class="span-font-style" ng-if="!one_node.nodeBasicBean.node_hard_msg.disk">--</span>
+                    </div>
+                    <div class="node-common-font">
+                        <div title="网络信息" class="lan-image"></div>
+                        <span class="span-font-style" title="{{one_node.nodeBasicBean.node_hard_msg.network}}" ng-if="one_node.nodeBasicBean.node_hard_msg.network">{{one_node.nodeBasicBean.node_hard_msg.network}}</span>
+                        <span class="span-font-style" ng-if="!one_node.nodeBasicBean.node_hard_msg.network">--</span>
+                    </div>
+                    <div ng-if="one_node.type_list" style="height: 23px;overflow: hidden;">
+                        <div class="content-style" ng-repeat="type in one_node.type_list">{{type}}</div>
+                    </div>
+                </div>
+                <!--有无部署agent标识-->
+                <div class="node-list-agent-position" ng-if="one_node.exist_agent_yn_falg ==1 ">
+                    <div class="content-empty-style">AGENT</div>
+                </div>
+                <!--横线-->
+                <div class="line-horizon"></div>
+                <!--bottom-->
+                <div class="scroll-roll">
+                    <div  class="card-plugin-wrap">
+                        <label class="card-plugin">插件</label>
+                        <div class="card-bottom-value">
+                            <div class="content-empty-style" ng-repeat="plugin in one_node.plugin_list">{{plugin}}</div>
+                            <span  title="暂无数据" class="card-bottom-value-nodata" ng-if="!one_node.plugin_list || one_node.plugin_list.length==0">--</span>
+                        </div>
+                        <div title="详细" ng-if="one_node.plugin_list.length>2" ng-click="showPluginOrProtocolList(one_node.plugin_list,one_node.node_soc_ip,1)" class="card-protocol-detail">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    <div class="card-plugin-wrap">
+                        <label class="card-plugin">协议</label>
+                        <div class="card-bottom-value">
+                            <div class="content-empty-style" style="color: #d2f1fe " ng-repeat="protocol in one_node.protocol_list">{{protocol}}</div>
+                            <span title="暂无数据" class="card-bottom-value-nodata" ng-if="!one_node.protocol_list || one_node.protocol_list.length==0">--</span>
+                        </div>
+                        <div title="详细" ng-if="one_node.protocol_list.length>3" ng-click="showPluginOrProtocolList(one_node.protocol_list,one_node.node_soc_ip,2)" class="card-protocol-detail">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                </div>
+                <ul class="scheme-top">
+                    <li  title="查看" ng-click="judgeOtherNode(3,one_node)">查看</li>
+                    <li  title="配置" ng-click="judgeOtherNode(2,one_node)">配置</li>
+                </ul>
+            </div>
+        </div>
+        <!--节点列表-->
+        <div  ng-click="judgeOtherNode(1)" class="node-list-common" style="margin-right: 6px; cursor: pointer;">
+            <div class="add-node-button"></div>
+            <div class="font-common"><span >新增节点</span></div>
+        </div>
+    </div>
+</div>

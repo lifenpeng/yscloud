@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h3 class="modal-title">引用节点</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body dispatch-flow-ref-node" style="padding-right: 10px;">
+    <div style="height:260px;" custom-scroll>
+        <div class="ref-node-block" ng-repeat="node in ref_node_list">
+            <div class="ref-node-container" ng-click="node.checked = !node.checked" ng-class="{'ref-node-checked':node.checked}" title="{{node.exe_soc_name}}">
+                <div  class="ref-node-ip">{{node.exe_ip}}</div>
+                <div class="ref-soc-name">{{node.exe_soc_name}}</div>
+                <div ng-if="node.checked" class="ref-node-checked-sign-position">
+                    <i class="fa fa-check ref-node-checked-sign"></i>
+                </div>
+            </div>
+        </div>
+        <div class="no-ref-node" ng-if="ref_node_list.length == 0">
+            暂无可引用节点
+        </div>
+    </div>
+    <div style="text-align: center;margin-top: 40px;" ng-if="ref_node_list.length != 0">
+        <button class="cancel-btn btn-xl" ng-click="formCancel()">取消</button>
+        <button class="save-btn btn-xl" ng-click="formSubmit()">确定</button>
+    </div>
+</div>

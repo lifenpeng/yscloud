@@ -1,0 +1,331 @@
+<div class="fontSize12 modal-body data-source-config-modal">
+    <!--关闭按钮-->
+    <div class="modal-close-btn" ng-click="formCancel()">
+        <span class="fa fa-times"></span>
+    </div>
+    <div class="config-container">
+        <!--工单配置数据源-->
+        <div class="row" ng-if="!reqData.two_soc && reqData.flag == 1">
+            <div class="col-sm-3 left-col">
+                <div class="search" style="height: 18px;">
+                    <div class="search-input" style="float: left;width: 118px;">
+                        <input type="text" name="sc_search_key"
+                               ng-model="reqData.sc_search_key"
+                               typeahead="bs for bs in reqData.ip_data_list | filter:$viewValue | limitTo:10"
+                               typeahead-on-select = "selectOne()"
+                               ng-enter="selectOne()"
+                               class="form-control label_value"
+                               placeholder="节点IP"
+                               style="width: 138px;padding-left: 6px;">
+                    </div>
+                    <div style="display: inline-block;width: 53px;position: absolute;" ng-show="reqData.sc_search_key">
+                        <div class="search_del_icon" ng-click="reqData.sc_search_key = ''"></div>
+                    </div>
+                </div>
+                <div style="width: 138px;margin-top: 16px;height: 285px;" custom-scroll custom-config="scroll_config_out_info">
+                    <div>
+                        <div ng-repeat="one in reqData.normal_ip_list" ng-class="!one.is_show ? 'was-data-source-delete': 'was-data-source'" style="width:125px;cursor: pointer;">
+                            <div style="display: inline-block;padding: 3px 3px 3px 6px;color:#d2f1fe" ng-style="!one.is_show ? {'text-decoration':'line-through #F1B442'}:''">{{one.soc_ip}}</div>
+                            <span ng-click="one.is_show = !one.is_show"></span>
+                        </div>
+                        <div ng-if="reqData.ip_data_list.length == 0" style="color: #6D7183;font-size: 12px;text-align: center;">
+                            暂无节点
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 right-col" style="height: 320px" custom-scroll custom-config="scroll_config_out_info">
+                <!--暂无配置数据源-->
+                <div class="no-config-data-source" ng-style="monitorSelect()" ng-show="control.no_select_node">
+                    <span class="no-config-data-source-font">请先选择左侧节点</span>
+                </div>
+                <div ng-repeat="one_ip in reqData.normal_ip_list" ng-init="outer_index = $index" ng-if="one_ip.is_show" style="margin-bottom: 10px;"><div class="checked-ip">{{one_ip.soc_ip}}</div>
+                    <div>
+                        <div ng-repeat="one_soc in one_ip.soc_name_list" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div ng-click="clickScSource(one_soc,one_ip,$index,outer_index)" ng-class="one_soc.state ? 'data-source-selected' :'data-source'" style="font-size: 12px;padding: 2px 15px 2px 0px;cursor: pointer;" title="{{getProtocolTypeCnName(one_soc.protocol_type)}}">
+                                <div class="protocol-type ltp-color">{{getProtocolTypeCnName(one_soc.protocol_type).substring(0,5).toLowerCase()}}</div>
+                                <div class="soc-name">{{one_soc.soc_name}}</div>
+                                <div ng-if="one_soc.state" class="checked_div">
+                                    <i class="fa fa-check checked_sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="one_ip.soc_name_list.length == 0 && one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;font-size: 12px;color: #44dcfd;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44dcfd;"></i>&nbsp;加载中</div>
+                        </div>
+                        <div ng-if="one_ip.soc_name_list.length == 0 && !one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;color: #6D7183;font-size: 12px;">暂无数据源</div>
+                        </div>
+                    </div>
+                    <div style="padding-left:10px;padding-right:10px;padding-top:6px;" ng-if="one_ip.is_exsit_ftp">
+                        <div ng-repeat="one_soc in one_ip.ftp_soc_name_list" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div ng-click="clickScFtpSource(one_soc,one_ip,$index,outer_index)" ng-class="one_soc.state ? 'data-source-selected' :'data-source'" style="font-size: 12px;padding: 2px 15px 2px 0px;cursor: pointer;" title="{{getProtocolTypeCnName(one_soc.protocol_type)}}">
+                                <div  class="protocol-type ltp-color">{{getProtocolTypeCnName(one_soc.protocol_type).substring(0,5).toLowerCase()}}</div>
+                                <div  class="soc-name">{{one_soc.soc_name}}</div>
+                                <div ng-if="one_soc.state" class="checked_div">
+                                    <i class="fa fa-check checked_sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="one_ip.ftp_soc_name_list.length == 0 && one_ip.is_ftp_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;font-size: 12px;color: #44dcfd;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color:#44dcfd;"></i>&nbsp;加载中</div>
+                        </div>
+                        <div ng-if="one_ip.ftp_soc_name_list.length == 0 && !one_ip.is_ftp_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;color: #6D7183;font-size: 12px;">暂无数据源</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--单个数据源的配置-->
+        <div class="row" ng-if="!reqData.two_soc && reqData.flag == 2 && reqData.business_sys_name != ''">
+            <div class="col-sm-3 left-col">
+                <div class="search">
+                    <div class="search-input" style="width:118px">
+                        <input type="text" name="search_key"
+                               ng-model="reqData.search_key"
+                               class="form-control label_value"
+                               placeholder="节点IP"
+                               style="padding-left: 30px;width: 138px;"
+                               ng-enter="locationIp()">
+                    </div>
+                    <div class="search-btn">
+                        <span class="search_del_icon" ng-click="clearIp()"></span>
+                        <span class="fa fa-search search-logol" style="left: 16px;"></span>
+                    </div>
+                </div>
+                <div style="width: 138px;margin-top: 11px;height: 265px;" custom-scroll custom-config="scroll_config_out_info">
+                    <div ng-if="reqData.ip_data_list.length != 0 && reqData.ip_data_loading" ng-repeat="one_ip in reqData.normal_ip_list" style="margin-top: 5px">
+                        <div style=" padding: 2px 10px;cursor: pointer;" ng-click="checkNodeIP(one_ip)" ng-class="{'left-checked-ip': one_ip.is_show,'left-default-ip':!one_ip.is_show}" >
+                            <input type="checkbox"
+                                   name="is_config"
+                                   ng-change="testCh($index)"
+                                   i-check
+                                   ng-model="one_ip.is_show">
+                            <span style="display: inline-block;position: relative; top: 2px;color: #d2f1fe">{{one_ip.exe_ip}}</span>
+                        </div>
+                    </div>
+                    <div ng-if="reqData.ip_data_list.length == 0 && reqData.ip_data_loading" style="color: #6D7183;font-size: 12px;text-align: center;">
+                        暂无节点
+                    </div>
+                    <div ng-if="!reqData.ip_data_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                        <div style="display: inline-block;font-size: 12px;color:#44dcfd;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44dcfd;"></i>&nbsp;加载中</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 right-col" style="height: 320px" custom-scroll custom-config="scroll_config_out_info">
+                <!--暂无配置数据源-->
+                <div class="no-config-data-source" ng-style="monitorSelect()" ng-show="control.no_select_node">
+                    <span class="no-config-data-source-font">请先选择左侧节点</span>
+                </div>
+                <div ng-repeat="one_ip in reqData.normal_ip_list" ng-init="outer_index = $index" ng-if="one_ip.is_show" style="margin-bottom: 10px;"><div class="checked-ip">{{one_ip.exe_ip}}</div>
+                    <div>
+                        <div ng-repeat="one_soc in one_ip.exe_soc_list" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div ng-click="click_dataSource(one_soc,one_ip.exe_ip,$index)" ng-class="one_soc.state ? 'data-source-selected' :'data-source'" style="font-size: 12px;padding: 2px 15px 2px 0px;cursor: pointer;" title="{{getProtocolTypeCnName(one_soc.protocol_type)}}">
+                                <div class="protocol-type ltp-color">{{getProtocolTypeCnName(one_soc.protocol_type).substring(0,5).toLowerCase()}}</div>
+                                <div class="soc-name">{{one_soc.exe_soc_name}}</div>
+                                <div ng-if="one_soc.state" class="checked_div">
+                                    <i class="fa fa-check checked_sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="one_ip.exe_soc_list.length == 0 && !one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;color: #6D7183;font-size: 12px;">暂无数据源</div>
+                        </div>
+                        <div ng-if="one_ip.exe_soc_list.length == 0 && one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;font-size: 12px;color: #44dcfd;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44dcfd;"></i>&nbsp;加载中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--组件测试-配置-->
+        <div class="row" ng-if="!reqData.two_soc && reqData.flag == 2 && reqData.business_sys_name == ''">
+            <div class="col-sm-3 left-col">
+                <div class="search" style="height: 32px;">
+                    <div class="search-input" style="width:118px">
+                        <input type="text" name="search_key"
+                               ng-model="reqData.search_key"
+                               class="form-control label_value"
+                               typeahead="bs for bs in reqData.ip_data_list | filter:$viewValue | limitTo:10"
+                               typeahead-on-select = "checkNodeIPNobusiness()"
+                               ng-enter="checkNodeIPNobusiness()"
+                               placeholder="节点IP"
+                               style="width: 138px;padding-left: 6px">
+                    </div>
+                    <div style="display: inline-block;width: 53px;position: absolute;">
+                        <div class="search_del_icon" ng-click="reqData.search_key = ''"></div>
+                    </div>
+                </div>
+                <div style="width: 138px;height: 285px;overflow: auto" custom-scroll custom-config="scroll_config_info">
+                    <div ng-repeat="one in reqData.normal_ip_list" ng-class="!one.is_show ? 'was-data-source-delete': 'was-data-source'" style="width:125px;cursor: pointer;">
+                        <div style="display: inline-block;padding: 3px 3px 3px 6px;color:#d2f1fe" ng-style="!one.is_show ? {'text-decoration':'line-through #F1B442'}:''">{{one.exe_ip}}</div>
+                        <span ng-click="one.is_show = !one.is_show"></span>
+                    </div>
+                    <div ng-if="reqData.ip_data_list.length == 0" style="color: #6D7183;font-size: 12px;text-align: center;">
+                        暂无节点
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 right-col" style="height: 320px" custom-scroll custom-config="scroll_config_out_info">
+                <!--暂无配置数据源-->
+                <div class="no-config-data-source" ng-style="monitorSelect()" ng-show="control.no_select_node">
+                    <span class="no-config-data-source-font">请先选择左侧节点</span>
+                </div>
+                <div ng-repeat="one_ip in reqData.normal_ip_list" ng-init="outer_index = $index" ng-if="one_ip.is_show" style="margin-bottom: 10px;"><div class="checked-ip">{{one_ip.exe_ip}}</div>
+                    <div>
+                        <div ng-repeat="one_soc in one_ip.exe_soc_list" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div ng-click="click_dataSource(one_soc,one_ip.exe_ip,$index)" ng-class="one_soc.state ? 'data-source-selected' :'data-source'" style="font-size: 12px;padding: 2px 15px 2px 0px;cursor: pointer;" title="{{getProtocolTypeCnName(one_soc.protocol_type)}}">
+                                <div class="protocol-type ltp-color">{{getProtocolTypeCnName(one_soc.protocol_type).substring(0,5).toLowerCase()}}</div>
+                                <div class="soc-name">{{one_soc.exe_soc_name}}</div>
+                                <div ng-if="one_soc.state" class="checked_div">
+                                    <i class="fa fa-check checked_sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="one_ip.exe_soc_list.length == 0 && !one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;color: #6D7183;font-size: 12px;">暂无数据源</div>
+                        </div>
+                        <div ng-if="one_ip.exe_soc_list.length == 0 && one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                            <div style="display: inline-block;font-size: 12px;color: #44dcfd;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44dcfd;"></i>&nbsp;加载中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--多个数据源的配置-->
+        <div class="row" style="margin-right:0;" ng-if="reqData.two_soc  && reqData.flag == 2">
+            <div class="col-sm-3" style="text-align: center;padding:7px 15px;color: #F1B442">执行节点<span class="vertical-split-line"></span></div>
+            <div class="col-sm-3" style="text-align: center;padding:7px 15px;color: #F1B442">执行数据源<span class="vertical-split-line"></span></div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 3" style="text-align: center;padding:7px 15px;color: #F1B442">was节点<span class="vertical-split-line"></span></div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 3" style="text-align: center;padding:7px 15px;color: #F1B442">was数据源</div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 4" style="text-align: center;padding:7px 15px;color: #F1B442">svn节点<span class="vertical-split-line"></span></div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 4" style="text-align: center;padding:7px 15px;color: #F1B442">svn数据源</div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 5" style="text-align: center;padding:7px 15px;color: #F1B442">weblogic节点<span class="vertical-split-line"></span></div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 5" style="text-align: center;padding:7px 15px;color: #F1B442">weblogic数据源</div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 14 || reqData.imply_type == 15 || reqData.imply_type == 17" style="text-align: center;padding:7px 15px;color: #F1B442">上传节点<span class="vertical-split-line"></span></div>
+            <div class="col-sm-3" ng-if="reqData.imply_type == 14 || reqData.imply_type == 15 || reqData.imply_type == 17" style="text-align: center;padding:7px 15px;color: #F1B442">上传数据源</div>
+        </div>
+        <div class="row" style="margin-right: 0;height: 320px;" ng-if="reqData.two_soc  && reqData.flag == 2" custom-scroll custom-config="scroll_config_info">
+            <div class="col-sm-3" style="min-height: 280px">
+                <div class="search" style="margin-right: 5px;height: 32px;">
+                    <div class="search-input" style="float: left;width: 106px;">
+                        <input type="text" name="search_key_work"
+                               ng-model="reqData.search_key_work"
+                               typeahead="bs for bs in reqData.ip_data_list | filter:$viewValue | limitTo:10"
+                               typeahead-on-select = "selectTwo()"
+                               class="form-control label_value"
+                               placeholder="节点IP"
+                               style="width: 126px;padding-left: 6px;">
+                    </div>
+                    <div style="display: inline-block;width: 53px;position: absolute;">
+                        <div class="search_del_icon"  ng-click="reqData.search_key_work = ''"></div>
+                    </div>
+                </div>
+                <div ng-repeat="one in reqData.extra_ip_list" ng-click="clickNodeIP(one,$index)" ng-class="one.is_show ? 'was-data-source-selected' : one.delete_flag ? 'was-data-source-delete': 'was-data-source'" style="width:125px;cursor: pointer;">
+                    <div style="display: inline-block;padding: 3px 3px 3px 6px;color:#d2f1fe" ng-style="one.delete_flag ? {'text-decoration':'line-through #F1B442'}:''">{{one.exe_ip}}</div>
+                    <span ng-if="!one.is_show" ng-click="checkDeleteFlag(one,$event)"></span>
+                </div>
+                <div ng-if="reqData.ip_data_list.length == 0" style="color: #6D7183;font-size: 12px;text-align: center;">
+                    暂无节点
+                </div>
+            </div>
+            <div ng-show="reqData.extra_ip_list.length != 0">
+                <div class="col-sm-3" style="height: 100%;padding-top: 10px;padding-left: 10px;">
+                    <div ng-repeat="one_ip in reqData.extra_ip_list" ng-if="one_ip.is_show" style="margin-left: -4px;">
+                        <div>
+                            <div ng-repeat="one_soc in one_ip.exe_soc_list" ng-click="clickExeDataSource(one_soc,$index,$parent.$index)" ng-class="one_soc.state ? 'data-source-selected' :'data-source'" style="width:125px;padding: 3px 15px 3px 6px;position: relative;margin-bottom: 5px;cursor: pointer;" title="{{getProtocolTypeCnName(one_soc.protocol_type)}}">
+                                <div style="font-size: 12px;">
+                                    <div class="protocol-type ltp-color">{{getProtocolTypeCnName(one_soc.protocol_type).substring(0,5).toLowerCase()}}</div>
+                                    <div class="soc-name">{{one_soc.exe_soc_name}}</div>
+                                </div>
+                                <div ng-if="one_soc.state" class="checked_div">
+                                    <i class="fa fa-check checked_sign"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" ng-if="reqData.business_sys_name != ''" style="height: 100%;padding-top: 10px;padding-left: 10px;padding-right:0;">
+                    <div class="search" ng-if="reqData.extra_ip_list.length != 0">
+                        <div class="search-input">
+                            <input type="text"
+                                   ng-model="reqData.search_ver_key"
+                                   class="form-control"
+                                   placeholder="IP(模糊匹配)"
+                                   style="padding-left: 24px;"
+                                   ng-enter="locationVerword()">
+                        </div>
+                        <div>
+                            <span class="search_del_icon" ng-click="clearVerIp()"></span>
+                            <span class="fa fa-search search-logol" style="width: 24px;top: 8px"></span>
+                        </div>
+                    </div>
+                    <div ng-repeat="one_ip in reqData.extra_ip_list" ng-if="one_ip.exe_ip == reqData.check_ip" style="margin-top: 9px;">
+                        <div ng-repeat="one_ver in one_ip.ver_ip_list" ng-click="clickVerNode(one_ver,$index,$parent.$index)" ng-class="one_ver.is_check ? 'was-data-source-selected' :'was-data-source'" style="width:125px;padding: 3px 15px;cursor: pointer;">
+                            {{one_ver.ver_ip}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="height: 100%;padding-top: 10px;padding-left: 10px;padding-right:0;" ng-if="reqData.business_sys_name == ''">
+                    <div class="search" style="margin-right: 5px;height: 32px;margin-left: -6px;" ng-if="reqData.extra_ip_list.length != 0">
+                        <div class="search-input" style="float: left;width: 106px;">
+                            <input type="text" name="search_ver_key"
+                                   ng-model="reqData.search_ver_key"
+                                   typeahead="bs for bs in reqData.ip_data_list | filter:$viewValue | limitTo:10"
+                                   typeahead-on-select ="locationVerword()"
+                                   class="form-control label_value"
+                                   placeholder="节点IP"
+                                   style="width: 126px;padding-left: 6px;">
+                        </div>
+                        <div style="display: inline-block;width: 53px;position: absolute;">
+                            <div class="search_del_icon" ng-click="reqData.search_ver_key = ''"></div>
+                        </div>
+                    </div>
+                    <div ng-repeat="one_ip in reqData.extra_ip_list" ng-if="one_ip.exe_ip == reqData.check_ip" style="margin-left: -6px;">
+                        <div ng-repeat="one_ver in one_ip.ver_ip_list" ng-click="clickVerNode(one_ver,$index,$parent.$index)" ng-class="one_ver.is_check ? 'was-data-source-selected' :'was-data-source'" style="width:125px;padding: 3px 6px;cursor: pointer;">
+                            {{one_ver.ver_ip}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="height: 100%;padding-top: 10px;padding-left: 10px;">
+                    <div ng-repeat="one_ip in reqData.extra_ip_list" ng-init="outer_index = $index" ng-if="one_ip.exe_ip == reqData.check_ip">
+                        <div ng-repeat="one_soc in one_ip.ver_ip_list" ng-if="one_soc.is_check">
+                            <div ng-repeat="soc in one_soc.ver_soc_list"  style="margin-right: 10px;" >
+                                <div ng-click="clickVerSource(soc,$index,$parent.$index,outer_index)" ng-class="soc.state ? 'data-source-selected' :'data-source'" style="width:125px;position: relative;padding: 2px 15px 2px 0px;margin-bottom: 5px;cursor: pointer;overflow: hidden; white-space: nowrap;" title="{{getProtocolTypeCnName(soc.protocol_type)}}">
+                                    <div class="protocol-type ltp-color" ng-style="{'color': find_dataSource_color(soc.protocol_type),'background-color':find_dataSource_bgcolor(soc.protocol_type)}">{{getProtocolTypeCnName(soc.protocol_type).substring(0,5).toLowerCase()}}</div>
+                                    <span class="soc-name" title="{{soc.ver_soc_name}}">{{soc.ver_soc_name}}</span>
+                                    <div ng-if="soc.state" class="checked_div">
+                                        <i class="fa fa-check checked_sign"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  style="margin-right: 10px;" ng-if="one_soc.ver_soc_list.length == 0 && !reqData.tow_soc_loading">
+                                <div  style="width:125px;position: relative;padding: 2px 15px 2px 0px;margin-bottom: 5px;">
+                                    <span style="font-size: 12px;color: #6D7183;"> 无数据源</span>
+                                </div>
+                            </div>
+                            <div  style="margin-right: 10px;" ng-if="one_soc.ver_soc_list.length == 0 && reqData.tow_soc_loading">
+                                <div  style="width:125px;position: relative;padding: 2px 15px 2px 0px;margin-bottom: 5px;">
+                                    <div style="display: inline-block;font-size: 12px;color: #44dcfd;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44dcfd;"></i>&nbsp;加载中</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--暂无配置数据源-->
+            <div class="no-config-data-source" ng-show="reqData.extra_ip_list.length == 0">
+                <span class="no-config-data-source-font">请先选择左侧节点</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;margin-top: 40px;">
+        <button class="cancel-btn btn-xl" ng-click="formCancel()">取消</button>
+        <button class="save-btn btn-xl" ng-click="savebtn()">确定</button>
+    </div>
+
+</div>

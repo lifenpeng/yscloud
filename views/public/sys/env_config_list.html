@@ -1,0 +1,49 @@
+<div class="row env-config env-config-container">
+    <div class="col-sm-12 env-config-container-border">
+        <!--左侧环境列表-->
+        <div class="env-config-left" custom-scroll custom-config="config.scroll_info" ng-style="syncHeight()">
+            <div class="env-type-list" ng-repeat="env_type in info.env_type_list">
+                <!-- 环境类型分类-->
+                <div class="env-type-nav" style="height: 28px;line-height: 28px;"
+                     ng-click="env_type.is_collapse = !env_type.is_collapse"
+                     ng-class="{'env-type-nav-border-bottom':env_type.is_collapse && !$last}">
+                    {{env_type.env_type_cn}}
+                </div>
+                <!-- 环境类型-->
+                <div collapse="env_type.is_collapse">
+                    <div class="env-block">
+                        <div class="env-block-container clear-float" ng-repeat="env in env_type.env_list">
+                            <div class="env-name block-panel transition-block" ng-class="{'checked-style':env.active}" ng-click="selectEnv(env)">
+                                <p class="env-icon env-type{{env_type.env_type}}-icon"></p>
+                                <p class="env-name-text" ng-bind="env.env_name"></p>
+                                <span class="fa fa-trash-o" ng-click="envDelete(env,$event)" title="删除环境"></span>
+                            </div>
+                            <div class="env-published-icon" title="已发布" ng-if="env.pub_flag == 1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="env-type-list" ng-class="{'add-env-block':info.env_type_list.length != 0}">
+                <div class="env-block add-env-btnblock">
+                    <div class="env-block-container clear-float">
+                        <div class="env-name block-panel transition-block" ng-click="addEnv()">
+                            <p class="env-add-img transition-block"></p>
+                            <p class="env-name-text">新增环境</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--右侧-环境配置-->
+        <div class="row env-config-right">
+            <div class="config-page-container" id="config-page-container" ng-style="syncHeight()">
+                <!-- 提示页面 -->
+                <div class="no-env-img" ng-if="!control.env_select_flag">
+                    <div class="env-font">请选择左侧环境</div>
+                </div>
+                <!--配置页面-->
+                <div ui-view ng-if="control.env_select_flag" style="height: 100%"></div>
+            </div>
+        </div>
+    </div>
+</div>

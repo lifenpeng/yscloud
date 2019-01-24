@@ -1,0 +1,281 @@
+
+<style>
+    .private_ele{
+        padding-right: 0;
+    }
+    .ele-type-block{
+        position: relative;
+        margin-left: -10px;
+        margin-top:-10px;
+    }
+    .ele-type-icon{
+        width: 50px;
+        height: 50px;
+    }
+    .ele-type-font{
+        width: 300px;
+        position: absolute;
+        top: 7px;
+        left: 60px;
+        color:#999;
+    }
+    .ele-type-cn{
+        top: 30px;
+        color: #438cca;
+        font-size: 12px;
+    }
+    .private_ele .set-btn-common{
+        border-radius: 15px;
+        background-color: #172230;
+        color: #F1B442;
+        cursor: pointer;
+        text-align: center;
+        border: 1px solid #F1B442;
+        padding: 3px 6px;
+    }
+    .private_ele .set-btn-common:hover{
+        background-color: #F1B442;
+        color:#fff;
+    }
+    .private_ele .set-btn{
+        width: 70px;
+    }
+    .private_ele .time-condition{
+        width: 160px;
+        text-align: left;
+        padding-left: 10px;
+        position: relative;
+    }
+    .private_ele .time-condition .fa-clock-o{
+        font-size: 16px;
+        vertical-align: middle;
+    }
+</style>
+
+<form name="form.private_ele_form" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div  class="modal-header">
+        <h3 class="modal-title">添加私有元素</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body private_ele">
+        <div class="row ele-type-block">
+            <div class="ele-type-icon" ng-style="elementIcon()"></div>
+            <div class="ele-type-font">元素类型</div>
+            <div class="ele-type-font ele-type-cn" ng-bind="eleTypeTOCn()"></div>
+        </div>
+       <!-- <div custom-scroll custom-config="config.scroll_bar" style="min-height: 400px;">-->
+            <div class="form-group form-style" ng-if="single_element.category!= 6">
+                <label class="control-label col-sm-3 label-key text-right">元素名称</label>
+                <div class="col-sm-7 label-value">
+                    <input type="text"
+                           name="sdwork_cn_name"
+                           ng-model="single_element.element_info.sdwork_cn_name"
+                           class="form-control"
+                           placeholder="输入元素名"
+                           ng-maxlength=20
+                           required>
+                    <validate-msg tag-cn-name="元素名称" name="sdwork_cn_name"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="single_element.category!= 6">
+                <label class="control-label col-sm-3 label-key text-right">元素描述</label>
+                <div class="col-sm-7 label-value">
+                <textarea name="job_bk_desc"
+                          ng-model="single_element.element_info.job_bk_desc"
+                          class="form-control"
+                          placeholder="输入不超过250个字符或汉字"
+                          style="resize:none;color: #d2f1fe;"
+                          ng-maxlength=250
+                          ng-model-options="{updateOn: 'blur'}">
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="single_element.category!= 6">
+                <label class="control-label col-sm-3 label-key text-right">超时时间(s)</label>
+                <div class="col-sm-7 label-value">
+                    <input type="text"
+                           name="timeout"
+                           ng-model="single_element.element_info.timeout"
+                           class="form-control"
+                           placeholder="单位秒"
+                           ng-pattern="/^[\d]+$/"
+                           ng-maxlength=5>
+                    <validate-msg tag-cn-name="超时时间" name="timeout"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="single_element.category!= 6">
+                <label class="control-label col-sm-3 label-key text-right">执行预时(s)</label>
+                <div class="col-sm-7 label-value">
+                    <input type="text"
+                           name="timeused"
+                           ng-model="single_element.element_info.timeused"
+                           class="form-control"
+                           placeholder="单位秒"
+                           ng-pattern="/^[\d]+$/"
+                           ng-maxlength=5>
+                    <validate-msg tag-cn-name="执行预时" name="timeused"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="single_element.category== 2">
+                <label class="control-label col-sm-3 label-key text-right">数据库类型</label>
+                <div class="col-sm-7 label-value">
+                    <bs-select name="database_type" items="data.database_type_list" my-select="single_element.element_info.dataBase_type"></bs-select>
+                    <validate-msg tag-cn-name="数据库类型" type="select" name="database_type" model="single_element.element_info.dataBase_type"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="single_element.category== 6">
+                <label class="col-sm-3 control-label label-key">服务名称</label>
+                <div class="col-sm-7 label-value">
+                    <input type="text"
+                           name="service_name"
+                           ng-model="single_element.element_info.service_name"
+                           class="form-control"
+                           placeholder="输入xxx.do"
+                           ng-pattern="/^\S.*\.do+$/"
+                           ng-model-options="{updateOn: 'blur'}"
+                           ng-maxlength=100
+                           required>
+                    <validate-msg tag-cn-name="服务名称" name="service_name"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="single_element.category!= 6">
+                <label class="col-sm-3 control-label label-key">出错处理</label>
+                <div class="col-sm-7 label-value">
+                    <bs-select  items="data.error_handle_list"
+                                my-select="single_element.element_info.error_handle"
+                                option-labal="value"
+                                option-key="key"
+                                select-val="selectErrorHandle(selectKey)"></bs-select>
+                    <validate-msg tag-cn-name="出错处理" type="select" name="error_handle" model="single_element.element_info.error_handle"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group form-style" ng-if="single_element.element_info.error_handle == 3">
+                <label class="col-sm-3 col-sm-offset-3 control-label label-key" style="padding-left: 0;width: 40px;padding-top: 4px">次数</label>
+                <div class="col-sm-2 label-value" style="width: 75px">
+                    <input type="text"
+                           style="height: 25px;width: 45px;padding: 0 5px"
+                           name="retry_times"
+                           ng-model="single_element.element_info.retry_times"
+                           class="form-control"
+                           placeholder="次"
+                           ng-pattern="/^[1-9]+$/"
+                           title="重试次数(1-9)"
+                           required
+                           ng-maxlength=1 />
+                    <validate-msg tag-cn-name="次数" name="retry_times"></validate-msg>
+                </div>
+                <label class="col-sm-2 control-label label-key" style="width: 40px;padding-left: 0;padding-top: 4px">间隔(s)</label>
+                <div class="col-sm-5 label-value">
+                    <input type="text"
+                           name="retry_interval"
+                           style="height: 25px;width: 45px;padding: 0 5px"
+                           ng-model="single_element.element_info.retry_interval"
+                           class="form-control"
+                           placeholder="秒"
+                           ng-pattern="/^[0-9]+$/"
+                           title="重试间隔"
+                           required
+                           ng-maxlength=20 />
+                    <validate-msg tag-cn-name="间隔" name="retry_interval"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group form-style">
+                <label class="col-sm-3 control-label label-key" >内容类型</label>
+                <div class="col-sm-7 label-value">
+                    <div class="set-btn-common set-btn" ng-if="!single_element.element_info.job_method" ng-click="setJobMethod()">
+                        <span class="fa fa-cog"></span>&nbsp;&nbsp;设置
+                    </div>
+                    <div class="set-btn-common time-condition" ng-if="single_element.element_info.job_method" ng-click="setJobMethod()" ng-style="{'width':single_element.element_info.job_method == 2 ? '110px':''}">
+                        <div ng-if="single_element.element_info.job_method == 1" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{jobData.comp_cn_name}}">
+                            <span class="fa fa-cube" style="font-size: 16px;vertical-align: middle"></span>
+                            <span ng-bind="single_element.element_info.comp_cn_name ? single_element.element_info.comp_cn_name : '--'" style="color: #333"></span>
+                        </div>
+                        <div ng-if="single_element.element_info.job_method == 2">
+                            <span class="fa fa-pencil-square-o" style="font-size: 18px;vertical-align: middle;"></span>
+                            <span style="color: #F1B442;padding-left:4px;">[自定义]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--输入参数-->
+            <div class="form-group form-style" ng-if="single_element.element_info.input.length">
+                <label class="col-sm-3 control-label label-key">输入参数</label>
+                <div class="col-sm-7 label-value">
+                    <table class="sub-table cus-param-table">
+                        <thead>
+                        <tr>
+                            <td width="150px" style="text-align: left">参数名</td>
+                            <td width="70px" style="text-align: left">值来源</td>
+                            <td style="text-align: left">默认值</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in single_element.element_info.input">
+                            <td style="text-align: left" title="{{tr.param_cn_name}}">
+                                <span ng-bind="tr.param_name"></span>
+                            </td>
+                            <td>
+                                <bs-select items="data.param_source_list"
+                                           my-select="tr.param_source"
+                                           option-labal="value"
+                                           option-key="key"
+                                           no-border></bs-select>
+                            </td>
+                            <td style="text-align: left">
+                                <input type="text" class="sub-form-control" ng-model="tr.param_value" ng-if="tr.param_source == 1"/>
+                                <span ng-if="tr.param_source == 2">--</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--输出参数-->
+            <div class="form-group form-style" ng-if="single_element.element_info.output.length">
+                <label class="col-sm-3 control-label label-key">输出参数</label>
+                <div class="col-sm-7 label-value">
+                    <table class="sub-table">
+                        <thead>
+                        <tr>
+                            <td width="100px">参数名</td>
+                            <td>参数中文名</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in single_element.element_info.output">
+                            <td>
+                                <span ng-bind="tr.param_name ? tr.param_name : '--'"></span>
+                            </td>
+                            <td>
+                                <span ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--结果判定-->
+            <div class="row form-style" ng-if="single_element.category!= 6 && single_element.element_info.result_judge">
+                <label class="control-label col-sm-3 label-key text-right">结果判定</label>
+                <div class="col-sm-7 label-value">
+                    <!-- ui-codemirror="{onLoad : shellLoaded}"
+                             ui-refresh="true"-->
+                    <textarea name="result_judge"
+                              style="resize: none;"
+                              placeholder="输入java表达式"
+                              ng-model="single_element.element_info.result_judge"
+                              class="form-control">
+                        </textarea>
+                </div>
+            </div>
+   <!--     </div>-->
+        <!-- 保存按钮-->
+        <div style="text-align: center ;margin-top: 20px;margin-bottom: 20px;" >
+            <button class="cancel-btn btn-xl" ng-if="!btn_loading" type="button" ng-click="formCancel()" >取消</button>
+            <button class="save-btn btn-xl" ng-if="!btn_loading" type="submit">确定</button>
+            <button class="save-btn btn-xl" ng-if="btn_loading" type="button" >
+                <i style="color: white" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</form>

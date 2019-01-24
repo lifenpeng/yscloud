@@ -1,0 +1,293 @@
+
+<div  class="wo-batch-sql-handle">
+    <div class="container-fluid">
+        <!-- 批量导入-->
+        <div class="row" style="background-color: #0f161f;margin-bottom: 10px"  ng-repeat="batch in sub_tab.sql_steps" ng-if="sub_tab.sql_steps.length != 0" >
+            <div class="col-sm-12">
+                <div class="row" style="height: 60px;line-height: 60px;border-bottom: 1px solid #151f2b">
+                    <div class="col-sm-10">
+                        <div class="row form-style">
+                            <div class="col-sm-4" style="position: relative;padding-left: 60px;padding-right: 40px;">
+                                <span class="add-sql-file-icon"></span>
+                                <span class="add-sql-file-name" ng-bind="batch.fileupload.filename" title="{{batch.fileupload.filename}}"></span>&nbsp;
+                                <span class="sql-down-icon" title="下载sql文件" ng-click="downloadImportFile(batch)"></span></li>
+                            </div>
+                            <div class="col-sm-4">
+                                <span class="label-key">应用系统</span>
+                                <div ng-if="!batch.is_reset && !batch.parse_success" class="label-value" style="display: inline-block">
+                                    <bs-select width="180" name="select_database" items="data.sql_sys_list"
+                                               select-val="selectSys(selectKey,batch)"
+                                               option-key="business_sys_name" option-labal="business_cn_name"
+                                               my-select="batch.sql_info.sys_name"
+                                               disable="batch.parse_loading"
+                                               required></bs-select>
+                                    <validate-msg type="select" name="select_database" tag-cn-name="应用系统" model="batch.sql_info.sys_name"></validate-msg>
+                                </div>
+                                <div class="label-value" ng-if="batch.parse_success" ng-bind="batch.sql_info.sys_name" style="margin-left: 30px;display: inline-block"></div>
+                            </div>
+                            <div class="col-sm-4">
+                                <span  class="label-key">数据库</span>
+                                <div ng-if="!batch.is_reset && !batch.parse_success" class="label-value" style="display: inline-block">
+                                    <bs-select width="180" name="select_database" items="batch.sql_info.sql_soc_list"
+                                               my-select="batch.sql_info.soc_name"
+                                               disable="batch.parse_loading"
+                                               required></bs-select>
+                                    <validate-msg type="select" name="select_soc_name" tag-cn-name="数据库" model="batch.sql_info.soc_name"></validate-msg>
+                                </div>
+                                <div class="label-value" ng-if="batch.parse_success" ng-bind="batch.sql_info.soc_name" style="margin-left: 30px;display: inline-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="text-right" style="padding-right: 20px">
+                            <button class="ordinary-btn" style="width:80px;" ng-click="parseImportFile(sub_tab,batch)" ng-hide="batch.parse_success || batch.parse_loading">解析</button>
+                            &nbsp;&nbsp;&nbsp;<span class="fault-delete-img" style="position: absolute;top: 14px;" title="删除" ng-click="deleteImportSql(sub_tab,sub_tab.sql_steps,$index,1,batch)" ng-hide="batch.is_task_author || batch.parse_success || batch.parse_loading"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-class="batch.parse_success || batch.parse_loading ? 'parse-success':''">
+                    <div class="col-sm-6" ng-if="batch.parse_success || batch.parse_loading">
+                        <div ng-if="!batch.parse_loading">
+                            <div class="row">
+                                <label class="col-sm-6 control-label" style="color: #d2f1fe;font-size: 18px;">导入文件信息</label>
+                            </div>
+                            <div class="row form-style">
+                                <div class="col-sm-4">
+                                    <span class="label-key"> SQL总条数:</span>
+                                    <span class="label-value">{{batch.import_file_info.total_bk_num}}</span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="label-key">无权限条数:</span>
+                                    <span class="label-value" ng-bind="batch.import_file_info.nopow_bk_num"></span>
+                                </div>
+                                <div class="col-sm-4" ng-if="batch.import_file_info.noparse_bk_num > 0">
+                                    <span class="label-key">解析失败条数:</span>
+                                    <span class="label-value" ng-bind="batch.import_file_info.noparse_bk_num"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 10px">
+                                <div class="col-sm-12">
+                                    <table class="sub-table">
+                                        <thead>
+                                        <tr >
+                                            <td>
+                                                分类
+                                            </td>
+                                            <td>
+                                                成功条数
+                                            </td>
+                                            <td>
+                                                失败条数
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr style="text-align: left;" >
+                                            <td><span>INSERT</span></td>
+                                            <td><span ng-bind="batch.import_file_info.inparse_bk_num"></span></td>
+                                            <td><span ng-bind="batch.import_file_info.inall_bk_num - batch.import_file_info.inparse_bk_num"></span></td>
+                                        </tr>
+                                        <tr style="text-align: left;">
+                                            <td><span>UPDATE</span></td>
+                                            <td><span ng-bind="batch.import_file_info.upparse_bk_num"></span></td>
+                                            <td><span ng-bind="batch.import_file_info.upall_bk_num - batch.import_file_info.upparse_bk_num"></span></td>
+                                        </tr>
+                                        <tr style="text-align: left;" >
+                                            <td><span>DELETE</span></td>
+                                            <td><span ng-bind="batch.import_file_info.delparse_bk_num"></span></td>
+                                            <td> <span ng-bind="batch.import_file_info.delall_bk_num - batch.import_file_info.delparse_bk_num"></span></td>
+                                        </tr>
+                                        <tr style="text-align: left;background: #6d7183;" title="跳过处理">
+                                            <td style="position: relative;"><span class="line-through"></span><i>SELECT</i></td>
+                                            <td style="position: relative;"><span class="line-through"></span><i ng-bind="batch.import_file_info.selparse_bk_num"></i></td>
+                                            <td style="position: relative;"><span class="line-through"></span><i ng-bind="batch.import_file_info.selall_bk_num - batch.import_file_info.selparse_bk_num"></i></td>
+                                        </tr>
+                                        <tr style="text-align: left;" class="tbl-even">
+                                            <td><span style="color: #336699">总计</span></td>
+                                            <td><span ng-bind="batch.import_file_info.parsepow_bk_num"></span></td>
+                                            <td><span ng-bind="batch.import_file_info.total_bk_num - batch.import_file_info.parsepow_bk_num"></span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row"  style="text-align:right;" ng-if="batch.import_file_info.total_bk_num - batch.import_file_info.parsepow_bk_num">
+                                <div class="col-sm-12 text-right" style="padding-top: 5px;padding-right: 40px;position: relative;">
+                                    <a class="view-author-style" href="javascript:void (0);" ng-click="viewExeDetail(batch,1)">查看失败详细</a>
+                                    <span class="sql-fail-down-icon" title="下载失败详细信息" ng-click="downloadDetailFile(batch.import_file_info.parse_download_path)" ng-if="batch.import_file_info.parse_download_path"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="batch.parse_loading">
+                            <div class="exe-batch-loading">
+                                <span class="fa fa-spinner fa-pulse" style="color: #44dcfd"></span>
+                                <span style="color: #44dcfd;">文件解析中...</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6" ng-show="(batch.batch_exe_loading || batch.exe_success || batch.is_task_author)">
+                        <div ng-if="!batch.batch_exe_loading && !batch.is_task_author">
+                            <div class="row">
+                                <label class="col-sm-6 control-label" style="color: #d2f1fe;font-size: 18px;">执行结果</label>
+                            </div>
+                            <div class="row form-style">
+                                <div class="col-sm-4">
+                                    <span class="label-key"> SQL总条数:</span>
+                                    <span class="label-value">{{batch.exe_result_info.total_bk_num}}</span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="label-key">无权限条数:</span>
+                                    <span class="label-value" ng-bind="batch.import_file_info.nopow_bk_num"></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="label-key">耗时:</span>
+                                    <span class="label-value" ng-bind="batch.exe_result_info.act_exec_time"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 10px">
+                                <div class="col-sm-12">
+                                    <table class="sub-table">
+                                        <thead>
+                                        <tr >
+                                            <td>
+                                                分类
+                                            </td>
+                                            <td>
+                                                成功条数
+                                            </td>
+                                            <td>
+                                                失败条数
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr style="text-align: left;" >
+                                            <td><span>INSERT</span></td>
+                                            <td><span ng-bind="batch.exe_result_info.insucc_bk_num"></span></td>
+                                            <td><span ng-bind="batch.exe_result_info.inall_bk_num - batch.exe_result_info.insucc_bk_num"></span></td>
+                                        </tr>
+                                        <tr style="text-align: left;" >
+                                            <td><span>UPDATE</span></td>
+                                            <td><span ng-bind="batch.exe_result_info.upsucc_bk_num"></span></td>
+                                            <td><span ng-bind="batch.exe_result_info.upall_bk_num - batch.exe_result_info.upsucc_bk_num"></span></td>
+                                        </tr>
+                                        <tr style="text-align: left;" >
+                                            <td><span>DELETE</span></td>
+                                            <td><span ng-bind="batch.exe_result_info.delsucc_bk_num"></span></td>
+                                            <td> <span ng-bind="batch.exe_result_info.delall_bk_num - batch.exe_result_info.delsucc_bk_num"></span></td>
+                                        </tr>
+                                        <tr style="text-align: left;background: #6d7183;"  title="跳过处理">
+                                            <td style="position: relative;"><span class="line-through"></span><i>SELECT</i></td>
+                                            <td style="position: relative;"><span class="line-through"></span><i>0</i></td>
+                                            <td style="position: relative;"> <span class="line-through"></span><i ng-bind="batch.import_file_info.selparse_bk_num"></i></td>
+                                        </tr>
+                                        <tr style="text-align: left;" class="tbl-even">
+                                            <td><span style="color: #336699">总计</span></td>
+                                            <td><span ng-bind="batch.exe_result_info.success_bk_num"></span></td>
+                                            <td><span ng-bind="batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num"></span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="(batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num) || batch.pend_work_seq">
+                                <div class="col-sm-12 text-right" style="padding-top: 5px;padding-right: 40px;position: relative;">
+                                    <a class="view-author-style"  ng-click="viewTaskAuthorDetail(sub_tab,batch)" ng-if="batch.pend_work_seq">查看授权信息</a>
+                                    <a class="view-author-style" href="javascript:void (0);" ng-click="viewExeDetail(batch,2)" ng-if="batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num">查看失败详细</a>
+                                    <span class="sql-fail-down-icon" title="下载失败详细信息" ng-click="downloadDetailFile(batch.exe_result_info.file_download_path)" ng-if="batch.exe_result_info.total_bk_num - batch.exe_result_info.success_bk_num"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="batch.batch_exe_loading && !batch.is_task_author">
+                            <div class="exe-batch-loading">
+                                <span class="fa fa-spinner fa-pulse" style="color: #44dcfd;"></span>
+                                <span style="color: #44dcfd;">执行中...</span>
+                            </div>
+                        </div>
+                        <div ng-if="batch.is_task_author">
+                            <div class="exe-batch-loading" style="line-height: 25px">
+                                <span ng-show="!batch.workflow_state" style="padding-left: 20px;">
+                                    <span class="fa fa-spin fa-spinner task-authing"></span>
+                                    任务授权中
+                                </span>
+                                <span class="task-checking" ng-show="batch.workflow_state == 1">任务待复核</span>
+                                <span ng-show="batch.workflow_state == 2" style="color: #FF0101;">
+                                    <span class="task-failure"></span>任务复核拒绝
+                                </span>
+                                <span class="task-pre-author" ng-show="batch.workflow_state == 3">任务待授权</span>
+                                <span class="task-author-refused" ng-show="batch.workflow_state == 4">
+                                    <span class="task-failure"></span>任务授权拒绝</span>
+                                <span class="task-author-success" ng-show="batch.workflow_state == 5">
+                                    <span class="task-success"></span>任务授权成功</span>
+                                <span class="tash-excute-finished" ng-show="batch.workflow_state == 6">任务执行完毕</span>
+                                <span class="task-finished" ng-show="batch.workflow_state == 7">任务关闭</span>
+                                <div>
+                                    <a class="view-author-style" style="padding-left: 20px" ng-click="viewTaskAuthorDetail(sub_tab,batch)">查看授权信息</a>
+                                </div>
+                                <div>
+                                    <div class="batch-exe-btn auth-btn" style="margin-left: 20px" ng-click="authorExeSQL(sub_tab,batch)"
+                                         ng-if="batch.workflow_state == 5 && !batch.is_close_loading && !sub_tab.is_detail">
+                                        <span class="exe-icon"></span>
+                                        <span>执行</span>
+                                    </div>
+                                    <div class="batch-exe-btn auth-btn" style="margin-left: 20px" ng-click="closeBatchExeTask(sub_tab,batch,2,$index)"
+                                         ng-if="(batch.workflow_state == 2 || batch.workflow_state == 4)&& !batch.is_close_loading && !sub_tab.is_detail">
+                                        <span class="close-icon"></span>
+                                        <span>关闭</span>
+                                    </div>
+                                    <button ng-if="batch.is_close_loading" disabled="disabled" class="confbtn" style="text-align:center;width:80px;margin-top:5px;font-size:14px;margin-left: 20px">
+                                        <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" ng-show="sub_tab.is_detail && !batch.exe_success && !batch.is_task_author">
+                        <div class="without-exec-result">
+                            暂无执行结果
+                        </div>
+                    </div>
+                    <div ng-if="!batch.batch_exe_loading && !batch.exe_success && batch.parse_success && !batch.is_task_author && !sub_tab.is_detail">
+                        <div class="col-sm-6 text-center" style="margin-top: 60px;">
+                            <label  style="width: 100px;padding-left: 14px">
+                                <input type="radio" name="tran_flag{{$index}}" value="2" i-check ng-model="batch.tran_flag"> 整体事务
+                            </label>
+                            <label  style="width: 100px;padding-left: 14px">
+                                <input type="radio" name="tran_flag{{$index}}" value="1" i-check ng-model="batch.tran_flag" > 独立事务
+                            </label>
+                        </div>
+                        <div class="col-sm-6 text-center" style="margin-top: 25px;">
+                            <div class="batch-exe-btn" ng-click="batchExeSQL(sub_tab,batch)" ng-if="!batch.batch_exe_loading && !batch.exe_success">
+                                <span class="exe-icon"></span>
+                                <span>执行</span>
+                            </div>
+                            <div class="batch-exe-btn"  ng-click="deleteImportSql(sub_tab,sub_tab.sql_steps,$index,2,batch)" ng-if="!batch.batch_exe_loading">
+                                <span class="reset-icon"></span>
+                                <span>重置</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="!sub_tab.is_detail">
+            <div class="col-sm-12 add-sql-wrap" ng-click="addSqlFileModal(sub_tab)">
+                <div class="sql-file-img">
+                    添加SQL文件
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="!sub_tab.is_detail">
+            <div class="col-sm-12 text-center" style="padding:15px 15px 0 15px;">
+                <button ng-hide="sub_tab.hide_no_handle_btn" type="button" class="cancel-btn btn-md text-center" ng-click="abandonHandle(sub_tab)">放弃处理</button>
+                <button  class="save-btn btn-md text-center" ng-click="finishDealWorkOrder(sub_tab)" ng-if="sub_tab.finish_handle_btn">完成处理</button>
+            </div>
+        </div>
+        <div class="row" ng-if="sub_tab.is_detail && !control.wo_detail_flag">
+            <div class="col-sm-12 text-center" style="padding-top: 20px;padding-bottom: 5px">
+                <button ng-show="!btn_handle_loading" type="button" class="cancel-btn btn-md text-center" ng-click="closeProcessOrder($index, sub_tab.wo_id)">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

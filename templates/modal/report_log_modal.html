@@ -1,0 +1,128 @@
+<style>
+
+    .div_block{
+        display: inline-block;
+    }
+    .monitor_span{
+        cursor: default;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        white-space: nowrap;
+        margin-top: 2px;
+        padding-left: 0px;
+    }
+    .dropdown-menu  li {
+        height: auto;
+    }
+    .dropdown-menu  li:hover{
+        background-color: transparent;
+    }
+    .dropdown-menu  li small{
+        color: #333;
+    }
+</style>
+<div  class="modal-header">
+    <h3  class="modal-title">日志选择</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body inspection">
+    <form name="form.log_screen" ng-submit="saveReport()" class="form-horizontal proj_modify log-modal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+       <div class="row form-style" style="margin-bottom: 10px;">
+           <div class="col-sm-8 ">
+               <div class="row label-value">
+                   <div  class="col-sm-5 pick-date-common">
+                       <input type="text" name="startDate" class="form-control"
+                              ng-click="open($event,1)"
+                              ng-model="report_choose.start_date"
+                              show-button-bar="false"
+                              max-date="{{info.max_date}}"
+                              datepicker-popup="yyyy年MM月dd日"
+                              close-on-date-selection="false"
+                              is-open="info.datepicker.opened"
+                              placeholder="开始日期"
+                              required
+                              readonly="true"/>
+                       <validate-msg tag-cn-name="开始日期" name="startDate"></validate-msg>
+                   </div>
+                   <div class="col-sm-1 div_block"  style="margin-top: 10px;text-align: center;">
+                       --
+                   </div>
+                   <div class="col-sm-5 pick-date-common">
+                       <input type="text"
+                              name="endDate"
+                              ng-click="open($event,2)"
+                              ng-model="report_choose.end_date"
+                              class="form-control"
+                              show-button-bar="false"
+                              max-date="{{info.max_date}}"
+                              datepicker-popup="yyyy年MM月dd日"
+                              close-on-date-selection="false"
+                              is-open="info.datepicker.opened"
+                              required
+                              placeholder="结束日期"
+                              readonly="true"/>
+                       <validate-msg tag-cn-name="结束日期" name="endDate"></validate-msg>
+                   </div>
+               </div>
+           </div>
+       </div>
+        <div style="width: 100%;height: 1px;background-color:#d2f1fd;"></div>
+        <div class="row" style="padding-top: 10px">
+            <div class="col-sm-4">
+                <div style="height: 300px;" custom-scroll config="config.scroll_config">
+                    <div  class="row" style="margin-right: 0" ng-repeat="one in data.log_type_list" ng-click="checkCurLogType(one)" ng-class="one.checked ? 'sys-checked':'sys-unchecked'">
+                        <div class="inspet-log-icon" ng-class="{'log-default-icon':!one.checked,'log-checked-icon':one.checked}"></div>
+                        <span class="monitor_span" style="margin-top:8px;margin-left:5px;width:100px" title="{{one.log_name}}">{{one.log_name}}</span>
+                        <label  style="float: right;margin-top: 8px;padding-right:10px">
+                            <input type="checkbox"
+                                        name="cmpt_type"
+                                        i-check
+                                        ng-model="one.choose_log" ng-disabled="one.uncheck"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8" style="height: 300px;"  custom-scroll config="config.scroll_config">
+                <table class="sub-table" >
+                    <thead>
+                    <tr>
+                        <td>
+                            节点
+                        </td>
+                        <td>
+                            文件名
+                        </td>
+                        <td>
+                            日期
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="tr in data.logSyncInfoList">
+                        <td>
+                            {{tr.node_name}}
+                        </td>
+                        <td>
+                            {{tr.local_file_name}}
+                        </td>
+                        <td>
+                            {{tr.file_date}}
+                        </td>
+                    </tr>
+                    <tr ng-if="data.logSyncInfoList.length==0 || !data.logSyncInfoList">
+                        <td colspan="3" style="text-align:center;">
+                            暂无数据
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="text-align: center ;margin-top: 30px;margin-bottom: 20px;" >
+            <button class="cancel-btn btn-xl" type="button"  ng-click="formCancel()">取消</button>
+            <button  class="save-btn btn-xl"   type="submit">确定</button>
+        </div>
+    </form>
+</div>

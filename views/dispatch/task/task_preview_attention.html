@@ -1,0 +1,134 @@
+<!--关注-->
+<div class="detail_container">
+    <div class="row row-style">
+        <div class="col-sm-12" style="padding-left: 0;padding-right: 0;">
+            <div class="col-sm-6 text-center">
+                <span class="btn_toggle_style" ng-click="frontOrNextDate(info.attention_task,-2,'start_date','next_date',true)" style="left: 15px;"><</span>
+                <div>
+                    <span class="calendar_show_cn">{{info.attention_task.start_date_cn}}</span>
+                        <span class="calendar_style" ng-click="openCalendar('first_opened',$event)">
+                            <div class="left-datepicker-position pick-date-common">
+                                <input type="text" name="attentStartDate"
+                                       ng-model="info.attention_task.start_date"
+                                       show-button-bar="true"
+                                       datepicker-popup="yyyy年MM月dd日"
+                                       close-on-date-selection="true"
+                                       ng-change="dateCallBack(info.attention_task,1,'start_date','next_date',true)"
+                                       ng-show="false"
+                                       is-open="control.first_opened"
+                                       readonly="true"/>
+                            </div>
+                        </span>
+                </div>
+            </div>
+            <div class="col-sm-6 text-center">
+                <div>
+                    <span class="calendar_show_cn">{{info.attention_task.next_date_cn}}</span>
+                        <span class="calendar_style" ng-click="openCalendar('second_opened',$event)">
+                            <div class="right-datepicker-position pick-date-common">
+                                <input type="text" name="attentNextDate"
+                                       ng-model="info.attention_task.next_date"
+                                       show-button-bar="true"
+                                       datepicker-popup="yyyy年MM月dd日"
+                                       close-on-date-selection="true"
+                                       ng-change="dateCallBack(info.attention_task,-1,'next_date','start_date',true)"
+                                       ng-show="false"
+                                       is-open="control.second_opened"
+                                       readonly="true"/>
+                            </div>
+                        </span>
+                </div>
+                <span class="btn_toggle_style" ng-click="frontOrNextDate(info.attention_task,2,'start_date','next_date',true)" style="right: 15px;">></span>
+            </div>
+            <!--遮罩层禁止操作-->
+            <div ng-show="info.attention_task.first_task.loading || info.attention_task.second_task.loading" class="no-allow-handle"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" init-bottom="245" dyna-height style="border-top: 1px solid #057387;min-height: 150px">
+            <div class="col-sm-6 task_list_content" custom-scroll custom-config="info.attention_task.left_scroll">
+                <div  class="min-height-400" ng-if="info.attention_task.first_task.loading">
+                    <div class="loading_style">
+                        数据加载中&nbsp;<i class='fa fa-spinner fa-spin'></i>
+                    </div>
+                </div>
+                <div  class="min-height-400" ng-if="!info.attention_task.first_task.loading">
+                    <div ng-if="info.attention_task.first_task.error_message">
+                        <div class="error_style">{{info.attention_task.first_task.error_message}}</div>
+                    </div>
+                    <div ng-if="!info.attention_task.first_task.error_message">
+                        <div class="ywtask_detail" ng-repeat="task in info.attention_task.first_task.task_list | orderBy:'run_date'">
+                            <div class="text-right" style="float: left;position: relative;width:16%;">
+                                <div class="specific_time">{{task.run_date}}</div>
+                                <div class="transverse_line"></div>
+                            </div>
+                            <div style="float: left;position: relative;width: 84%;padding: 15px 0;">
+                                <div class="pertask" ng-repeat="info in task.task_list">
+                                    <div class="detail_info" ng-class="info.dispatch_type != 1 ? 'has_dispatch':''" ng-style="$last ? {'border-bottom':'1px solid #44DCFD'}:{}" title="{{(info.task_state==3 || info.task_state==5) && info.exception_detail ? '异常信息：'+info.exception_detail :''}}">
+                                        <div class="task_name">{{info.task_cn_name}}</div>
+                                        <div class="circle_time">
+                                            <span>{{info.dispatch_type == 3 ? '循环间隔：':info.dispatch_type == 2 ? '循环周期：' :''}}</span>
+                                            <span class="time_list">{{info.cycle_info ? info.cycle_info:'--'}}</span>
+                                        </div>
+                                        <!--<span ng-if="info.dispatch_type != 1" ng-class="info.dispatch_type == 3 ? 'loop':info.dispatch_type == 2 ? 'cycle' :''"></span>-->
+                                    </div>
+                                       <span ng-if="info.task_state !=2 && info.flow_state !=3" title="{{(info.task_state==3 || info.task_state==5) ? '执行异常':''}}"
+                                             ng-class="info.task_state==4 ? 'success_state': (info.task_state==1 || info.task_state==6) ? 'executing_state run-img rotate-img': (info.task_state==3 || info.task_state==5) ? 'error_state':''"></span>
+                                    <span ng-if="info.task_state == 2 && info.flow_state !=3" title="自动等待" class="dispatch_task_icon" style="background-position: -5px -33px;"></span>
+                                    <span ng-if="info.flow_state && info.flow_state == 3" title="挂起" class="dispatch_task_icon" style="background-position: -5px -155px;"></span>
+                                </div>
+                                <div class="vertical_line"></div>
+                            </div>
+                        </div>
+                        <div class="no_task_style" ng-if="info.attention_task.first_task.task_list.length == 0">
+                            <div>暂无任务</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 task_list_content" custom-scroll custom-config="info.attention_task.right_scroll">
+                <div class="min-height-400" ng-if="info.attention_task.second_task.loading">
+                    <div class="loading_style">
+                        数据加载中&nbsp;<i class='fa fa-spinner fa-spin'></i>
+                    </div>
+                </div>
+                <div class="min-height-400" ng-if="!info.attention_task.second_task.loading">
+                    <div ng-if="info.attention_task.second_task.error_message">
+                        <div class="error_style">{{info.attention_task.second_task.error_message}}</div>
+                    </div>
+                    <div ng-if="!info.attention_task.second_task.error_message">
+                        <div class="ywtask_detail" ng-repeat="task in info.attention_task.second_task.task_list | orderBy:'run_date'">
+                            <div class="text-right" style="float: left;position: relative;width:16%;">
+                                <div class="specific_time">{{task.run_date}}</div>
+                                <div class="transverse_line"></div>
+                            </div>
+                            <div style="float: left;position: relative;width: 84%;padding: 15px 0;">
+                                <div class="pertask" ng-repeat="info in task.task_list">
+                                    <div class="detail_info" ng-class="info.dispatch_type != 1 ? 'has_dispatch':''" ng-style="$last ? {'border-bottom':'1px solid #44DCFD'}:{}" title="{{(info.task_state==3 || info.task_state==5) && info.exception_detail ? '异常信息：'+info.exception_detail :''}}">
+                                        <div class="task_name">{{info.task_cn_name}}</div>
+                                        <div class="circle_time">
+                                            <span>{{info.dispatch_type == 3 ? '循环间隔：':info.dispatch_type == 2 ? '循环周期：' :''}}</span>
+                                            <span class="time_list">{{info.cycle_info ? info.cycle_info:'--'}}</span>
+                                        </div>
+                                        <!--<span ng-if="info.dispatch_type != 1" ng-class="info.dispatch_type == 3 ? 'loop':info.dispatch_type == 2 ? 'cycle' :''"></span>-->
+                                    </div>
+                                    <!--<span ng-if="info.task_state < 6 && info.task_state !=2" ng-class="info.task_state==4 ? 'success_state': info.task_state==1 ? 'executing_state': 'error_state'"></span>-->
+                                        <span ng-if="info.task_state !=2 && info.flow_state !=3" title="{{(info.task_state==3 || info.task_state==5) ? '执行异常':''}}"
+                                              ng-class="info.task_state==4 ? 'success_state': (info.task_state==1 || info.task_state==6) ? 'executing_state run-img rotate-img': (info.task_state==3 || info.task_state==5) ? 'error_state':''"></span>
+                                    <span ng-if="info.task_state == 2 && info.flow_state !=3" title="自动等待" class="dispatch_task_icon" style="background-position: -5px -33px;"></span>
+                                    <span ng-if="info.flow_state && info.flow_state == 3" title="挂起" class="dispatch_task_icon" style="background-position: -5px -155px;"></span>
+                                </div>
+                                <div class="vertical_line"></div>
+                            </div>
+                        </div>
+                        <div class="no_task_style" ng-if="info.attention_task.second_task.task_list.length == 0">
+                            <div>暂无任务</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--竖线-->
+            <div class="vertical-line"></div>
+        </div>
+    </div>
+</div>

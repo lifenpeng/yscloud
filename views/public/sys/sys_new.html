@@ -1,0 +1,195 @@
+<div class="container-fluid new-sys">
+    <form name="info.sys_form" ng-submit="save()" class="form-horizontal form-style" novalidate autocomplete="off">
+            <div class="form-group">
+                <label class="col-sm-3 control-label label-key">应用系统名</label>
+                <div class="col-sm-5 label-value">
+                    <input type="text"
+                           class="form-control"
+                           name="sys_name"
+                           ng-model="info.sys.sys_name"
+                           placeholder="系统名输入限制10个字符"
+                           ng-disabled="control.isUpdate || control.save_btn_loading"
+                           required
+                           ng-maxlength=10
+                           ng-pattern="/^[A-Za-z0-9_-]*$/"
+                           ensure-unique="bs_ViewBsActioncheckBsSystemName | {{info.sys.old_sys_name}}"
+                            >
+                    <validate-msg tag-cn-name="应用系统名" name="sys_name"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label label-key">应用系统中文名</label>
+                <div class="col-sm-5 label-value">
+                    <input type="text"
+                           class="form-control"
+                           name="sys_cn_name"
+                           ng-model="info.sys.sys_cn_name"
+                           placeholder="中文名限制25个字符"
+                           required
+                           ng-disabled="control.save_btn_loading"
+                           ng-maxlength = 25
+                           ng-pattern="/^[^\s]+$/"
+                            >
+                    <validate-msg tag-cn-name="应用系统中文名" name="sys_cn_name"></validate-msg>
+                </div>
+            </div>
+            <!--agent部署标志-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label label-key">Agent部署</label>
+                <div class="col-sm-6" style="margin-top: 7px;">
+                    <input type="radio" i-check ng-model="info.sys.agent_flag" value="1"/>
+                    <span class="label-value" style="padding:0 20px 0 3px;vertical-align: top">是</span>
+                    <input  type="radio" i-check ng-model="info.sys.agent_flag" value="2" />
+                    <span  class="label-value" style="padding:0 20px 0 3px;vertical-align: top">否</span>
+                </div>
+            </div>
+             <!--第三方系统名--暂时实现和系统名同步->
+          <!--  <div class="form-group">
+                <label class="col-sm-3 control-label label-key">管理平台系统码</label>
+                <div class="col-sm-5 label-value">
+                    <input type="text"
+                           class="form-control"
+                           name="platform_sys_name"
+                           ng-model="info.sys.platform_sys_name"
+                           placeholder="限制25个字符"
+                           ng-disabled="control.save_btn_loading"
+                           ng-maxlength = 25
+                    >
+                    <validate-msg tag-cn-name="管理平台系统码" name="platform_sys_name"></validate-msg>
+                </div>
+            </div>-->
+             <!--包获取方式-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label label-key">发布包获取方式</label>
+                <div class="col-sm-6" style="margin-top: 7px;">
+                    <input type="radio" i-check ng-model="info.sys.package_gain_type"  ng-change="choosePackageMethod(1)" value="1"/>
+                    <span class="label-value" style="padding:0 20px 0 3px;vertical-align: top">本地上传</span>
+                    <input  type="radio" i-check ng-model="info.sys.package_gain_type" ng-change="choosePackageMethod(2)" value="2" />
+                    <span  class="label-value" style="padding:0 20px 0 3px;vertical-align: top">版本机获取</span>
+                    <input  type="radio" i-check ng-model="info.sys.package_gain_type" ng-change="choosePackageMethod(3)" value="3" />
+                    <span  class="label-value" style="padding:0 20px 0 3px;vertical-align: top">定制化渠道</span>
+                </div>
+            </div>
+            <div ng-if="info.sys.package_gain_type == 2">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label class="col-sm-3 control-label label-key">版本机数据源</label>
+                    <div class="col-sm-5 label-value">
+                        <bs-select width=200
+                                   name="version_soc_name"
+                                   class="label_value"
+                                   items="data.ver_soc_list"
+                                   required
+                                   option-key="soc_name"
+                                   option-labal="soc_name"
+                                   my-select="info.sys.version_soc_name"
+                                   disable="control.save_btn_loading"
+                                   empty-option="-- 暂不选择 --"
+                        >
+                        </bs-select>
+                        <validate-msg tag-cn-name="版本机数据源" type="select" name="version_soc_name" model="info.sys.version_soc_name"></validate-msg>
+                    </div>
+                </div>
+                <div class="form-group version-dir" style="margin-bottom: 15px;">
+                    <label class="col-sm-3 control-label label-key">版本机发布包路径</label>
+                    <div class="btn-group col-sm-5 label-value">
+                        <input type="text"
+                               name="dftpropac_bk_dir"
+                               ng-model="info.sys.dftpropac_bk_dir"
+                               class="form-control"
+                               placeholder="路径长度限制100个字符"
+                               ng-maxlength=100
+                               ng-model-options="{updateOn: 'blur'}"
+                               ng-disabled="control.save_btn_loading"
+                               ng-required="info.sys.version_soc_name">
+                        <validate-msg tag-cn-name="版本机发布包路径" name="dftpropac_bk_dir"></validate-msg>
+                    </div>
+                    <div class="plus-hover" ng-click="configSocDir(1,info.sys.version_soc_name)" style="width: 40px;" ng-style="{'pointer-events':control.save_btn_loading ? 'none':''}">
+                        <span class="fa fa-cogs version-span"></span>
+                    </div>
+                </div>
+                <div class="form-group version-dir">
+                    <label class="col-sm-3 control-label label-key">版本机清单路径</label>
+                    <div class="btn-group col-sm-5 label-value">
+                        <input type="text"
+                               name="dftprolst_soc_name"
+                               ng-model="info.sys.dftprolst_bk_dir"
+                               class="form-control"
+                               placeholder="路径长度限制100个字符"
+                               ng-maxlength=100
+                               ng-disabled="control.save_btn_loading"
+                               ng-model-options="{updateOn: 'blur'}"
+                               ng-required="info.sys.version_soc_name">
+                        <validate-msg tag-cn-name="版本机清单路径" name="dftprolst_soc_name"></validate-msg>
+                    </div>
+                    <div class="plus-hover" ng-click="configSocDir(2,info.sys.version_soc_name)" ng-style="{'pointer-events':control.save_btn_loading ? 'none':''}">
+                        <span class="fa fa-cogs version-span"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-if="info.sys.package_gain_type == 3">
+                <label class="col-sm-3 control-label label-key">渠道</label>
+                <div class="col-sm-5">
+                    <bs-select width=200
+                               name="channel_name"
+                               class="label_value"
+                               items="data.channel_list"
+                               required
+                               my-select="info.sys.channel_name"
+                               disable="control.save_btn_loading">
+                    </bs-select>
+                    <validate-msg tag-cn-name="渠道" type="select" name="channel_name" model="info.sys.channel_name"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label class="col-sm-3 control-label label-key">责任人</label>
+                <div class="btn-group col-sm-5 label-value" style="margin-top: -5px">
+                    <div class="loading-font-color" ng-if="control.get_response_person_loading" style="padding-top: 10px;">责任人获取中...&nbsp;&nbsp;<i class='fa fa-spinner fa-spin' style='font-size: 18px;color: #44dcfb;'></i></div>
+                    <div ng-if="!info.sys.response_person_error_msg && !control.get_response_person_loading">
+                        <div class="config-responsible-btn" ng-click="control.show_layer = !control.show_layer"
+                             ng-style="{'pointer-events':control.save_btn_loading ? 'none':''}">
+                            <span class="fa fa-cog" style="margin-right: 6px;"></span>&nbsp;配置
+                        </div>
+                        <div class="sys-response-person" ng-repeat="user in data.response_person_name_list" title="{{user.dept_cn_name}}">
+                            {{user.user_cn_name}}
+                            <div class="data-source-delete-btn" ng-show="!control.save_btn_loading" ng-click="removeResponsePerson($index,user.user_id)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                        </div>
+                        <div class="user-popover" ng-if="control.show_layer" ng-class="{'user-popover-height1':info.sys.package_gain_type==1,'user-popover-height3':info.sys.package_gain_type==3}">
+                            <div class="container-fluid user-popover-content" custom-scroll custom-config="config.scroll_sys_info">
+                                <div ng-repeat="dept in data.response_person_list" ng-if="dept.user_list && dept.user_list.length!=0">
+                                    <div class="user-popover-part" ng-click="dept.show_user = !dept.show_user">
+                                        {{dept.dept_cn_name}}
+                                        <div class="user-popover-part-chevron">
+                                            <i class="fa" ng-class="dept.show_user ? 'fa-chevron-up':'fa-chevron-down'" style="color: #999;"></i>
+                                        </div>
+                                    </div>
+                                    <div collapse="!dept.show_user">
+                                        <div class="user-popover-part-wrap">
+                                            <div class="table-css" ng-repeat="user in dept.user_list" ng-class="user.checked ? 'checked-tag':'check-tag'"  ng-click = "selectResponsePerson(user,dept)">
+                                                {{user.user_cn_name}}
+                                                <div>
+                                                    <i class="fa fa-check"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="error-font-color" ng-if="control.no_response_person && data.response_person_name_list.length == 0" style="padding-top: 5px;">责任人不能为空</div>
+                        <div class="user-layer" ng-if="control.show_layer" ng-click="control.show_layer = false"></div>
+                    </div>
+                    <div class="error-font-color" ng-if="info.sys.response_person_error_msg && !control.get_response_person_loading" style="padding-top: 10px;" ng-bind="info.sys.response_person_error_msg"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button ng-if="!control.save_btn_loading" type="button" ng-click="back()" class="cancel-btn btn-md">取消</button>
+                    <button ng-if="control.save_btn_loading" type="button" class="btn-md disabled-btn">取消</button>
+                    <button ng-if="!control.save_btn_loading" type="submit" class="save-btn btn-md">保存</button>
+                    <button ng-if="control.save_btn_loading" type="button" class="save-btn btn-md">
+                        <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+</div>

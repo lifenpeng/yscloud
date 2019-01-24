@@ -1,0 +1,124 @@
+<div class="container-fluid report-list">
+    <form name="chart_form" ng-submit="getCountInfoByPeriod()" class="form-horizontal form_style" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="row" style="text-align: center">
+        <div style="margin-left:40px;">
+            <label class="period" style="width: 80px;margin-top: 7px">
+                统计周期
+            </label>
+            <div class="period">
+                <div class="row">
+                    <div  class="col-sm-3 pick-date-common" style="padding-left: 10px;padding-right: 10px;width: 170px;">
+                        <input type="text"
+                               name="begin_date"
+                               class="form-control"
+                               style="min-width: 100px;color: #D2F1FE"
+                               ng-click="open(1)"
+                               max-date="{{info.maxDate}}"
+                               ng-model="info.chart.begin_date"
+                               show-button-bar="true"
+                               datepicker-popup="yyyy年MM月dd日"
+                               close-on-date-selection="true"
+                               show-weeks="false"
+                               close-text="关闭"
+                               current-text="今天"
+                               clear-text="清除"
+                               is-open="info.datepicker_start.opened"
+                               placeholder="开始日期"
+                               required
+                               readonly="true"/>
+                        <validate-msg tag-cn-name="开始日期" name="begin_date"></validate-msg>
+                    </div>
+                    <span class="date-space">--</span>
+                    <div class="col-sm-3 pick-date-common" style="width: 170px;">
+                        <input type="text"
+                               name="end_date"
+                               ng-click="open(2)"
+                               max-date="{{info.maxDate}}"
+                               ng-model="info.chart.end_date"
+                               class="form-control"
+                               style="min-width: 100px;color: #D2F1FE"
+                               show-button-bar="true"
+                               datepicker-popup="yyyy年MM月dd日"
+                               placeholder="结束日期"
+                               close-on-date-selection="true"
+                               is-open="info.datepicker_end.opened"
+                               show-weeks="false"
+                               close-text="关闭"
+                               current-text="今天"
+                               clear-text="清除"
+                               required
+                               readonly="true"/>
+                        <validate-msg tag-cn-name="结束日期" name="end_date"></validate-msg>
+                    </div>
+                </div>
+            </div>
+            <div class="period" style="margin-left: 20px">
+                <div  class="form-group text-center">
+                    <button type="submit" class="save-cancel-btn save-btn btn-md">查询</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div ng-if="!control.loading && !control.err_msg">
+        <div ng-if="control.has_data_flag">
+            <div class="row">
+                <div class="col-sm-12 task-report-title"><span>一、汇总统计</span></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" ng-if="info.chart.chart_flow_config.total_num">
+                    <highchart config="info.chart.chart_flow_config"></highchart>
+                </div>
+                <div class="col-sm-6" ng-if="!info.chart.chart_flow_config.total_num">
+                    <div class="no-sum-data">暂无流程</div>
+                </div>
+                <div class="col-sm-6" ng-if="info.chart.chart_task_config.total_num">
+                    <highchart config="info.chart.chart_task_config"></highchart>
+                </div>
+                <div class="col-sm-6" ng-if="!info.chart.chart_task_config.total_num">
+                    <div class="no-sum-data">暂无任务</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 task-report-title" style="margin-bottom: 14px">
+                    <span>二、流程运行排行</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" ng-if="info.chart.chart_running_config.series[0].data.length">
+                    <highchart config="info.chart.chart_running_config"></highchart>
+                </div>
+                <div class="col-sm-12 text-center" ng-if="!info.chart.chart_running_config.series[0].data.length">
+                    <span class="no-flow-data">暂无运行流程</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 task-report-title" style="margin-bottom: 14px">
+                    <span>三、失败流程排行</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" ng-if="info.chart.chart_failed_config.series[0].data.length">
+                    <highchart config="info.chart.chart_failed_config"></highchart>
+                </div>
+                <div class="col-sm-12 text-center" ng-if="!info.chart.chart_failed_config.series[0].data.length">
+                    <span class="no-flow-data">暂无失败流程</span>
+                </div>
+            </div>
+        </div>
+        <div ng-if="!control.has_data_flag && control.has_data_flag!==''" style="text-align: center;height: 50px">
+            <span class="no-flow-data">暂无数据</span>
+        </div>
+    </div>
+    <!-- 数据加载中-->
+    <div ng-show="control.loading">
+        <div class="page page_loading">
+            正在加载中
+            <span class="fa fa-spinner fa-pulse"></span>
+        </div>
+    </div>
+    <!--数据加载失败 -->
+    <div class="page page_error" ng-show="control.err_msg && !control.loading">
+        <div ng-bind="control.err_msg"></div>
+    </div>
+</div>

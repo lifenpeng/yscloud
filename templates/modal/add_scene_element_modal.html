@@ -1,0 +1,66 @@
+<style>
+    .element_block{
+        width: 80px;
+        height: 80px;
+        border:1px solid transparent;
+        border-radius: 4px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 12px;
+        display: inline-block
+    }
+    .element_block:hover{
+        border:1px solid #4A90E2;
+        background: #090F16;
+    }
+    .element_icon{
+        width: 50px;
+        height: 50px;
+        margin: 3px auto 0;
+    }
+    .element_text{
+        text-align: center;
+    }
+    .element_checked{
+        border:1px solid #4A90E2;
+        background: #090F16;
+    }
+</style>
+<form name="form.element_form"  ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">元素</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body">
+        <div class="form-group form-style">
+            <label class="control-label col-sm-2 label-key">元素分类</label>
+            <div class="col-sm-6 label-value">
+                <bs-select name="element_category"
+                           items="data.element_category_list"
+                           select-val="selectCategory(selectKey)"
+                           my-select="element_info.category"></bs-select>
+                <validate-msg tag-cn-name="元素分类" type="select" name="element_category" model="element_info.category"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group" ng-if="data.category_ele.length">
+            <div class="col-sm-10 col-sm-offset-1">
+                <ul class="list-unstyled">
+                    <li class="element_block" ng-repeat="ele in  data.category_ele[0].element_list" ng-click="selectElement(ele)" ng-class="{'element_checked':ele.checked}">
+                        <div class="element_icon" ng-style="elementIcon(ele.type)"></div>
+                        <div class="element_text" ng-bind="ele.text"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-center" style="margin:20px 0;z-index: 1">
+                <button class="save-cancel-btn cancel-btn btn-xl" ng-if="!btn_loading" type="button" ng-click="formCancel()" >取消</button>
+                <button class="save-cancel-btn save-btn btn-xl" ng-if="!btn_loading" type="submit">保存</button>
+                <button class="save-cancel-btn save-btn btn-xl" ng-if="btn_loading" type="button" >
+                    <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

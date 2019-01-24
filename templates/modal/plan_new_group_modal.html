@@ -1,0 +1,88 @@
+
+<style>
+    .checked_style{
+        background: #9C55B7;
+        color:white;
+    }
+</style>
+
+<form name="form.new_group_form" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">添加项目分组</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body">
+        <!-- 分组中文名-->
+        <div class="row form-style" style="margin-bottom:20px;">
+            <label class="col-sm-3 control-label label-key">分组名</label>
+            <div class="col-sm-7 label-value">
+                <input class="form-control" name="group_cn_name " ng-model="new_group_info.group_cn_name " placeholder="输入分组名，(最多20个字符)"
+                       ng-model-options="{updateOn: 'blur'}"
+                       ng-maxlength="25"
+                       required/>
+                <validate-msg name="group_cn_name" tag-cn-name="分组名" model="new_group_info.group_cn_name"></validate-msg>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div style="max-height: 250px;overflow: auto;">
+                    <table class="table table-no-bordered  tbody_height lg-table" >
+                        <thead>
+                        <tr>
+                            <td>
+                                <div style="display: inline-block;" title="现有项目都存在前后置关系，不能编列分组" ng-if="selectAll_flag">
+                                        <input type="checkbox" ng-model="checked" i-check  ng-change="selectAll(checked)" ng-disabled="selectAll_flag">
+                                    </div>
+                                <div style="display: inline-block;" ng-if="!selectAll_flag">
+                                        <input type="checkbox" ng-model="checked" i-check  ng-change="selectAll(checked)">
+                                    </div>
+                                <label>发布项目</label>
+                            </td>
+                            <td>业务系统</td>
+                            <td>发布类型</td>
+                            <td>执行人</td>
+                            <td ng-click="col='start_bk_time';desc=!desc" style="cursor: pointer;">计划时间</td>
+                            <td>前置项目</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in newGroupList|orderBy:col:desc" ng-class="tr.checked==1  ? 'checked_style': ''">
+                            <td>
+                                <div ng-if="!(tr.pre_project_short_name=='无')">
+                                    <div style="display: inline-block;" title="该项目有前后置项目关系，不能编列分组">
+                                        <input type="checkbox" ng-model="tr.checked" i-check ng-true-value="1" ng-false-value="0" ng-disabled="!(tr.pre_project_short_name=='无')" >
+                                    </div>
+                                    <label>{{tr.project_short_name}}</label>
+                                </div>
+                                <div ng-if="(tr.pre_project_short_name=='无')">
+                                    <div style="display: inline-block;">
+                                        <input type="checkbox" ng-model="tr.checked" i-check ng-true-value="1" ng-false-value="0" ng-disabled="!(tr.pre_project_short_name=='无')" >
+                                    </div>
+                                    <label>{{tr.project_short_name}}</label>
+                                </div>
+                            </td>
+                            <td>{{tr.business_cn_name}}</td>
+                            <td>{{tr.project_nature_cn}}</td>
+                            <td>{{tr.user_cn_name}}</td>
+                            <td>{{tr.start_bk_time}}</td>
+                            <td>{{tr.pre_project_short_name}}</td>
+                        </tr>
+                        <tr ng-if="!newGroupList">
+                            <td colspan=6 style="text-align: center;">暂无项目数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-sm-12 text-center">
+            <button ng-hide="new_btn_loading" class="cancel-btn btn-xl"  ng-click="formCancel()">关闭</button>
+            <button ng-hide="new_btn_loading"  class="save-btn btn-xl" ng-click="formSubmit()" type="submit">添加</button>
+            <button ng-show="new_btn_loading" disabled="disabled" class="save-btn btn-xl">
+                <i style="color: white" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,54 @@
+<div class="modal-header">
+        <h3 class="modal-title">人工阶段</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body add-manual">
+        <form name="info.form" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+            <div class="form-group form-style" style="margin-bottom: 10px">
+                <div class="col-sm-12" ng-if="control.link_show_flag">
+                   <div class="row" style="border: 1px solid #ccc;margin: 0;">
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   placeholder="输入链接http://"
+                                   ng-model="info.manual.link_url"
+                                   style="width: 100%;border: none;height: 32px;outline: none;background:#091016;padding-left: 5px"
+                                   required
+                                   class="label-value"
+                                   ng-pattern="/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)/"
+                                   name="link">
+                            <validate-msg tag-cn-name="输入链接" name="link"></validate-msg>
+                        </div>
+                       <div class="col-sm-3" style="padding-right: 0">
+                           <input type="text" placeholder="链接说明"
+                                  ng-model="info.manual.link_intro"
+                                  style="width: 100%;border: none;height: 32px;outline: none;background:#091016;padding-left: 5px"
+                                  required
+                                  class="label-value"
+                                  name="linkIntro">
+                           <validate-msg tag-cn-name="链接说明" name="linkIntro"></validate-msg>
+                       </div>
+                        <div class="col-sm-2" style="padding-right:0;margin-top: 4px;text-align: left">
+                            <i class="check-value" ng-click="saveUrl()"></i>
+                            <i class="delete-value" ng-click="deleteUrl()"></i>
+                        </div>
+                       <div style=" color: #ccc;left: 340px;position: absolute;top: 6px;">|</div>
+                       <div style=" color: #ccc;right: 94px;position: absolute;top: 6px;">|</div>
+                   </div>
+                </div>
+                <div class="col-sm-12" ng-if="!control.link_show_flag">
+                    <div class="manual-title-icon" ng-click="control.link_show_flag=true">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form name="form.manual_phase_form" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+            <div class="form-group form-style">
+                    <div style="word-wrap:break-word;word-break:break-all" type="editDiv" class="test-box" id="manual_id" contenteditable="true" ng-keydown="changeLine($event)"></div>
+            </div>
+        </form>
+        <!-- 表单提交按钮-->
+            <div class="text-center" style="margin-top: 40px;margin-bottom: 40px;">
+                <button  class="cancel-btn btn-xl"  type="button" ng-click="cancel()">取消</button>
+                <button  class="save-btn btn-xl"  ng-click="saveData()" type="button">确认</button>
+            </div>
+    </div>

@@ -1,0 +1,67 @@
+<form name="info.form.change_form" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">工单变更</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <!-- 工单变更信息-->
+    <div class="modal-body wo-change-modal">
+        <!-- 工单编号-->
+        <div class="row form-style">
+            <label class="col-sm-3 text-right control-label label-key">工单编号</label>
+            <div class="col-sm-6 label-value" style="line-height: 33px">{{info.workorder_change_info.order_seq}}</div>
+        </div>
+        <!-- 工单标题-->
+        <div class="row form-style">
+            <label class="col-sm-3 text-right control-label label-key">工单标题</label>
+            <div class="col-sm-6 label-value" style="line-height: 33px;word-break: break-all">{{info.workorder_change_info.workorder_title}}</div>
+        </div>
+        <!--切换变更类型-->
+        <div class="row form-style">
+            <label class="col-sm-3 text-right control-label label-key">变更类型</label>
+            <div class="col-sm-6 label-value" style="margin-top: 8px;">
+                <input type="radio" name="type" i-check ng-model="info.workorder_change_info.flow_type" ng-change="selectChangeType(5)" value="5"/>
+                <span class="label-value" style="padding:0 20px 0 3px;vertical-align: top">关闭</span>
+                <input  type="radio" name="type" i-check ng-model="info.workorder_change_info.flow_type" ng-change="selectChangeType(6)" value="6" />
+                <span  class="label-value" style="padding:0 20px 0 3px;vertical-align: top">重启</span>
+            </div>
+        </div>
+        <!--变更原因-->
+        <div class="row form-style" style="margin-top: 10px;">
+            <label class="col-sm-3 text-right control-label label-key" style="">原因</label>
+            <div class="col-sm-6">
+                <div ng-if="!info.workorder_change_info.flow_type" style="line-height: 30px;color:#6d7183;font-size: 12px">请选择变更类型</div>
+                <!--关闭-->
+                <div class="label-value" ng-if="info.workorder_change_info.flow_type == 5">
+                    <bs-select width=200 name="close_reason" items="data.change_reason" my-select="info.workorder_change_info.close_type" required></bs-select>
+                    <validate-msg tag-cn-name="关闭原因" type="select" name="close_reason" model="info.workorder_change_info.close_type"></validate-msg>
+                </div>
+                <!-- 重启-->
+                <div class="label-value" ng-if="info.workorder_change_info.flow_type == 6">
+                    <bs-select width=200 name="restart_reason" items="data.change_reason" my-select="info.workorder_change_info.restart_type" required></bs-select>
+                    <validate-msg tag-cn-name="重启原因" type="select" name="restart_reason" model="info.workorder_change_info.restart_type"></validate-msg>
+                </div>
+            </div>
+        </div>
+        <!-- 情况说明-->
+        <div class="row form-style" style="margin-top: 19px;">
+            <label class="col-sm-3 text-right control-label label-key">情况说明</label>
+            <div class="col-sm-8 label-value">
+                <textarea class="form-control" name="change_desc" ng-model="info.workorder_change_info.deal_bk_expl" style="resize: none;color: #d2f1fe;"
+                          placeholder="情况说明，(最多100个字)"
+                          ng-maxlength=100
+                          ng-model-options="{updateOn: 'blur'}"
+                          required></textarea>
+                <validate-msg tag-cn-name="情况说明" name="change_desc" model="info.workorder_change_info.deal_bk_expl"></validate-msg>
+            </div>
+        </div>
+    <!-- 表单提交按钮-->
+    <div class="text-center" style="margin-top: 20px;">
+        <button ng-hide="control.save_change_btn_loading" class="cancel-btn btn-xl text-center" type="button" ng-click="formCancel()">取消</button>
+        <button ng-show="control.save_change_btn_loading" class="disabled-btn btn-xl text-center" disabled="disabled" type="button">取消</button>
+        <button ng-hide="control.save_change_btn_loading" class="save-btn btn-xl text-center" type="submit">确认</button>
+        <button ng-show="control.save_change_btn_loading" class="save-btn btn-xl text-center">
+            <i style="color: white" class="fa fa-spinner fa-spin"></i>
+        </button>
+        </div>
+    </div>
+</form>

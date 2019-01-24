@@ -1,0 +1,9 @@
+<div class="container-fluid dispatch-task-list searchBox">
+    <div class="custom-tab row">
+        <ul>
+            <li ng-class="{active:control.active_tab == 'cur_task'}" ng-click="switchTab('cur_task')"><a>当前任务</a></li>
+            <li ng-class="{active:control.active_tab == 'his_task'}" ng-click="switchTab('his_task')"><a>历史任务</a></li>
+        </ul>
+    </div>
+    <div ui-view="task-table-view"></div>
+</div>

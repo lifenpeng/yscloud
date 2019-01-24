@@ -1,0 +1,154 @@
+<div class="container-fluid cmpt cmpt-list">
+    <div class="table-search">
+        <div class="table-search-input">
+            <input type="text"
+                   ng-model="search_key_word"
+                   class="form-control"
+                   placeholder="请输入组件名"
+                   ng-enter="searchCmptByKeyword()">
+        </div>
+        <div class="table-search-btn">
+            <span class="table-clear-logol" ng-if="search_key_word" ng-click="clear()"></span>
+            <span class="table-search-logol"></span>
+            <button type="button" ng-click="changeSearchFlag(2,$event);" ng-class="!control.search-flag ? 'search-checked-flag' : 'search-unchecked-flag'" class="senior-btn-style" style="margin-left: -1px;">高级搜索</button>
+        </div>
+    </div>
+    <form ng-show="!control.search_flag" class="form-horizontal senior-search-div" custom-scroll custom-config="config.search_form_scroll_config" ng-click="closeDatePlugin($event);">
+        <div class="col-sm-12">
+            <div class="form-group form_style" style="margin-top: 20px">
+                <label class="col-sm-2 control-label label_key">关键字</label>
+                <div class="col-sm-6">
+                    <input type="text"
+                           name="key_word"
+                           ng-model="info.high_search_obj.key_word"
+                           class="form-control"
+                           placeholder="请输入关键字"
+                           required
+                           ng-model-options="{updateOn: 'blur'}">
+                </div>
+                <div class="col-sm-4" style="text-align: right">
+                    <div class="clear-icon" ng-click="clearData()"><i class="fa fa-trash-o" title="全部清空"></i></div>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">组件类型</label>
+                <div class="col-sm-10" style="margin-top: 4px">
+                    <div class="cmpt-type form_style" ng-repeat="cmpt_type in data.cmpt_type_list">
+                        <input type="radio" name="sys_type" i-check ng-model="info.high_search_obj.component_purpose" ng-change="selectScriptType(true)"  value={{cmpt_type.key}} />&nbsp;&nbsp;<span class="label_value">{{cmpt_type.value}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form_style" style="margin-bottom: 0">
+                <label class="col-sm-2 control-label label_key">执行类别</label>
+                <div class="col-sm-7">
+                    <div class="tablecss tag-xl" title="{{one.value}}" style="margin-left: 0;" ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = ! one.flag" ng-repeat="one in info.high_search_obj.exec_type_list">
+                        {{one.value}}
+                        <div>
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form_style" style="margin-bottom: 0" ng-if="info.high_search_obj.classify_list.length!=0">
+                <label class="col-sm-2 control-label label_key">分类</label>
+                <div>
+                    <div class="col-sm-7 classify-close" style="width: 590px" ng-class="{'classify-expand':control.tags_more_flag}">
+                        <div class="classify-tag-id" ng-style="countTagDivHeight()">
+                            <div class="tablecss tag-md" title="{{one.value}}" style="margin-left: 0;"  ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = ! one.flag" ng-repeat="one in info.high_search_obj.classify_list">
+                                {{one.value}}
+                                <div>
+                                    <i class="fa fa-check"></i>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    <div class="col-sm-1" style="text-align: left;">
+                        <label ng-if="!control.tags_more_flag && control.classify_flag" class="control-label senior-search-more-btn" ng-click="control.tags_more_flag =true">更多</label>
+                        <label ng-if="control.tags_more_flag && control.classify_flag" class="control-label senior-search-more-btn" ng-click="control.tags_more_flag = false">收起</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">创建人</label>
+                <div class="col-sm-5">
+                    <bs-select
+                                width="240"
+                               items="data.user_list"
+                               option-labal="user_cn_name"
+                               option-key="user_id"
+                               my-select="info.high_search_obj.crt_user_id"></bs-select>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">发布状态</label>
+                <div class="col-sm-10" style="margin-top: 4px">
+                    <div class="cmpt-type form_style" ng-repeat="pub_status in data.publish_status_list">
+                        <input type="radio" name="pub_status" i-check ng-model="info.high_search_obj.publish_state"  value={{pub_status.key}} />&nbsp;&nbsp;<span class="label_value">{{pub_status.value}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">修改时间</label>
+                <div class="col-sm-3 senior_crt_date_style pick-date-common" style="width: 290px;">
+                    <!--datepicker-options="dateOptions"-->
+                    <input type="text" name="crt_start_date" class="form-control"
+                           ng-click="open(1,$event)" is-open="control.start_opened"
+                           ng-model="info.high_search_obj.start_modify_date"
+                           show-button-bar="false"
+                           show-weeks="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           placeholder ="yyyy-mm-dd"
+                           close-on-date-selection="false"
+                           date-disabled="disabled(date, mode)"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           style="padding-left:32px "
+                           max-date="{{config.data_picker_max_date}}"
+                           required  readonly="true"/>
+                    <div class="senior-search-date-icon">
+                        <i style="color:#ccc;" class="fa fa-calendar calendar"></i>
+                    </div>
+                </div>
+                <div class="col-sm-3 pick-date-common" style="width: 290px;">
+                    <input type="text"
+                           name="crt_end_date"
+                           ng-click="open(1,$event)" is-open="control.start_opened"
+                           ng-model="info.high_search_obj.end_modify_date"
+                           class="form-control"
+                           placeholder ="yyyy-mm-dd"
+                           show-button-bar="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           close-on-date-selection="true"
+                           date-disabled="disabled(date, mode)"
+                           max-date="{{datepicker.maxDate}}"
+                           show-weeks="false"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           style="padding-left:32px "
+                           required
+                           readonly="true"/>
+                    <div class="senior-search-date-icon">
+                        <i style="color:#ccc;" class="fa fa-calendar calendar"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 text-center" ng-style="{'marginTop':(control.end_opened || control.start_opened ) ? '250px':'0'}">
+                    <button type="button" ng-click="cancelSeniorSearch()" class="save-cancel-btn cancel-btn btn-md">取消</button>
+                    <button type="button" class="save-cancel-btn save-btn btn-md" ng-click="seniorSearch();">搜索</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="senior-search-shadow" ng-if="!control.search_flag" ng-click="control.search_flag = true"></div>
+    <div class="row">
+        <div class="col-sm-12">
+            <cmpt-list></cmpt-list>
+        </div>
+    </div>
+</div>
+
+
+

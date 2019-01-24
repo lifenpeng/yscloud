@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h3 class="modal-title">Agent部署</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body agent-deploy-modal">
+    <div ng-if="!control.deploy_loading">
+        <div ng-if="control.deploy_success">
+            <div class="row">
+                <div class="col-sm-12 text-center" style="margin-top: 50px;margin-bottom: 50px">
+                    <div style="margin:0 auto;font-size: 20px;border-radius: 4px;">
+                        <span style="color:#43FC8C;">&nbsp;&nbsp;部署Agent成功,请点击确认刷新页面数据源&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="text-align: center;margin-top: 20px">
+                <button class="save-btn btn-xl" ng-click="finishDeploy()">确定</button>
+            </div>
+        </div>
+        <div ng-if="!control.deploy_success">
+            <div ng-if="!control.deploy_fail">
+                <div class="row form-style">
+                    <label class="col-sm-2 control-label label-key" style="padding-top: 15px;">执行数据源</label>
+                    <div class="col-sm-10 soc-config-style">
+                        <div class="soc-source-style" ng-style="data_source.is_check ? {'border':'1px solid #44dcfd'}:{}" ng-click="chooseExecSoc($index)" ng-repeat="data_source in data.protocol_soc_list" ng-if="data_source.protocol_type == 5 || data_source.protocol_type == 10">
+                            <div class="potocal-type-style" title="{{data_source.protocol_cn_name}}">{{data_source.protocol_cn_name}}</div>
+                            <div class="soc-name-style" title="{{data_source.soc_name}}">{{data_source.soc_name}}</div>
+                            <div ng-if="data_source.is_check" class="sys-config-data-soc-check">
+                                <i class="fa fa-check"></i>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button class="save-btn btn-xl" ng-click="startDeploy()">开始部署</button>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="control.deploy_fail">
+                <div class="row">
+                    <div class="col-sm-12 text-center" style="margin-top: 50px;margin-bottom: 50px">
+                        <div style="margin:0 auto;font-size: 20px;color:#CCC;border-radius: 4px;">
+                            <span style="color:#E9416E;">&nbsp;&nbsp;错误信息:{{deploy_error_message}},请关闭页面&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="text-align: center;margin-top: 20px">
+                    <button class="save-btn btn-xl" ng-click="cancel()">关闭</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   <div ng-if="control.deploy_loading">
+       <div class="row">
+           <div class="col-sm-12 text-center" style="margin-top: 50px;margin-bottom: 50px">
+               <div style="margin:0 auto;font-size: 20px;border-radius: 4px;">
+                   <span style="color:#6D7183;">&nbsp;&nbsp;正在部署Agent,请耐心等待&nbsp;<i style="font-size: 24px;" class="fa fa-spinner fa-spin"></i></span>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>

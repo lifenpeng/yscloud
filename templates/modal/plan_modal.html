@@ -1,0 +1,123 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">编列/修改发布计划</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body">
+    <div class="row form-horizontal form-style">
+        <label class="col-sm-3 control-label label-key">项目名称</label>
+        <label class="col-sm-4 control-label label-value" style="text-align: left">{{info.curr_proj.project_short_name}}</label>
+    </div>
+    <div class="row form-horizontal form-style pick-date-common">
+        <label class="col-sm-3 control-label label-key" style="padding-top: 40px;">发布日期/时间</label>
+        <div class="col-sm-5 pick-date-common">
+            <input type="text"
+                   class="form-control"
+                   ng-model="info.curr_proj.pro_bk_date"
+                   min-date="{{control.datepicker.minDate}}"
+                   style="width: 220px; margin-top: 35px;"
+                   show-button-bar="false"
+                   datepicker-popup="yyyy年MM月dd日"
+                   ng-click="curr_date.opened = true"
+                   is-open="curr_date.opened"
+                   required  readonly="true"/>
+        </div>
+        <div class="col-sm-4">
+            <timepicker ng-model="info.curr_proj.plan_date_time"
+                        ng-change="changeCurrPlanTime()" readonly-input="true" hour-step="1"
+                        minute-step="1" show-meridian="false"></timepicker>
+        </div>
+    </div>
+    <div ng-if="control.show_front">
+        <div class="row form-horizontal form-style">
+            <label class="col-sm-3 control-label label-key">设置前置项目</label>
+            <div>
+                <div style="display: inline-block;padding-bottom: 15px;padding-right: 21px;">
+                    <label class="checkbox-inline" style="padding-left: 15px;font-size: 12px;">
+                        <input type="radio" name="optionsRadiosinline" i-check ng-change="changeFrontProj(1)"
+                               value="1" ng-model="control.hasFrontProj"> 有前置项目
+                    </label>
+                </div>
+                <div style="display: inline-block;padding-bottom: 9px;padding-right: 21px;">
+                    <label class="checkbox-inline" style="font-size: 12px;">
+                        <input type="radio" name="optionsRadiosinline" i-check ng-change="changeFrontProj(2)"
+                               value="2" ng-model="control.hasFrontProj"> 无前置项目
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row form-horizontal form-style"  ng-show="control.hasFrontProj == 1">
+            <div class="col-sm-8 col-sm-offset-3" style="padding-top: 10px;padding-bottom: 10px;">
+                <div class="row form-horizontal" style="padding-bottom: 3px;">
+                    <div class="col-sm-4 pick-date-common">
+                        <input type="text"
+                               ng-model="info.front_proj.pro_bk_date"
+                               class="form-control"
+                               style="width: 220px;"
+                               ng-click="front_date.opened = true"
+                               is-open="front_date.opened"
+                               show-button-bar="false"
+                               datepicker-popup="yyyy年MM月dd日"
+                               required  readonly="true"/>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4" ng-show="info.front_proj.start_bk_time"
+                         style="padding-left: 0px;">
+                        <label class="form-control text-center"
+                               style="display: inline-block;width: 51px;margin-right: -4px;height:33px;margin-bottom: 0px;">{{info.front_proj.time_hour}}</label>
+                        <label>:</label>
+                        <label class="form-control text-center"
+                               style="display: inline-block;width: 51px;margin-left: -4px;height:33px;margin-bottom: 0px;">{{info.front_proj.time_minute}}</label>
+                    </div>
+                </div>
+                <div class="row form-horizontal form-style">
+                    <div class="col-sm-12" style="margin-top: 5px;">
+                        <div style="display: inline-block;">
+                            <div ng-if="info.front_proj.proj_list.length == 0 && !info.front_proj.project_name" class="btn-group"
+                                 style="margin-right:-20px;margin-top: -5px;">
+                                <button class="btn" style="width: 220px;background-color: #090f15;" type="button">
+                                    <span style="font-size: 12px;">暂无可选前置项目</span>
+                                </button>
+                            </div>
+                            <div ng-if="info.front_proj.proj_list.length != 0 && info.front_proj.proj_list"
+                                 style="margin-left:0px;margin-top: -5px;">
+                                <bs-select width="220" items="info.front_proj.proj_list"
+                                           my-select="info.front_proj.project_busisys"
+                                           select-val="selectPreProj(selectKey)"></bs-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--如果不存在分组信息-->
+    <div ng-if="!control.show_front">
+        <div class="row form-horizontal form-style">
+            <label class="col-sm-3 control-label label-key">设置前置项目</label>
+            <div ng-if="!control.show_front" style="margin-top: 6px;">
+                <label style="margin-left: 16px;">已经分组,不可以设置前后置关系</label>
+            </div>
+        </div>
+    </div>
+    <!-- 手动/自动 -->
+    <div class="row form-horizontal form-style"  style="margin-top:20px">
+        <label class="col-sm-3 control-label label-key">执行类型</label>
+        <div class="col-sm-9" style="margin-top: 4px">
+            <label style="font-size: 12px;">
+                <input type="radio" name="auto_yn_flag" i-check ng-model="info.curr_proj.auto_yn_flag" value="2">
+                手动执行
+            </label>
+            <label style="margin-left:25px;font-size: 12px;">
+                <input type="radio" name="auto_yn_flag" i-check ng-model="info.curr_proj.auto_yn_flag" value="1">
+                自动执行
+            </label>
+        </div>
+    </div>
+    <div style="margin-top:30px;margin-bottom: 40px;text-align: center;">
+        <button  class="cancel-btn btn-xl" ng-click="formCancel()">取消</button>
+        <button ng-show="!btnBus_loading" class="save-btn btn-xl" ng-click="formSubmit()">确认</button>
+        <button ng-show="btnBus_loading" disabled="disabled" class="save-btn btn-xl">
+            <i style="color: white" class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>

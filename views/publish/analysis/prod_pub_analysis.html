@@ -1,0 +1,32 @@
+<style>
+    .mCSB_container{
+        overflow: visible;
+    }
+</style>
+<!--项目发布-->
+<div style="padding-left: 0px;  padding-right:0px;">
+    <tabset class="commonTabs">
+        <tab heading="一般项目" class="analysis-tab">
+            <div class="row">
+                <div class="col-lg-2 col-md-2" style="padding-bottom: 10px;">
+                    <bs-select width=120 items="info.n_year_list" my-select="info.historyNormalYearString" select-val="changeNormalYear(selectKey);" ></bs-select>
+                </div>
+                <div class="col-lg-offset-4 col-md-offset-4 col-lg-6 col-md-6" style="text-align: right;margin-top: 7px;">
+                    截止 {{info.endDay}} 项目类发布共计 : {{info.nyearCount}}(个) 异常项目 : {{info.nyearFail}}(个)
+                </div>
+            </div>
+            <normal-proj-list year="info.historyNormalYear" nyear-count="info.nyearCount" nyear-fail="info.nyearFail"></normal-proj-list>
+        </tab>
+        <tab heading="大型项目" class="analysis-tab">
+            <div class="row">
+                <div class="col-lg-2 col-md-2" style="padding-bottom: 10px;">
+                    <bs-select width=120 items="info.m_year_list" my-select="info.historyMajorYearString" select-val="changeMajorYear(selectKey);" ></bs-select>
+                </div>
+                <div class="col-lg-offset-4 col-md-offset-4 col-lg-6 col-md-6" style="text-align: right;margin-top: 7px;">
+                    截止 {{info.endDay}} 项目类发布共计 : {{info.yearCount}}(个) 异常项目 : {{info.yearFail}}(个)
+                </div>
+            </div>
+            <major-proj-list year="info.historyMajorYear" year-count="info.yearCount" year-fail="info.yearFail"></major-proj-list>
+        </tab>
+    </tabset>
+</div>

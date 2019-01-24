@@ -1,0 +1,19 @@
+<div class="container-fluid project-detail">
+    <div class="row form-style" style="padding-bottom: 15px;">
+        <label class="col-sm-2 control-label label-key">项目名称</label>
+        <div class="col-sm-2 label-value">
+            {{info.project_name}}
+        </div>
+        <label class="col-sm-2 control-label label-key">项目编号</label>
+        <div class="col-sm-2 label-value">
+            {{info.project_id}}
+        </div>
+        <label class="col-sm-2 control-label label-key">状态</label>
+        <div class="col-sm-2 label-value proj-list">
+            <div class="proj-status" style="margin-top: -7px" title="{{info.project_status == 1 ? '待发布' : info.project_status == 2 ? '发布中' : info.project_status == 3 ? '发布完成' : '已关闭'}}" ng-class="info.project_status == 1 ? 'proj-pre-publish' : info.project_status == 2 ? 'proj-publish-ing' : info.project_status == 3 ? 'proj-publish-finish' : 'proj-publish-close'"></div>
+        </div>
+    </div>
+    <div class="row">
+       <div ui-view></div>
+    </div>
+</div>

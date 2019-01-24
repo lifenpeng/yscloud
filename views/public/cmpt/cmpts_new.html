@@ -1,0 +1,264 @@
+<div class="row" ng-if="control.new_cmpts_flag">
+    <div class="col-sm-5 col-sm-offset-7 form-style">
+        <div class="row" style="margin-top: -38px;" ng-show="!cmpt_info.module_purpose || cmpt_info.module_purpose == 1">
+            <label class="col-sm-5 control-label label-key" style="text-align: right;padding-top: 10px;">从文件导入</label>
+            <div class="col-sm-6">
+                <file-upload fileupload="config.cmpts_fileupload" successthen="ImportSuccessThen();" deletefile="removeCmptsFile();"></file-upload>
+            </div>
+        </div>
+        <div class="row" style="margin: -38px 40px 10px;" ng-if="config.cmpts_fileupload.filename">
+            <div class="ecm_showImportedFile">
+                <span class="fa fa-share"></span>
+                <span class="label-key" ng-if="control.cmpt_type == 1">导入的组件组文件<span style="color: #336699;padding-left: 10px">{{cmpt_fileupload.filename}}</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+<form name="cmpts_form" ng-submit="cmptsSubmit()" class="form-horizontal fontSize12" novalidate autocomplete="off">
+    <!--组件组-->
+    <div ng-if="control.import_loading" class="ce-panel-loading-bg" style="width: 97%;height: 85%;"></div>
+    <div ng-if="control.import_loading" class="ce-panel-loading-modal" style="top: 35%;left: 45%;">组件组信息载入中...&nbsp;&nbsp;<i class="fa fa-spinner fa-spin" style="font-size: 18px;color: #fff;"></i></div>
+    <!--组件组名-->
+    <div class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">组件组名</label>
+        </div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" ng-model="info.cmpts_info.cn_name"
+                   name="cmpt_group_name"
+                   placeholder="输入不超过25个字符或汉字"
+                   ng-maxlength="25"
+                   ensure-unique="mo_ViewComponentActioncheckCompnentCnName"
+                   ng-pattern="/^[\u4E00-\u9FA5A-Za-z0-9_]+$/"
+                   required/>
+            <validate-msg tag-cn-name="组件组名" name="cmpt_group_name"></validate-msg>
+        </div>
+    </div>
+    <!--组件组描述-->
+    <div class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">描述</label>
+        </div>
+        <div class="col-sm-5">
+            <textarea name="cmpt_group_desc"
+                      ng-model="info.cmpts_info.bk_desc"
+                      class="form-control label-value"
+                      placeholder="输入不超过250个字符或汉字 "
+                      style="min-width: 260px; resize:none;"
+                      required
+                      ng-maxlength=250
+                      ng-model-options="{updateOn: 'blur'}">
+            </textarea>
+            <validate-msg tag-cn-name="描述" name="cmpt_group_desc"></validate-msg>
+        </div>
+    </div>
+    <!--组件组类型-->
+    <div class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key" >组件组类型</label>
+        </div>
+        <div class="col-sm-6"  style="margin-top: 5px">
+            <div class="cmpt-type-radio" ng-repeat="i in data.cmpts_type_list">
+                <label>
+                    <input type="checkbox"
+                           name="cmpt_type"
+                           i-check
+                           ng-change="selectCmptsType(i)"
+                           ng-model="i.state"/>
+                    <span class="label-value">{{i.value}}</span>
+                </label>
+            </div>
+            <div style="clear: both"></div>
+            <validate-msg tag-cn-name="组件组类型" type="checkbox" name="component_purposes" model="info.cmpts_info.component_purposes"></validate-msg>
+        </div>
+    </div>
+    <div class="form-group form-style" style="margin-bottom:15px;">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key" >组件模块</label>
+        </div>
+        <div class="col-sm-6 fixedGroup">
+            <div class="btn-group">
+                <button type="button" class="btn cmpt-type-radio cmpts-add-btn" ng-click="addCmpt(info.cmpts_info.component_list)"><span class="fa fa-cube"></span>+组件</button>
+            </div>
+            <validate-msg tag-cn-name="组件模块" type="checkbox" name="component_module" model="info.cmpts_info.component_list"></validate-msg>
+        </div>
+        <div class="col-sm-4 text-right" style="padding-right: 20px;" ng-if="info.cmpts_info.component_list.length !=0">
+            <div class="togglebutton">
+                <label style="font-size: 14px; color: #777;">
+                    <span class="label-key" style="-webkit-padding-end:10px;vertical-align: middle;">展开全部</span>
+                    <input type="checkbox" ng-model="control.expand_flag" ng-if="control.nav_show_flag == 0 || control.nav_show_flag == 1 " ng-click="expandAll()">
+                    <input type="checkbox" ng-model="control.expand_flag" ng-if="control.nav_show_flag == 2" ng-click="collapseAll()">
+                    <span class="toggle" style="vertical-align: middle;"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!--组件模块-->
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-2" ui-sortable="sortableOptions" ng-model="info.cmpts_info.component_list">
+            <div ng-repeat="step in info.cmpts_info.component_list" class="cmpt-module">
+                <!-- 数据内容-->
+                <div class="cmpt-module-content">
+                    <!--组件模块头部-->
+                    <div class="row cmpt-module-head" ng-class="{'cmpt-module-head-active':step.show_detail}" ng-mouseup="toggleModulesDetail(step)" ng-mousedown="getDownTime()">
+                        <div class="col-sm-1" style="width: 20px;margin-right: 10px;">
+                            <div class="step-circle-common">
+                                <span class="step-circle-font">{{$index + 1}}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="cmpt-icon-common">
+                                <i class="fa fa-cube" title="组件"></i>
+                            </div>
+                            <div class="col-sm-4 alias-name">
+                                <span ng-bind="step.cn_name" title="{{step.cn_name}}"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 operate-content">
+                            <div class="operate-btn" ng-click="stopPrevent($event)">
+                                <ul class="operate-style list-unstyled list-inline">
+                                    <li ng-mousedown="removeSingleCmpt($event,step,$index)">
+                                        <span class="cmpt-operator-delete" title="删除"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="float: right;">
+                            <span ng-if="step.impl_type == 1" class="exec-type ftp-color">FTP</span>
+                            <span ng-if="step.impl_type == 2" class="exec-type shell-color">SHELL</span>
+                            <span ng-if="step.impl_type == 3" class="exec-type was-color">WAS</span>
+                            <span ng-if="step.impl_type == 4" class="exec-type svn-color">SVN</span>
+                            <span ng-if="step.impl_type == 5" class="exec-type weblogic-color" style="width: 75px">WEBLOGIC</span>
+                            <span ng-if="step.impl_type == 6" class="exec-type jdbc-color" style="width: 75px">SQL</span>
+                            <span ng-if="step.impl_type == 7" class="exec-type python-color" style="width: 75px">PYTHON2</span>
+                            <span ng-if="step.impl_type == 8" class="exec-type python-color" style="width: 75px">PYTHON3</span>
+                            <span ng-if="step.impl_type == 11" class="exec-type python-color">BAT</span>
+                            <span ng-if="step.impl_type == 14" class="exec-type java-color">JAVA</span>
+                        </div>
+                    </div>
+                    <!-- 组件-->
+                    <div ng-mousedown="stopPrevent($event)">
+                            <div collapse="!step.show_detail">
+                                <div class="content-border">
+                                    <div class="row form-style" style="padding-top:20px;">
+                                        <div class="col-sm-2 text-right">
+                                            <label class="control-label label-key">描述</label>
+                                        </div>
+                                        <div class="col-sm-9 label-value" style="margin-top:7px">{{step.bk_desc}}</div>
+                                    </div>
+                                    <div class="row form-style" style="margin-top: 18px;padding-right:20px;padding-bottom: 20px;">
+                                        <div class="col-sm-2 text-right" style="padding-right: 10px">
+                                            <label class="control-label label-key">执行脚本</label>
+                                        </div>
+                                        <div scroll-control class="col-sm-10">
+                                                 <textarea
+                                                         ui-codemirror="step.impl_type == 6 ? config.view_sql_options : (step.impl_type == 7 || step.impl_type == 8) ? config.view_py_options : step.impl_type == 14 ? config.view_java_options : config.view_sh_options"
+                                                         ui-refresh="true"
+                                                         placeholder="执行脚本"
+                                                         ng-model="step.exec_script">
+                                                </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="step.component_source == 2">
+                                        <label class="col-sm-2 control-label label-key text-right">命令行参数</label>
+                                        <label class="col-sm-10 label-value" ng-bind="step.file_param ? step.file_param :'--'" style="padding-top: 7px;"></label>
+                                    </div>
+                                    <div class="form-group form-style" ng-if="step.component_source == 1" style="padding-right: 20px" >
+                                        <label class="col-sm-2 control-label label-key text-right" style="padding-right: 10px">参数表</label>
+                                        <div class="col-sm-10">
+                                            <div ng-if="!step.param_list || step.param_list.length == 0">
+                                                <label class="control-label label-value none-content-font-color" style="text-align: left">暂无参数</label>
+                                            </div>
+                                            <div ng-if="step.param_list && step.param_list.length != 0">
+                                                <table class="sub-table table text-center">
+                                                    <thead>
+                                                    <tr>
+                                                        <td width="170px">
+                                                            参数名
+                                                        </td>
+                                                        <td width="200px">
+                                                            参数中文名
+                                                        </td>
+                                                        <td>
+                                                            默认值
+                                                        </td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="tr in step.param_list">
+                                                        <td>
+                                                            <span class="text-ellipse" style="display: block;width: 80%;" title="{{tr.param_name}}" ng-show="tr.param_name">{{tr.param_name}}</span>
+                                                            <span ng-show="!tr.param_name">--</span>
+                                                        </td>
+                                                        <td>
+                                                            <span  class="text-ellipse" style="display: block;width: 80%;" title="{{tr.param_cn_name}}" ng-show="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                            <span ng-show="!tr.param_cn_name">--</span>
+                                                        </td>
+                                                        <td>
+                                                            <span  class="text-ellipse" style="display: block;width: 80%;" title="{{tr.param_value}}" ng-show="tr.param_value">{{tr.param_value}}</span>
+                                                            <span ng-show="!tr.param_value">--</span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--输出参数-->
+                                    <div class="form-group fontSize12 form-style " style="padding-right: 20px" ng-if="step.component_source == 1">
+                                        <div class="col-sm-2 text-right" style="padding-right: 10px">
+                                            <label class="control-label label-key">输出参数表</label>
+                                        </div>
+                                        <!--参数为0-->
+                                        <div class="col-sm-10" ng-if="step.out_param_list.length==0 || !step.out_param_list">
+                                            <label class="control-label label-value none-content-font-color" style="text-align: left;">暂无参数</label>
+                                        </div>
+                                        <!--参数列表-->
+                                        <div class="col-sm-10" ng-if="step.out_param_list.length>0">
+                                            <table class="sub-table table text-center" tbl-Data="step.out_param_list">
+                                                <thead>
+                                                <tr>
+                                                    <td width="170px">参数名</td>
+                                                    <td width="200px">参数中文名</td>
+                                                    <td>参数描述</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="tr in step.out_param_list">
+                                                    <td>
+                                                        <span class="text-ellipse" style="display: block;max-width: 190px;" title="{{tr.param_name}}" ng-show="tr.param_name">{{tr.param_name}}</span>
+                                                        <span ng-show="!tr.param_name">--</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-ellipse" style="display: block;max-width: 190px;"  title="{{tr.param_cn_name}}" ng-show="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                        <span ng-show="!tr.param_cn_name">--</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-ellipse" style="display: block;max-width: 240px;" title="{{tr.param_bk_desc}}" ng-show="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                                                        <span ng-show="!tr.param_bk_desc">--</span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="module-vertical-common-line" style="left: 16px;" ng-if="!$last"></div>
+            </div>
+        </div>
+    </div>
+    <!--保存表单-->
+    <div class="form-group" style="margin-top: 40px;">
+            <div class="col-sm-12 text-center">
+                <button ng-if="!control.cmpts_save_loading" type="button" class="save-cancel-btn cancel-btn btn-md" ng-click="cmptsCancel()" style="text-align:center;">取消</button>
+                <button ng-if="control.cmpts_save_loading" disabled="disabled" type="button" class="save-cancel-btn btn-md disabled-btn" >取消</button>
+                <button ng-if="!control.cmpts_save_loading" type="submit" class="save-cancel-btn save-btn btn-md" style="text-align:center;">保存</button>
+                <button ng-if="control.cmpts_save_loading" disabled="disabled" class="save-cancel-btn save-btn btn-md" style="text-align:center;">
+                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+</form>

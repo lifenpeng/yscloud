@@ -1,0 +1,11 @@
+<div class="row" style="margin-top:20px;">
+    <div class="col-sm-2 col-sm-offset-4">
+        <div ng-repeat="one in flowList" ng-style="flowCircleStyle(one, $index)">
+            <div ng-style="flowTypeStyle(one)" ng-bind="one.flow_type" style="font-size: 12px;"></div>
+            <div style="position: relative;left: 28px;top:-34px;width: 180px;text-align: left; font-size: 12px;" ng-bind="one.deal_time"></div>
+            <div style="position: relative;width: 180px;top:-34px;text-align: left; left: 30px;font-size: 12px;">{{one.deal_dept_id + " " + one.deal_user_name}}</div>
+            <div ng-if="!$last" ng-style="flowLineStyle(one, $index)"></div>
+        </div>
+    </div>
+    <div style="position:relative;height:240px;width:1px;background-color:#151f2b;top:-15px;left: -30px;"></div>
+</div>

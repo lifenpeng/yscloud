@@ -1,0 +1,73 @@
+
+<form name="form.job_param_form" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">添加作业输出参数</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body" style="max-height: 320px;overflow: auto">
+        <div ng-repeat="job in job_output_list">
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">作业名</label>
+                <div class="col-sm-8 label_value">
+                    <span ng-bind="job.job_cn_name"></span>&nbsp;&nbsp;
+                    <span style="color: #CCC" ng-if="job.job_status <= 1">未执行</span>
+                    <span style="color: #399FDC" ng-if="job.job_status == 2"><span class="fa fa-spinner fa-pulse" style="color: #399FDC"></span>&nbsp;执行中</span>
+                    <span style="color: #A8C666" ng-if="job.job_status == 3"><i class="fa fa-check-circle" style="color: #A8C666"></i>&nbsp;执行成功</span>
+                    <span style="color: #ED6F67" ng-if="job.job_status == 4"><i class="fa fa-times-circle" style="color: #ED6F67"></i>&nbsp;执行异常</span>
+                    <span style="color: #FEA04D" ng-if="job.job_status == 5"><i class="fa fa-share" style="color: #FEA04D"></i>&nbsp;跳过</span>
+                    <span style="color: #ED6F67" ng-if="job.job_status == 7"><i class="fa fa-times-circle" style="color: #ED6F67"></i>&nbsp;执行失败</span>
+                </div>
+            </div>
+            <div class="form-group form_style" ng-style="{'margin-bottom': $last ? 0 :''}">
+                <label class="col-sm-2 control-label label_key" style="padding-top: 4px">输出参数</label>
+                <div class="col-sm-10">
+                    <table class="sub-table text-center" tbl-Data="job.output">
+                        <thead>
+                        <tr class="ecm_paramsTb_cursor">
+                            <td>
+                                <span>参数名</span>
+                                <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                            </td>
+                            <td>
+                                参数中文名
+                            </td>
+                            <td style="width: 200px;">
+                                参数值
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in job.output"  style="font-size: 12px;text-align: left;" ng-show="job.output.length != 0">
+                            <td  class="ecm_paramsTb_cursor" title="{{tr.param_name}}">
+                                <div class="param-group-style">
+                                    <div class="param-name">{{tr.param_name}}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="has-feedback"><input type="text" ng-model="tr.param_cn_name" class="sub-form-control"/></div>
+                            </td>
+                            <td style="max-width: 220px;text-align: left" title="{{tr.param_value}}">
+                                <textarea name="param_value{{$id}}"
+                                          ui-codemirror="{ onLoad : paramShellLoaded}"
+                                          ui-refresh="true"
+                                          ng-model="tr.param_value"
+                                          class="sub-form-control"
+                                          required>
+                                </textarea>
+                                <validate-msg tag-cn-name="参数值" name="param_value{{$id}}"></validate-msg>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-sm-12 text-center">
+            <button class="btn-md  cancel-btn" type="button" ng-click="formCancel()">取消</button>
+            <button class="btn-md  save-btn" type="submit" >确认</button>
+            <!--<button ng-if="false" type="button" class="save_cancel_btn save_btn btn_md"><i style="color: white" class="fa fa-spinner fa-spin"></i></button>-->
+        </div>
+    </div>
+</form>

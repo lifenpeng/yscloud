@@ -1,0 +1,59 @@
+<div  class="row flow-made-detail">
+    <div class="col-sm-12">
+        <div class="header_bg">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="head-flow-name">
+                        流程名称：{{info.sdflow_cn_name}}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="right-info">
+                        <div class="time-config" ng-if="info.sddispatch_type == 2">
+                            <span>日期查看：</span>
+                            <label ng-if="!flow_info.start_bk_datetime_val" ng-click="configTime(2)" title="时间未设置" class="time-btn"></label>
+                            <label ng-if="flow_info.start_bk_datetime_val" ng-click="configTime(2)" title="{{flow_info.start_bk_datetime_val}}//{{flow_info.end_bk_datetime_val}}" class="time-btn"></label>
+                        </div>
+                        <div class="user-select">
+                            <span>执行人：</span>
+                            <div ng-if="!flow_info.exe_user_list || flow_info.exe_user_list.length == 0"  ng-style="control.user_config_show ? {'color':'#d2f1fe','background-color':'#44dcfd','border-color':'#44dcfd'}:{}" ng-click="configUser();"  class="choice-btn">查看</div>
+                            <div ng-if="flow_info.exe_user_list.length == 1" ng-style="control.user_config_show ? {'color':'#d2f1fe','background-color':'#44dcfd','border-color':'#44dcfd'}:{}" ng-click="configUser();"  class="choice-btn">
+                                {{data.user_list | getNameFilter}}
+                            </div>
+                            <div ng-if="flow_info.exe_user_list.length > 1" ng-style="control.user_config_show ? {'color':'#d2f1fe','background-color':'#44dcfd','border-color':'#44dcfd'}:{}" ng-click="configUser();"  class="choice-btn">
+                                {{data.user_list | getNameFilter}}...
+                            </div>
+                            <div class="exeuser_popover" ng-if="control.user_config_show" style="cursor: default">
+                                <div class="row" >
+                                    <label class="col-sm-2 control-label" style="padding-left: 0px;text-align: right;">请选择</label>
+                                    <div class="col-sm-10" style="text-align: left; ">
+                                        <div class="tablecss tag-md" title="{{one.user_cn_name}}" style="margin-left: 0px;cursor: default" ng-class="one.flag ? 'checked-tag':'check-tag'" ng-repeat="one in data.user_list">
+                                            {{one.user_cn_name}}
+                                            <div>
+                                                <i class="fa fa-check"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mouseHover" style="right: 25px;" ng-if="control.show_basic_detail" ng-click="togledetail()"><i title="展开" class="fa fa-angle-double-down"></i></div>
+                        <div class="mouseHover" style="right: 25px;" ng-if="!control.show_basic_detail" ng-click="togledetail()"><i title="收起" class="fa fa-angle-double-up"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="flow_info.nodeDataArray.length == 0 || !flow_info.nodeDataArray">
+            <div class="col-sm-8 dragMid" style="padding: 0px;">
+                <div class="png-position no-flow">暂无流程</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" ng-if="flow_info.nodeDataArray.length">
+        <div style="width:100%; white-space:nowrap;" class="drag">
+            <div class="col-sm-8 dragMid" cus-flow-detail go-model="flow_info" ng-if="flow_info.nodeDataArray.length" config="config(key)"  job-config="control.job_config" style="padding: 0px;">
+                <div id="myDiagramDiv" class="grid_bg_detail" style="border: none"></div>
+            </div>
+        </div>
+    </div>
+</div>

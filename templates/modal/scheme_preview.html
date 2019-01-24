@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{info.program_seq}}方案预览</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body program-preview-modal-body">
+    <div ng-repeat="step in info.steps" class="row ng-scope">
+        <div>
+            <div class="step-circle-style">
+                <strong style="position:relative; z-index: 11;">{{step.step_seq}}</strong>
+                <div class="step-title-style" title="{{step.step_bk_title}}">{{step.step_bk_title}}</div>
+            </div>
+        </div>
+        <div  class="col-sm-8 step-content-style">
+            <div ng-style="lineStyle(step)"></div>
+            <div class="row">
+                <program-step-form  data="step" showbtn="false"></program-step-form>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div>
+            <div class="step-finish-circle-style">
+                <strong style="position:relative; z-index: 11"></strong>
+                <div class="step-finish-title-style">完成</div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center" style="margin: 40px 0 20px;">
+        <button class="cancel-btn btn-xl" ng-click="cancel()">关闭</button>
+    </div>
+</div>
+

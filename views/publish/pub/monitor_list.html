@@ -1,0 +1,112 @@
+<div class="container-fluid proj_monitor pub-window project-application monitor-list">
+    <!-- 新版发布监控-->
+    <div ng-show="control.info_loading">
+        <div class="loading_style">
+            数据加载中&nbsp;<i class='fa fa-spinner fa-spin'></i>
+        </div>
+    </div>
+    <div ng-show="!control.info_loading">
+        <div class="pub_head">
+            <div class="col_style progress_bg">
+                <div class="progress_zero" ng-if="info.pub_percent == 0"></div>
+                <div ng-if="info.pub_percent > 0 && info.pub_percent < 100">
+                    <div class="progress_begin begin_first" ng-if="control.begin_flag"></div>
+                    <div class="progress_begin begin_second" ng-if="!control.begin_flag"></div>
+                    <div class="text-style" ng-if="!control.begin_flag"><span>{{info.pub_percent}}</span>%</div>
+                </div>
+                <div ng-if="info.pub_percent == 100">
+                    <div class="progress_success third_flag" ng-if="!control.finish_flag"></div>
+                    <div class="progress_success finish_flag" ng-if="control.finish_flag"></div>
+                </div>
+            </div>
+            <div class="col_style add_line" style="margin-top: 12px;width:25%;margin-left: 35px;">
+                <div style="display: inline-block;padding-left: 4px;">
+                    <div style="font-size: 18px">发布申请总数</div>
+                </div>
+                <div class="proj_pub_count" >{{info.all_project_count}}</div>
+            </div>
+            <div class="col_style add_line pub_common_style">
+                <div>
+                    <div style="display: inline-block;padding-left: 4px;">
+                        <div class="animation" ></div>
+                    </div>
+                    <div style="display: inline-block;text-align: center;">
+                        <div>发布中</div>
+                        <div style="font-size: 28px;color: #FF6600;">{{info.pub_project_count}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col_style add_line pub_common_style">
+                <div>
+                    <div style="display: inline-block;padding-left: 4px;">
+                        <div class="pub_need"></div>
+                    </div>
+                    <div style="display: inline-block;text-align: center;">
+                        <div>待发布</div>
+                        <div style="font-size: 28px;color: #FF6600;">{{info.wait_project_count}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col_style pub_common_style">
+                <div>
+                    <div style="display: inline-block;padding-left: 4px;">
+                        <div class="pub_success" ></div>
+                    </div>
+                    <div style="display: inline-block;text-align: center;">
+                        <div>已发布</div>
+                        <div style="font-size: 28px;color: #FF6600;">{{info.pubed_project_count}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pub_body">
+            <div ng-if="!info.pjplan_list || info.pjplan_list.length ==0">
+                <div class="no_project">
+                    暂无发布申请
+                </div>
+            </div>
+            <div ng-if="info.pjplan_list.length !=0">
+                <div class="no_project" ng-if="monitor_results.length == 0">暂无发布中的申请</div>
+                <!-- 项目列表-->
+                <div class="row" ng-repeat="proj in info.pjplan_list | orderBy:'order_time' |filter:{pjpublish_status:2} as monitor_results track by $index">
+                    <div class="col-sm-3 define-sm-3 text-right">
+                        <div class="circle-style" ng-style="{'top':$first ? 0 : '30px'}">
+                            <!--提示框-->
+                            <div class="hint_info">
+                                <div>{{proj.start_date}}&nbsp;&nbsp;{{proj.start_time}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8" style="padding-left: 0;padding-right: 0" ng-style="{'padding-top':$first ? 0 :'25px','padding-bottom':$last ? 0 :'25px'}">
+                        <div class="vertical_line" ng-style="{'height':$last&&!$first ? '30px':'100%'}"></div>
+                        <div class="step_detail" ng-click="proj.noprepare_num != 0 || changeState(3,proj)" ng-class="{'noclick-step':proj.noprepare_num != 0}">
+                            <!-- 分组-->
+                            <div  class="row">
+                                <div class="col-sm-5" style="padding-bottom: 3px;">
+                                    <div class="group_left">{{proj.pjpublish_name}}</div>
+                                </div>
+                                <div class="col-sm-4 group_center">
+                                    <div ng-if="proj.pjpublish_status == 4" style="margin-top: 19px;">
+                                        <progressbar max="proj.publish_count" value="proj.exec_end_count" type='info' class="progress-striped active group-progress-bar" ></progressbar>
+                                        <div class="process_info">
+                                            <span>{{proj.exec_end_count}}</span><span>{{'/'+proj.publish_count}}</span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="proj.pjpublish_status != 4">
+                                        <div style="height: 32px;line-height: 32px;padding-left: 36px;background: url('./img/publish/monitor_list/group_total.png') no-repeat;color: #d2f1fe;margin-top: 6px;background-position: -5px 0;">共{{proj.publish_count}}个系统发布</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 group_right">
+                                    <!--待发布的暂时不显示-->
+                                    <div ng-if="proj.pjpublish_status == 1" style="background: url('./img/publish/monitor_list/pub_need.png') no-repeat;height: 30px;line-height: 30px;padding-left: 40px;color: #44dcfd;background-size: 30px;margin-top: 7px;">{{proj.start_time}}</div>
+                                    <!--发布中-->
+                                    <div ng-if="proj.pjpublish_status == 2" class="animation" style="width: 30px;height: 30px;background-size: cover;margin-top: 7px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="container-fluid" style="padding-bottom: 0">
+    <div class="container-fluid flow-basic-detail" collapse="control.show_basic_detail">
+        <form name="workorder_form" class="form-horizontal form_style" novalidate autocomplete="off">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <label class="col-sm-4 control-label label-key">流程名称</label>
+                        <div class="col-sm-7 control-label label_value">
+                            <label ng-bind="info.sdflow_cn_name"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 control-label label-key">流程描述</label>
+                        <div class="col-sm-7 control-label label_value">
+                            <label ng-bind="info.sdflow_bk_desc"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 control-label label-key">场景</label>
+                        <div class="col-sm-7 control-label label_value">
+                            <label ng-bind="info.scene_name ? info.scene_name : '--'"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 control-label label-key">策略组</label>
+                        <div class="col-sm-7 control-label label_value">
+                            <label ng-bind="info.sdstrategy_name ? info.sdstrategy_name : '--'"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label label-key">编排方式</label>
+                        <div class="col-sm-8 label_value"  style="margin-top: 6px;">
+                            <label>
+                                <input type="radio" name="exe_types" i-check ng-model="info.sdarrange_method" value=1 disabled>
+                                简单
+                            </label>
+                            <label style="margin-left:25px;">
+                                <input type="radio" name="exe_types" i-check ng-model="info.sdarrange_method" value=2 disabled>
+                                复杂
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label label-key">重复执行</label>
+                        <div class="col-sm-8 label_value"  style="margin-top: 6px;">
+                            <label>
+                                <input type="radio" name="sdparallel_task" i-check ng-model="info.sdparallel_task" value=1 disabled>
+                                允许
+                            </label>
+                            <label style="margin-left:25px;">
+                                <input type="radio" name="sdparallel_task" i-check ng-model="info.sdparallel_task" value=2 disabled>
+                                不允许
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label label-key">执行类型</label>
+                        <div class="col-sm-8 label_value"  style="margin-top: 6px;">
+                            <label>
+                                <input type="radio" name="sddispatch_type" i-check ng-model="info.sddispatch_type" value=1 disabled>
+                                人工
+                            </label>
+                            <label style="margin-left:25px;">
+                                <input type="radio" name="sddispatch_type" i-check ng-model="info.sddispatch_type" value=2 disabled>
+                                定时
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <label class="col-sm-2 control-label">流程类型</label>
+                <div class="col-sm-9" style="pointer-events: none">
+                    <div class="tablecss tag-md" title="{{flow.value}}" ng-class="flow.flag ? 'checked-tag':'check-tag'" ng-repeat="flow in data.flow_type_list" ng-if="flow.flag">
+                        {{flow.value}}
+                        <div>
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div style="position: relative;">
+        <div ui-view="flow_edit_info"></div>
+        <div ui-view="config_edit_info"></div>
+    </div>
+</div>
+
+

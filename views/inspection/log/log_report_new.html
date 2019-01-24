@@ -1,0 +1,104 @@
+
+<div class="container-fluid fontSize12 form-horizontal inspection" style="margin-top: 15px;">
+    <form  name="log_report_form" ng-submit="formSubmit(1)" class="form-horizontal form-style new-xj-report" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+       <div ng-show="!control.is_preview">
+           <div class="form-group form-style">
+               <label class="col-sm-2 control-label label-key">报告名称</label>
+               <div class="col-sm-8">
+                   <input type="text" class="form-control" ng-model="info.log_report_info.report_name"
+                          name="report_name"
+                          onkeydown="if(event.keyCode==32) return false"
+                          placeholder="输入不超过25个字符或汉字"
+                          ng-maxlength="25"
+                          ng-model-options="{updateOn: 'blur'}"
+                          ensure-unique="rz_CheckReprotNameValid"
+                          required/>
+                   <validate-msg tag-cn-name="报告名称" name="report_name"></validate-msg>
+               </div>
+           </div>
+           <div class="form-group form-style">
+               <label class="col-sm-2 control-label label-key">报告模板</label>
+               <div class="col-sm-10">
+                   <bs-select width=245  name="execute_type" class="label-value" items="data.report_template" my-select="info.log_report_info.time_interval_type" required></bs-select>
+                   <validate-msg tag-cn-name="报告模板" type="select" name="execute_type" model="info.log_report_info.time_interval_type"></validate-msg>
+               </div>
+           </div>
+           <div class="form-group form-style">
+               <label class="col-sm-2 control-label label-key">应用系统</label>
+               <div  class="col-sm-6">
+                   <div>
+                       <bs-select width=245 name="sys_name"
+                                  items="data.sys_list"
+                                  my-select="info.log_report_info.sys_name"
+                                  option-labal="business_cn_name"
+                                  option-key="business_sys_name"
+                                  select-val="selectSys(selectKey)"
+                                  class="label-value"
+                                  required></bs-select>
+                       <validate-msg tag-cn-name="应用系统" type="select" name="business_sys_name" model="info.log_report_info.sys_name"></validate-msg>
+                   </div>
+               </div>
+           </div>
+           <div class="form-group form-style">
+               <label class="col-sm-2 control-label label-key">日志</label>
+               <div class="col-sm-3">
+                   <div class="select-log-block" ng-click="chooseLogFile()">
+                       <div class="inspet-log-icon log-select-default-icon" ></div>
+                       <span class="font-block margin-top-6">日志选择</span>
+                   </div>
+               </div>
+           </div>
+           <div class="form-group form-style">
+               <label class="col-sm-2 control-label label-key">所选日志</label>
+               <div class="col-sm-10">
+                   <div class="row">
+                       <div class="col-sm-5 text-left">
+                           <div ng-if="data.log_file_list.length > 0" class="log-block log-checked" ng-repeat="one in info.log_report_info.log_names" >
+                               <div class="log-icon"></div>
+                               <div style="text-align: center">
+                                   <span class="font-block" style="width: 80px;" title="{{one}}">{{one}}</span>
+                               </div>
+                           </div>
+                           <div class="margin-top-7 text-left" ng-if="info.log_report_info.log_names.length==0 || !info.log_report_info.log_names.length">
+                               <label ng-bind="!control.is_add_log ? '暂无数据':'未选择日志文件'" ng-class="{'no-data-font':!control.is_add_log,'warning-font':control.is_add_log}"></label>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <div class="form-group form-style">
+               <label class="col-sm-2 control-label label-key">错误识别码</label>
+               <div class="col-sm-8">
+                   <input type="text" class="form-control" ng-model="info.log_report_info.error_release"
+                          name="error_release"
+                          placeholder="可输入多个识别码，用|分割"
+                          ng-maxlength="25"
+                          ng-model-options="{updateOn: 'blur'}"
+                          required/>
+                   <validate-msg tag-cn-name="错误识别码" name="error_release"></validate-msg>
+               </div>
+               <div class="col-sm-2">
+                   <label class="margin-top-8 text-left">
+                       <input type="checkbox"
+                              name="cmpt_type"
+                              i-check
+                              ng-model="info.log_report_info.is_regular"/>
+                       <span class="label-value">正则式</span>
+                   </label>
+               </div>
+           </div>
+           <div class="form-gorup form-style">
+               <div class="col-sm-12" style="text-align: center;">
+                   <button type="button" class="cancel-btn btn-md" ng-click="cancel()">取消</button>
+                   <button ng-if="!control.save_loading"  type="submit" class="save-btn btn-md">保存</button>
+                   <button ng-if="control.save_loading" type="button" class=" save-btn btn-md">
+                           <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                   </button>
+                   <button class="save-btn btn-md preview-btn" ng-click="formSubmit(2)"  type="button">预览</button>
+               </div>
+           </div>
+       </div>
+    </form>
+    <!--报告预览-->
+    <div ui-view></div>
+</div>

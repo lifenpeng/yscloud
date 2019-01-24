@@ -1,0 +1,971 @@
+/*故障模块css样式类*/
+
+/**  peak_date_modal.html 高峰时段模态框页面样式类**/
+.fault-peak-date{}
+.fault-peak-date .peak-date-line{
+    width: 5px;height: 1px;background-color: #666;
+}
+.fault-peak-date .peak_date_add_btn{
+    height:34px;line-height:30px;font-size: 12px;color: #6D7183;cursor: pointer;margin-left: 18px;
+}
+.fault-peak-date .peak_date_add_btn:hover{
+    color:#FC9E22;
+    text-decoration: underline;
+}
+/**  fault_program_new.html 新增修改故障方案页面样式类**/
+.fault-program-new .add-step-btn{
+    margin-left: 36px;display: inline-block
+}
+.fault-program-new .add-btn{
+    height:24px;
+    line-height:24px;
+    position: relative;
+    cursor:pointer;
+    width: 120px;
+}
+.fault-program-new .sql-list-empty{
+    text-align: center;color: #6d7183;padding: 15px 10px 0;
+}
+.fault-program-new .sql-content{
+    padding-left: 0;padding-right: 0;margin-bottom:2px;word-break: break-all;position: relative;
+}
+.fault-program-new .step-submit-succ{
+    color:#339900;margin-bottom: 10px;margin-top: 10px;font-size: 12px;
+}
+.fault-program-new .step-submit-succ > div{
+    display: inline-block;background: url(../img/publish/succ.png) no-repeat;width: 20px;height: 20px;vertical-align: middle;background-size: 16px 16px;
+}
+.fault-program-new .add-sql{
+    width: 100px;text-decoration: none;
+    display: inline-block;
+    text-align: left;
+    padding-left: 10px;
+    color: #44dcfd;
+}
+.fault-program-new .add-sql:hover{
+    text-decoration: none;
+    color: #f85b27;
+    cursor: pointer;
+}
+.fault-program-new .add-sql-btn{
+    display: inline-block;margin-top: 1px;width: 100px;padding: 3px 10px 6px;
+}
+.fault-program-new input{
+    font-family : "Microsoft YaHei" !important;
+    color : #d2f1fe !important;
+    font-size: 12px;
+}
+.fault-program-new .step-bk-title{
+    word-break: break-all; text-align: left;width: 100px;position: absolute; right:5px;top:38px;
+}
+.fault-program-new .line-style{
+    width: 2px;height: 100%;position: absolute;top: 55px;left: 127px;background: #009DD9;
+}
+
+/*方案查看 fault_program_detail*/
+.fault-program-detail{}
+/*方案类型提示*/
+.fault-program-detail .is-quote{
+    position: absolute;
+    top: 10px;
+    left: 40px;
+}
+.fault-program-detail .is-quote .quote-info{
+    width: 40px;
+    text-align: center;
+    padding-top: 5px;
+    background-color: #009DD9;
+    border-top-left-radius: 4px;
+    color: #fff;
+}
+.fault-program-detail .is-quote .bottom-triangle{
+    border: 19px solid #009DD9;
+    border-bottom-color: transparent;
+}
+.fault-program-detail .view-scheme-btn-position{
+    display: inline-block;position: absolute; right:30px;top: 30px;
+}
+.fault-program-detail .import-scheme-btn-position{
+    display: inline-block;position: absolute; right:160px;top: 30px;
+}
+
+/*方案一些公用样式*/
+.fault-program-loading{
+    margin:0 auto;font-size: 20px;color:#CCC;border:1px dashed #CCC;height:100px;line-height:100px;width:320px;border-radius: 4px;
+}
+/*方案步骤内容样式*/
+/*描述textarea样式*/
+.fault-program .program-desc-style{
+    min-width: 400px; min-height: 80px; resize:none;
+}
+/*预览按钮*/
+.fault-program .program-scheme-previewBtn{
+    display: inline-block;position: absolute; right:30px;top: 30px;
+}
+.fault-program .program-step-content{
+    margin: 15px 15px 5px 20px;border-radius: 5px;position: relative;
+}
+.fault-program .fault-header-style{
+    margin: 5px 0;cursor: pointer;height: 33px;border: 1px solid rgba(68, 220, 253, 1);border-radius: 18px;background: #091016;
+}
+.fault-program .fault-header-left-line{
+    width: 1px;background: rgba(68, 220, 253, 1);position: absolute;height: 20px;top: 23px;left: 15px;
+}
+.fault-program .fault-header-right-line{
+    width: 1px;background: rgba(68, 220, 253, 1);position: absolute;height: 20px;top: 23px;right: 15px;
+}
+.fault-program .program-step-content .program-step-seq{
+    position: absolute;left: 20px;top: 8px;
+    width: 28px;height: 28px;line-height: 28px;background: #93d9fd;border-radius: 15px;
+    text-align: center;color: #1e1e20;font-size: 16px;
+}
+.fault-program .program-step-content .fault-program-content{
+    background: #091016;border: 1px solid rgba(68, 220, 253, 1);border-top: none;
+}
+.fault-program .program-step-content .delete-step-btn{
+   position: absolute; right: 20px;
+}
+.fault-program .program-step-content .step-content-detail{
+    margin: 0 15px 10px 15px;
+}
+.fault-program .program-step-content .step-content-detail .sql-content-wrap{
+    margin-top: 20px;background-color: #141e2a;border: 1px solid #1c515f;
+}
+.fault-program .program-step-content .step-content-detail .sql-operation-btn{
+   width: 26px;height: 26px;background: url("../img/fault/fault_program_img.png") no-repeat;position: absolute;right: 20px;cursor: pointer;
+}
+.fault-program .program-step-content .step-content-detail .sql-trash-btn{
+    background-position: -3px -3px;
+}
+.fault-program .program-step-content .step-content-detail .sql-trash-btn:hover{
+    background-position: -3px -35px;
+}
+.fault-program .program-step-content .step-content-detail .sql-trash-btn:active{
+    background-position: -3px -65px;
+}
+.fault-program .program-step-content .step-content-detail .sql-view-detail{
+    background-position: -34px -3px;
+}
+.fault-program .program-step-content .step-content-detail .sql-view-detail:hover{
+    background-position: -34px -35px;
+}
+.fault-program .program-step-content .step-content-detail .sql-view-detail:active{
+    background-position: -34px -65px;
+}
+.fault-program .program-step-content .step-content-detail .content-detail-deleteBtn{
+    position: absolute; right:5%;top:2px;color: #6d7183;width: 26px;height: 26px;line-height: 26px;text-align: center;
+}
+.fault-program .program-step-content .sys-name-text{
+    color: #61a1b8;border: 1px dashed #61a1b8;padding:0 5px;margin-right: 10px;
+}
+.fault-program .step-stage-id{
+    padding-left: 5px;font-size: 18px;
+}
+.fault-program .step-stage-desc{
+    height: 30px;line-height: 30px;
+}
+.fault-program  .workorder-inset-title{
+    font-size: 16px;height: 30px;line-height: 30px;padding-left: 35px;
+}
+.fault-program  .sql-msg-content{
+    border:1px solid #6D7183;margin-left: 16px;padding-top: 10px;padding-bottom: 10px;
+}
+.fault-program  .workorder-deal{
+    padding-bottom: 20px;padding-top: 20px;
+}
+
+/*方案预览弹出窗里面样式  scheme_preview.html*/
+.program-preview-modal-body{
+     table-layout:fixed; word-break: break-all; overflow:auto;font-size: 14px;
+}
+.program-preview-modal-body .step-circle-style {
+    width:20px;height:20px;
+    margin-left: 40px;
+    background-color:#19b7ec;
+    text-align: center;
+    position: relative;
+    border-radius: 10px;
+    left: 80px;
+
+}
+.program-preview-modal-body .step-title-style {
+    width: 100px;
+    position: relative;
+    top:-20px;
+    left: -100px;
+    overflow: hidden; white-space: nowrap;text-overflow: ellipsis;
+}
+.program-preview-modal-body .step-content-style {
+    position: relative;
+    padding: 10px 20px;
+    margin-left: 160px;margin-top: -19px;
+    border: 1px solid #555f76;
+}
+.program-preview-modal-body .step-finish-circle-style {
+    width:16px;height:16px;position: relative;left: 122px;top: -3px;
+    background-color:#19b7ec;border-radius: 8px;
+}
+.program-preview-modal-body .step-finish-title-style {
+    width: 70px;position: relative;left: -110px;text-align: right;
+}
+/*方案指令页面的样式 param_auth_tb.html*/
+.program-auth-tb  .config-div-style{
+    position: absolute; width: 500px; right: 95px; margin-top: 8px;
+    background-color: #141e2a;font-size: 14px;
+    border: 1px solid #555f76; padding-bottom: 20px;z-index: 11
+}
+.program-auth-tb .auth-div-style{
+    position: absolute;right: 15px;width: 650px;
+    background:#141e2a ;font-size: 14px; border: 1px solid #555f76;
+    padding-bottom: 20px;z-index: 11
+}
+.program-auth-tb .author-img{
+    width: 32px;height: 26px;
+    background: url(../img/fault/fault_permission_img.png)  no-repeat;
+    padding-left:20px;
+    display: inline-block;
+}
+.program-auth-tb .unset-author-down-style{
+    background-position: -2px -6px;
+}
+.program-auth-tb .unset-author-down-style:hover{
+    background-position: -2px -38px;
+}
+.program-auth-tb .unset-author-up-style{
+    background-position: -32px -6px;
+}
+.program-auth-tb .unset-author-up-style:hover{
+    background-position: -32px -38px;
+}
+.program-auth-tb .set-author-down-style{
+    background-position: -64px -3px;
+}
+.program-auth-tb .set-author-down-style:hover{
+    background-position: -64px -34px;
+}
+.program-auth-tb .set-author-up-style{
+    background-position: -96px -3px;
+}
+.program-auth-tb .set-author-up-style:hover{
+    background-position: -96px -34px;
+}
+/**  wo_new.html 故障工单新增页面样式类**/
+.wo-new{}
+.wo-new .workorder-import-btn{
+    height: 40px;width: 160px;position: absolute;right:30px;text-align: center;
+}
+.wo-new .emergency-btn{
+    width: 188px;padding-left: 70px
+}
+.wo-new .trouble-type{
+    max-width:920px;
+}
+
+/**  wo_mine.html 故障我的工单列表页面样式类**/
+.wo-mine{}
+.wo-mine .custom-tab ul {
+    margin-left: -25px;
+}
+.wo-mine .custom-tab ul > li {
+    list-style: none;
+    float: left;
+    width: 160px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    padding: 0 30px;
+    border-bottom: 1px solid #d2f1fe;
+    cursor: pointer;
+}
+.wo-mine .custom-tab ul > li > a {
+    text-decoration: none;
+    color: #d2f1fe;
+}
+.wo-mine .custom-tab ul > li.active{
+    border-bottom: 1px solid #fc9e22;
+}
+.wo-mine .custom-tab ul > li.active > a {
+    text-decoration: none;
+    color: #fc9e22;
+}
+.wo-mine .custom-tab ul > li > a:hover {
+    text-decoration: none;
+    color: #d2f1fe;
+}
+.wo-mine .custom-tab ul > li.active > a:hover {
+    text-decoration: none;
+    color: #fc9e22;
+}
+.wo-mine .pending-number{
+    position: absolute;color:#F1B442;margin-left: 5px;
+}
+
+/** workorder_change_modal 工单变更页面样式**/
+.wo-change-modal .split-line{
+    margin-top: 10px;margin-bottom: 15px;border-color:#555f76
+}
+/** workorder_appoint_modal 工单指派页面样式**/
+.wo-appoint-modal .loading-style{
+    height:100px;line-height:100px;width:266px;
+    margin:0 auto;font-size: 20px;border:1px dashed #44dcfd;
+    border-radius: 4px;text-align: center;
+}
+/** wochange_handletype.html 改变处理工单方式页面样式 **/
+.wo-change-handle-modal{}
+.wo-change-handle-modal .wo-handle-type{
+    display: inline-block;
+}
+.wo-change-handle-modal .wo-handle-type span{
+    padding-right: 18px;
+}
+/** wo_handle.html 处理工单页面样式 **/
+.wo-handle{}
+.wo-handle .none-processed-style{
+    height: 120px;line-height: 120px;text-align: center;color: #6D7183;
+}
+.wo-handle .none-processed-style a {
+    color: #d2f1fe;text-decoration: none;
+}
+.wo-handle .none-processed-style a:hover {
+    color: #fc9e22;text-decoration: none;
+}
+.wo-handle .orderTabs .tab-content{
+    position: relative;
+    z-index: 1;
+    background-color: #0f192b;
+    padding-top: 16px;
+   border: none;
+}
+.wo-handle .orderTabs .nav-tabs {
+    padding: 0;
+}
+.wo-handle .orderTabs .nav-tabs > li > a {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #d2f1fe;
+    z-index: 2;
+    color: #d2f1fe !important;
+    padding: 10px 20px;
+    margin-right: -1px;
+}
+.wo-handle .orderTabs .nav-tabs > li.active > a{
+    color: #fc9e22 !important;
+    border-bottom: 1px solid #fc9e22;
+}
+/* 展开详细，收起详细按钮*/
+.wo-handle .workorder-slide-btn{
+    display: inline-block;cursor: pointer;color: #d2f1fe;
+}
+.wo-handle .workorder-slide-btn:hover{
+    color:#EC732C;
+}
+.wo-handle .workorder-slide-btn >i{
+    font-size: 20px;float: right; margin-top: 0;
+}
+.wo-handle .workorder-detail-title{
+    font-size: 16px;height: 30px;line-height: 30px;margin-bottom: 20px;
+}
+.wo-handle  .order-title {
+    word-break: keep-all;width: 120px; overflow: hidden;cursor: pointer;
+    text-overflow: ellipsis;display: inline-block;text-align: center;vertical-align: middle;
+}
+.wo-handle  .order-deal-closeBtn {
+    position: absolute;top: 4px;right: 0;
+}
+.wo-handle .worder-detail-emergency {
+    background:url(../img/fault/critical.png)  no-repeat scroll 0px -3px;height: 32px;width: 120px;padding-left:40px;font-size: 14px;line-height: 32px;color:#C20608;margin-top:-10px;
+}
+.wo-handle .view-author-style{
+    color: #44dcfd;text-decoration: none;cursor: pointer;
+}
+.wo-handle .view-author-style:hover{
+    color: #ce8524;text-decoration: none;
+}
+/*固化方案*/
+/*方案步骤序号*/
+.wo-handle .solid-program .program-index-circle{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background-color: #091016;
+    border-radius: 15px;
+    left: -41px;
+    text-align: center;
+    z-index: 2;
+    top: 0;
+    border: 1px solid #205665;
+}
+.wo-handle .solid-program .program-index-circle .program-seq{
+    position: relative;z-index: 11;top: 6px;color: #091016;
+}
+.wo-handle .solid-program .program-index-circle .program-seq-circle{
+    width: 24px;height: 24px;position: relative;top: -15px;left: 2px;background-color: #93d9fd;border-radius: 12px;
+}
+.wo-handle .solid-program .program-exec-line{
+    width: 2px;height: 100%;position: absolute;background-color: #44dcfd;left: -27px;top: 20px;
+}
+.wo-handle  .solid-program .finish-circle{
+    width: 16px; height: 16px; position: absolute;top: 2px;left: -34px;border-radius:8px;background: #091016;border: 1px solid #205665;
+}
+.wo-handle .solid-program .step-title{
+    width: 95px;  position: absolute;top:-1px;left: -140px;;text-align: right;padding-right: 10px;
+}
+.wo-handle .solid-program .program-content-style{
+    min-height: 34px;padding: 10px 20px;position: relative;background: #0f161f;
+}
+.wo-handle .solid-program .program-line{
+    height: 2px;background-color: #151F2B;position: relative;margin:1px 2px;
+}
+.wo-handle .solid-program .submit-success-tip{
+    height: 20px;width: 120px;font-size: 14px;color: #43fc8c;padding-left: 30px;
+}
+.wo-handle .solid-program .submit-error-tip{
+    ;height: 20px;width: 120px;font-size: 14px;color:#E9416E;padding-left: 30px;
+}
+.wo-handle .solid-program .exec-error-content{
+    margin-top: -10px;padding-top: 6px;text-align: left;padding-left: 0px;margin-left: 14px;
+}
+.wo-handle .solid-program .data-content-tab{
+    padding:2px 20px;
+}
+.wo-handle .solid-program .data-content-tab table{
+   text-align: center;min-width: 623px;
+}
+.wo-handle .solid-program .data-content-tab .tab-head-title{
+    font-size: 12px;
+}
+.wo-handle .solid-program .data-content-tab .tab-head-title > td{
+    min-width: 80px;padding: 4px 6px;
+}
+/*批量方案步骤*/
+.wo-handle .solid-program .batch-steps-list{
+  ;margin: 15px 15px 5px 20px;border-radius: 5px;position: relative;background: #0f161f;
+}
+.wo-handle .solid-program .batch-steps-list .batch-step-seq{
+    color:#61a1b8;padding-left: 5px;font-size: 18px;
+}
+.wo-handle .solid-program .batch-steps-list .batch-step-name{
+    color: #61a1b8;
+}
+.wo-handle .solid-program .batch-steps-list .batch-step-title{
+    height: 30px;line-height: 30px;
+}
+.wo-handle .solid-program .horizontal-line{
+    height: 1px; width: 100%; background: #151F2B;
+}
+.wo-handle .solid-program .batch-steps-list .program-sql-socName {
+    color: #d2f1fe;border: 1px dashed #d2f1fe;padding:0 5px;
+}
+.wo-handle .solid-program .batch-steps-list .program-sql-text{
+    ;margin: 0 10px;
+}
+.wo-handle .solid-program .exec-bach-prgBtn{
+    margin-top: 10px;
+}
+.wo-handle .solid-program .exec-bach-prgBtn >div{
+    padding-left: 35px;text-align: right;padding-right: 75px;
+}
+.wo-handle .solid-program .task-author-state{
+    text-align: center;
+}
+.wo-handle .solid-program .batch-exe-btn{
+    width: 100px;height: 30px;color: #ec732c;cursor: pointer;;border: 1px solid #ec732c;
+    display: inline-block;border-radius: 4px;line-height: 24px;
+}
+.wo-handle .solid-program .batch-exe-btn > span{
+    vertical-align: middle;
+}
+.wo-handle .solid-program .batch-exe-btn > span:first-child {
+    display: inline-block;height: 18px;width: 18px;text-align: center;font-size: 16px;margin-top: 5px;
+}
+.wo-handle .solid-program .batch-exe-btn .reset-icon{
+    background:url("../img/fault/wo-reset-sql.png") no-repeat;
+    background-size: 16px;
+}
+.wo-handle .solid-program .batch-exe-btn .close-icon{
+    background:url("../img/fault/wo-close.png") no-repeat;
+    background-size: 16px 17px;
+}
+.wo-handle .solid-program .batch-exe-btn:hover{
+    border: 1px solid #ec732c;color: #fff;background: #ec732c;
+}
+.wo-handle .solid-program .batch-exe-btn.auth-btn {
+    width: 80px;margin-left: 5px;margin-top: 5px
+}
+/*手工sql*/
+.wo-handle .wo-sql-handle .sql-deal-step {
+    padding-left: 0;position: relative;margin-left: 0;background:#0f161f;margin-bottom: 10px;
+}
+.wo-handle .wo-sql-handle .sql-deal-step-inner {
+    padding-left: 0;position: relative;margin-left: 0;background:#141e2a;margin-bottom: 10px;
+}
+.wo-handle .wo-sql-handle .sql-deal-step .sql-deal-stepIndex{
+    font-size:18px;text-align: center;position: absolute;left:13px;top: 50%;transform:translateY(-50%);z-index:10;
+}
+.wo-handle .wo-sql-handle .sql-deal-step .sql-deal-split-line{
+    position: absolute;left: 35px;top: 10%;z-index: 10;
+    height: 80%;background: #151f2b;width: 1px;
+}
+.wo-handle .wo-sql-handle .sql-deal-step .sql-deal-content{
+    padding: 15px 25px 0 25px;border-left: 40px solid #0f161f;margin-bottom: 5px
+}
+.wo-handle .wo-sql-handle .sql-deal-step-inner .sql-deal-content{
+    padding: 15px 25px 0 25px;border-left: 40px solid #141e2a;margin-bottom: 5px
+}
+.wo-handle .wo-sql-handle .sql-deal-step .sys-name-style{
+    padding-left: 0;color: #44dcfd;font-size: 14px;
+}
+.wo-handle .wo-sql-handle .sql-deal-content .query-result{
+    height:45px;line-height: 40px;
+}
+.wo-handle .wo-sql-handle .sql-deal-content .query-result .result-detail{
+    padding-left: 20px;margin-top: -3px;display: inline-block;
+}
+.wo-handle .wo-sql-handle .sql-deal-content .query-result  .sql-time-high{
+    color: #E9416E !important;
+}
+.wo-handle .wo-sql-handle .sql-deal-content .query-result  .sql-time-low{
+    color: #00ff33 !important;
+}
+.wo-handle .wo-sql-handle .sql-deal-content .sql-delete-btn{
+    position: absolute;top: 5px;right: 5px;text-align: center;
+}
+.wo-handle .wo-sql-handle .horizontal-line{
+    height: 1px; width: 100%; background: #555f76;
+}
+/*批量sql页面*/
+.wo-handle .wo-batch-sql-handle .add-sql-wrap{
+    height: 60px;text-align: center;line-height: 60px;position: relative;background: #0f161f;border: 1px solid transparent;cursor: pointer;
+}
+.wo-handle .wo-batch-sql-handle .add-sql-wrap:hover{
+    background-color:#1a3240;border: 1px solid #44dcfd;
+}
+.wo-handle .wo-batch-sql-handle .sql-file-img{
+    width: 180px;height: 60px;background: url("../img/fault/sql_file_img.png") no-repeat 0 8px;color: #6d7183;position: absolute;left: 45%;
+}
+.wo-handle .wo-batch-sql-handle .add-sql-file-icon{
+  width: 40px;height: 40px;background: url("../img/fault/sql_file_img.png") no-repeat;position: absolute;left: 15px;top: 5px;
+}
+.wo-handle .wo-batch-sql-handle .add-sql-file-name{
+    color: #44c6bf;font-size: 14px;
+}
+.wo-handle .wo-batch-sql-handle .sql-down-icon{
+    width: 32px;height: 32px;background: url("../img/fault/sql_file_down_img.png") no-repeat 0 0;position: absolute;right: 15px;top: 14px;cursor: pointer;
+}
+.wo-handle .wo-batch-sql-handle .sql-down-icon:hover{
+    background-position: 0 -32px;
+}
+.wo-handle .wo-batch-sql-handle .parse-success{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading{
+    width: 165px; text-align: center;
+    height: 50px; line-height: 50px; border-radius: 2px; color: #43fc8c;
+    margin: 75px auto;
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading .task-authing{
+    color: #43fc8c;
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading .task-checking{
+    color: #4cae4c;padding-left: 20px
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading .task-pre-author{
+    color: rgb(76, 174, 76);padding-left: 15px
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading .task-author-refused{
+    color: #E9416E;padding-left: 20px
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading .task-author-success{
+    color: rgb(76, 174, 76);padding-left: 20px
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading .tash-excute-finished{
+    color: rgb(76, 174, 76);padding-left: 15px
+}
+.wo-handle .wo-batch-sql-handle .exe-batch-loading .task-finished{
+    color: #d9534f;padding-left: 20px
+}
+.wo-handle .wo-batch-sql-handle .line-through{
+    position: absolute;top: 12px;left: 30px;width: 70%;height: 2px;background: #151f2b;
+}
+.wo-handle .wo-batch-sql-handle .sql-fail-down-icon{
+    width: 25px;height: 24px;background: url("../img/fault/sql_file_down_img.png") no-repeat 0 0;position: absolute;top: -2px;right: 14px;cursor: pointer;
+}
+.wo-handle .wo-batch-sql-handle .sql-fail-down-icon:hover{
+    background-position: 0 -32px;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn{
+    width: 100px;height: 30px;color: #ec732c;cursor: pointer;
+    background: transparent;border: 1px solid #ec732c;
+    display: inline-block;border-radius: 4px;line-height: 24px;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn > span{
+    vertical-align: middle;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn > span:first-child {
+    display: inline-block;
+    height: 18px;width: 18px;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn .reset-icon{
+    background:url("../img/fault/wo-reset-sql.png") no-repeat;
+    background-size: 16px;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn .exe-icon{
+    background:rgba(0, 0, 0, 0) url("../img/fault/wo-exe-sql.png") no-repeat scroll 0 2px / 16px auto;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn .close-icon{
+    background:url("../img/fault/wo-close.png") no-repeat;
+    background-size: 16px 17px;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn:hover{
+    background: #43452e;
+}
+.wo-handle .wo-batch-sql-handle .batch-exe-btn.auth-btn {
+    width: 80px;
+}
+.wo-handle .wo-batch-sql-handle .without-exec-result{
+   color: #6D7183;width:200px;margin:80px auto;text-align: center
+}
+/*脚本处理页面样式*/
+.wo-handle .wo-script-handle .wo-handle-type{
+    display: inline-block;
+}
+.wo-handle .wo-script-handle .wo-handle-type span{
+    vertical-align:middle;
+    padding-left:5px;
+    padding-right: 30px;
+}
+.wo-handle .wo-script-handle .wo-handle-type-color{
+    color: #999;
+}
+.wo-handle .wo-script-handle .script-type .dropdown-menu{
+    text-align: center;
+}
+/*外层边框样式*/
+.wo-handle .wo-script-handle .script-excute-content{
+    padding: 0;background-color: #0f161f;border-radius: 5px 5px 0 0 ;
+}
+.wo-handle .wo-script-handle .script-excute-content .script-config-type .btn-group button{
+    font-size: 14px;
+    height: 25px;
+    line-height: 10px;
+    background-color: #FFF;
+    color: #FF6600;
+    min-width: 88px;
+}
+.wo-handle .wo-script-handle .script-excute-content .script-config-type .btn-group ul{
+    min-width: 88px;
+}
+/*执行结果区域*/
+.wo-handle .wo-script-handle .script-excute-content .exec-result-div{
+    border-top: 1px solid rgba(68,220,253,0.3);
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.wo-handle .wo-script-handle .script-excute-content .delete-icon{
+    font-size: 22px;
+    cursor: pointer;
+    color: #999;
+}
+.wo-handle .wo-script-handle .script-excute-content .delete-icon:hover{
+    color: #666;
+}
+.wo-handle .wo-script-handle .script-excute-content .exec-btn-group{
+    margin-top: -10px;  margin-bottom: 3px;
+}
+.wo-handle .wo-script-handle .script-excute-content .delete-icon{
+    font-size: 22px;
+    cursor: pointer;
+    color: #999;
+}
+.wo-handle .wo-script-handle .script-excute-content .delete-icon:hover{
+    color: #666;
+}
+.wo-handle .wo-script-handle .exe-result-header{
+    height: 40px;line-height: 40px;background: #314460;border: 1px solid transparent;
+}
+.wo-handle .wo-script-handle .exe-result-content{
+    background: #314460;margin:0;padding:6px 10px 6px 0;overflow: hidden;word-break:break-all;
+    cursor: default;max-height: 200px;overflow-y: auto;border-top: 1px solid #151f2b;
+}
+/*数据源表格为空时错误提示样式*/
+.wo-handle .wo-script-handle .script-excute-content .soc-null{
+    color: #e9416e;
+}
+.wo-handle .wo-script-handle .script-excute-content .exec-btn-group span{
+    color:#666;
+    cursor: pointer;
+}
+.wo-handle .wo-script-handle .script-excute-content .exec-btn-group .fa{
+    font-size: 14px;
+}
+.wo-handle .wo-script-handle .script-excute-content .exec-btn-group .exec-btn{
+    display: inline-block;
+    text-align: center;
+    width: 70px;
+    border: 1px solid transparent;
+    height: 26px;
+    line-height: 25px;
+    border-radius: 15px;
+    color: #c7963b;
+}
+.wo-handle .wo-script-handle .script-excute-content .exec-btn-group .exec-disable-btn{
+    display: inline-block;
+    text-align: center;
+    width: 70px;
+    border: 1px solid transparent;
+    height: 26px;
+    line-height: 25px;
+    border-radius: 15px;
+    color: #c7963b;
+    opacity: 0.6;
+}
+.wo-handle .wo-script-handle .script-excute-content .exec-btn-group .exec-btn:hover{
+    border: 1px solid #c7963b;
+}
+.wo-handle .wo-script-handle .script-excute-content .exec-btn-group .exec-btn:active{
+    background: #3c3626;border: 1px solid #c7963b;
+}
+/*右侧执行配置区域*/
+.wo-handle .wo-script-handle .exe-config{
+    background-color: #0f161f;
+    overflow-y: auto;
+}
+.wo-handle .wo-script-handle .config-header-style{
+    height: 25px;
+    line-height: 25px;
+    border-radius: 3px 3px 0 0;
+    margin: 0;
+    background: #0f161f;
+    padding-left: 20px;
+    color: #44dcfd;
+}
+.wo-handle .wo-script-handle .exe-config .config-step{
+    background-color: #263348;
+    height: 25px;
+    line-height: 25px;
+    margin:10px -5px  ;
+    position: relative;
+    border-radius: 4px;
+}
+.wo-handle .wo-script-handle .exe-config .config-step .reply{
+    color: #6D7183;
+    cursor: pointer;
+    position: absolute;
+    top: 7px;
+    right: 10px;
+}
+.wo-handle .wo-script-handle .exe-config .config-step .reply:hover{
+    color: #44dcfd;
+}
+.wo-handle .wo-script-handle .exe-config .history-record-script{
+    padding-left:30px;position: relative;padding-right: 20px;
+}
+.wo-handle .wo-script-handle .exe-config .config-step .script-exec-result{
+    position: absolute;  top: 2px;  right:53px;
+}
+.wo-handle .wo-script-handle .exe-config .config-step .view-step-btn{
+    position: absolute;  top:0;  right: 30px;
+}
+.wo-handle .wo-script-handle .exe-config .config-step .view-step-btn .fa-eye{
+    color:#6D7183;  cursor: pointer; font-size: 16px;
+}
+.wo-handle .wo-script-handle .exe-config .config-step .view-step-btn .fa-eye:hover{
+    color: #44dcfd;
+}
+/*执行脚本图标*/
+.wo-handle .wo-script-handle .exe-config .history-record-script .script-type-icon{
+    position: absolute;
+    top: 0px;
+    left: 10px;
+}
+.wo-handle .wo-script-handle .exe-config .script-type-icon .exec-icon{
+    color: #44dcfd;
+    cursor: default;
+}
+.wo-handle .wo-script-handle .exe-config .script-type-icon .sql-icon{
+    display: inline-block;
+    height: 13px;
+    width: 21px;
+}
+.wo-handle .wo-script-handle .exe-config .history-record-script .execing-cmd{
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+}
+/*脚本处理结果列样式*/
+.wo-handle .wo-script-handle .status-img{
+    background:  url("../img/fault/status_img.png") no-repeat;
+    display: inline-block;
+    width: 18px;
+    height: 19px;
+}
+.wo-handle .wo-script-handle .list-success-img{
+    background-position: -7px -71px;
+    vertical-align: bottom;
+}
+.wo-handle .wo-script-handle .list-fail-img{
+    background-position:   -39px -69px;
+}
+
+/*所有工单列表样式wo_all_list.html*/
+.wo-all-list .senior-search-div {
+    padding-bottom:20px;margin-top: -1px;
+    position: absolute;background-color: #0d1827;
+    z-index:110;width: 800px;margin-left: 0;border:1px solid #396770;
+    height: 550px;
+}
+.wo-all-list .senior-crt-date-style{
+    padding-right: 10px;width: 290px;
+}
+
+/*view_exec_detail.html 查看脚本详细信息模态框样式*/
+.view-exec-detail .exe-result-header{
+    height: 40px;line-height: 40px;background: #314460;border: 1px solid transparent;
+}
+.view-exec-detail .exe-result-content{
+    background: #314460;margin:0;padding:6px 10px 6px 0;overflow: hidden;word-break:break-all;
+    cursor: default;max-height: 200px;overflow-y: auto;border-top: 1px solid #151f2b;
+}
+.view-exec-detail .status-img{
+    background:  url("../img/fault/status_img.png") no-repeat;
+    display: inline-block;
+    width: 18px;
+    height: 19px;
+}
+.view-exec-detail .list-success-img{
+    background-position: -7px -71px;
+    vertical-align: bottom;
+}
+.view-exec-detail .list-fail-img{
+    background-position:   -39px -69px;
+}
+
+/*详细按钮样式*/
+.wo-handle .detail-btn a{
+    color: #6d7183;
+    text-decoration: none;
+}
+.wo-handle .detail-btn a:hover{
+    color: #ec732c;
+    text-decoration: none;
+}
+/*program_sqlDetailStep_modal  手工sql/数据导出查看详细模态框样式*/
+.sql-detail-step{}
+.sql-detail-step .bg-header{
+    height: 30px;color: #FFF;padding-left: 20px;margin: 0;line-height: 30px;
+}
+.sql-detail-step .warn-bg-header{
+   background-color: #e9416e;
+}
+.sql-detail-step .no-permission-bg-header{
+    background-color: #fad837;
+}
+.sql-detail-step .less-risk-bg-header{
+    background-color: rgba(67, 252, 140,0.8);
+}
+.sql-detail-step  .sql-time-high{
+    color: #E9416E !important;
+}
+.sql-detail-step .sql-time-low{
+    color: #00ff33 !important;
+}
+/*program_confirm_sqlStatement_modal 手工sql/数据导出提交sql语句确认模态框样式*/
+.wo-sql-handle-confirm-sql-modal{}
+.wo-sql-handle-confirm-sql-modal .sql-content-wrap{
+    margin: 0 2px;position: relative;background: #0f161f;
+}
+.wo-sql-handle-confirm-sql-modal .sys-cn-name{
+     margin:0;padding-left: 0;padding-top: 10px;color: #44dcfd;font-size: 14px;
+ }
+.wo-sql-handle-confirm-sql-modal .sql-text-content{
+    margin:0 0 10px 0;padding-left: 0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
+}
+.wo-sql-handle-confirm-sql-modal .view-detail-a{
+    position: absolute;bottom: 10px;right:10px;padding: 0;text-align: right;font-size: 12px;
+}
+/*view_workorder_modal 故障单审批流程模态框*/
+.order-approval-process{}
+.order-approval-process .approval-line-style{
+    position: absolute;top: 0;left: 13px;height: 120%;width: 2px;
+}
+.order-approval-process .approval-wrap-circle-style{
+    width: 30px; height: 30px;background-color: #091016; border-radius: 15px;; text-align: center;;border: 1px solid #245769;
+}
+.order-approval-process .approval-circle-style{
+    width: 24px;height: 24px;position: relative;top: -15px;left: 2px;;border-radius: 12px;
+}
+/*申请完成线样式*/
+.order-approval-process .approval-line-apply-done{
+    background-color: #43fc8c
+}
+/*授权完成线样式*/
+.order-approval-process .approval-line-authorize-done{
+    background-color: #93d9fd
+}
+/* Firefox */
+@-moz-keyframes breath  {
+    from {background: #93d9fd;}
+    to {background: #091016;}
+}
+/* Safari 和 Chrome */
+@-webkit-keyframes breath {
+    from {background: #93d9fd;}
+    to {background: #091016;}
+}
+/* Opera */
+@-o-keyframes breath {
+    from {background: #93d9fd;}
+    to {background: #091016;}
+}
+.order-approval-process .loading {
+    animation: breath 1.5s;
+    -moz-animation: breath 1.5s;	/* Firefox */
+    -webkit-animation: breath 1.5s;	/* Safari 和 Chrome */
+    -o-animation: breath 1.5s;	/* Opera */
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+/*未执行线样式*/
+.order-approval-process .approval-line-unExec {
+    background-color: #6d7183
+}
+.order-approval-process .approval-font-style{
+    position: relative;z-index: 11;top: 4px;
+}
+.order-approval-process .approval-font-default{
+    color: #091016;
+}
+.order-approval-process .approval-font-running{
+    color: #fff;
+}
+
+/*状态图标*/
+.fault-status-img{
+    width: 24px;height: 24px;background: url("../img/fault/fault_status.png") no-repeat;display: inline-block;
+}
+.fault-fail-status-position{
+    background-position: 0 -47px;
+}
+.fault-success-status-position{
+    background-position: 0 -25px;
+}
+.fault-warn-status-position{
+    background-position: 0 -72px;
+}
+/*删除图标*/
+.fault-delete-img{
+    cursor: pointer;height: 32px;width: 32px;display: inline-block;
+    background: url("../img/fault/fault_sql_delete_img.png") no-repeat 0 0;
+}
+.fault-delete-img:hover{
+    background-position: 0 -32px;
+}
+.wo-handle .tab-content {
+    background: #0f192b;padding-right: 30px;
+}

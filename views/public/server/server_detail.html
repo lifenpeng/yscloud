@@ -1,0 +1,189 @@
+<div class="form-horizontal cd-panel form-style server">
+    <div class="form-group">
+        <label class="col-sm-2 label-key text-right">节点IP</label>
+        <div class="col-sm-5 label-value srv-ip">
+            <span ng-bind="info.srv_info.server_ip"></span>
+        </div>
+        <div class="text-left view-deploy-agent-btn" title="Agent">
+            <div class="srv-agent-mention srv-agent-deploy" ng-class="{'srv-agent-undeploy':info.agent_status==1}"></div>
+            <div class="deploy-agent-font agent-deploy-color" ng-class="{'agent-undeploy-color':info.agent_status==1}">
+                {{info.agent_status==1 ? '未部署' : '已部署'}}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 label-key text-right">
+            服务器描述
+        </label>
+        <div class="col-sm-5">
+           <span ng-bind="info.srv_info.server_desc" ng-if="info.srv_info.server_desc">
+           </span>
+            <span ng-if="!info.srv_info.server_desc" class="none-content-font-color">--</span>
+        </div>
+    </div>
+    <div ng-if="!control.config_info_empty_flag">
+        <div class="form-group">
+            <label class="col-sm-2 control-label label-key text-right">
+                硬件配置
+            </label>
+            <div class="col-sm-8">
+                <table class="sub-table basic-info-table text-center" style="border-top: none;">
+                    <tbody>
+                    <tr>
+                        <td width="90px">
+                            服务器名
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_hard_bean.server_name_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_hard_bean.server_name}}" ng-bind="info.srv_info.machine_basic_bean.machine_hard_bean.server_name"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="90px">
+                            机器配置
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_hard_bean.machine_cfg_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_hard_bean.machine_cfg}}" ng-bind="info.srv_info.machine_basic_bean.machine_hard_bean.machine_cfg"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CPU
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_hard_bean.cpu_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_hard_bean.cpu}}" ng-bind="info.srv_info.machine_basic_bean.machine_hard_bean.cpu"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>内存
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_hard_bean.mem_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_hard_bean.mem}}" ng-bind="info.srv_info.machine_basic_bean.machine_hard_bean.mem"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>磁盘
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_hard_bean.disk_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_hard_bean.disk}}" ng-bind="info.srv_info.machine_basic_bean.machine_hard_bean.disk"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>网络
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_hard_bean.network_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_hard_bean.network}}" ng-bind="info.srv_info.machine_basic_bean.machine_hard_bean.network"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--软件配置-->
+        <div class="form-group">
+            <label class="col-sm-2 control-label label-key text-right">
+                软件配置
+            </label>
+            <div class="col-sm-8">
+                <table class="sub-table basic-info-table text-center" style="border-top: none;">
+                    <tbody>
+                    <tr>
+                        <td width="90px">操作系统
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_soft_bean.op_system_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_soft_bean.op_system}}">{{info.srv_info.machine_basic_bean.machine_soft_bean.op_system}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>JRE
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_soft_bean.jre_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_soft_bean.jre}}" ng-bind="info.srv_info.machine_basic_bean.machine_soft_bean.jre"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>中间件
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_soft_bean.middleware_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_soft_bean.middleware}}" ng-bind="info.srv_info.machine_basic_bean.machine_soft_bean.middleware"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>数据库
+                            <div class="change-flag-style" title="手动修改" ng-if="info.srv_info.machine_basic_bean.machine_soft_bean.database_flag"></div>
+                        </td>
+                        <td>
+                            <div class="text-ellipsis" title="{{info.srv_info.machine_basic_bean.machine_soft_bean.database}}" ng-bind="info.srv_info.machine_basic_bean.machine_soft_bean.database"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="control.config_info_empty_flag" style="margin-bottom: 5px">
+        <label class="col-sm-2 control-label label-key text-right">基本信息</label>
+        <div class="col-sm-5" style="padding-top: 7px">
+            <div class="none-content-font-color">暂无基本信息</div>
+        </div>
+    </div>
+    <!--数据源-->
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-key text-right">
+            数据源
+        </label>
+        <div class="col-sm-10">
+            <div ng-if="info.data_soc_list.length!=0">
+                <div class="srv-data-source" ng-repeat="soc in info.data_soc_list"  title="{{soc.user_root_path}}">
+                    <div class="protocol-type-style" title="{{soc.protocol_type_cn}}">{{soc.protocol_type_cn}}</div>
+                    <div class="soc-name-style"><span title="{{soc.user_name}}@{{soc.soc_ip}}">{{soc.user_name}}@{{soc.soc_ip}}</span></div>
+                </div>
+            </div>
+            <div ng-if="info.data_soc_list.length==0">
+                <div class="none-content-font-color" style="padding-top: 7px">暂无数据源</div>
+            </div>
+        </div>
+    </div>
+    <!--插件部署-->
+    <div class="form-group form-style">
+        <label class="col-sm-2 control-label label-key" style="padding-top: 17px;">插件部署</label>
+        <div class="col-sm-10 label-value" style="padding-left: 15px;padding-right: 35px;">
+            <div class="plugin-deploy-wrap">
+                <div class="plugin-content">
+                    <div class="env-container" ng-class="{'env-container-fail':plugin.deploy_status==3,'env-container-succ':plugin.deploy_status==2,'env-container-mid':plugin.deploy_status==4 || plugin.deploy_status==1}"  ng-repeat="plugin in info.node.plugin_list">
+                        <div class="text-center">
+                            <div class="env-img-style"></div>
+                        </div>
+                        <div class="text-center" style="margin-top: 4px;">
+                            <span class="env-name" ng-bind="plugin.plugin_name ? plugin.plugin_name : '--'" title="{{plugin.plugin_name}}"></span>
+                        </div>
+                        <div class="env-deploy-loading" ng-if="plugin.deploy_status ==1 || plugin.deploy_status == 4">
+                            <i class="fa fa-spin fa-circle-o-notch" style="font-size: 26px;margin-top: 26px"></i>
+                            <div style="margin-top: 4px" ng-bind="plugin.deploy_status==1 ? '部署中...':plugin.deploy_status==4 ? '删除中...':''"></div>
+                        </div>
+                        <div class="env-deploy-status evn-deploy-succ" ng-if="plugin.deploy_status==2" title="部署成功"></div>
+                        <div class="env-deploy-status evn-deploy-failed" ng-if="plugin.deploy_status==3" title="{{plugin.error_message}}"></div>
+                    </div>
+                    <div  ng-if="info.node.plugin_list.length==0 || !info.node.plugin_list" style="margin-top: 30px;text-align: center">
+                       <span class="plugin-empty-style none-content-font-color" style="display: inline-block;height: 90px;width: 100px;text-align: center;padding-right:10px">
+                           暂无部署插件
+                       </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--返回按钮-->
+    <div class="form-group">
+        <div class="col-sm-12 text-center">
+            <button type="button" ng-click="back()" class="cancel-btn btn-md">返回</button>
+        </div>
+    </div>
+</div>

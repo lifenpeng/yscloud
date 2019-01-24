@@ -1,0 +1,22 @@
+<div class="container-fluid" style="margin-top: 15px">
+    <div class="table-search">
+        <div class="table-search-input">
+            <input type="text"
+                   ng-model="search_key_word"
+                   class="form-control"
+                   placeholder="请输入组件组名"
+                   ng-enter="searchSubgroupsByKeyword()">
+        </div>
+    <div class="table-search-btn">
+        <span class="table-clear-logol" ng-if="search_key_word" ng-click="clear()"></span>
+        <span class="table-search-logol"></span>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <cmpts-list></cmpts-list>
+        </div>
+    </div>
+</div>
+
+

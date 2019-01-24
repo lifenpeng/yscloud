@@ -1,0 +1,818 @@
+<div class="program-pub-flow">
+    <div class="float-div flag-program-type padding-right-10">
+        <div class="btn-group float-div">
+            <div class="btn-group cmpt-btn-group padding-right-10">
+                <!--分组按钮 -->
+                <button type="button" class="btn ecm-cmpt-group-btn flow-default" ng-click="addNewGroup(info.prog.group_list.length,1)">
+                    <span class="program-add-btn program-group"></span>普通分组
+                </button>
+                <!--串行分组按钮-->
+               <!-- <button type="button" class="btn ecm-cmpt-group-btn" ng-click="addNewGroup(info.prog.group_list.length,2)">
+                    <span class="program-add-btn program-group"></span>串行分组
+                </button>-->
+                <!--条件分组按钮-->
+                <button type="button" class="btn ecm-cmpt-group-btn" ng-click="addNewGroup(info.prog.group_list.length,3)">
+                    <span class="program-add-btn program-group"></span>条件分组
+                </button>
+            </div>
+            <div class="padding-right-10 btn-group cmpt-btn-group">
+                <!--添加按钮 -->
+                <button type="button" class="btn ecm-cmpt-group-btn flow-default" ng-click="newAddSubGroup(1)">
+                    <span class="program-add-btn program-cmpt"></span>组件
+                </button>
+                <button type="button" class="btn ecm-cmpt-group-btn" ng-click="newAddSubGroup(2)">
+                    <span class="program-add-btn program-cmpts"></span>组件组
+                </button>
+                <button type="button" class="btn ecm-cmpt-group-btn" ng-click="showPhase(1)">
+                    <span class="program-add-btn program-script"></span>脚本
+                </button>
+                <button type="button" class="btn ecm-cmpt-group-btn" ng-click="addCurPhase()">
+                    <span class="program-add-btn program-stable-config"></span><span ng-if="info.prog.prog_type==1">固化配置</span><span ng-if="info.prog.prog_type==2">固化配置回退</span>
+                </button>
+                <button type="button" class="btn ecm-cmpt-group-btn" ng-click="defineByOwner()">
+                    <span class="program-add-btn program-self-config"></span><span ng-if="info.prog.prog_type==1">自定义</span><span ng-if="info.prog.prog_type==2">自定义回退</span>
+                </button>
+                <button type="button" class="btn ecm-cmpt-group-btn" ng-click="manualConfig()">
+                    <span class="program-add-btn program-hand"></span>人工
+                </button>
+            </div>
+            <div class="btn-group cmpt-btn-group">
+                <!--批量按钮 -->
+                <button type="button" class="btn ecm-cmpt-group-btn" ng-click="programBatchConfig()">
+                    <span class="program-add-btn program-batch-operate"></span>批量操作
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid cont-div over-flow-inherit" style="padding:10px 0px;">
+        <form name="info.prog_form" ng-submit="saveProgramAllInfo()" class="form-horizontal" novalidate autocomplete="off">
+            <!--方案基本信息-->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group form-style">
+                        <label class="col-sm-3 control-label label-key padding-right-0">方案名</label>
+                        <div class="col-sm-8">
+                            <input type="text"
+                                   name="prog_cn_name"
+                                   ng-model="info.prog.prog_cn_name"
+                                   class="form-control label-value"
+                                   placeholder="输入不超过50个字符"
+                                   required
+                                   ng-pattern="/^[\u4e00-\u9fa5A-Za-z0-9_-]+$/"
+                                   ng-minlength=2
+                                   ng-maxlength=50
+                                   ensure-unique="bs_ViewBsProgramActioncheckProgCnName"
+                                   ng-disabled="info.prog.prog_id"
+                                    >
+                            <validate-msg tag-cn-name="方案名" name="prog_cn_name"></validate-msg>
+                        </div>
+                    </div>
+                    <div class="form-group form-style">
+                        <label class="control-label col-sm-3 label-key padding-right-0">方案类型</label>
+                        <div class="col-sm-8 label-value">
+                            <bs-select
+                                    width="220"
+                                    name="prog_type{{$id}}"
+                                    items="data.program_type_list"
+                                    select-val="changeProgramType(selectKey)"
+                                    my-select="info.prog.prog_type"
+                                    required
+                                    ></bs-select>
+                        </div>
+                    </div>
+                    <div class="form-group form-style">
+                        <div class="col-sm-3 control-label label-key padding-right-0">新建方式</div>
+                        <div class="col-sm-8 label-value">
+                            <label class="checkbox-inline padding-left-0">
+                                <input type="radio" i-check name="optionsRadiosinline" ng-change="changeAddTempStyle(1)"
+                                       id="optionsRadios3" ng-model="info.prog.prog_source" value="1">&nbsp;手工新建
+                            </label>
+                            <label class="checkbox-inline padding-left-0">
+                                <input type="radio" i-check name="optionsRadiosinline" ng-change="changeAddTempStyle(2)"
+                                       id="optionsRadios4" ng-model="info.prog.prog_source" value="2">&nbsp;从文件导入
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group form-style" ng-if="info.prog.prog_source == 2">
+                        <div class="col-sm-3 control-label label-key" style="padding-right:0;padding-top: 12px">方案文件</div>
+                        <div class="col-sm-9" style="margin-left: -4px;">
+                            <file-upload fileupload="config.process_fileupload" deletefile="removeProcessTemplateFile();"
+                                         successthen="uploadProcessSuccessThen();"></file-upload>
+                        </div>
+                    </div>
+                    <!--<div class="form-group form-style">
+                        <label class="control-label col-sm-3 label-key padding-right-0"></label>
+                        <div class="col-sm-8 label-value package-color">
+                            <table class="sub-table  text-center">
+                                <thead>
+                                <tr>
+                                    <td>包类型名</td>
+                                    <td>包类型中文名</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="tr in info.prog.pac_type_list">
+                                    <td>
+                                        <span ng-bind="tr.type_name"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="tr.type_cn_name"></span>
+                                    </td>
+                                </tr>
+                                <tr ng-if="info.prog.pac_type_list.length==0">
+                                    <td colspan="2">
+                                        暂无数据
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+                </div>
+                <div class="col-sm-6">
+                    <div class="row form-style">
+                        <label class="col-sm-offset-1 col-sm-2 control-label label-key padding-right-0">描述</label>
+                        <div class="col-sm-8">
+                        <textarea name="prog_bk_desc"
+                                  ng-model="info.prog.prog_bk_desc"
+                                  class="form-control label-value"
+                                  placeholder="输入不超过50个字符或汉字"
+                                  style=" min-height: 80px; resize:none;"
+                                  required
+                                  ng-minlength=2
+                                  ng-maxlength=50
+                                  ng-model-options="{updateOn: 'blur'}">
+                        </textarea>
+                            <validate-msg tag-cn-name="描述" name="prog_bk_desc"></validate-msg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--添加阶段按钮部分-->
+            <div class="row" ng-if="info.prog.prog_source == 1 || (info.prog.prog_source == 2 && control.import_loading)">
+                <!--添加按钮-->
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-11 add-group-width" style="margin-left: 11.28%;">
+                        <div class="btn-group cmpt-btn-group" style="margin-right: 10px">
+                            <!--分组按钮 -->
+                            <div class="group-nav btn ecm-cmpt-group-btn flow-default" style="z-index: 10">
+                                <span class="program-add-btn program-group"></span>分组
+                                <ul class="group-btn-collect">
+                                    <li class="btn ecm-cmpt-group-btn flow-default ordinary-group" ng-click="addNewGroup(info.prog.group_list.length,1)">普通分组</li>
+                                    <!--<li class="btn ecm-cmpt-group-btn flow-default serial-group" ng-click="addNewGroup(info.prog.group_list.length,2)">串行分组</li>-->
+                                    <li class="btn ecm-cmpt-group-btn flow-default condition-group" ng-click="addNewGroup(info.prog.group_list.length,3)">条件分组</li>
+                                </ul>
+                            </div>
+
+                            <!--串行分组按钮-->
+                            <!--<button type="button" class="btn ecm-cmpt-group-btn" ng-click="addNewGroup(info.prog.group_list.length,2)">
+                                <span class="program-add-btn program-group"></span>串行分组
+                            </button>-->
+                        </div>
+                        <div class="btn-group cmpt-btn-group" style="margin-right: 10px">
+                            <!--添加按钮 -->
+                            <button type="button" class="btn ecm-cmpt-group-btn flow-default" ng-click="newAddSubGroup(1)">
+                                <span class="program-add-btn program-cmpt"></span>组件
+                            </button>
+                            <button type="button" class="btn ecm-cmpt-group-btn" ng-click="newAddSubGroup(2)">
+                                <span class="program-add-btn program-cmpts"></span>组件组
+                            </button>
+                            <button type="button" class="btn ecm-cmpt-group-btn" ng-click="showPhase(1)">
+                                <span class="program-add-btn program-script"></span>脚本
+                            </button>
+                            <button type="button" class="btn ecm-cmpt-group-btn" ng-click="addCurPhase()">
+                                <span class="program-add-btn program-stable-config"></span><span ng-if="info.prog.prog_type==1">固化配置</span><span ng-if="info.prog.prog_type==2">固化配置回退</span>
+                            </button>
+                            <button type="button" class="btn ecm-cmpt-group-btn" ng-click="defineByOwner()">
+                                <span class="program-add-btn program-self-config"></span><span ng-if="info.prog.prog_type==1">自定义</span><span ng-if="info.prog.prog_type==2">自定义回退</span>
+                            </button>
+                            <button type="button" class="btn ecm-cmpt-group-btn" ng-click="manualConfig()">
+                                <span class="program-add-btn program-hand"></span>人工
+                            </button>
+                        </div>
+                        <div class="btn-group cmpt-btn-group">
+                            <!--批量按钮 -->
+                            <button type="button" class="btn ecm-cmpt-group-btn flow-default" ng-class="{'program-batch-operate-disable':info.prog.group_list.length==0}" ng-click="programBatchConfig()">
+                                <span class="program-add-btn program-batch-operate"></span>批量操作
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--阶段-->
+                <div ng-if="!control.modules_loading">
+                    <div ui-sortable="groupSortableOption" ng-model="info.prog.group_list" style="padding-left: 18px">
+                        <div class="row phase-container"  ng-repeat="group in info.prog.group_list" ng-style="judgeFirstPhase($index)">
+                            <div class="phase-module" ng-class="{'phase-module-check':group.choose_flag}" ui-sortable="sortableOption" ng-model="group.phase_list">
+                                <!--分组头样式-->
+                                <div class="phase-container-header" ng-click="chooseCurrGroup(group,$index)" ng-dblclick="group.nav_show_flag == 2 ? colseCollapseAll(group) : expandCollapseAll(group)" title="{{group.nav_show_flag == 2 ? '双击全部收起' : '双击全部展开'}}">
+                                    <div class="col-sm-1 group-phase-icon" title="{{group.group_type==1 ? '普通分组' : '条件分组'}}" ng-class="group.group_type==1 ? 'common-group-icon' : group.group_type==2 ? 'series-group-icon' :'condition-group-icon' "></div>
+                                    <div class="col-sm-4" style="padding-left: 10px">
+                                        <input class="sub-form-control" type="text" ng-model="group.group_name" name="group_name{{$index}}" title="{{group.group_name}}" required  ng-mousedown="stopPrevent($event)"/>
+                                        <validate-msg tag-cn-name="分组名" name="group_name{{$index}}"></validate-msg>
+                                    </div>
+                                    <div class="col-sm-5 operate-content" style="margin-left: 10px;">
+                                        <div class="operate-btn" ng-mousedown="stopPrevent($event)">
+                                            <ul class="operate-style list-unstyled list-inline">
+                                                <li ng-mousedown="copyCurrGroup(group)">
+                                                    <span class="phase-container-copy" title="复制分组"></span>
+                                                </li>
+                                                <li ng-mousedown="deleteGroup(group,$index)" ng-if="info.prog.group_list.length>1">
+                                                    <span class="cmpt-operator-delete" title="删除"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 toggle-span">
+                                        <div class="group-exec-method" style="left: 0" ng-mousedown="stopPrevent($event)">
+                                            <div class="group-method-serial" title="串行" ng-if="!group.parallel_flag" ng-click="group.parallel_flag = true">
+                                                串
+                                            </div>
+                                            <div class="group-method-serial" title="并行" ng-if="group.parallel_flag" ng-click="group.parallel_flag = false">
+                                                并
+                                            </div>
+                                        </div>
+                                        <!--  <div class="togglebutton" ng-mousedown="stopPrevent($event)">
+                                              <label>
+                                                  <input type="checkbox" ng-model="group.expand_flag" ng-if="group.nav_show_flag == 0 || group.nav_show_flag == 1 " ng-click="expandCollapseAll(group)">
+                                                  <input type="checkbox" ng-model="group.expand_flag" ng-if="group.nav_show_flag == 2" ng-click="colseCollapseAll(group)">
+                                                  <span class="toggle" style="vertical-align: middle;margin-right: -2px;"></span>
+                                              </label>
+                                          </div>-->
+                                    </div>
+                                </div>
+                                <!--条件分组发布包-->
+                                <div class="condition-group-pac" ng-if="group.group_type==3">
+                                    <label class="checkbox-inline" ng-repeat="pac in group.temp_pac_type_list">
+                                        <input type="checkbox" i-check name="pac_group" ng-change="choosePacOnConditionGroup(group)"  ng-model="pac.state">&nbsp;&nbsp;&nbsp;&nbsp;{{pac.type_name}}
+                                    </label>
+                                    <label class="checkbox-inline" ng-repeat="file in group.temp_config_file_list">
+                                        <input type="checkbox" i-check name="file_group" ng-change="choosePacOnConditionGroup(group)"  ng-model="file.state">&nbsp;&nbsp;&nbsp;&nbsp;{{file.file_name}}
+                                    </label>
+                                </div>
+                                <div ng-repeat="step in group.phase_list" class="cmpt-module"  ng-style="judgeRelate(group.phase_list,$index)">
+                                    <!-- 数据内容-->
+                                    <div class="cmpt-module-content">
+                                        <div class="row cmpt-module-head" ng-class="{'cmpt-module-head-active':step.show_detail}"  ng-mouseup="toggleModulesDetail(step,1,$index,group)" ng-mousedown="getDownTime()">
+                                            <div class="col-sm-1 step-head-width">
+                                                <div class="step-circle-common">
+                                                    <span class="step-circle-font">{{step.phase_no}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="cmpt-icon-common">
+                                                    <i class="fa fa-cube" title="组件" ng-show="step.phase_type==1"></i>
+                                                    <i class="fa fa-dropbox" title="脚本" ng-show="step.phase_type==3"></i>
+                                                    <i class="cmpt-check-icon" title="验证组件" ng-show="step.phase_type==2"></i>
+                                                    <i class="cmpt-cur-icon" title="固化配置" ng-show="step.phase_type==4"></i>
+                                                    <i class="cmpt-owner-icon" title="自定义配置" ng-show="step.phase_type==5"></i>
+                                                    <i class="cmpt-manual-icon" title="人工阶段" ng-show="step.phase_type==6"></i>
+                                                </div>
+                                                <div class="col-sm-10 alias-name"  ng-mousedown="stopPrevent($event)">
+                                                    <input class="sub-form-control" type="text" ng-model="step.phase_name" name="phase_name{{$index}}" title="{{step.phase_name}}" required  ng-mousedown="stopPrevent($event)"/>
+                                                </div>
+                                               <!-- <div class="col-sm-10 cmpt-cn-name" ng-show="step.phase_type==5">
+                                                    <span title="{{step.phase_name}}">{{step.phase_name}}</span>
+                                                </div>-->
+                                            </div>
+                                            <div class="col-sm-1 form-style">
+                                                <input type="text" name="config_index{{$id}}" ng-style="setColor($id)" class="label-value form-control" style="height: 25px;width: 26px;padding: 5px;margin-top: 2px" ng-if="step.phase_type==5" title="配置序号" ng-mousedown="stopPrevent($event)" required ng-model="step.config_index">
+                                            </div>
+                                            <div class="col-sm-3 operate-content">
+                                                <div class="operate-btn" ng-mousedown="stopPrevent($event)">
+                                                    <ul class="operate-style list-unstyled list-inline">
+                                                        <li ng-mousedown="modify_phase(step,$index,group)" ng-show="step.phase_type==3">
+                                                            <span class="cmpt-opetator-modify" title="修改脚本"></span>
+                                                        </li>
+                                                        <li ng-mousedown="updateCurPhase(step,$index,group)" ng-show="step.phase_type==4">
+                                                            <span class="cmpt-opetator-modify" title="修改固化配置"></span>
+                                                        </li>
+                                                        <li ng-mousedown="convertToPhase(step,$index,group)" ng-show="step.phase_type==1 || step.phase_type==2">
+                                                            <span class="cmpt-operator-to-phase" title="转化为脚本"></span>
+                                                        </li>
+                                                        <li ng-mousedown="updateManuamConfig(step,$index,group)" ng-show="step.phase_type==6">
+                                                            <span class="cmpt-opetator-modify" title="修改人工阶段"></span>
+                                                        </li>
+                                                        <li ng-mousedown="remove_modules_list(step,$index,group)">
+                                                            <span class="cmpt-operator-delete" title="删除"></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;">
+                                                <div ng-if="step.interactor_flag" title="交互式" class="cmpt-exec-method cmpt-exec-method-interact"></div>
+                                                <div ng-if="step.parallel_flag" title="并行" class="cmpt-exec-method cmpt-exec-method-parallel"></div>
+                                                <span ng-if="step.impl_type == 1" class="exec-type ftp-color">FTP</span>
+                                                <span ng-if="step.impl_type == 2" class="exec-type shell-color">SHELL</span>
+                                                <span ng-if="step.impl_type == 3" class="exec-type was-color">WAS</span>
+                                                <span ng-if="step.impl_type == 4" class="exec-type svn-color">SVN</span>
+                                                <span ng-if="step.impl_type == 5" class="exec-type weblogic-color">WEBLOGIC</span>
+                                                <span ng-if="step.impl_type == 6" class="exec-type jdbc-color">SQL</span>
+                                                <span ng-if="step.impl_type == 7" class="exec-type python-color">PYTHON2</span>
+                                                <span ng-if="step.impl_type == 8" class="exec-type python-color">PYTHON3</span>
+                                                <span ng-if="step.impl_type == 11" class="exec-type python-color">BAT</span>
+                                                <span ng-if="step.impl_type == 14" class="exec-type java-color">JAVA</span>
+                                                <span ng-if="step.impl_type == 15" class="exec-type c-color">C/C++</span>
+                                                <span ng-if="step.impl_type == 17" class="exec-type c-color">CUSTOM</span>
+                                                <span ng-if="step.impl_type == 18" class="exec-type cl-color">AS400_CL</span>
+                                                <span ng-if="step.impl_type == 19" class="exec-type bgm-color">AS400_BGM</span>
+                                            </div>
+                                        </div>
+                                        <!-- 组件-->
+                                        <div ng-if="step.phase_type == 1 || step.phase_type == 2" ng-mousedown="stopPrevent($event)">
+                                            <div collapse="!step.show_detail">
+                                                <div class="content-border form-style">
+                                                    <div class="row" style="padding-top:40px;">
+                                                        <div class="col-sm-2 label-key">
+                                                            <label class="control-label">描述</label>
+                                                        </div>
+                                                        <div class="col-sm-9 label-value" style="margin-top:7px">
+                                                            {{step.bk_desc}}
+                                                        </div>
+                                                        <div class="pub-tog-position">
+                                                            <toggle-button checked ="step.parallel_flag" text="并行" side="left" do-change="judgeWay(step,1)"></toggle-button>
+                                                        </div>
+                                                        <div class="pub-each-position"  ng-if="step.impl_type == 2 || step.impl_type == 6 || step.impl_type == 7 ||  step.impl_type == 8 ||  step.impl_type == 14">
+                                                            <toggle-button checked ="step.interactor_flag" text="交互式" side="left" do-change="judgeWay(step,2)"></toggle-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-if="step.impl_type != 15"  style="margin-top: 18px;padding-right:20px;">
+                                                        <div class="col-sm-2 label-key" style="padding-right: 12px;">
+                                                            <label class="control-label">执行脚本</label>
+                                                        </div>
+                                                        <div scroll-control class="col-sm-10 label-value code-script-content" >
+                                                            <div style="margin-bottom: 8px" ng-if="step.script_list.length!=0">
+                                                                <bs-select
+                                                                        name="param_name{{$id}}"
+                                                                        items="step.script_list"
+                                                                        option-key="script_type"
+                                                                        option-labal="script_type_cn"
+                                                                        select-val="selectScriptByScriptType(selectKey,step)"
+                                                                        no-border
+                                                                        my-select="step.script_type"
+                                                                        width="160"
+                                                                        required
+                                                                        ></bs-select>
+                                                            </div>
+                                                            <textarea
+                                                                    ui-codemirror="step.impl_type == 6 ? config.viewSqlOptions : (step.impl_type == 7 || step.impl_type == 8) ? config.viewPyOptions : step.impl_type == 14 ? config.viewJavaOptions : config.viewShOptions "
+                                                                    ui-refresh="code_refresh"
+                                                                    placeholder="执行脚本"
+                                                                    ng-model="step.exec_script"
+                                                                    >
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-if="step.impl_type == 15 || step.impl_type == 17"  style="margin-top: 18px;padding-right:20px;">
+                                                        <div class="col-sm-2 label-key" style="padding-right: 12px;">
+                                                            <label class="control-label">执行命令</label>
+                                                        </div>
+                                                        <div class="col-sm-10 label-value command-content" >
+                                                        <textarea
+                                                                ui-codemirror="step.impl_type == 6 ? config.viewSqlOptions : (step.impl_type == 7 || step.impl_type == 8) ? config.viewPyOptions : step.impl_type == 14 ? config.viewJavaOptions : config.viewShOptions "
+                                                                ui-refresh="code_refresh"
+                                                                placeholder="执行脚本"
+                                                                ng-model="step.command.exec_script"
+                                                                >
+                                                        </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!--参数列表-->
+                                                    <div class="row" style="padding-top: 10px;">
+                                                        <div class="col-sm-2 label-key">
+                                                            <label class="control-label">组件参数</label>
+                                                        </div>
+                                                        <div class="col-sm-10 label-value no-param-common">
+                                                            <div ng-show="!step.param_list" class="no-param-color">暂无引用参数列表</div>
+                                                            <div ng-show="step.param_list && !step.show_ref_param" class="no-param-color"><a href="javascript:void(0)" ng-click="showRefParam(step,index)">点击可配置组件参数</a></div>
+                                                            <table  ng-show="step.param_list && step.show_ref_param" class="sub-table text-center" row-plus="addPhaseRefParam(step,index)" tbl-Data="step.ref_param_list">
+                                                                <thead>
+                                                                <tr>
+                                                                    <td class="param-min-width">
+                                                                        <span>参数名</span>
+                                                                    </td>
+                                                                    <td class="param-min-width">
+                                                                        引用全局参数
+                                                                    </td>
+                                                                    <td>
+                                                                        中文名
+                                                                    </td>
+                                                                    <td width="70">
+                                                                        操作
+                                                                    </td>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="tr in step.ref_param_list"  style="font-size: 12px;">
+                                                                    <td>
+                                                                        <div  style="text-align: left;">
+                                                                            <bs-select
+                                                                                    width="160"
+                                                                                    name="param_name{{$id}}"
+                                                                                    items="step.param_list"
+                                                                                    select-val="selectCmptParamName(selectKey,step,tr,$index,1)"
+                                                                                    option-key="param_name"
+                                                                                    option-labal="param_name"
+                                                                                    no-border
+                                                                                    my-select="tr.param_name"
+                                                                                    required
+                                                                                    ></bs-select>
+                                                                            <validate-msg type="select" tag-cn-name="参数名" name="param_name{{$id}}" model="tr.param_name"></validate-msg>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div style="text-align: left;">
+                                                                            <div ng-if="!tr.param_name">
+                                                                                请选择参数名
+                                                                            </div>
+                                                                            <div ng-if="!tr.ref_param_loading && tr.param_name">
+                                                                                正在获取引用参数 <i class="fa fa-spin fa-spinner"></i>
+                                                                            </div>
+                                                                            <bs-select required
+                                                                                       width="160"
+                                                                                       ng-if="tr.ref_param_loading"
+                                                                                       name="ref_value{{$id}}"
+                                                                                       items="info.temp_prog_data.ref_param_list"
+                                                                                       no-border
+                                                                                       my-select="tr.ref"
+                                                                                       select-val="showRefParamDetail(selectKey,tr,1)"
+                                                                                    >
+                                                                            </bs-select>
+                                                                            <validate-msg type="select" tag-cn-name="引用参数" name="ref_value{{$id}}" model="tr.ref"></validate-msg>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td ng-if="tr.ref_param_flag"  class="param-cn-width" title="{{(info.temp_prog_data.global_param_list)[tr.ref_index].param_cn_name}}">
+                                                                        <span ng-bind="(info.temp_prog_data.global_param_list)[tr.ref_index].param_cn_name ? (info.temp_prog_data.global_param_list)[tr.ref_index].param_cn_name : '--'"></span>
+                                                                    </td>
+                                                                    <td ng-if="!tr.ref_param_flag" class="param-cn-width" title="{{(info.prog.pac_type_list)[tr.ref_index].type_cn_name}}">
+                                                                        <span ng-bind="(info.prog.pac_type_list)[tr.ref_index].type_cn_name ? (info.prog.pac_type_list)[tr.ref_index].type_cn_name : '--'"></span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group has-feedback" style="text-align: left;">
+                                                                            <div class="input-group param-delete-ref">
+                                                                                <span class="fa fa-trash-o" style="cursor: pointer;padding-left: 10px;" ng-click="deleteRefParam(step,$index,tr,1)"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!-- 数据源 -->
+                                                    <div class="row" style="padding-bottom: 20px;padding-top: 10px;">
+                                                        <div class="col-sm-2 label-key">
+                                                            <label  class="control-label">执行节点</label>
+                                                        </div>
+                                                        <div class="col-sm-10 label-value" style="position: relative">
+                                                           <!-- <bs-select
+                                                                    width="220"
+                                                                    name="exe_node{{$id}}"
+                                                                    items="info.temp_prog_data.logic_node_list"
+                                                                    select-val="bindLogicalName(selectKey,selectValue,step)"
+                                                                    my-select="step.logical_node_id"
+                                                                    option-labal="logical_node_name"
+                                                                    option-key="logical_node_id"
+                                                            ></bs-select>-->
+                                                            <div ng-if="info.temp_prog_data.logic_node_list.length==0" class="none-content-font-color">暂无执行节点</div>
+                                                            <div ng-if="info.temp_prog_data.logic_node_list.length!=0" ng-repeat="node in step.logic_node_list" style="display: inline-block; margin-right: 10px; margin-bottom: 5px; position: relative;">
+                                                                <div ng-click="clickExcuteNode(step,step.logic_node_list,node,$index)" ng-class="node.state ? 'checked-tag' : 'check-tag'" style="font-size: 12px;cursor: pointer;" title="{{node.logical_node_name}}" class="tablecss tag-xl">
+                                                                   {{node.logical_node_name}}
+                                                                    <div>
+                                                                        <i class="fa fa-check"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--<div class="ordinary-btn" style="margin-right: 10px;" ng-click="configSoc(step.impl_type,step)"><span class="fa fa-cog" style="margin-right: 6px;"></span>&nbsp;配置</div>
+                                                            <div class="data-source-btn" ng-repeat="one in step.node_soc_list" ng-if="one.execute_soc_name && one.support_soc_name && ((step.impl_type >2 && step.impl_type < 6) || step.impl_type == 14 || step.impl_type == 15 || step.impl_type == 17)" style="text-align: center;margin-bottom: 10px;" title="{{one.execute_ip + ' | ' + one.support_ip}}">
+                                                                <span class="param-protocol">{{getProtocolTypeCnName(one.execute_protocol_type)}}</span>
+                                                                <span>{{one.execute_soc_name}}</span>
+                                                                <span>|</span>
+                                                                <span class="param-protocol">{{getProtocolTypeCnName(one.support_protocol_type)}}</span>
+                                                                <span>{{one.support_soc_name}}</span>
+                                                                <div class="data-source-delete-btn" ng-click="deleteSingleSoc($index,step.node_soc_list)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                                                            </div>
+                                                            <div class="data-source-btn" ng-repeat="one in step.node_soc_list" ng-if="one.execute_soc_name && ((step.impl_type <= 2 || step.impl_type >=6) && step.impl_type !=14 && step.impl_type !=15 && step.impl_type !=17)" style="text-align: center;margin-bottom: 10px;" title="{{one.execute_ip}}">
+                                                                <span class="param-protocol">{{getProtocolTypeCnName(one.execute_protocol_type)}}</span>
+                                                                <span>{{one.execute_soc_name}}</span>
+                                                                <div  class="data-source-delete-btn" ng-click="deleteSingleSoc($index,step.node_soc_list)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                                                            </div>-->
+                                                            <!--从其他阶段copy-->
+                                                          <!--  <div  class="copy-position" ng-if="step.node_soc_list.length ==0">
+                                                                <a  href="javascript:void(0)" class="copy-soc-a" ng-click="copyPhaseSoc(step,info.prog.group_list)">从其他阶段拷贝&nbsp;
+                                                                    <i class="fa fa-angle-down"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div ng-if="step.show_copySoc_flag" class="copy-common">
+                                                                <div class="copy-wrap">
+                                                                    <div style="color: #44dcfb;" ng-if="step.copy_loading">
+                                                                        <div class="fa fa-spinner fa-spin copy-spin-position"></div>
+                                                                        <div class="copy-waiting">
+                                                                            拷贝中，请稍后...
+                                                                        </div>
+                                                                    </div>
+                                                                    <div ng-if="!step.copy_loading">
+                                                                        <div ng-if="step.copy_soc_list.length == 0" class="none-copy">
+                                                                            暂无可COPY阶段
+                                                                        </div>
+                                                                        <div ng-if="step.copy_soc_list.length != 0" class="copy-hidden">
+                                                                            <div class="cmpt-copy-style" ng-class="phase.status ? 'cmpt-copy-checked':''" ng-repeat="phase in step.copy_soc_list" ng-click="chooseCopyPhase(phase,step.copy_soc_list)">
+                                                                                <span class="fa fa-cube" title="组件" ng-show="phase.type==1"></span>
+                                                                                <span class="fa fa-dropbox" title="阶段" ng-show="phase.type==4"></span>
+                                                                                <span>&nbsp;&nbsp;{{phase.phase_name}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="copy-btn-position">
+                                                                            <button type="button" class="cancel-btn btn-xl" ng-click="cancelCopySoc(step)">取消</button>
+                                                                            <button type="button" class="save-btn btn-xl" ng-if="step.copy_soc_list.length != 0" ng-click="saveCopySoc(step)">保存</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 阶段-->
+                                        <div ng-if="step.phase_type == 3" ng-mousedown="stopPrevent($event)">
+                                            <!-- 阶段-->
+                                            <div collapse="!step.show_detail">
+                                                <div class="content-border">
+                                                    <!--执行命令-->
+                                                    <div ng-if="step.impl_type == 15 || step.impl_type == 17" class="row form-style" style="padding-right:20px;padding-top: 50px;">
+                                                        <div class="col-sm-2 label-key" >
+                                                            <label class="control-label">执行命令</label>
+                                                        </div>
+                                                        <div  class="col-sm-10 command-content" >
+                                                            <textarea name="command_exec_script"
+                                                                      ui-codemirror="step.impl_type == 6 ? config.viewSqlOptions : (step.impl_type == 7 || step.impl_type == 8) ? config.viewPyOptions : step.impl_type == 14 ? config.viewJavaOptions : config.viewShOptions "
+                                                                      ui-refresh="code_refresh"
+                                                                      ng-model="step.command.exec_script"
+                                                                      class="form-control label-value"
+                                                                      placeholder="执行命令"
+                                                                      style="resize:none;">
+                                                            </textarea>
+                                                        </div>
+                                                        <div class="position-absolute" style=" right: 15px;">
+                                                            <toggle-button checked ="step.parallel_flag" text="并行" side="left" do-change="judgeWay(step,1)"></toggle-button>
+                                                        </div>
+                                                        <div class="position-absolute" style="right: 120px;" ng-if="step.impl_type == 2 || step.impl_type == 6 || step.impl_type == 7 ||  step.impl_type == 8 ||  step.impl_type == 14">
+                                                            <toggle-button checked ="step.interactor_flag" text="交互式" side="left" do-change="judgeWay(step,2)"></toggle-button>
+                                                        </div>
+                                                    </div>
+                                                    <!--执行脚本-->
+                                                    <div ng-if="step.impl_type != 15" class="row form-style" style="padding-right:20px;padding-top: 50px;">
+                                                        <div class="col-sm-2 label-key" >
+                                                            <label class="control-label">执行脚本</label>
+                                                        </div>
+                                                        <div scroll-control class="col-sm-10 code-script-content" >
+                                                            <textarea name="subgroup_exec_script"
+                                                                      ui-codemirror="step.impl_type == 6 ? config.viewSqlOptions : (step.impl_type == 7 || step.impl_type == 8) ? config.viewPyOptions : step.impl_type == 14 ? config.viewJavaOptions : config.viewShOptions "
+                                                                      ui-refresh="code_refresh"
+                                                                      ng-model="step.exec_script"
+                                                                      class="form-control label-value"
+                                                                      placeholder="执行脚本"
+                                                                      style="resize:none;">
+                                                            </textarea>
+                                                        </div>
+                                                        <div class="position-absolute" style="right: 15px;">
+                                                            <toggle-button checked ="step.parallel_flag" text="并行" side="left" do-change="judgeWay(step,1)"></toggle-button>
+                                                        </div>
+                                                        <div class="position-absolute" style="right: 120px;" ng-if="step.impl_type == 2 || step.impl_type == 6 ||  step.impl_type == 7 ||  step.impl_type == 8 ||  step.impl_type == 14">
+                                                            <toggle-button checked ="step.interactor_flag" text="交互式" side="left" do-change="judgeWay(step,2)"></toggle-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-style" style="padding-bottom: 20px;padding-top: 10px;">
+                                                        <div class="col-sm-2 label-key">
+                                                            <label  class="control-label">执行节点</label>
+                                                        </div>
+                                                        <div class="col-sm-10 label-value" style="position: relative;">
+                                                            <div ng-if="info.temp_prog_data.logic_node_list.length==0" class="none-content-font-color">暂无执行节点</div>
+                                                            <div ng-if="info.temp_prog_data.logic_node_list.length!=0" ng-repeat="node in step.logic_node_list" style="display: inline-block; margin-right: 10px; margin-bottom: 5px; position: relative;">
+                                                                <div ng-click="clickExcuteNode(step,step.logic_node_list,node,$index)" ng-class="node.state ? 'checked-tag' : 'check-tag'" style="font-size: 12px;cursor: pointer;" title="{{node.logical_node_name}}" class="tablecss tag-xl">
+                                                                   {{node.logical_node_name}}
+                                                                    <div>
+                                                                        <i class="fa fa-check"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <bs-select
+                                                                    width="220"
+                                                                    name="exe_node{{$id}}"
+                                                                    items="info.temp_prog_data.logic_node_list"
+                                                                    select-val="bindLogicalName(selectKey,selectValue,step)"
+                                                                    my-select="step.logical_node_id"
+                                                                    option-labal="logical_node_name"
+                                                                    option-key="logical_node_id"
+                                                            ></bs-select>-->
+                                                            <!--<div class="ordinary-btn" style="margin-right: 10px;" ng-click="configSoc(step.impl_type,step)"><span class="fa fa-cog" style="margin-right: 6px;"></span>&nbsp;配置</div>
+                                                            <div class="data-source-btn" ng-repeat="one in step.node_soc_list" ng-if="one.execute_soc_name && one.support_soc_name && ((step.impl_type >2 && step.impl_type < 6) || step.impl_type == 14 || step.impl_type == 15 || step.impl_type == 17)" style="text-align: center;margin-bottom: 10px;" title="{{one.execute_ip + ' | ' + one.support_ip}}">
+                                                                <span class="param-protocol">{{getProtocolTypeCnName(one.execute_protocol_type)}}</span>
+                                                                <span>{{one.execute_soc_name}}</span>
+                                                                <span>|</span>
+                                                                <span class="param-protocol">{{getProtocolTypeCnName(one.support_protocol_type)}}</span>
+                                                                <span>{{one.support_soc_name}}</span>
+                                                                <div  class="data-source-delete-btn" ng-click="deleteSingleSoc($index,step.node_soc_list)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                                                            </div>
+                                                            <div class="data-source-btn" ng-repeat="one in step.node_soc_list" ng-if="one.execute_soc_name && ((step.impl_type <= 2 || step.impl_type >=6 ) && step.impl_type != 14 && step.impl_type != 15 && step.impl_type != 17)" style="text-align: center;margin-bottom: 10px;" title="{{one.execute_ip}}">
+                                                                <span class="param-protocol">{{getProtocolTypeCnName(one.execute_protocol_type)}}</span>
+                                                                <span>{{one.execute_soc_name}}</span>
+                                                                <div  class="data-source-delete-btn" ng-click="deleteSingleSoc($index,step.node_soc_list)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                                                            </div>-->
+                                                            <!--从其他阶段copy-->
+                                                            <!--<div class="copy-position" ng-if="step.node_soc_list.length ==0">
+                                                                <a  href="javascript:void(0)" class="copy-soc-a" ng-click="copyPhaseSoc(step,info.prog.group_list)">从其他阶段拷贝&nbsp;
+                                                                    <i class="fa fa-angle-down"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div ng-if="step.show_copySoc_flag" class="copy-common">
+                                                                <div class="copy-wrap">
+                                                                    <div style="color: #44dcfb;" ng-if="step.copy_loading">
+                                                                        <div class="fa fa-spinner fa-spin copy-spin-position"></div>
+                                                                        <div  class="copy-waiting">
+                                                                            拷贝中，请稍后...
+                                                                        </div>
+                                                                    </div>
+                                                                    <div ng-if="!step.copy_loading">
+                                                                        <div ng-if="step.copy_soc_list.length == 0" class="none-copy">
+                                                                            暂无可COPY阶段
+                                                                        </div>
+                                                                        <div ng-if="step.copy_soc_list.length != 0" class="copy-hidden">
+                                                                            <div class="cmpt-copy-style" ng-class="phase.status ? 'cmpt-copy-checked':''" ng-repeat="phase in step.copy_soc_list" ng-click="chooseCopyPhase(phase,step.copy_soc_list)">
+                                                                                <span class="fa fa-cube" title="组件" ng-show="phase.type==1"></span>
+                                                                                <span class="fa fa-dropbox" title="阶段" ng-show="phase.type==4"></span>
+                                                                                <span>&nbsp;&nbsp;{{phase.phase_name}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="copy-btn-position">
+                                                                            <button type="button" class="cancel-btn btn-xl"  ng-click="cancelCopySoc(step)" style="margin-left: 0">取消</button>
+                                                                            <button type="button" class="save-btn btn-xl" ng-if="step.copy_soc_list.length != 0" ng-click="saveCopySoc(step)">保存</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--固化配置-->
+                                        <div ng-if="step.phase_type == 4" ng-mousedown="stopPrevent($event)">
+                                            <div collapse="!step.show_detail">
+                                                <div class="content-border">
+                                                    <div style="padding: 20px 20px 5px">
+                                                        <div ng-if="step.logical_node">
+                                                            <div class="phase-soc-title">
+                                                                <span class="soc-detail">
+                                                                    <span class="soc-proto" title="{{step.logical_node.logical_node_name}}">{{step.logical_node.logical_node_name}}</span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="config-files-list">
+                                                                <div class="file-list" ng-style="{'border-color': item.ready_flag ? '' :'#E9416E'}" ng-repeat="item in step.logical_node.files_list" title="{{item.ready_flag ?  item.file : '文件未就绪,请重新选择！'}}">
+                                                                    <i class="fa fa-file-text-o"></i> {{item.file.substring(item.file.lastIndexOf('/')+1)}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="!step.logical_node" class="no-config">
+                                                            暂无配置
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--自定义配置-->
+                                        <div ng-if="step.phase_type == 5" ng-mousedown="stopPrevent($event)">
+                                            <div collapse="!step.show_detail" style="margin-top: 5px;">
+                                                <div class="content-border form-style">
+                                                    <div class="row curstom-frame">
+                                                        <div class="col-sm-2 curstom-img"></div>
+                                                        <div class="col-sm-8" style="font-size: 12px">
+                                                            <span ng-bind="step.script.cmds[0]"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--人工阶段-->
+                                        <div ng-if="step.phase_type == 6" ng-mousedown="stopPrevent($event)">
+                                            <div collapse="!step.show_detail">
+                                                <div class="content-border form-style">
+                                                    <div class="row curstom-frame">
+                                                        <div class="col-sm-2 curstom-img"></div>
+                                                        <div class="col-sm-9" style="font-size: 12px">
+                                                            <div style="word-break: break-all" ng-bind-html="step.script_fmt"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="module-vertical-common-line" style="left: 17px;bottom: -8px" ng-if="!$last"></div>
+                                    <!--relevance关联组件-->
+                                    <div ng-if="step.relate_flag_line && !step.expand_relate_flag && group.nav_show_flag != 2" class="relate-cmpt-line">
+                                        <div class="relate-cmpt-horizon-line"></div>
+                                        <div ng-if="step.relate_flag_line==1">
+                                            <div class="relate-cmpt-vertical-line"></div>
+                                            <div class="relate-cmpt-icon"></div>
+                                            <div class="relate-cmpt-vertical-line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--默认或者为空的样式-->
+                                <div class="default-group-empty" ng-if="group.phase_list.length==0">
+                                </div>
+                            </div>
+                            <div class="last-line" ng-if="!$last"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--全局参数表-->
+                <div class="form-group form-style" style="position: relative;">
+                    <label class="col-sm-2 control-label label-key param-label">全局参数表</label>
+                    <div class="col-sm-10 label-value" style="padding:0px 11px;margin-left: 6px;">
+                        <table class="sub-table param-tab" row-plus="addParam()">
+                            <thead>
+                            <tr>
+                                <td class="align-left" style="width: 160px;">
+                                    <span>参数名</span>
+                                </td>
+                                <td class="align-left" style="width: 160px;">中文名</td>
+                                <td class="align-left">默认值</td>
+                                <td style="width: 60px;">可修改</td>
+                                <td style="width: 60px;">操作</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-if="info.temp_prog_data.global_param_list.length !=0 && param.param_type!=3"  ng-repeat="param in info.temp_prog_data.global_param_list">
+                                <td class="align-left" style="width: 160px;">
+                                    <div ng-if="!param.hand_param">
+                                        <div class="param-group-style">
+                                            <div class="param-name align-left" >{{param.param_name}}</div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="param.hand_param">
+                                        <input type="text" ng-disabled="param.ref_flag" name="params_name{{$id}}" ng-blur="handParamNmaeOnBlur(param,$index)" ng-model="param.param_name"
+                                               required ng-maxlength="25" ensure-only="info.temp_prog_data.all_param_name_list" class="sub-form-control"/>
+                                        <validate-msg style="font-size: 10px;" tag-cn-name="参数名"  name="params_name{{$id}}"></validate-msg>
+                                    </div>
+                                </td>
+                                <td style="width: 160px;" class="align-left">
+                                    <input type="text" ng-model="param.param_cn_name" ng-maxlength="25" name="params_cn_name{{$id}}" class="sub-form-control"/>
+                                    <validate-msg style="font-size: 10px;" tag-cn-name="中文名"  name="params_cn_name{{$id}}"></validate-msg>
+                                </td>
+                                <td  class="align-left param-value-common" style="padding-right: 25px;position: relative;text-align: left">
+                                    <textarea name="param_value{{$id}}"
+                                              ui-codemirror="{ onLoad : paramShellLoaded}"
+                                              ui-refresh="true"
+                                              ng-model="param.param_value"
+                                              ng-maxlength="250"
+                                              ng-if="!param.sensitive_flag"
+                                              class="sub-form-control">
+                                    </textarea>
+                                    <!--只是为了兼容360浏览器阻止默认密码填写-->
+                                    <input type="password" style="display: none;" disabled autocomplete = "new-password"/>
+                                    <input type="password"
+                                           class="pass-input"
+                                           style="height: 26px;padding-left: 5px"
+                                           ng-model="param.label_param_value"
+                                           disabled
+                                           ng-if="param.sensitive_flag"
+                                           autocomplete="new-password"
+                                           ng-init="param.label_param_value =  param.param_value ?  '1111111111' : ''"
+                                            >
+                                    <div class="param-password">
+                                        <i ng-if="!param.sensitive_flag" class="fa fa-eye" title="明文" ng-click="param.sensitive_flag=true; param.label_param_value = param.param_value ? '1111111111' : ''"></i>
+                                        <i ng-if="param.sensitive_flag" class="fa fa-eye-slash" title="密文" ng-click="param.sensitive_flag=false"></i>
+                                    </div>
+                                </td>
+                                <td style="width: 60px;padding: 10px 15px;">
+                                    <input type="checkbox" i-check ng-model="param.modify_flag" ng-true-value="1" ng-false-value="2">
+                                </td>
+                                <td style="width: 60px;">
+                                    <div ng-if="param.hand_param">
+                                        <span class="fa fa-trash-o" ng-if="param.delete_flag" title="删除" style=" padding-left: 10px;" ng-click="deleteGlobalParam($index,param)"></span>
+                                        <span class="fa fa-trash-o no-delete-param" ng-if="!param.delete_flag" title="参数已被引用，不可删除"></span>
+                                    </div>
+                                    <div ng-if="!param.hand_param">
+                                        <span>--</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--保存按钮-->
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="button" class="cancel-btn btn-md text-center" ng-click="returnProgramList();" >取消</button>
+                    <button ng-if="!control.submit_loading" type="submit" class="save-btn btn-md text-center">保存</button>
+                    <button ng-if="control.submit_loading" disabled="disabled" class="save-btn btn-md text-center">
+                        <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

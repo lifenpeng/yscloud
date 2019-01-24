@@ -1,0 +1,152 @@
+<style>
+    .dropdown-menu  li {
+        height: auto;
+    }
+    .dropdown-menu  li:hover{
+        background-color: transparent;
+    }
+</style>
+<form name="form.regLicenseForm" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="register_info.register_flag">注册CorsLares</h3>
+        <h3 class="modal-title" ng-if="!register_info.register_flag">CorsLares注册信息</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-3 control-label label-key">英文名</label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               name="name"
+                               ng-model="register_info.license_info.name"
+                               class="form-control label-value"
+                               style="min-width: 260px;"
+                               placeholder="请输入英文名"
+                               required
+                               ng-maxlength=20
+                               ng-pattern="/^[A-Za-z0-9_-]+$/"
+                               ng-disabled="!register_info.register_flag"
+                        >
+                        <validate-msg tag-cn-name="英文名" name="name"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12" >
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-3 control-label label-key">中文名</label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               name="zh_name"
+                               ng-model="register_info.license_info.zh_name"
+                               class="form-control label-value"
+                               style="min-width: 260px;"
+                               placeholder="中文"
+                               required
+                               ng-maxlength=25
+                               ng-pattern="/^[^\s]+$/"
+                               ng-disabled="!register_info.register_flag"
+                               ng-model-options="{updateOn: 'blur'}"
+                        >
+                        <validate-msg tag-cn-name="中文名" name="zh_name"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-3 control-label label-key ">截止日期</label>
+                    <div class="col-sm-5 minWidth pick-date-common">
+                        <input type="text" name="expire_end_date"
+                               ng-click="open($event)" is-open="form.opened"
+                               ng-model="register_info.license_info.expire_end_date" class="form-control"
+                               datepicker-popup="yyyy年MM月dd日"
+                               date-disabled="disabled(date, mode)"
+                               required style="min-width: 260px;" readonly="true"
+                               min-date="{{register_info.min_date}}"
+                               close-text="关闭"
+                               current-text="今天"
+                               clear-text="清除"
+                               ng-model-options="{updateOn: 'blur'}"/>
+                        <validate-msg tag-cn-name="截止日期" name="expire_end_date"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-3 control-label label-key">License序号</label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               name="license"
+                               ng-model="register_info.license_info.license"
+                               class="form-control label-value"
+                               style="min-width: 260px;"
+                               placeholder="License序号"
+                               required
+                               ng-disabled="!register_info.register_flag"
+                               ng-pattern=""
+                               ng-model-options="{updateOn: 'blur'}"
+                        >
+                        <validate-msg tag-cn-name="license" name="license"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-3 control-label label-key">用户IP</label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               name="ip"
+                               ng-model="register_info.license_info.ip"
+                               class="form-control label-value"
+                               style="min-width: 260px;"
+                               placeholder="格式如：10.1.1.1"
+                               required
+                               ng-disabled="!register_info.register_flag"
+                               ng-maxlength=25
+                               ng-pattern="/^[^\s]+$/"
+                               ng-model-options="{updateOn: 'blur'}"
+                        >
+                        <validate-msg tag-cn-name="ip" name="ip"></validate-msg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-3 control-label label-key">版权信息</label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               name="ip"
+                               ng-model="register_info.license_info.version_msg"
+                               class="form-control label-value"
+                               style="min-width: 260px;"
+                               ng-disabled="!register_info.register_flag"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--按钮-->
+        <div class="row" style="margin: 20px 0 15px;">
+            <div class="col-sm-12 text-center">
+                <button  class="cancel-btn btn-md" type="button" ng-click="cancel()" style="margin-left: 20px;" ng-if="register_info.register_flag && !control.register_btn_loading">取消</button>
+                <button ng-if="control.register_btn_loading" disabled="disabled" type="button" class="save_cancel_btn disabled_btn btn_md" style="margin-left: 20px;">取消</button>
+                <button  class="save-btn btn-md" type="button" ng-if="register_info.register_flag && !control.register_btn_loading" ng-click="formSubmit()" style="margin-left: 20px;">提交</button>
+                <button ng-if="control.register_btn_loading" disabled="disabled" class="disabled-btn btn-md" style="margin-left: 20px;">
+                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                </button>
+                <button  class="cancel-btn btn-md" type="button" ng-click="cancel()" style="margin-left: 20px;" ng-if="!register_info.register_flag">关闭</button>
+            </div>
+        </div>
+    </div>
+</form>

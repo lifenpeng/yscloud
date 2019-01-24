@@ -1,0 +1,83 @@
+<style>
+
+    /* Firefox */
+    @-moz-keyframes breath  {
+        from {background: #0095A5;}
+        to {background: #1c2837;}
+    }
+    /* Safari 和 Chrome */
+    @-webkit-keyframes breath {
+        from {background: #0095A5;}
+        to {background: #1c2837;}
+    }
+    /* Opera */
+    @-o-keyframes breath {
+        from {background: #0095A5;}
+        to {background: #1c2837;}
+    }
+    .loading {
+        animation: breath 1s;
+        -moz-animation: breath 1s;	/* Firefox */
+        -webkit-animation: breath 1s;	/* Safari 和 Chrome */
+        -o-animation: breath 1s;	/* Opera */
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    }
+
+</style>
+
+<form name="form.rollback_form" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">审批流程</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body" >
+        <div class="form-group" style="height: 260px" custom-scroll custom-config="scroll_flow_info">
+            <div ng-if="data_loading && !error_message">
+                <div class="col-sm-12 text-center" style="margin-top: 60px;margin-bottom: 60px">
+                    <div style="margin:0 auto;font-size: 20px;border:1px dashed #44dcfd;height:100px;line-height:100px;width:266px;border-radius: 4px;">
+                        <span style="color:#44dcfd;">正在获取审批流程信息&nbsp;&nbsp;<i style="font-size: 24px;color:#44dcfd;" class="fa fa-spinner fa-pulse"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="error_message">
+                <div style="margin-top: 60px;margin-bottom: 60px;text-align: center;">
+                    <div style="margin: 0 auto; border: 1px dashed transparent; border-radius: 4px; width: 266px; font-size: 20px;">
+                        <span style="color:#e9416e;">获取系统信息异常</span>
+                        <div style="color:#e9416e;font-size: 12px; word-break: break-all; padding-left: 10px; padding-right: 10px;" ng-bind="error_message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid" ng-show="!data_loading" >
+                <div class="row" ng-repeat="one_step in work_detail_list" style="position: relative;margin-bottom: 20px;">
+                    <!--处理类型-->
+                    <div class="col-sm-2" style=";color:#61a1b8;margin-top: 10px">
+                        {{one_step.deal_type_name}}
+                    </div>
+                    <!--线-->
+                    <div ng-class="one_step.work_state == 3 || ($last && (workflow_state== 2 || workflow_state== 4)) ? 'loading' : '' " ng-style="styleAng($index,one_step)"></div>
+                    <!--处理详情-->
+                    <div class="col-sm-8" style="margin-left: 35px;background: #242836;border: 1px solid rgba(68,220,253,0.3);color: #D2F1FE;padding:5px 10px;border-radius: 4px;position: relative;width: 300px;height: 65px;">
+                        <div ng-if="!$last" style="position: absolute;height: 100%;width: 2px;background: #6D7183;left: -25px;top: 30px;"></div>
+                        <div style="position: relative; font-size: 12px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><p style="margin-bottom: 0;display: inline-block;width: 60px;text-align: right;">时间：</p>{{(one_step.deal_bk_date ? one_step.deal_bk_date : '-')+" "+(one_step.deal_bk_time ? one_step.deal_bk_time : '-')}}</div>
+                        <div style="position: relative; font-size: 12px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{{one_step.deal_user_cn_name}}">
+                            <p ng-if="one_step.pend_type == 1" style="margin-bottom: 0;display: inline-block;width: 60px;text-align: right;">提交人：</p>
+                            <p ng-if="one_step.pend_type == 2" style="margin-bottom: 0;display: inline-block;width: 60px;text-align: right;">复核人：</p>
+                            <p ng-if="one_step.pend_type == 3" style="margin-bottom: 0;display: inline-block;width: 60px;text-align: right;">授权人：</p>
+                            <p ng-if="one_step.pend_type == 4" style="margin-bottom: 0;display: inline-block;width: 60px;text-align: right;">执行人：</p>
+                            <p ng-if="one_step.pend_type == 5" style="margin-bottom: 0;display: inline-block;width: 60px;text-align: right;">关闭人：</p>
+                            {{one_step.deal_user_cn_name ? one_step.deal_user_cn_name : '--'}}</div>
+                        <div ng-if="$first" style="position: relative; font-size: 12px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{{apply_bk_expl}}"><p style="margin-bottom: 0;  display: inline-block;width: 60px;text-align: right;">申请说明：</p>{{apply_bk_expl ? apply_bk_expl: '--'}}</div>
+                        <div ng-if="!$first" style="position: relative; font-size: 12px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{{one_step.deal_bk_desc}}"><p style="margin-bottom: 0px;  display: inline-block;width: 60px;text-align: right;">处理说明：</p>{{one_step.deal_bk_desc ? one_step.deal_bk_desc : '--'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 表单提交按钮-->
+    <div class="modal-footer" style="margin-bottom: 20px;border-top: none;">
+        <div class="col-sm-12 text-center">
+            <button class="cancel-btn btn-xl" type="button" ng-click="formCancel()">关闭</button>
+        </div>
+    </div>
+</form>

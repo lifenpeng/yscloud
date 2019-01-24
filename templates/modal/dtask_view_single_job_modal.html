@@ -1,0 +1,473 @@
+<style>
+    .modal-dialog{width: 720px}
+</style>
+<form name="form.pointForm" class="form-horizontal single-job-modal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title" >查看作业
+            <span style="position: absolute;left: 46%;color: #FEA04D" ng-show="single_work.error_handle == 2 && (single_work.job_status == 4 || single_work.job_status == 7)">等待跳过</span>
+        </h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body job-modal-body">
+        <div class="row" style="margin: 0">
+            <div class="col-sm-2 col-left">
+                <div style="position: relative;">
+                    <div class="work-icon" ng-style="singleWorkIcon(single_work.job_type)"></div>
+                    <div class="job_name" ng-bind="single_work.job_cn_name ? single_work.job_cn_name : single_work.job_type == 1 ? '开始': single_work.job_type == 2 ? '结束':''" title="{{single_work.job_cn_name}}"></div>
+                    <div class="job_status">
+                        <span style="color: #d2f1fe" ng-if="single_work.job_status <= 1">待执行</span>
+                        <span style="color: #d2f1fe" ng-if="single_work.job_status == 6">待重试</span>
+                        <span style="color: #399FDC" ng-if="single_work.job_status == 2"><i class="fa fa-spinner fa-pulse" style="color: #399FDC"></i>&nbsp;执行中</span>
+                        <span style="color: #A8C666" ng-if="single_work.job_status == 3"><i class="fa fa-check-circle" style="color: #A8C666"></i>&nbsp;执行成功</span>
+                        <span style="color: #ED6F67" ng-if="single_work.job_status == 4"><i class="fa fa-times-circle" style="color: #ED6F67"></i>&nbsp;执行异常</span>
+                        <span style="color: #ED6F67" ng-if="single_work.job_status == 7"><i class="fa fa-times-circle" style="color: #ED6F67"></i>&nbsp;执行失败</span>
+                        <span style="color: #FEA04D" ng-if="single_work.job_status == 5"><i class="fa fa-share" style="color: #FEA04D"></i>&nbsp;跳过</span>
+                    </div>
+                </div>
+                <div class="job_errmsg" ng-bind="(single_work.job_status == 4 || single_work.job_status == 7) ? single_work.job_err_msg : ''"></div>
+            </div>
+            <div class="col-sm-10 col-right">
+                <!-- 导航-->
+                <ul class="list-unstyled">
+                    <li class="tab-li" ng-click="changeTab(1)" ng-class="{'tab-li-checked':controls.op_type == 1}">操作明细</li>
+                    <li class="tab-li" ng-click="changeTab(2)" ng-class="{'tab-li-checked':controls.op_type == 2}">基本信息</li>
+                </ul>
+                <div style="height: 380px;" custom-scroll custom-config="config.scroll_config">
+                    <div style="min-height: 380px">
+                        <!-- 操作信息-->
+                        <div class="operate-list" ng-if="controls.op_type == 1">
+                            <div class="no-operate-info" ng-if="single_work.operate_list.length == 0 && !controls.operate_err_msg">暂无操作信息</div>
+                            <!-- 操作错误信息-->
+                            <div ng-if="controls.operate_err_msg" class="loading_layer" style="margin-top: 100px">
+                                <div style="margin: 0 auto; color: #E9416E; border: 1px dashed #E9416E; border-radius: 4px; width: 240px; font-size: 18px;">
+                                    <span class="error-font-color">获取信息异常</span>
+                                    <div style="font-size: 12px; word-break: break-all; padding-left: 10px; padding-right: 10px;" ng-bind="controls.operate_err_msg"></div>
+                                </div>
+                            </div>
+                            <div class="vertical-line" ng-show="single_work.operate_list.length > 1 && !controls.operate_err_msg"></div>
+                            <div class="operate-type" ng-repeat="operate in  single_work.operate_list track by $index" ng-show="operate.operate_type">
+                                <div class="operate-block" ng-style="operateBgColor(1,operate.operate_type)">
+                                <span style="display:inline-block;width: 60px;height: 30px;background-color: #fff;position: relative">
+                                    <span class="triangle-down-small down-small-position"></span>
+                                    <span class="op-info-icon"
+                                          ng-class="operate.operate_type == 1 ? 'exe-op':operate.operate_type == 2 ? 'finish-op': operate.operate_type == 3 ? 'skip-op':'retry-op'"></span>
+                                    <span ng-style="{'color':operate.operate_type == 1 ? '#1295da':operate.operate_type == 2 ? '#9cb85f': operate.operate_type == 3 ? '#999':'#ed6f67'}"
+                                          style="vertical-align: top;padding-right: 3px" ng-bind="operate.operate_cn_type"></span>
+                                </span>
+                                    <span style="display:inline-block;width: 180px;height: 30px;text-align: center;vertical-align: top;"
+                                          ng-bind="operate.operate_time ? operate.operate_time.substring(0,16) : '--'">
+                                </span>
+                                    <span ng-if="single_work.job_type ==6 && operate.loop_times" class="badge polling_times" ng-bind="operate.loop_times" title="轮询次数:{{operate.loop_times}}" ng-style="operateBgColor(2,operate.operate_type)"></span>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="single_node_style" ng-repeat="node in operate.source_list track by $index"
+                                        ng-click="(node.run_state != 4 && node.run_state != 7)|| viewNodeErrMsg($parent.$index,$index)" ng-style="singleNodeBorder(node)">
+                                        <span class="op-info-icon node-icon"></span>
+                                        <span class="single-node-ip" ng-bind="node.exe_ip"></span>
+                                        <span class="fa fa-pulse executing-node" ng-class="{'fa-spinner':node.run_state == 2}" ng-if="node.run_state == 2"></span>
+                                        <span class="op-info-icon" style="position: absolute;right: 7px"
+                                              ng-if="node.run_state && (node.run_state == 3 || node.run_state == 4 || node.run_state == 7)"
+                                              ng-class="node.run_state == 3 ? 'success-icon': (node.run_state == 4 || node.run_state == 7) ? 'fail-icon':''"></span>
+                                        <span class="triangle-up" style="position: absolute;right: 45%;bottom: -11px" ng-show="node.show_popover"></span>
+                                        <!-- 错误信息-->
+                                        <span ng-show="node.run_state == 4 || node.run_state == 7" class="popover-modal popover-modal-{{$parent.$index}}-{{$index}}"
+                                              ng-style="popoverPosition(node,$parent.$index,$index)"
+                                              ng-click="stopPropagation($event)" ng-mouseleave="hidePopover(node,$parent.$index,$index)">
+                                        <span ng-bind="node.err_msg ? node.err_msg : '暂无出错信息'"></span>
+                                    </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 基本信息-->
+                        <div ng-if="controls.op_type == 2 && !controls.basic_loading && !controls.basic_err_msg">
+                            <div ng-show="single_work.job_type > 2">
+                                <!-- 前置作业-->
+                                <div class="row form-style pre-work-group" ng-if="single_work.pre_job_list && single_work.pre_job_list.length != 0">
+                                    <div class="col-sm-2 control-label label-key">前置作业</div>
+                                    <div class="col-sm-10">
+                                        <ul class="list-unstyled">
+                                            <li class="pre-work-status" title="{{pre.job_cn_name}}"  ng-repeat="pre in single_work.pre_job_list">
+                                                <span class="pre-work-icon" ng-style="singleWorkIcon(pre.job_type,true)"></span>
+                                                <span ng-bind="pre.job_cn_name"></span>
+                                                <span class="fa fa-pulse" ng-class="{'fa-spinner':pre.job_status == 2}" style="color: #399FDC;" title="执行中" ng-if="pre.job_status == 2"></span>
+                                                <span class="fa fa-check-circle" style="color: #A8C666;" title="执行成功" ng-if="pre.job_status == 3"></span>
+                                                <span class="fa fa-times-circle" style="color: #ED6F67;" title="执行异常" ng-if="pre.job_status == 4 || pre.job_status == 7"></span>
+                                                <span class="fa fa-share" style="color: #FEA04D;" title="跳过" ng-if="pre.job_status == 5"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row form-style">
+                                    <label class="control-label col-sm-2 label-key">描述</label>
+                                    <div class="col-sm-10 label-value" style="word-break: break-all">
+                                        <span ng-bind="single_work.job_bk_desc ? single_work.job_bk_desc : '--' "></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-if="single_work.job_type == 6">
+                                    <label class="control-label col-sm-2 label-key">轮询间隔</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.polling_interval ? single_work.polling_interval +'秒': '--' "></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-if="single_work.job_type == 6">
+                                    <label class="control-label col-sm-2 label-key">最大次数</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.polling_max_times ? single_work.polling_max_times +'次': '--' "></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-if="single_work.job_type >= 24 && single_work.job_type <= 27">
+                                    <label class="control-label col-sm-2 label-key">服务名称</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.service_name ? single_work.service_name : '--' "></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-if="single_work.job_type > 6">
+                                    <label class="control-label col-sm-2 label-key">超时时间</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.timeout ? single_work.timeout + '秒' : '--' "></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.job_method == 1">
+                                    <label class="control-label col-sm-2 label-key">组件名</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span class="fa fa-cube" style="font-size: 16px;color:#EC732C;" ng-show="single_work.comp_cn_name"></span>
+                                        <span ng-bind="single_work.comp_cn_name ? single_work.comp_cn_name : '--'"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.job_method == 1">
+                                    <label class="control-label col-sm-2 label-key">组件类型</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.cmpt_cn_type ? single_work.cmpt_cn_type : '--'"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.job_method == 2 && (single_work.job_type ==14 || single_work.job_type ==15)">
+                                    <label class="control-label col-sm-2 label-key">数据库类型</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.dataBase_type_cn ? single_work.dataBase_type_cn : '--'"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.job_method == 2 && single_work.script_cn_type">
+                                    <label class="control-label col-sm-2 label-key">脚本类型</label>
+                                    <div class="col-sm-10  label-value">
+                                        <span ng-bind="single_work.script_cn_type ? single_work.script_cn_type : '--'"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.job_method == 1">
+                                    <label class="control-label col-sm-2 label-key">执行类别</label>
+                                    <div class="col-sm-10  label-value">
+                                        <span ng-bind="single_work.exe_cn_type ? single_work.exe_cn_type : '--'"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.job_type != 25 && single_work.job_type != 4 && single_work.job_type != 5 && (single_work.job_type < 24 || single_work.job_type > 27)">
+                                    <label class="control-label col-sm-2 label-key">脚本来源</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.script_source ? single_work.script_source == 2 ? '文件':'输入' :'输入'"></span>
+                                        &nbsp;&nbsp;<span ng-bind="single_work.script_source == 2 ? single_work.file_name : ''"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.annex_file">
+                                    <label class="control-label col-sm-2 label-key">附件</label>
+                                    <div class="col-sm-10 label-value">
+                                        <file-upload fileupload="accessory_fileupload" downfile="downloadAccessoryFile();"></file-upload>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.env_name">
+                                    <label class="control-label col-sm-2 label-key">语言环境</label>
+                                    <div class="col-sm-10 label-value">
+                                        <span ng-bind="single_work.env_name"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-show="single_work.job_type != 25 && single_work.job_type != 4 && single_work.job_type != 5 && (single_work.job_type < 24 || single_work.job_type > 27)" style="margin-right: 0">
+                                    <label class="control-label col-sm-2 label-key">执行脚本</label>
+                                    <div class="col-sm-10 label-value cmpt" ng-if="single_work.script_source == 1 && single_work.job_method == 1">
+                                        <tabset class="cmpt-script-tab" scroll-control>
+                                            <tab select="changeScript($index)" style="cursor:pointer;" ng-repeat="script in single_work.script_list">
+                                                <tab-heading>
+                                                    <span class="script-tab" title="{{script.script_type=='default'? '缺省': script.script_type}}" style="color:#808080 !important;">{{script.script_type=='default'? '缺省': script.script_type}}</span>&nbsp;
+                                                </tab-heading>
+                                                <textarea name="exec_script{{$index}}"
+                                                          ui-codemirror="viewScriptEditor"
+                                                          ui-refresh="controls.codemirror_refresh"
+                                                          ng-model="script.exe_script"
+                                                          class="form-control"
+                                                          required>
+                                            </textarea>
+                                            </tab>
+                                        </tabset>
+                                    </div>
+                                    <div class="col-sm-10 label-value" ng-if="(single_work.script_source == 2 && single_work.job_method == 1) || single_work.job_method == 2">
+                                        <div ng-show="single_work.exe_script" scroll-control>
+                                             <textarea name="exec_script"
+                                                       ui-codemirror="viewScriptEditor"
+                                                       ui-refresh="controls.basic_info_expand"
+                                                       ng-model="single_work.exe_script"
+                                                       class="form-control">
+                                             </textarea>
+                                        </div>
+                                        <div  ng-show="!single_work.exe_script">暂无</div>
+                                    </div>
+                                </div>
+                                <div class="row form-style" ng-if="single_work.job_type == 4" style="margin-right: 0">
+                                    <label class="control-label col-sm-2 label-key">表达式</label>
+                                    <div class="col-sm-10 label-value">
+                                        <div ng-show="single_work.expr" scroll-control>
+                                             <textarea name="exec_script"
+                                                       ui-codemirror="viewJavaCodeEditor"
+                                                       ui-refresh="controls.basic_info_expand"
+                                                       ng-model="single_work.expr"
+                                                       class="form-control">
+                                             </textarea>
+                                        </div>
+                                        <div ng-show="!single_work.expr">暂无</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--开始作业 -->
+                            <div class="row form-style" ng-show="single_work.job_type == 1">
+                                <label class="control-label col-sm-2 label-key">时间条件</label>
+                                <div class="col-sm-10 label-value">
+                                    <span ng-bind="single_work.datetime_condition ? single_work.datetime_condition : '--'"></span>
+                                </div>
+                            </div>
+                            <!-- 结束作业-->
+                            <div class="row form-style" ng-show="single_work.job_type == 2">
+                                <label class="col-sm-2 control-label label-key">结束方式</label>
+                                <div class="col-sm-10 label-value">
+                                    <label>
+                                        <input type="radio" name="end_type" i-check disabled ng-model="single_work.over_type" value=1>
+                                        自动结束
+                                    </label>
+                                    <label style="margin-left:15px;">
+                                        <input type="radio" name="end_type" i-check disabled ng-model="single_work.over_type" value=2>
+                                        手动结束
+                                    </label>
+                                </div>
+                            </div>
+                            <!--普通作业参数表-->
+                            <div class="row form-style general_param" ng-if="single_work.job_type > 5 && (single_work.job_type < 24 || single_work.job_type > 27)">
+                                <label class="control-label col-sm-2 label-key" style="margin-top: 10px">输入输出</label>
+                                <div  class="col-sm-10 label-value" ng-if="single_work.job_param_list.length !=0" style="padding-right: 30px">
+                                    <tabset class="border-style-white commonTabs">
+                                        <tab heading="{{param.exe_ip}}" title="数据源:{{param.exe_soc_name}}" class="analysis-tab" active="tabs[0]" ng-repeat="param in single_work.job_param_list">
+                                            <div class="row form-style" style="margin-right: 0">
+                                                <label class="control-label col-sm-2 label-key" style="margin-top: 10px;padding-right: 0">输入参数</label>
+                                                <div  class="col-sm-10 label-value">
+                                                    <table class=" table sub-table text-center">
+                                                        <thead>
+                                                        <tr>
+                                                            <td width="100px">
+                                                                参数名
+                                                            </td>
+                                                            <td>
+                                                                参数中文名
+                                                            </td>
+                                                            <td width="150px">
+                                                                参数值
+                                                            </td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-repeat="tr in param.input_list" ng-show="param.input_list && param.input_list.length != 0">
+                                                            <td style="min-width: 100px">
+                                                                <div class="param-group-style">
+                                                                    <div class="param-name">{{tr.param_name}}</div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="show_span" title="{{tr.param_cn_name}}" ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="show_span" title="{{tr.param_value}}" ng-bind="tr.param_value ? tr.param_value : '--'"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-show="!param.input_list || param.input_list.length == 0">
+                                                            <td colspan="3" style=" text-align: center;font-size: 12px;">暂无数据</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row form-style" style="margin-right: 0;margin-bottom: 0">
+                                                <label class="control-label col-sm-2 label-key" style="margin-top: 10px;padding-right: 0">输出参数</label>
+                                                <div  class="col-sm-10 label-value">
+                                                    <table class="table sub-table text-center">
+                                                        <thead>
+                                                        <tr>
+                                                            <td width="100px">
+                                                                参数名
+                                                            </td>
+                                                            <td>
+                                                                参数中文名
+                                                            </td>
+                                                            <td width="150px">
+                                                                参数值
+                                                            </td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-repeat="tr in param.output_list" ng-show="param.output_list && param.output_list.length != 0">
+                                                            <td style="min-width: 100px">
+                                                                <div class="param-group-style">
+                                                                    <div class="param-name">{{tr.param_name}}</div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="show_span" title="{{tr.param_cn_name}}" ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="show_span" style="width: 117px" title="{{tr.param_value}}" ng-bind="tr.param_value ? tr.param_value : '--'"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-show="!param.output_list || param.output_list.length == 0">
+                                                            <td colspan="3" style=" text-align: center;font-size: 12px;">暂无数据</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </tab>
+                                    </tabset>
+                                </div>
+                                <div class="col-sm-10 label-value" ng-show="single_work.job_param_list.length == 0" style="padding-top: 10px">--</div>
+                            </div>
+                            <!-- 开始/结束参数表-->
+                            <div class="row form-style" style="margin-right: 0" ng-if="single_work.job_type <= 2 || single_work.job_type ==4 || (single_work.job_type > 23 && single_work.job_type < 28)">
+                                <label class="control-label col-sm-2 label-key" style="margin-top: 10px">输入参数</label>
+                                <div  class="col-sm-10 label-value">
+                                    <table class=" table sub-table text-center">
+                                        <thead>
+                                        <tr>
+                                            <td width="140px">
+                                                参数名
+                                            </td>
+                                            <td>
+                                                参数中文名
+                                            </td>
+                                            <td width="190px">
+                                                参数值
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in single_work.input_params" ng-show="single_work.input_params.length != 0">
+                                            <td style="min-width: 150px">
+                                                <div class="param-group-style">
+                                                    <div class="param-name">{{tr.param_name}}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="show_span" title="{{tr.param_cn_name}}" ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+                                            </td>
+                                            <td>
+                                                <span class="show_span" style="width: 150px" title="{{tr.param_value}}" ng-bind="tr.param_value ? tr.param_value : '--'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="single_work.input_params.length == 0">
+                                            <td colspan="3" style=" text-align: center;font-size: 12px;">暂无数据</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row form-style" style="margin-right: 0" ng-if="single_work.job_type <= 2 || single_work.job_type ==4 ||(single_work.job_type > 23 && single_work.job_type < 28)">
+                                <label class="control-label col-sm-2 label-key" style="margin-top: 10px">输出参数</label>
+                                <div  class="col-sm-10 label-value">
+                                    <table class="table sub-table text-center">
+                                        <thead>
+                                        <tr>
+                                            <td width="140px">
+                                                参数名
+                                            </td>
+                                            <td>
+                                                参数中文名
+                                            </td>
+                                            <td width="190px">
+                                                参数值
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in single_work.output_params" ng-show="single_work.output_params.length != 0">
+                                            <td style="min-width: 150px">
+                                                <div class="param-group-style">
+                                                    <div class="param-name">{{tr.param_name}}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="show_span" title="{{tr.param_cn_name}}" ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+                                            </td>
+                                            <td>
+                                                <span class="show_span" style="width: 150px" title="{{tr.param_value}}" ng-bind="tr.param_value ? tr.param_value : '--'" ></span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="single_work.output_params.length == 0">
+                                            <td colspan="3" style="text-align: center;font-size: 12px;">暂无数据</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--java/python 插件列表-->
+                            <div class="row form-style" ng-if="single_work.plugin_list.length">
+                                <label class="col-sm-2 control-label label-key" style="padding-top: 8px">插件列表</label>
+                                <div class="col-sm-10 label-value" style="padding-right: 30px">
+                                    <table class="sub-table table text-center" tbl-Data="single_work.plugin_list">
+                                        <thead>
+                                        <tr>
+                                            <td  width="150px" style="text-align: left">插件名</td>
+                                            <td  width="120px" style="text-align: left">插件类型</td>
+                                            <td  style="text-align: left">插件描述</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr  ng-repeat="tr in single_work.plugin_list">
+                                            <td title="{{tr.plugin_name}}">
+                                                <div style="text-align: left;max-width: 150px;overflow: hidden">
+                                                    <span>{{tr.plugin_name}}</span>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <span>{{getPluginTypeCnName(tr.plugin_type)}}</span>
+                                            </td>
+                                            <td style="text-align: left;max-width: 200px;overflow: hidden;white-space: nowrap" title="{{tr.plugin_bk_desc}}">
+                                                <span>{{tr.plugin_bk_desc}}</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 数据加载中-->
+                        <div ng-show="controls.op_type == 2 && controls.basic_loading" class="loading_layer">
+                            <div style="margin:0 auto;font-size: 18px;color:#44dcfd;border:1px dashed #CCC;height:100px;line-height:100px;width:240px;border-radius: 4px;">
+                                <span class="loading-font-color">正在获取信息&nbsp;&nbsp;<i style="font-size: 22px;" class="fa fa-spinner fa-pulse loading-font-color"></i></span>
+                            </div>
+                        </div>
+                        <!-- 错误信息-->
+                        <div ng-show="controls.op_type == 2 && controls.basic_err_msg" class="loading_layer">
+                            <div style="margin: 0 auto; color: #E9416E; border: 1px dashed #E9416E; border-radius: 4px; width: 240px; font-size: 18px;">
+                                <span class="error-font-color">获取信息异常</span>
+                                <div style="font-size: 12px; word-break: break-all; padding-left: 10px; padding-right: 10px;" ng-bind="controls.basic_err_msg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 表单按钮-->
+                <div class="row btn-form" ng-if="single_work.job_status && !controls.task_finish && !controls.is_detail && single_work.job_type > 2">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <button class=" save-btn btn-md"    ng-click="formSubmit(1)" type="button" ng-if="controls.polling_end && single_work.job_type ==6">重试</button>
+                        <button class=" save-btn btn-md"    ng-click="formSubmit(4)" type="button" ng-if="controls.polling_end && single_work.pre_job_list.length != 0 && single_work.job_type ==6">重试链</button>
+                        <button class=" save-btn btn-md"    ng-click="formSubmit(1)" type="button" ng-if="controls.job_error && single_work.job_type !=6">重试</button>
+                        <button class=" save-btn btn-md"    ng-click="formSubmit(4)" type="button" ng-if="controls.job_error && single_work.pre_job_list.length != 0 && single_work.job_type !=6">重试链</button>
+                        <button class=" save-btn btn-md"    ng-click="formSubmit(2)" type="button" ng-if="single_work.job_status == 3">重做</button>
+                        <button class=" hollow-btn btn-md"  ng-click="formSubmit(3)" type="button" ng-if="controls.job_error && single_work.job_type !=6">跳过</button>
+                        <button class=" hollow-btn btn-md"  ng-click="formSubmit(3)" type="button" ng-if="controls.polling_end && single_work.job_type ==6">跳过</button>
+                        <button class=" hollow-btn btn-md"  ng-click="formSubmit(5)" type="button" ng-if="controls.complete_job">完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

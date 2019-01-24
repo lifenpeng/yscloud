@@ -1,0 +1,506 @@
+<div class="row" ng-if="control.new_cmpt_flag">
+    <div class="col-sm-5 col-sm-offset-7 form-style">
+        <div class="row" style="margin-top: -38px;" ng-show="!cmpt_info.module_purpose || cmpt_info.module_purpose == 1">
+            <label class="col-sm-5 control-label label-key" style="padding-top: 10px;">从文件导入</label>
+            <div class="col-sm-6">
+                <file-upload fileupload="config.cmpt_fileupload" successthen="ImportSuccessThen();" deletefile="removeCmptFile();"></file-upload>
+            </div>
+        </div>
+        <div class="row" style="margin: -38px 40px 10px;" ng-if="config.cmpt_fileupload.filename">
+            <div class="ecm_showImportedFile">
+                <span class="fa fa-share"></span>
+                <span class="label-key" ng-if="control.cmpt_type == 1">导入的组件文件<span class="label-value" style="padding-left: 10px">{{configcmpt_fileupload.filename}}</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+<form name="cmpt_form" ng-submit="cmptSubmit()" class="form-horizontal" novalidate autocomplete="off">
+    <div ng-if="control.import_loading" class="ce-panel-loading-bg" style="width: 97%;height: 90%;"></div>
+    <div ng-if="control.import_loading" class="ce-panel-loading-modal" style="top: 35%;left: 45%;">组件信息载入中...&nbsp;&nbsp;<i class="fa fa-spinner fa-spin" style="font-size: 18px;color: #fff;"></i></div>
+    <!--组件名-->
+    <div class="form-group form-style" ng-style="{'margin-top': info.cmpt_info.module_purpose == 2 ? '15px' : ''}">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">组件名</label>
+        </div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" ng-model="info.cmpt_info.cn_name"
+                   name="cmpt_name"
+                   placeholder="输入不超过25个字符或汉字"
+                   ng-maxlength="25"
+                   ensure-unique="mo_ViewComponentActioncheckCompnentCnName"
+                   ng-pattern="/^[\u4E00-\u9FA5A-Za-z0-9_]+$/"
+                   required/>
+            <validate-msg tag-cn-name="组件名" name="cmpt_name"></validate-msg>
+        </div>
+    </div>
+    <!--组件描述-->
+    <div class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">描述</label>
+        </div>
+        <div class="col-sm-5">
+                <textarea name="cmpt_desc"
+                          ng-model="info.cmpt_info.bk_desc"
+                          class="form-control label-value"
+                          placeholder="输入不超过250个字符或汉字"
+                          style="min-width: 260px; resize:none;overflow: hidden;"
+                          required
+                          ng-maxlength=250
+                          ng-model-options="{updateOn: 'blur'}">
+                </textarea>
+            <validate-msg tag-cn-name="描述" name="cmpt_desc"></validate-msg>
+        </div>
+    </div>
+    <!--组件类型-->
+    <div class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key" >组件类型</label>
+        </div>
+        <div class="col-sm-6"  style="margin-top: 5px">
+            <div class="cmpt-type-radio" ng-repeat="i in data.cmpt_type_list">
+                <label>
+                    <input type="checkbox"
+                           name="cmpt_type"
+                           i-check
+                           ng-change="selectCmptType()"
+                           ng-model="i.state"/>
+                    <span class="label-value">{{i.value}}</span>
+                </label>
+            </div>
+            <div style="clear: both"></div>
+            <validate-msg tag-cn-name="组件类型" type="checkbox" name="component_purposes" model="info.cmpt_info.component_purposes"></validate-msg>
+        </div>
+    </div>
+    <!--执行类别-->
+    <div class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">执行类别</label>
+        </div>
+        <div class="col-sm-5">
+            <bs-select width=200 name="execute_type" class="label-value" items="data.execute_type_list" my-select="info.cmpt_info.impl_type" select-val="chooseImplType(selectKey)" required></bs-select>
+            <validate-msg tag-cn-name="执行类别" type="select" name="execute_type" model="info.cmpt_info.impl_type"></validate-msg>
+        </div>
+    </div>
+    <!--附件-->
+    <div class="form-group form-style" ng-if="info.cmpt_info.impl_type==15 ||info.cmpt_info.impl_type==17 ">
+        <div class="col-sm-2 text-right" style="margin-top: 6px">
+            <label class="control-label label-key">执行程序</label>
+        </div>
+        <div class="col-sm-5">
+            <file-upload fileupload="config.cmpt_accessory_fileupload" successthen="ImportAccessorySuccessThen();" deletefile="removeAccessoryFile();" downfile="downloadAccessoryFile();"></file-upload>
+        </div>
+    </div>
+    <!--command-->
+    <!--执行命令无提示-c++-->
+    <div ng-if="info.cmpt_info.impl_type==15" class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">执行命令</label>
+        </div>
+        <div class="col-sm-5" id="commandShellu">
+         <textarea name="command"
+                   ui-codemirror="{onLoad : commandNoneShellLoaded}"
+                   ui-refresh="info.cmpt_info.command.code_mirror_control"
+                   ng-model="info.cmpt_info.command.exec_script"
+                   class="form-control"
+                   required>
+            </textarea>
+            <validate-msg tag-cn-name="执行命令" model="info.cmpt_info.command.exec_script" name="command"></validate-msg>
+        </div>
+    </div>
+    <!--执行命令有提示-自定义-->
+    <div ng-if="info.cmpt_info.impl_type==17" class="form-group form-style">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">执行命令</label>
+        </div>
+        <div class="col-sm-5" id="commandShell">
+                             <textarea name="command"
+                                       ui-codemirror="{onLoad : commandShellLoaded}"
+                                       ui-refresh="info.cmpt_info.command.code_mirror_control"
+                                       ng-model="info.cmpt_info.command.exec_script"
+                                       class="form-control"
+                                       required>
+                                </textarea>
+            <validate-msg tag-cn-name="执行命令" model="info.cmpt_info.command.exec_script" name="command"></validate-msg>
+        </div>
+    </div>
+    <!--语言版本-->
+    <div class="form-group form-style" ng-if="info.cmpt_info.impl_type==14">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">JAVA版本</label>
+        </div>
+        <div class="col-sm-5">
+            <bs-select width=200 name="language_no" class="label-value" items="data.jdk_version_list" my-select="info.cmpt_info.language_version" required></bs-select>
+            <validate-msg tag-cn-name="JAVA版本" type="select" name="language_no" model="info.cmpt_info.language_version"></validate-msg>
+        </div>
+    </div>
+    <!--关联组件-->
+    <div class="form-group form-style" ng-if="control.show_check_comp || info.cmpt_info.component_purposes.length == 0">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">校验组件</label>
+        </div>
+        <div class="col-sm-6">
+            <bs-select
+                    width=200 class="label-value"
+                    items="data.certificate_cmpt_list"
+                    my-select="info.cmpt_info.check_comp_id"
+                    option-labal='check_comp_name'
+                    option-key='check_comp_id'
+                    empty-option="--暂不选择--"
+                    required>
+            </bs-select>
+        </div>
+    </div>
+
+    <!--标签-->
+    <div class="form-group form-style" style="margin-bottom: 5px">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">分类标签</label>
+        </div>
+        <div class="col-sm-5">
+            <div class="cmpt-label-tag" ng-repeat="tag in info.cmpt_info.tag_list" title="{{tag}}" ng-bind="tag"></div>
+            <div style="width: 50px;" ng-click="addClassifyLabel()" class="col-sm-2 label-add-btn">
+                <span class="fa fa-plus"></span>
+            </div>
+        </div>
+    </div>
+    <!--脚本来源-->
+    <div class="form-group form-style" ng-if="info.cmpt_info.impl_type !=15 && info.cmpt_info.impl_type != 19">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key" >脚本来源</label>
+        </div>
+        <div class="col-sm-5">
+            <div class="form-group checkbox" ng-if="info.cmpt_info.impl_type !=2 && info.cmpt_info.impl_type !=7  && info.cmpt_info.impl_type !=8 && info.cmpt_info.impl_type !=11  && info.cmpt_info.impl_type !=14 && info.cmpt_info.impl_type !=17">
+                <input type="radio" i-check ng-model="info.cmpt_info.component_source" value="1"/>
+                <span class="label-value cmpt-script-origin">输入</span>
+            </div>
+            <div class="form-group checkbox" ng-if="info.cmpt_info.impl_type==2 || info.cmpt_info.impl_type==7 ||info.cmpt_info.impl_type==8 ||info.cmpt_info.impl_type==11 ||info.cmpt_info.impl_type==14 ||info.cmpt_info.impl_type==17">
+                <input type="radio" i-check ng-model="info.cmpt_info.component_source" value="1"/>
+                <span class="label-value cmpt-script-origin">输入</span>
+                <input  type="radio" i-check ng-model="info.cmpt_info.component_source" value="2" />
+                <span  class="label-value" style="padding-left: 10px;">文件</span>
+            </div>
+        </div>
+    </div>
+    <!--脚本文件-->
+    <div class="form-group form-style" ng-if="(info.cmpt_info.component_source == 2) && ( info.cmpt_info.impl_type==2 || info.cmpt_info.impl_type==7 || info.cmpt_info.impl_type==8 || info.cmpt_info.impl_type==11 || info.cmpt_info.impl_type==14 || info.cmpt_info.impl_type==17)">
+        <div class="col-sm-6 col-sm-offset-2" style="margin-top: -7px;">
+            <file-upload fileupload="config.cmpt_script_fileupload" deletefile="removeScriptFile();" downfile="downloadScriptFile();" successthen="uploadScriptFileSuccessThen();"></file-upload>
+        </div>
+    </div>
+    <!--执行脚本-->
+    <div class="form-group form-style" ng-if="(info.cmpt_info.component_source == 1 && info.cmpt_info.impl_type !=15 && info.cmpt_info.impl_type != 19)">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">执行脚本</label>
+        </div>
+        <div class="col-sm-9" ng-if="info.cmpt_info.component_source == 1">
+            <tabset class="cmpt-script-tab">
+                <tab active="script.active"  select="selectScript($index)" style="cursor:pointer;" ng-repeat="script in info.cmpt_info.script_list">
+                    <tab-heading>
+                        <span title="{{script.script_type=='default'? '缺省': script.script_type}}" class="script-tab">{{script.script_type=='default'? '缺省': script.script_type}}</span>&nbsp;
+                        <span ng-if="!$first && script.active" class="delete-script-tab-icon">
+                                    <i class="fa fa-times" ng-click="deleteScript($index)"></i>
+                                </span>&nbsp;
+                    </tab-heading>
+                    <div  scroll-control  ng-if="control.show_codemirror">
+                        <textarea name="exec_script{{$index}}"
+                                  ui-codemirror="$first ? {onLoad : shellLoaded}:{onLoad : mentionParam}"
+                                  ui-refresh="script.code_mirror_control"
+                                  ng-model="script.exec_script"
+                                  class="form-control"
+                                  required>
+                        </textarea>
+                    </div>
+                    <div ng-if="!control.show_codemirror">
+                        <div style="height: 170px;"></div>
+                    </div>
+                    <validate-msg tag-cn-name="执行脚本" model="script.exec_script" name="exec_script{{$index}}"></validate-msg>
+                    <div class="row cmpt-error-font-color" ng-if="info.cmpt_info.script_msg">
+                        <div class="col-sm-12">{{info.cmpt_info.script_msg}}</div>
+                    </div>
+                </tab>
+                <span class="add-script-tab-btn" ng-if="info.cmpt_info.component_source == 1 && info.cmpt_info.impl_type !=7 && info.cmpt_info.impl_type !=8 && info.cmpt_info.impl_type != 17" ng-click="addScript()">+</span>
+            </tabset>
+        </div>
+    </div>
+    <!--参数表-->
+    <div class="form-group" ng-if="info.cmpt_info.component_source == 1 && info.cmpt_info.impl_type != 19">
+        <div class="col-sm-2 text-right form-style">
+            <label class="control-label label-key">参数表</label>
+        </div>
+        <!--参数为0-->
+        <div class="col-sm-9 form-style" ng-if="info.cmpt_info.param_list.length==0 && !control.cmpt_get_param_loading">
+            <label class="control-label label-value none-content-font-color" style="text-align: left;">暂无参数</label>
+        </div>
+        <!--参数loading-->
+        <div class="col-sm-9 loading-font-color" style="margin-top: 6px;" ng-if="control.cmpt_get_param_loading">参数获取中...&nbsp;&nbsp;<i class='fa fa-spinner fa-spin loading-font-color' style='font-size: 18px;'></i></div>
+        <!--参数列表-->
+        <div class="col-sm-9"  ng-if="info.cmpt_info.param_list.length>0 && !control.cmpt_get_param_loading && info.cmpt_info.impl_type != 19">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="sub-table text-center cmpt-param-table" tbl-Data="info.cmpt_info.param_list">
+                        <thead>
+                        <tr class="cursor-default">
+                            <td width="170px">
+                                <span>参数名</span>
+                                <span><i class="param-table-asterisk" class="fa fa-asterisk"></i></span>
+                            </td>
+                            <td width="200px">
+                                参数中文名
+                            </td>
+                            <td>
+                                默认值
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in info.cmpt_info.param_list" ng-show="info.cmpt_info.param_list.length != 0">
+                            <td  class="cursor-default">
+                                <div class="param-group-style">
+                                    <div class="param-name">{{tr.param_name}}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="has-feedback"><input type="text" ng-model="tr.param_cn_name" class="sub-form-control"/></div>
+                            </td>
+                            <td class="cmpt-param-default-value" title="{{ tr.sensitive_flag ? '': tr.param_value}}">
+                                        <textarea name="cmpt_param_value"
+                                                  ng-if="!tr.sensitive_flag"
+                                                  ui-codemirror="{ onLoad : paramShellLoaded}"
+                                                  ui-refresh="true"
+                                                  ng-model="tr.param_value"
+                                                  class="sub-form-control">
+                                        </textarea>
+                                <!--只是为了兼容360浏览器阻止默认密码填写-->
+                                <input type="password" style="display: none;" disabled autocomplete = "new-password"/>
+                                <input type="password"
+                                       class="pass-input"
+                                       style="height: 26px;padding-left: 5px;"
+                                       ng-model="tr.label_param_value"
+                                       disabled
+                                       autocomplete="new-password"
+                                       ng-if="tr.sensitive_flag"
+                                       ng-init="tr.label_param_value =  tr.param_value ?  '1111111111' : ''"
+                                >
+                                <div class="cmpt-param-table-eye">
+                                    <i ng-if="!tr.sensitive_flag" class="fa fa-eye" title="明文" ng-click="tr.sensitive_flag=true; tr.label_param_value = tr.param_value ? '1111111111' : ''"></i>
+                                    <i ng-if="tr.sensitive_flag" class="fa fa-eye-slash" title="密文" ng-click="tr.sensitive_flag=false"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--AS400PGM 库名-->
+    <div class="form-group form-style" ng-if="info.cmpt_info.impl_type == 19">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">库名</label>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" ng-model="info.cmpt_info.lib_name"
+                   name="cmpt_name"
+                   placeholder="输入不超过25个字符"
+                   ng-maxlength="25"
+                   ng-pattern="/^[A-Za-z0-9_]+$/"
+                   required/>
+            <validate-msg tag-cn-name="库名名" name="lib_name"></validate-msg>
+        </div>
+    </div>
+    <!--AS400PGM 程序名-->
+    <div class="form-group form-style" ng-if="info.cmpt_info.impl_type == 19">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">程序名</label>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" ng-model="info.cmpt_info.pgm_name"
+                   name="cmpt_name"
+                   placeholder="输入不超过25个字符"
+                   ng-maxlength="25"
+                   ng-pattern="/^[A-Za-z0-9_]+$/"
+                   required/>
+            <validate-msg tag-cn-name="程序名" name="pgm_name"></validate-msg>
+        </div>
+    </div>
+    <!--输出参数-->
+    <div class="form-group fontSize12" ng-if="info.cmpt_info.component_source == 1 && info.cmpt_info.impl_type != 19">
+        <div class="col-sm-2 text-right form-style">
+            <label class="control-label label-key">输出参数表</label>
+        </div>
+        <!--参数列表-->
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="sub-table table text-center output-param-table" tbl-Data="info.cmpt_info.out_param_list" row-plus="addOutputParam()">
+                        <thead>
+                        <tr>
+                            <td width="170px">参数名</td>
+                            <td width="200px">参数中文名</td>
+                            <td>参数描述</td>
+                            <td width="60px">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in info.cmpt_info.out_param_list">
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_name"   name="output_param_name{{$id}}" required/>
+                                <validate-msg style="font-size: 10px;" tag-cn-name="输出参数名"  name="output_param_name{{$id}}"></validate-msg>
+                            </td>
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_cn_name"   name="output_param_cn_name{{$id}}"/>
+                            </td>
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_bk_desc"   name="output_param_bk_desc{{$id}}" />
+                            </td>
+                            <td>
+                                <span class="fa fa-trash-o"  title="删除" style="text-align: center;" ng-click="deleteOutputParam($index,tr,1)"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" ng-if="info.cmpt_info.component_source == 1 && info.cmpt_info.impl_type == 19">
+        <div class="col-sm-2 text-right form-style">
+            <label class="control-label label-key">参数表</label>
+        </div>
+        <!--参数列表-->
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="sub-table table text-center cmpt-param-table" tbl-Data="info.cmpt_info.param_list" row-plus="addFileParam()">
+                        <thead>
+                        <tr>
+                            <td width="170px">参数名</td>
+                            <td width="200px">参数中文名</td>
+                            <td>
+                                默认值
+                            </td>
+                            <td width="60px">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in info.cmpt_info.param_list">
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_name"   name="output_param_name{{$id}}" required/>
+                                <validate-msg style="font-size: 10px;" tag-cn-name="参数名"  name="output_param_name{{$id}}"></validate-msg>
+                            </td>
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_cn_name"   name="output_param_cn_name{{$id}}"/>
+                            </td>
+                            <td style="text-align: left">
+                                <input type="text" class="sub-form-control" ng-model="tr.param_value"   name="output_param_bk_desc{{$id}}" />
+                            </td>
+                            <td style="text-align: center">
+                                <span class="fa fa-trash-o"  title="删除"  ng-click="deleteFileParam($index,tr,1)"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group fontSize12" ng-if="info.cmpt_info.component_source == 2">
+        <div class="col-sm-2 text-right form-style">
+            <label class="control-label label-key">文件参数表</label>
+        </div>
+        <!--参数列表-->
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="sub-table text-center file-param-table" tbl-Data="info.cmpt_info.param_list" row-plus="addFileParam()">
+                        <thead>
+                        <tr>
+                            <td width="170px">参数名</td>
+                            <td width="200px">参数中文名</td>
+                            <td>参数值</td>
+                            <td width="60px">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in info.cmpt_info.param_list">
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_name"   name="output_param_name{{$id}}" required/>
+                                <validate-msg style="font-size: 10px;" tag-cn-name="输出参数名"  name="output_param_name{{$id}}"></validate-msg>
+                            </td>
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_cn_name"   name="output_param_cn_name{{$id}}"/>
+                            </td>
+                            <td>
+                                <input type="text" class="sub-form-control" ng-model="tr.param_value"   name="param_value{{$id}}" />
+                            </td>
+                            <td style="text-align: center">
+                                <span class="fa fa-trash-o"  title="删除"  ng-click="deleteFileParam($index,tr,1)"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--插件列表-->
+    <div class="form-group form-style" ng-if="data.plugin_list.length !=0">
+        <div class="col-sm-2 text-right">
+            <label class="control-label label-key">插件列表</label>
+        </div>
+        <div class="col-sm-9">
+            <table class="sub-table text-center cmpt-plugin-table" tbl-Data="info.cmpt_info.plugin_list" row-plus="addAvailablePlugin()">
+                <thead>
+                <tr>
+                    <td class="plugin-name" style="width: 170px;min-width: 170px;max-width: 170px;">插件名</td>
+                    <td width="200px">插件类型</td>
+                    <td>插件描述</td>
+                    <td style="width: 60px;">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tr in info.cmpt_info.plugin_list">
+                    <td>
+                        <div style="text-align: left;">
+                            <bs-select
+                                    width="180"
+                                    name="plugin_name{{$id}}"
+                                    items="data.plugin_list"
+                                    select-val="bindPluginInfo(selectKey,$index ,tr)"
+                                    option-key="plugin_name"
+                                    option-labal="plugin_name"
+                                    no-border
+                                    my-select="tr.plugin_name"
+                                    required
+                            ></bs-select>
+                            <validate-msg type="select" tag-cn-name="插件名" name="plugin_name{{$id}}" model="tr.plugin_name"></validate-msg>
+                        </div>
+                    </td>
+                    <td>
+                        <span>{{getPluginTypeCnName(tr.plugin_type)}}</span>
+                    </td>
+                    <td style="max-width: 200px;overflow: hidden;white-space: nowrap">
+                        <span>{{tr.plugin_bk_desc}}</span>
+                    </td>
+                    <td>
+                        <span class="fa fa-trash-o cursor-pointer" style="padding-left: 10px;" ng-click="deleteSinglePlugin($index)"></span>
+                        <span class="fa fa-download cursor-pointer" title="下载插件" style="padding-left: 10px;" ng-class="{'stop-click':!tr.plugin_name}" ng-click="!tr.plugin_name || downLoadPlugin(tr.plugin_file_name)"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--保存表单-->
+    <div class="form-group">
+        <div class="col-sm-12 text-center">
+            <button ng-if="!control.cmpt_btn_loading" type="button" class="save-cancel-btn cancel-btn btn-md" ng-click="cmptFormCancel()" style="text-align:center;">取消</button>
+            <button ng-if="control.cmpt_btn_loading" disabled="disabled" type="button" class="save-cancel-btn btn-md disabled-btn cancel-button-marginRight" >取消</button>
+            <button ng-if="!control.cmpt_save_disabled && !control.cmpt_btn_loading" class="save-cancel-btn save-btn btn-md" type="submit">保存</button>
+            <button ng-if="control.cmpt_save_disabled" class="save-cancel-btn btn-md disabled-btn" type="button" disabled>保存</button>
+            <button ng-if="control.cmpt_btn_loading" disabled class="save-cancel-btn save-btn btn-md" style="text-align:center;">
+                <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</form>

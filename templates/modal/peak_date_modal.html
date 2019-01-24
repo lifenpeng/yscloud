@@ -1,0 +1,160 @@
+
+<form name="info.form.peakForm" class="form-horizontal fault-peak-date" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+<div class="modal-header">
+    <h3 ng-if="!control.edit_flag" class="modal-title">新增高峰时段</h3>
+    <h3 ng-if="control.edit_flag" class="modal-title">修改高峰时段</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+
+<div class="modal-body">
+    <div class="form-group form-style" >
+        <label class="col-sm-3 control-label label-key">时段中文名</label>
+        <div class="col-sm-5">
+            <input type="text"
+                   class="form-control label-value"
+                   name="time_cn_name"
+                   ng-model="info.peak_data.time_cn_name"
+                   placeholder="时段中文名输入限制25个字符"
+                   required
+                   ng-maxlength=25
+                    >
+            <validate-msg tag-cn-name="时段中文名" name="time_cn_name"></validate-msg>
+        </div>
+    </div>
+    <div class="form-group form-style" >
+        <label class="col-sm-3 control-label label-key">时段描述</label>
+        <div class="col-sm-5" >
+                      <textarea type="text"
+                                name="time_bk_desc"
+                                ng-model="info.peak_data.time_bk_desc"
+                                class="form-control label-value"
+                                style="resize:none;"
+                                ng-maxlength="50"
+                                required
+                                placeholder="时段描述限制50个字符"
+                              >
+                </textarea>
+            <validate-msg tag-cn-name="时段描述" name="time_bk_desc"></validate-msg>
+        </div>
+    </div>
+    <div class="form-group form-style" >
+        <label class="col-sm-3 control-label label-key">高峰日类型</label>
+        <div class="col-sm-7 label-value" ng-if="!control.edit_flag">
+            <bs-select width="150"
+                       name = "wday_type"
+                       items="data.work_day_type_list"
+                       my-select="info.peak_data.wday_type"
+                        select-val="changeDateState(selectKey)">
+            </bs-select>
+            <validate-msg tag-cn-name="高峰日类型" type="select" name="wday_type" model="info.peak_data.wday_type"></validate-msg>
+        </div>
+        <div  class="col-sm-7 label-key" ng-if="control.edit_flag">
+         <label style="margin-top: 7px;">{{peak_data.wday_type_cn}}</label>
+        </div>
+    </div>
+    <div class="form-group form-style"   ng-if="control.show_date_flag">
+        <label class="col-sm-3 control-label label-key">日期区间</label>
+        <div class="col-sm-9">
+            <div class="row">
+                <div  class="col-sm-5 pick-date-common">
+                     <input type="text"
+                            class="form-control"
+                            name="info.form.endDate"
+                            ng-click="open($event)"
+                            ng-model="info.peak_data.start_bk_date"
+                            show-button-bar="false"
+                            datepicker-popup="yyyy年MM月dd日"
+                            close-on-date-selection="false"
+                            is-open="info.form.opened"
+                            show-weeks="false"
+                            close-text="关闭"
+                            current-text="今天"
+                            clear-text="清除"
+                            date-disabled="disabled(date, mode)"
+                             readonly="true"/>
+                </div>
+                <div class="col-sm-1 peak-date-line" style="margin-left: -7px;margin-top: 16px;"></div>
+                <div  class="col-sm-5 pick-date-common">
+                      <input type="text"
+                             name="info.form.endDate"
+                             ng-click="open($event)"
+                             ng-model="info.peak_data.end_bk_date"
+                             class="form-control"
+                             show-button-bar="false"
+                             datepicker-popup="yyyy年MM月dd日"
+                             close-on-date-selection="false"
+                             is-open="info.form.opened"
+                             close-text="关闭"
+                             current-text="今天"
+                             clear-text="清除"
+                             date-disabled="disabled(date, mode)"
+                             close-text="Close"
+                             readonly="true"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group form-style" style="margin-top: 10px;margin-bottom: 0;">
+        <label class="col-sm-3 control-label label-key" >时间区间</label>
+        <span  ng-if="!control.show_time_group_flag" ng-click="control.show_time_group_flag = true" class="peak_date_add_btn" >
+           添加
+        </span>
+        <div class="col-sm-9" ng-if="control.show_time_group_flag">
+            <div class="row">
+                <div class="col-sm-3">
+                    <timepicker ng-model="info.peak_data.start_time"
+                                readonly-input="true" hour-step="1"
+                                minute-step="1" show-meridian="false"></timepicker>
+                </div>
+                <div class="col-sm-1 peak-date-line" style="margin-left: -31px;margin-top: 50px"></div>
+                <div class="col-sm-3">
+                    <timepicker ng-model="info.peak_data.end_time"
+                                readonly-input="true" hour-step="1"
+                                minute-step="1" show-meridian="false"></timepicker>
+                </div>
+                <div class="col-sm-1" style="margin-top: 40px;">
+                    <a style="cursor: pointer;" ng-click="addTimeGroup(info.peak_data.start_time,info.peak_data.end_time)"><i class="fa fa-plus"></i></a>
+                </div>
+                <div class="col-sm-1" style="margin-top: 40px;">
+                    <a style="cursor: pointer;" ng-click="control.show_time_group_flag = false"><i class="fa fa-minus"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group form-style" style="margin-bottom: 20px;" >
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-7">
+            <table class="sub-table" ng-if="info.peak_data.times.length > 0" >
+                <thead >
+                <tr>
+                    <th style="text-align: center;padding:4px;">开始时间</th>
+                    <th style="text-align: center;padding:4px;">结束时间</th>
+                    <th style="text-align: center;padding:4px;">删除</th>
+                </tr>
+                </thead>
+                <tbody >
+                <tr ng-repeat="time in info.peak_data.times" >
+                    <td style="text-align: center;padding:4px;">
+                        {{ time.start_time}}
+                    </td>
+                    <td style="text-align: center;padding:4px;">
+                       {{ time.end_time}}
+                    </td>
+                    <td style="text-align: center;padding:4px;">
+                        <a ng-click="deleteTimeGroup($index)"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="form-group form-horizontal text-center" style="margin-bottom: 20px;">
+        <button ng-if="!control.save_btn_loading" class="cancel-btn btn-xl" ng-click="formCancel()">取消</button>
+        <button ng-if="control.save_btn_loading" disabled="disabled" class="disabled-btn btn-xl" >取消</button>
+        <button ng-if="!control.save_btn_loading" class=" save-btn btn-xl" ng-click="formSubmit()">确认</button>
+        <button ng-if="control.save_btn_loading" disabled="disabled" class=" save-btn btn-xl">
+            <i style="color: white" class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>
+</form>

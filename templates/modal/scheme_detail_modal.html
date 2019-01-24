@@ -1,0 +1,2035 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">查看方案</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body form-horizontal" style="padding-right: 10px;padding-left: 10px;">
+    <div class="row form_style">
+        <div class="col-sm-5">
+            <label class="col-sm-3 text-right label_key" style="width: 95px;">方案名</label>
+            <span class="col-sm-8 label_value">{{progData.prog_cn_name}}</span>
+        </div>
+        <div class="col-sm-7">
+            <label class="col-sm-3 text-right label_key">描述</label>
+            <p class="col-sm-8 label_value">{{progData.prog_bk_desc}}</p>
+        </div>
+    </div>
+    <div class="row form_style" style="margin-top: 5px">
+        <div class="col-sm-5">
+            <label class="col-sm-3 text-right label_key" style="width: 95px;">新建方式</label>
+            <span class="col-sm-8 label_value" ng-bind="progData.prog_source ==1 ? '手工新建' :'从文件导入'">{{progData.prog_source }}</span>
+        </div>
+        <div class="col-sm-7">
+            <label class="col-sm-3 text-right label_key">发布包类型</label>
+            <div class="col-sm-9">
+                <table class="table sub-table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>
+                            类型包名
+                        </td>
+                        <td>
+                            类型中文名
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody style="background-color: #fafafa;">
+                    <tr ng-repeat="tr in progData.package_types">
+                        <td ng-bind="tr.type_name">
+                        </td>
+                        <td ng-bind="tr.type_cn_name">
+                        </td>
+                    </tr>
+                    <tr ng-if="progData.package_types.length==0">
+                        <td class="text-center" colspan="2">
+                            暂无数据
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <tabset  class="thirdTabs">
+        <tab active="tabs[0]" select="changTab(1)">
+            <tab-heading>
+                <label class="pub-tab">发布流程</label>
+            </tab-heading>
+            <div ng-if="!flagTab">
+                <div class="row" ng-if="progData.pub_info.phase_list.length !=0">
+                    <div class="col-sm-12 text-right" style="margin-top: 10px;">
+                        <div class="togglebutton">
+                            <label style="font-size: 14px; color: #777;">
+                                <span style="vertical-align: middle;margin-right: 10px">展开全部</span>
+                                <input type="checkbox" ng-model="pubControls.expand_flag" ng-if="pubControls.nav_show_flag == 0 || pubControls.nav_show_flag == 1 " ng-click="expandCollapseAll(1)">
+                                <input type="checkbox" ng-model="pubControls.expand_flag" ng-if="pubControls.nav_show_flag == 2" ng-click="colseCollapseAll(1)">
+                                <span class="toggle" style="vertical-align: middle;"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="row" ng-if="progData.pub_info.phase_list.length !=0">
+                            <div ng-repeat="step in progData.pub_info.phase_list" class="cmpt-module" style="width: 85.3333%;margin-left: 110px;padding-right: 15px">
+                                <div style="padding-left: 18px;">
+                                    <!-- 步骤圆样式-->
+                              <!--      <div class="step_circle_position">
+                                        <div class="step_circle_common" style="left: 40px;">
+                                            <span class="step_circle_font">{{$index + 1}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="module-horizontal-common-line" style="width: 28px;left:-10px;"></div>
+                                    <div class="module-vertical-common-line" style="left: -19px;top: 25px;" ng-if="!$last"></div>-->
+                                    <!-- 数据内容-->
+                                    <div class="cmpt-module-content">
+                                        <div class="row cmpt_module_head" ng-click="toggleModulesDetail(step,1)">
+                                            <div class="col-sm-1" style="width: 20px;margin-right: 10px;">
+                                                <div class="step_circle_common">
+                                                    <span class="step_circle_font">{{$index + 1}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <div class="cmpt-icon-common">
+                                                    <i class="fa fa-cube" title="组件" ng-show="step.type==1"></i>
+                                                    <i class="fa fa-cubes" title="组件组" ng-show="step.type==2"></i>
+                                                    <i class="fa fa-dropbox" title="阶段" ng-show="step.type==4"></i>
+                                                </div>
+                                                <div class="col-sm-5 alias-name" ng-if="step.type==1 || step.type==2">
+                                                    <span style="cursor: default" ng-bind="step.cn_name" title="step.cn_name"></span>
+                                                </div>
+                                                <div class="col-sm-5 cmpt-cn-name" ng-show="step.type==4">
+                                                    <span style="cursor: default" title="{{step.cn_name}}">{{step.cn_name}}</span>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;">
+                                                <span ng-if="step.impl_type == 1" class="exec-type ftp_color">FTP</span>
+                                                <span ng-if="step.impl_type == 2" class="exec-type shell_color">SHELL</span>
+                                                <span ng-if="step.impl_type == 3" class="exec-type was_color">WAS</span>
+                                                <span ng-if="step.impl_type == 4" class="exec-type svn_color">SVN</span>
+                                                <span ng-if="step.impl_type == 5" class="exec-type web_logic_color">WEBLOGIC</span>
+                                                <span ng-if="step.impl_type == 6" class="exec-type jdbc_color">JDBC</span>
+                                                <span ng-if="step.impl_type == 7" class="exec-type python_color">PYTHON2</span>
+                                                <span ng-if="step.impl_type == 8" class="exec-type python_color">PYTHON3</span>
+                                            </div>
+                                            <!--<div class="col-sm-2">
+                                                <div class="cog-icon" ng-click="stopPrevent($event)" ng-show="$first || $last">
+                                                    <span class="fa fa-cog"></span>
+                                                    <div class="cmpt-operate">
+                                                        <ul class="list-unstyled operate-option" style="margin-bottom: 0;">
+                                                            <li ng-click="colseCollapseAll()" ng-show="(controls.nav_show_flag == 2 || controls.nav_show_flag == 1)">
+                                                                <span class="fa fa-angle-double-up"></span>全部收起
+                                                            </li>
+                                                            <li ng-click="expandCollapseAll()" ng-show="(controls.nav_show_flag == 0 || controls.nav_show_flag == 1)">
+                                                                <span class="fa fa-angle-double-down"></span>全部展开
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                        <!-- 组件-->
+                                        <div ng-if="step.type == 1">
+                                            <div collapse="!step.show_detail">
+                                                <div class="content_border">
+                                                    <div class="row form_style" style="padding-top:20px;">
+                                                        <div class="col-sm-2">
+                                                            <label class="label_key">描述</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="cursor: default">
+                                                            {{step.bk_desc}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form_style" style="margin-top: 18px;padding-right:20px;" ng-if="step.exec_script">
+                                                        <div class="col-sm-2">
+                                                            <label class="label_key">执行脚本</label>
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                              <textarea ui-codemirror="viewOptions" ui-refresh="true" placeholder="执行脚本" ng-model="step.exec_script">
+                                                              </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!--参数列表-->
+                                                    <div class="row form_style" style="padding-top: 10px">
+                                                        <div class="col-sm-2">
+                                                            <label class="label_key">组件参数</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="padding-left:10px;padding-right:35px;">
+                                                            <div ng-show="step.ref_params == 0" style="color: #999;cursor: default">暂无引用参数列表</div>
+                                                            <table ng-show="step.ref_params != 0" class="table sub-table text-center" tbl-Data="step.ref_params">
+                                                                <thead>
+                                                                <tr>
+                                                                    <td>
+                                                                        <span>参数名</span>
+                                                                        <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                                                    </td>
+                                                                    <td width="155">
+                                                                        引用全局参数
+                                                                    </td>
+                                                                    <td>
+                                                                        参数中文名
+                                                                    </td>
+                                                                    <td>
+                                                                        参数描述
+                                                                    </td>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody style="background: #FAFAFA">
+                                                                <tr ng-repeat="tr in step.ref_params" style="font-size: 12px;">
+                                                                    <td>
+                                                                        <div style="text-align: center;">
+                                                                            {{tr.param_name}}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div style="text-align: center;">
+                                                                            {{tr.ref}}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div style="text-align: center;">
+                                                                            <span ng-if="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                                            <span ng-if="!tr.param_cn_name">--</span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span ng-if="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                                                                        <span ng-if="!tr.param_bk_desc">--</span>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!--数据源-->
+                                                    <div class="row form_style" style="padding-bottom: 20px;">
+                                                        <div class="col-sm-2 label_key">
+                                                            <label ng-if="!step.soc_type" style="margin-top: 10px;">数据源</label>
+                                                            <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                            <div ng-if="!step.soc_type && step.srv_soc.length!=0">
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type != 4 && step.impl_type != 3 && step.impl_type != 5">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 170px">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center"  ng-if="step.impl_type == 4">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            版本节点
+                                                                        </td>
+                                                                        <td>
+                                                                            SVN数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td style="text-align:center;">
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 3">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 5">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-if="step.soc_type && step.config_nodes.length!=0">
+                                                                <table class="table sub-table text-center">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            节点名
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="one in step.config_nodes">
+                                                                        <td>
+                                                                            <span ng-bind="one.name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-show="step.srv_soc.length==0 && step.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--组件组-->
+                                        <div ng-if="step.type == 2">
+                                            <div class="row" collapse="!step.show_detail" style="margin: 0">
+                                                <div class="content_border">
+                                                    <div ng-repeat="cmpt in step.modules" class="cmpt-module row" style="padding-top: 20px;">
+                                                        <div class="col-sm-offset-1 col-sm-10" style="padding-left: 12px;margin-bottom: 20px;">
+                                                            <div style="padding-left: 15px;">
+                                                       <!--         &lt;!&ndash; 步骤圆样式&ndash;&gt;
+                                                                <div class="step_circle_position">
+                                                                    <div class="step_circle_common" style="left: 41px;">
+                                                                        <span class="step_circle_font">{{$index + 1}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="module-horizontal-common-line" style="width: 28px;left:-10px;"></div>
+                                                                <div class="module-vertical-common-line" style="left: -19px;top: 25px;" ng-if="!$last"></div>-->
+                                                                <!-- 数据内容-->
+                                                                <div class="cmpt-module-content">
+                                                                    <div class="row cmpt_module_head">
+                                                                        <div class="col-sm-1" style="width: 20px;margin-right: 10px;">
+                                                                            <div class="step_circle_common">
+                                                                                <span class="step_circle_font">{{$index + 1}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-10">
+                                                                            <div class="cmpt-icon">
+                                                                                <i class="fa fa-cube" title="组件" ng-show="cmpt.type==1"></i>
+                                                                                <i class="fa fa-dropbox" title="阶段" ng-show="cmpt.type==4"></i>
+                                                                            </div>
+                                                                            <div class="col-sm-4 alias-name" ng-show="cmpt.type==1">
+                                                                                <span style="cursor: default" ng-bind="cmpt.alias_name" title="{{cmpt.alias_name}}"></span>
+                                                                            </div>
+                                                                            <div class="col-sm-4 cmpt-cn-name" ng-show="cmpt.type==4">
+                                                                                <span style="cursor: default" title="{{cmpt.cn_name}}">{{cmpt.cn_name}}</span>
+                                                                            </div>
+                                                            <!--                <span style="cursor: default" class="exec-type" ng-style="{'background': cmpt.impl_type==1 ?'#FFCC00':cmpt.impl_type==2 ?'#669966': cmpt.impl_type==3 ? '#FF6666' : '#006699'}">{{cmpt.type_cn}}</span>-->
+                                                                        </div>
+                                                                        <div style="float: right;">
+                                                            <!--                <span style="cursor: default" class="exec-type" ng-style="{'background': cmpt.impl_type==1 ?'#FFCC00':cmpt.impl_type==2 ?'#669966': cmpt.impl_type==3 ? '#FF6666' : '#006699'}">{{cmpt.type_cn}}</span>-->
+                                                                            <span ng-if="cmpt.impl_type == 1" class="exec-type ftp_color">FTP</span>
+                                                                            <span ng-if="cmpt.impl_type == 2" class="exec-type shell_color">SHELL</span>
+                                                                            <span ng-if="cmpt.impl_type == 3" class="exec-type was_color">WAS</span>
+                                                                            <span ng-if="cmpt.impl_type == 4" class="exec-type svn_color">SVN</span>
+                                                                            <span ng-if="cmpt.impl_type == 5" class="exec-type web_logic_color" style="width: 75px">WEBLOGIC</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- 组件-->
+                                                                    <div ng-if="cmpt.type == 1">
+                                                                        <div class="content_border">
+                                                                            <div class="row form_style" style="padding-top: 20px;">
+                                                                                <div class="col-sm-2">
+                                                                                    <label class="control-label label_key">描述</label>
+                                                                                </div>
+                                                                                <div class="col-sm-10" style="cursor: default">
+                                                                                    {{cmpt.bk_desc}}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row form_style" style="margin-top: 18px;padding-right:20px;">
+                                                                                <div class="col-sm-2">
+                                                                                    <label class="control-label label_key">执行脚本</label>
+                                                                                </div>
+                                                                                <div class="col-sm-10">
+                          <textarea ui-codemirror="viewOptions" ui-refresh="true" placeholder="执行脚本" ng-model="cmpt.exec_script">
+                          </textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--参数列表-->
+                                                                            <div class="row form_style" style="padding-top: 10px;">
+                                                                                <div class="col-sm-2" style="margin-top: 7px;">
+                                                                                    <label class="control-label label_key">组件参数</label>
+                                                                                </div>
+                                                                                <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 7px">
+                                                                                    <div ng-show="cmpt.ref_params == 0" style="color: #999;cursor: default">暂无引用参数列表</div>
+                                                                                    <table ng-show="cmpt.ref_params != 0" class="table sub-table text-center">
+                                                                                        <thead>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <span>参数名</span>
+                                                                                                <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                                                                            </td>
+                                                                                            <td width="155">
+                                                                                                引用全局参数
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                参数中文名
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                参数描述
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        </thead>
+                                                                                        <tbody style="background: #FAFAFA">
+                                                                                        <tr ng-repeat="tr in cmpt.ref_params" style="font-size: 12px;">
+                                                                                            <td>
+                                                                                                <div style="text-align: center;">
+                                                                                                    {{tr.param_name}}
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <div style="text-align: center;">
+                                                                                                    {{tr.ref}}
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <div style="text-align: center;">
+                                                                                                    <span ng-if="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                                                                    <span ng-if="!tr.param_cn_name">--</span>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span ng-if="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                                                                                                <span ng-if="!tr.param_bk_desc">--</span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--数据源-->
+                                                                            <div class="row form_style" style="padding-bottom: 20px;">
+                                                                                <div class="col-sm-2 label_key">
+                                                                                    <label ng-if="!step.soc_type" style="margin-top:10px;">数据源</label>
+                                                                                    <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                                                </div>
+                                                                                <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                                                    <div ng-if="!cmpt.soc_type && cmpt.srv_soc.length!=0">
+                                                                                        <table class="table sub-table text-center" ng-if="cmpt.impl_type != 4 && cmpt.impl_type != 3 && cmpt.impl_type != 5">
+                                                                                            <thead>
+                                                                                            <tr class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 170px">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <table class="table sub-table text-center"  ng-if="cmpt.impl_type == 4">
+                                                                                            <thead>
+                                                                                            <tr  class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    版本节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    SVN数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                                <td style="text-align:center;">
+                                                                                                    <span ng-bind="tr.ver_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.ver_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <table class="table sub-table text-center" ng-if="cmpt.impl_type == 3">
+                                                                                            <thead>
+                                                                                            <tr  class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WAS节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WAS数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.ver_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.ver_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <table class="table sub-table text-center" ng-if="cmpt.impl_type == 5">
+                                                                                            <thead>
+                                                                                            <tr  class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WEBLOGIC节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WEBLOGIC数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.ver_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.ver_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    <div ng-if="cmpt.soc_type && cmpt.config_nodes.length!=0">
+                                                                                        <table class="table sub-table text-center">
+                                                                                            <thead>
+                                                                                            <tr class="cursor_default">
+                                                                                                <td>
+                                                                                                    节点名
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="one in cmpt.config_nodes">
+                                                                                                <td>
+                                                                                                    <span ng-bind="one.name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    <div ng-show="cmpt.srv_soc.length==0 && cmpt.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- 阶段-->
+                                                                    <div ng-if="cmpt.type == 4">
+                                                                        <div class="content_border">
+                                                                            <!-- 阶段-->
+                                                                            <div class="row form_style" style="padding-top:20px;">
+                                                                                <div class="col-sm-2">
+                                                                                    <label class="control-label label_key">执行脚本</label>
+                                                                                </div>
+                                                                                <div class="col-sm-9 " style="padding-left:18px;padding-right:18px">
+                          <textarea name="phase_exe_script" ui-codemirror="viewOptions" ui-refresh="true" placeholder="执行脚本" ng-model="cmpt.exec_script">
+                          </textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--数据源-->
+                                                                            <div class="row form_style" style="padding-bottom: 20px;">
+                                                                                <div class="col-sm-2 label_key">
+                                                                                    <label ng-if="!step.soc_type" style="margin-top:10px;">数据源</label>
+                                                                                    <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                                                </div>
+                                                                                <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                                                    <div ng-if="!cmpt.soc_type && cmpt.srv_soc.length!=0">
+                                                                                        <table class="table sub-table text-center" ng-if="cmpt.impl_type != 4 && cmpt.impl_type != 3 && step.impl_type != 5">
+                                                                                            <thead>
+                                                                                            <tr class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 170px">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <table class="table sub-table text-center"  ng-if="cmpt.impl_type == 4">
+                                                                                            <thead>
+                                                                                            <tr  class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    版本节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    SVN数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                                <td style="text-align:center;">
+                                                                                                    <span ng-bind="tr.ver_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.ver_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <table class="table sub-table text-center" ng-if="cmpt.impl_type == 3">
+                                                                                            <thead>
+                                                                                            <tr  class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WAS节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WAS数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.ver_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.ver_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <table class="table sub-table text-center" ng-if="cmpt.impl_type == 5">
+                                                                                            <thead>
+                                                                                            <tr  class="cursor_default">
+                                                                                                <td>
+                                                                                                    执行节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    数据源
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WEBLOGIC节点
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    WEBLOGIC数据源
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.exe_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.exe_soc_name"></span>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <span ng-bind="tr.ver_ip"></span>
+                                                                                                </td>
+                                                                                                <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                    <span ng-bind="tr.ver_soc_name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    <div ng-if="cmpt.soc_type && cmpt.config_nodes.length!=0">
+                                                                                        <table class="table sub-table text-center">
+                                                                                            <thead>
+                                                                                            <tr class="cursor_default">
+                                                                                                <td>
+                                                                                                    节点名
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody >
+                                                                                            <tr ng-repeat="one in cmpt.config_nodes">
+                                                                                                <td>
+                                                                                                    <span ng-bind="one.name"></span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    <div ng-show="cmpt.srv_soc.length==0 && cmpt.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="module-vertical-common-line" style="left: 31px;" ng-if="!$last"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 阶段-->
+                                        <div ng-if="step.type == 4">
+                                            <div collapse="!step.show_detail">
+                                                <div class="content_border">
+                                                    <!-- 阶段-->
+                                                    <div class="row form_style" style="margin-top: 20px;padding-bottom: 10px">
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label label_key">执行脚本</label>
+                                                        </div>
+                                                        <div class="col-sm-9" style="padding-left:18px;padding-right:18px">
+                    <textarea name="subgroup_exe_script" disabled ui-codemirror="viewOptions" ui-refresh="true" ng-model="step.exec_script" class="form-control" placeholder="执行脚本" style="resize:none;">
+                    </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!--数据源-->
+                                                    <div class="row form_style" style="padding-bottom: 20px;">
+                                                        <div class="col-sm-2 label_key">
+                                                            <label ng-if="!step.soc_type" style="margin-top:10px">数据源</label>
+                                                            <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                            <div ng-if="!step.soc_type && step.srv_soc.length!=0">
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type != 4 && step.impl_type != 3 && step.impl_type != 5">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 170px">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center"  ng-if="step.impl_type == 4">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            版本节点
+                                                                        </td>
+                                                                        <td>
+                                                                            SVN数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td style="text-align:center;">
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 3">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 5">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-if="step.soc_type && step.config_nodes.length!=0">
+                                                                <table class="table sub-table text-center">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            节点名
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="one in step.config_nodes">
+                                                                        <td>
+                                                                            <span ng-bind="one.name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-show="step.srv_soc.length==0 && step.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="module-vertical-common-line" style="left: 34px;" ng-if="!$last"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--全局参数表-->
+                <div class="row form_style" ng-if="progData.pub_info.param_list.length !=0">
+                    <label class="col-sm-2 label_key">全局参数表</label>
+                    <div class="col-sm-10" style="padding-right: 30px">
+                        <div class="row">
+                            <div ng-if="progData.pub_info.param_list.length ==0" style="color: #999;">暂无全局参数</div>
+                            <table ng-if="progData.pub_info.param_list.length !=0" class="table sub-table text-center" style="text-align: center;">
+                                <thead>
+                                <tr>
+                                    <td width="100"><span>参数名</span>
+                                        <span><i class="fa fa-asterisk"
+                                                 style=" color: #FF6600; font-size: 10px;"></i></span></td>
+                                    <td>中文名</td>
+                                    <td width="150px">参数描述</td>
+                                    <td>默认值</td>
+                                    <td style="width: 80px;">可修改</td>
+                                </tr>
+                                </thead>
+                                <tbody style="background: #FAFAFA">
+                                <tr ng-repeat="param in progData.pub_info.param_list">
+                                    <td>
+                                        <div ng-if="param.param_name" ng-bind="param.param_name">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span ng-if="param.param_cn_name" ng-bind="param.param_cn_name"></span>
+                                        <span ng-if="!param.param_cn_name">--</span>
+                                    </td>
+                                    <td>
+                                        <span ng-if="param.param_bk_desc" ng-bind="param.param_bk_desc"></span>
+                                        <span ng-if="!param.param_bk_desc">--</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="param.param_value" ng-bind="param.param_value"></span>
+                                        <span ng-show="!param.param_value">--</span>
+                                    </td>
+                                    <td>
+                                       <span ng-show="param.param_modify_flag==2">
+                                          <i style="cursor: default;font-size: 17px;margin-right: 3px;" class="fa fa-square-o" aria-hidden="true"></i>
+                                       </span>
+                                        <span ng-show="param.param_modify_flag==1">
+                      <i style="color: #0E76A8;cursor: default;font-size: 17px;" class="fa fa-check-square-o" aria-hidden="true"></i>
+                   </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="empty-tmpl" ng-if="progData.pub_info.phase_list.length ==0">
+                    暂无发布模板
+                </div>
+            </div>
+        </tab>
+        <tab active="tabs[1]" select="changTab(2)">
+            <tab-heading>
+                <label class="rol-tab">回退流程</label>
+            </tab-heading>
+            <div ng-if="flagTab">
+                <div class="row" ng-if="progData.rol_info.phase_list.length !=0">
+                    <div class="col-sm-12 text-right" style="margin-top: 10px;">
+                        <div class="togglebutton">
+                            <label style="font-size: 14px; color: #777;">
+                                <span style="vertical-align: middle;margin-right: 10px">展开全部</span>
+                                <input type="checkbox" ng-model="rolControls.expand_flag" ng-if="rolControls.nav_show_flag == 0 || rolControls.nav_show_flag == 1 " ng-click="expandCollapseAll(2)">
+                                <input type="checkbox" ng-model="rolControls.expand_flag" ng-if="rolControls.nav_show_flag == 2" ng-click="colseCollapseAll(2)">
+                                <span class="toggle" style="vertical-align: middle;"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="row" ng-if="progData.rol_info.phase_list.length !=0">
+                            <div ng-repeat="step in progData.rol_info.phase_list" class="cmpt-module" style="width: 85.3333%;margin-left: 110px;padding-right: 15px">
+                                <div style="padding-left: 18px;">
+                                    <!-- 步骤圆样式-->
+                                <!--    <div class="step_circle_position">
+                                        <div class="step_circle_common" style="left: 40px;">
+                                            <span class="step_circle_font">{{$index + 1}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="module-horizontal-common-line" style="width: 28px;left:-10px;"></div>
+                                    <div class="module-vertical-common-line" style="left: -19px;top: 25px;" ng-if="!$last"></div>-->
+                                    <!-- 数据内容-->
+                                    <div class="cmpt-module-content">
+                                        <div class="row cmpt_module_head" ng-click="toggleModulesDetail(step,2)" style="cursor: pointer;">
+                                            <div class="col-sm-1" style="width: 20px;margin-right: 10px;">
+                                                <div class="step_circle_common">
+                                                    <span class="step_circle_font">{{$index + 1}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <div class="cmpt-icon-common">
+                                                    <i class="fa fa-cube" title="组件" ng-show="step.type==1"></i>
+                                                    <i class="fa fa-cubes" title="组件组" ng-show="step.type==2"></i>
+                                                    <i class="fa fa-dropbox" title="阶段" ng-show="step.type==4"></i>
+                                                </div>
+                                                <div class="col-sm-5 alias-name" ng-if="step.type==1 || step.type==2">
+                                                    <span style="cursor: default" ng-bind="step.alias_name" title="step.alias_name"></span>
+                                                </div>
+                                                <div class="col-sm-5 cmpt-cn-name" ng-show="step.type==4">
+                                                    <span style="cursor: default" title="{{step.cn_name}}">{{step.cn_name}}</span>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;">
+                              <!--                  <span style="cursor: default" ng-if="step.impl_type" class="exec-type" ng-style="{'background': step.impl_type==1 ?'#FFCC00':step.impl_type==2 ?'#669966': step.impl_type==3 ? '#FF6666':'#006699'}">{{step.type_cn}}</span>-->
+                                                <span ng-if="step.impl_type == 1" class="exec-type ftp_color">FTP</span>
+                                                <span ng-if="step.impl_type == 2" class="exec-type shell_color">SHELL</span>
+                                                <span ng-if="step.impl_type == 3" class="exec-type was_color">WAS</span>
+                                                <span ng-if="step.impl_type == 4" class="exec-type svn_color">SVN</span>
+                                                <span ng-if="step.impl_type == 5" class="exec-type web_logic_color" style="width: 75px">WEBLOGIC</span>
+                                            </div>
+                                            <!--<div class="col-sm-2">
+                                                <div class="cog-icon" ng-click="stopPrevent($event)" ng-show="$first || $last">
+                                                    <span class="fa fa-cog"></span>
+                                                    <div class="cmpt-operate">
+                                                        <ul class="list-unstyled operate-option" style="margin-bottom: 0;">
+                                                            <li ng-click="colseCollapseAll()" ng-show="(controls.nav_show_flag == 2 || controls.nav_show_flag == 1)">
+                                                                <span class="fa fa-angle-double-up"></span>全部收起
+                                                            </li>
+                                                            <li ng-click="expandCollapseAll()" ng-show="(controls.nav_show_flag == 0 || controls.nav_show_flag == 1)">
+                                                                <span class="fa fa-angle-double-down"></span>全部展开
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                        <!-- 组件-->
+                                        <div ng-if="step.type == 1">
+                                            <div collapse="!step.show_detail">
+                                                <div class="content_border">
+                                                    <div class="row  form_style" style="padding-top: 20px;">
+                                                        <div class="col-sm-2 label_key">
+                                                            <label>描述</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="cursor: default">
+                                                            {{step.bk_desc}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form_style" style="margin-top: 18px;padding-right:20px;" ng-if="step.exec_script">
+                                                        <div class="col-sm-2 label_key">
+                                                            <label>执行脚本</label>
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                              <textarea ui-codemirror="viewOptions" ui-refresh="true" placeholder="执行脚本" ng-model="step.exec_script">
+                                                              </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!--参数列表-->
+                                                    <div class="row form_style" style="padding-top: 10px">
+                                                        <div class="col-sm-2 label_key">
+                                                            <label>组件参数</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="padding-left:10px;padding-right:35px;">
+                                                            <div ng-show="step.ref_params == 0" style="color: #999;cursor: default">暂无引用参数列表</div>
+                                                            <table ng-show="step.ref_params != 0" class="table sub-table text-center" tbl-Data="step.ref_params">
+                                                                <thead>
+                                                                <tr>
+                                                                    <td>
+                                                                        <span>参数名</span>
+                                                                        <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                                                    </td>
+                                                                    <td width="155">
+                                                                        引用全局参数
+                                                                    </td>
+                                                                    <td>
+                                                                        参数中文名
+                                                                    </td>
+                                                                    <td>
+                                                                        参数描述
+                                                                    </td>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody style="background: #FAFAFA">
+                                                                <tr ng-repeat="tr in step.ref_params" style="font-size: 12px;">
+                                                                    <td>
+                                                                        <div style="text-align: center;">
+                                                                            {{tr.param_name}}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div style="text-align: center;">
+                                                                            {{tr.ref}}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div style="text-align: center;">
+                                                                            <span ng-if="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                                            <span ng-if="!tr.param_cn_name">--</span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span ng-if="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                                                                        <span ng-if="!tr.param_bk_desc">--</span>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!--数据源-->
+                                                    <div class="row form_style" style="padding-bottom: 20px;">
+                                                        <div class="col-sm-2 label_key">
+                                                            <label ng-if="!step.soc_type" style="margin-top: 10px;">数据源</label>
+                                                            <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                            <div ng-if="!step.soc_type && step.srv_soc.length!=0">
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type != 4 && step.impl_type != 3 && step.impl_type != 5">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 170px">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center"  ng-if="step.impl_type == 4">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            版本节点
+                                                                        </td>
+                                                                        <td>
+                                                                            SVN数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td style="text-align:center;">
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 3">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 5">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-if="step.soc_type && step.config_nodes.length!=0">
+                                                                <table class="table sub-table text-center">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            节点名
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="one in step.config_nodes">
+                                                                        <td>
+                                                                            <span ng-bind="one.name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-show="step.srv_soc.length==0 && step.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--组件组-->
+                                        <div ng-if="step.type == 2">
+                                            <div class="row" collapse="!step.show_detail" style="margin: 0">
+                                                <div class="content_border">
+                                                    <div ng-repeat="cmpt in step.modules" class="cmpt-module row" style="padding-top: 20px;">
+                                                        <div class="col-sm-offset-1 col-sm-10" style="padding-left: 12px;margin-bottom: 20px;">
+                                                           <div style="padding-left: 15px;">
+                                                               <!-- 步骤圆样式-->
+                                                <!--               <div class="step_circle_position">
+                                                                   <div class="step_circle_common" style="left: 41px;">
+                                                                       <span class="step_circle_font">{{$index + 1}}</span>
+                                                                   </div>
+                                                               </div>
+                                                               <div class="module-horizontal-common-line" style="width: 28px;left:-10px;"></div>
+                                                               <div class="module-vertical-common-line" style="left: -19px;top: 25px;" ng-if="!$last"></div>-->
+                                                               <!-- 数据内容-->
+                                                               <div class="cmpt-module-content">
+                                                                   <div class="row cmpt_module_head">
+                                                                       <div class="col-sm-1" style="width: 20px;margin-right: 10px;">
+                                                                           <div class="step_circle_common">
+                                                                               <span class="step_circle_font">{{$index + 1}}</span>
+                                                                           </div>
+                                                                       </div>
+                                                                       <div class="col-sm-10">
+                                                                           <div class="cmpt-icon-common">
+                                                                               <i class="fa fa-cube" title="组件" ng-show="cmpt.type==1"></i>
+                                                                               <i class="fa fa-dropbox" title="阶段" ng-show="cmpt.type==4"></i>
+                                                                           </div>
+                                                                           <div class="col-sm-4 alias-name" ng-show="cmpt.type==1">
+                                                                               <span style="cursor: default" ng-bind="cmpt.alias_name" title="{{cmpt.alias_name}}"></span>
+                                                                           </div>
+                                                                           <div class="col-sm-4 cmpt-cn-name" ng-show="cmpt.type==4">
+                                                                               <span style="cursor: default" title="{{cmpt.cn_name}}">{{cmpt.cn_name}}</span>
+                                                                           </div>
+                                                                       </div>
+                                                                       <div style="float: right;">
+                                                             <!--              <span style="cursor: default" class="exec-type" ng-style="{'background': cmpt.impl_type==1 ?'#FFCC00':cmpt.impl_type==2 ?'#669966': cmpt.impl_type==3 ? '#FF6666' : '#006699'}">{{cmpt.type_cn}}</span>-->
+                                                                           <span ng-if="cmpt.impl_type == 1" class="exec-type ftp_color">FTP</span>
+                                                                           <span ng-if="cmpt.impl_type == 2" class="exec-type shell_color">SHELL</span>
+                                                                           <span ng-if="cmpt.impl_type == 3" class="exec-type was_color">WAS</span>
+                                                                           <span ng-if="cmpt.impl_type == 4" class="exec-type svn_color">SVN</span>
+                                                                           <span ng-if="cmpt.impl_type == 5" class="exec-type web_logic_color" style="width: 75px">WEBLOGIC</span>
+                                                                       </div>
+                                                                   </div>
+                                                                   <!-- 组件-->
+                                                                   <div ng-if="cmpt.type == 1">
+                                                                       <div class="content_border">
+                                                                           <div class="row form_style" style="padding-top: 20px">
+                                                                               <div class="col-sm-2">
+                                                                                   <label class="control-label label_key">描述</label>
+                                                                               </div>
+                                                                               <div class="col-sm-10" style="cursor: default">
+                                                                                   {{cmpt.bk_desc}}
+                                                                               </div>
+                                                                           </div>
+                                                                           <div class="row form_style" style="margin-top: 18px;padding-right:20px;">
+                                                                               <div class="col-sm-2 ">
+                                                                                   <label class="control-label label_key">执行脚本</label>
+                                                                               </div>
+                                                                               <div class="col-sm-10">
+                          <textarea ui-codemirror="viewOptions" ui-refresh="true" placeholder="执行脚本" ng-model="cmpt.exec_script">
+                          </textarea>
+                                                                               </div>
+                                                                           </div>
+                                                                           <!--参数列表-->
+                                                                           <div class="row form_style" style="padding-top: 10px;">
+                                                                               <div class="col-sm-2 " style="margin-top: 7px;">
+                                                                                   <label class="control-label label_key">组件参数</label>
+                                                                               </div>
+                                                                               <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 7px">
+                                                                                   <div ng-show="cmpt.ref_params == 0" style="color: #999;cursor: default">暂无引用参数列表</div>
+                                                                                   <table ng-show="cmpt.ref_params != 0" class="table sub-table text-center">
+                                                                                       <thead>
+                                                                                       <tr>
+                                                                                           <td>
+                                                                                               <span>参数名</span>
+                                                                                               <span><i style=" color: #FF6600; font-size: 10px;" class="fa fa-asterisk"></i></span>
+                                                                                           </td>
+                                                                                           <td width="155">
+                                                                                               引用全局参数
+                                                                                           </td>
+                                                                                           <td>
+                                                                                               参数中文名
+                                                                                           </td>
+                                                                                           <td>
+                                                                                               参数描述
+                                                                                           </td>
+                                                                                       </tr>
+                                                                                       </thead>
+                                                                                       <tbody style="background: #FAFAFA">
+                                                                                       <tr ng-repeat="tr in cmpt.ref_params" style="font-size: 12px;">
+                                                                                           <td>
+                                                                                               <div style="text-align: center;">
+                                                                                                   {{tr.param_name}}
+                                                                                               </div>
+                                                                                           </td>
+                                                                                           <td>
+                                                                                               <div style="text-align: center;">
+                                                                                                   {{tr.ref}}
+                                                                                               </div>
+                                                                                           </td>
+                                                                                           <td>
+                                                                                               <div style="text-align: center;">
+                                                                                                   <span ng-if="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                                                                   <span ng-if="!tr.param_cn_name">--</span>
+                                                                                               </div>
+                                                                                           </td>
+                                                                                           <td>
+                                                                                               <span ng-if="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                                                                                               <span ng-if="!tr.param_bk_desc">--</span>
+                                                                                           </td>
+                                                                                       </tr>
+                                                                                       </tbody>
+                                                                                   </table>
+                                                                               </div>
+                                                                           </div>
+                                                                           <!--数据源-->
+                                                                           <div class="row form_style" style="padding-bottom: 20px;">
+                                                                               <div class="col-sm-2 label_key">
+                                                                                   <label ng-if="!step.soc_type" style="margin-top:10px;">数据源</label>
+                                                                                   <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                                               </div>
+                                                                               <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                                                   <div ng-if="!cmpt.soc_type && cmpt.srv_soc.length!=0">
+                                                                                       <table class="table sub-table text-center" ng-if="cmpt.impl_type != 4 && cmpt.impl_type != 3 && cmpt.impl_type != 5">
+                                                                                           <thead>
+                                                                                           <tr class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody>
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 170px">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                       <table class="table sub-table text-center"  ng-if="cmpt.impl_type == 4">
+                                                                                           <thead>
+                                                                                           <tr  class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   版本节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   SVN数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                               <td style="text-align:center;">
+                                                                                                   <span ng-bind="tr.ver_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.ver_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                       <table class="table sub-table text-center" ng-if="cmpt.impl_type == 3">
+                                                                                           <thead>
+                                                                                           <tr  class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WAS节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WAS数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.ver_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.ver_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                       <table class="table sub-table text-center" ng-if="cmpt.impl_type == 5">
+                                                                                           <thead>
+                                                                                           <tr  class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WEBLOGIC节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WEBLOGIC数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.ver_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.ver_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                   </div>
+                                                                                   <div ng-if="cmpt.soc_type && cmpt.config_nodes.length!=0">
+                                                                                       <table class="table sub-table text-center">
+                                                                                           <thead>
+                                                                                           <tr class="cursor_default">
+                                                                                               <td>
+                                                                                                   节点名
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="one in cmpt.config_nodes">
+                                                                                               <td>
+                                                                                                   <span ng-bind="one.name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                   </div>
+                                                                                   <div ng-show="cmpt.srv_soc.length==0 && cmpt.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                                               </div>
+                                                                           </div>
+                                                                       </div>
+                                                                   </div>
+                                                                   <!-- 阶段-->
+                                                                   <div ng-if="cmpt.type == 4">
+                                                                       <div class="content_border">
+                                                                           <!-- 阶段-->
+                                                                           <div class="row form_style" style="padding-top: 20px;">
+                                                                               <div class="col-sm-2">
+                                                                                   <label class="control-label label_key">执行脚本</label>
+                                                                               </div>
+                                                                               <div class="col-sm-9" style="padding-left:18px;padding-right:18px">
+                          <textarea name="phase_exe_script" ui-codemirror="viewOptions" ui-refresh="true" placeholder="执行脚本" ng-model="cmpt.exec_script">
+                          </textarea>
+                                                                               </div>
+                                                                           </div>
+                                                                           <!--数据源-->
+                                                                           <div class="row form_style"  style="padding-bottom: 20px;">
+                                                                               <div class="col-sm-2 label_key">
+                                                                                   <label ng-if="!step.soc_type" style="margin-top:10px;">数据源</label>
+                                                                                   <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                                               </div>
+                                                                               <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                                                   <div ng-if="!cmpt.soc_type && cmpt.srv_soc.length!=0">
+                                                                                       <table class="table sub-table text-center" ng-if="cmpt.impl_type != 4 && cmpt.impl_type != 3 && step.impl_type != 5">
+                                                                                           <thead>
+                                                                                           <tr class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody>
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 170px">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                       <table class="table sub-table text-center"  ng-if="cmpt.impl_type == 4">
+                                                                                           <thead>
+                                                                                           <tr  class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   版本节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   SVN数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                               <td style="text-align:center;">
+                                                                                                   <span ng-bind="tr.ver_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.ver_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                       <table class="table sub-table text-center" ng-if="cmpt.impl_type == 3">
+                                                                                           <thead>
+                                                                                           <tr  class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WAS节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WAS数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.ver_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.ver_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                       <table class="table sub-table text-center" ng-if="cmpt.impl_type == 5">
+                                                                                           <thead>
+                                                                                           <tr  class="cursor_default">
+                                                                                               <td>
+                                                                                                   执行节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   数据源
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WEBLOGIC节点
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   WEBLOGIC数据源
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="tr in cmpt.srv_soc">
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.exe_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.exe_soc_name"></span>
+                                                                                               </td>
+                                                                                               <td>
+                                                                                                   <span ng-bind="tr.ver_ip"></span>
+                                                                                               </td>
+                                                                                               <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                                                   <span ng-bind="tr.ver_soc_name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                   </div>
+                                                                                   <div ng-if="cmpt.soc_type && cmpt.config_nodes.length!=0">
+                                                                                       <table class="table sub-table text-center">
+                                                                                           <thead>
+                                                                                           <tr class="cursor_default">
+                                                                                               <td>
+                                                                                                   节点名
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </thead>
+                                                                                           <tbody >
+                                                                                           <tr ng-repeat="one in cmpt.config_nodes">
+                                                                                               <td>
+                                                                                                   <span ng-bind="one.name"></span>
+                                                                                               </td>
+                                                                                           </tr>
+                                                                                           </tbody>
+                                                                                       </table>
+                                                                                   </div>
+                                                                                   <div ng-show="cmpt.srv_soc.length==0 && cmpt.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                                               </div>
+                                                                           </div>
+                                                                       </div>
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                            <div class="module-vertical-common-line" style="left: 31px;" ng-if="!$last"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 阶段-->
+                                        <div ng-if="step.type == 4">
+                                            <div collapse="!step.show_detail">
+                                                <div class="content_border">
+                                                    <!-- 阶段-->
+                                                    <div class="row form_style" style="padding-top: 20px;">
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label label_key">执行脚本</label>
+                                                        </div>
+                                                        <div class="col-sm-9" style="padding-left:18px;padding-right:18px">
+                    <textarea name="subgroup_exe_script" disabled ui-codemirror="viewOptions" ui-refresh="true" ng-model="step.exec_script" class="form-control" placeholder="执行脚本" style="resize:none;">
+                    </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!--数据源-->
+                                                    <div class="row form_style" style="padding-bottom: 20px;">
+                                                        <div class="col-sm-2 label_key">
+                                                            <label ng-if="!step.soc_type " style="margin-top:10px">数据源</label>
+                                                            <label ng-if="step.soc_type" style="margin-top: 10px;">执行节点</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="padding-left:10px;padding-right:35px;margin-top: 10px">
+                                                            <div ng-if="!step.soc_type && step.srv_soc.length!=0">
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type != 4 && step.impl_type != 3 && step.impl_type != 5">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 170px">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center"  ng-if="step.impl_type == 4">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            版本节点
+                                                                        </td>
+                                                                        <td>
+                                                                            SVN数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td style="text-align:center;">
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 3">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WAS数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table sub-table text-center" ng-if="step.impl_type == 5">
+                                                                    <thead>
+                                                                    <tr  class="cursor_default">
+                                                                        <td>
+                                                                            执行节点
+                                                                        </td>
+                                                                        <td>
+                                                                            数据源
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC节点
+                                                                        </td>
+                                                                        <td>
+                                                                            WEBLOGIC数据源
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="tr in step.srv_soc">
+                                                                        <td>
+                                                                            <span ng-bind="tr.exe_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.exe_soc_name"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span ng-bind="tr.ver_ip"></span>
+                                                                        </td>
+                                                                        <td style="width: 139px;padding-left: 0px;padding-right: 0px;">
+                                                                            <span ng-bind="tr.ver_soc_name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-if="step.soc_type && step.config_nodes.length!=0">
+                                                                <table class="table sub-table text-center">
+                                                                    <thead>
+                                                                    <tr class="cursor_default">
+                                                                        <td>
+                                                                            节点名
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                    <tr ng-repeat="one in step.config_nodes">
+                                                                        <td>
+                                                                            <span ng-bind="one.name"></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div ng-show="step.srv_soc.length==0 && step.config_nodes.length==0" style="color: #999;cursor: default">暂无数据</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="module-vertical-common-line" style="left: 34px;" ng-if="!$last"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--全局参数表-->
+                <div class="row form_style" ng-if="progData.rol_info.phase_list.length !=0">
+                    <label class="col-sm-2 label_key">全局参数表</label>
+                    <div class="col-sm-10" style="padding-right: 30px">
+                        <div class="row">
+                            <div ng-if="rolData.rol_info.param_list.length ==0" style="color: #999;">暂无全局参数</div>
+                            <table ng-if="rolData.rol_info.param_list.length !=0" class="table sub-table text-center" style="text-align: center;">
+                                <thead>
+                                <tr>
+                                    <td width="100"><span>参数名</span>
+                                        <span><i class="fa fa-asterisk"
+                                                 style=" color: #FF6600; font-size: 10px;"></i></span></td>
+                                    <td>中文名</td>
+                                    <td width="150px">参数描述</td>
+                                    <td>默认值</td>
+                                    <td style="width: 80px;">可修改</td>
+                                </tr>
+                                </thead>
+                                <tbody style="background: #FAFAFA">
+                                <tr ng-repeat="param in rolData.rol_info.param_list.length">
+                                    <td>
+                                        <div ng-if="param.param_name" ng-bind="param.param_name">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span ng-if="param.param_cn_name" ng-bind="param.param_cn_name"></span>
+                                        <span ng-if="!param.param_cn_name">--</span>
+                                    </td>
+                                    <td>
+                                        <span ng-if="param.param_bk_desc" ng-bind="param.param_bk_desc"></span>
+                                        <span ng-if="!param.param_bk_desc">--</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="param.param_value" ng-bind="param.param_value"></span>
+                                        <span ng-show="!param.param_value">--</span>
+                                    </td>
+                                    <td>
+                   <span ng-show="param.param_modify_flag==2">
+                      <i style="cursor: default;font-size: 17px;margin-right: 3px;" class="fa fa-square-o" aria-hidden="true"></i>
+                   </span>
+                                        <span ng-show="param.param_modify_flag==1">
+                      <i style="color: #0E76A8;cursor: default;font-size: 17px;" class="fa fa-check-square-o" aria-hidden="true"></i>
+                   </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="empty-tmpl" ng-if="progData.rol_info.phase_list.length == 0">
+                    暂无回退模板
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</div>
+<!--按钮-->
+<div class="modal-footer">
+    <div class="col-sm-12 text-center">
+        <button class="save_cancel_btn cancel_btn btn_md" type="button" ng-click="cancel()" style="margin-left: 20px;">关闭</button>
+    </div>
+</div>
+

@@ -1,0 +1,123 @@
+<style>
+    .breadcrumb > li + li::before{
+        color: #ccc;
+        content: "";
+        padding: 0 0px;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">固化配置</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body">
+    <!--选择节点-->
+    <form class="form-horizontal" name="info.form" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="row form-style">
+            <label class="col-sm-2 control-label label-key">执行节点</label>
+            <div class="col-sm-3 label-value" style="padding-left: 8px;padding-right: 0">
+                <bs-select width=130
+                           items="data.logic_node_list"
+                           my-select="info.node_info.logical_node_id"
+                           select-val="getFileList(selectKey,selectValue)"
+                           option-labal="logical_node_name"
+                           name="node_ip"
+                           option-key="logical_node_id"
+                           required></bs-select>
+                <validate-msg tag-cn-name="节点" type="select" name="node_ip" model="info.node_info.logical_node_id"></validate-msg>
+            </div>
+    <!--    <label class="col-sm-1 control-label label-key" title="节点" style="background: url('./img/cur_config.png') no-repeat 8px -5px;height: 20px;width: 20px;margin-top: 5px"></label>
+        <div class="col-sm-3 label-value" style="padding-left: 8px;padding-right: 0">
+            <bs-select width=130 name="prog_name"
+                       items="data.node_list"
+                       my-select="info.node_info.node_ip"
+                       select-val="selectNodeType(selectKey)"
+                       option-labal="node_ip"
+                       name="node_ip"
+                       option-key="index"
+                       disable="info.node_dir.loading"
+                       loading="control.node_loading"
+                       required></bs-select>
+            <validate-msg tag-cn-name="节点" type="select" name="node_ip" model="info.node_info.node_ip"></validate-msg>
+        </div>
+        <label class="col-sm-1 control-label label-key"  title="校验数据源" style="background: url('./img/cur_config.png') no-repeat -26px -5px;height: 20px;width: 20px;margin-top: 5px"></label>
+        <div class="col-sm-3 label-value" style="padding-left: 8px;padding-right: 0">
+            <bs-select width=130 name="prog_name"
+                       items="data.ver_soc_list"
+                       my-select="info.node_info.exec_soc_index"
+                       option-labal="soc_name"
+                       option-key="index"
+                       name="check_soc"
+                       disable="info.node_dir.loading"
+                       select-val="selectCheckSoc(selectKey)"
+                       loading="control.node_loading"
+                       required></bs-select>
+            <validate-msg tag-cn-name="校验数据源" type="select" name="check_soc" model="info.node_info.exec_soc_index"></validate-msg>
+        </div>
+        <label class="col-sm-1 control-label label-key" title="配置数据源"  style="background: url('./img/cur_config.png') no-repeat -58px -5px;height: 20px;width: 20px;margin-top: 5px"></label>
+        <div class="col-sm-3 label-value" style="padding-left: 8px;padding-right: 0">
+            <bs-select width=130 name="prog_name"
+                       items="data.exe_soc_list"
+                       my-select="info.node_info.ftp_soc_index"
+                       option-labal="soc_name"
+                       option-key="index"
+                       name="config_soc"
+                       disable="info.node_dir.loading"
+                       select-val="getFileList(selectKey)"
+                       loading="control.node_loading"
+                       required></bs-select>
+            <validate-msg tag-cn-name="配置数据源" type="select" name="config_soc" model="info.node_info.ftp_soc_index"></validate-msg>
+        </div>-->
+    </div>
+    </form>
+    <!--中间区域-->
+    <div class="row" style="margin-top: 20px;">
+        <!--选择文件-->
+        <div class="col-sm-8">
+            <div ng-if="info.node_dir.paths.length == 0" style="width: 100%;height:350px;background: url('./img/publish/choose_monitor_node.png') no-repeat 50% 52% ;position: relative;">
+                <div style="width: 100%;height: 36px;background: #091118;line-height: 36px;color: #999;padding-left: 20px;font-size: 12px;">
+                    文件路径:&nbsp;&nbsp;暂无
+                </div>
+                <div style="position: absolute;color: #6d7183;top: 64%;left: 42%;font-size: 12px;">暂无文件</div>
+            </div>
+            <div ng-if="info.node_dir.paths.length != 0">
+                <file-browse node="info.node_dir" change-path="changePath();" check="2"></file-browse>
+            </div>
+        </div>
+        <!--已选择的文件-->
+        <div class="col-sm-4" style="padding-left: 0">
+            <div style="width: 100%;height:350px;">
+                <div style="width: 100%;height: 36px;background: #091118;line-height: 36px;color: #999;padding-left: 10px;font-size: 12px;">
+                    已选文件&nbsp;&nbsp;
+                </div>
+                <div ng-if="info.node_info.node_soc_list[0].checked_files && info.node_info.node_soc_list[0].checked_files.length ==0" style="width: 100%;height:290px;background: url('./img/publish/no_monitor_log.png') no-repeat 50% 50% ;position: relative;">
+                    <div  style="position: absolute;color: #ccc;top: 65%;left: 38%;font-size: 12px;">暂无文件</div>
+                </div>
+                <div ng-if="info.node_info.node_soc_list[0].checked_files && info.node_info.node_soc_list[0].checked_files.length !=0" ng-repeat="single in info.node_info.node_soc_list">
+                  <!--  <div class="soc-type-name" style="font-size: 12px;margin: 8px 0;">
+                        <div style="display: inline-block;width: 40px;color: #88B8FF;border-radius: 2px;text-align: center;height: 20px;line-height: 20px;border:1px solid;" title="{{getProtocolTypeCnName(single.execute_protocol_type)}}">{{getProtocolTypeCnName(single.execute_protocol_type)}}</div><span>{{single.execute_soc_name}}</span>
+                    </div>-->
+                    <!--逻辑节点名-->
+                    <div class="soc-type-name" style="font-size: 12px;margin: 8px 0;">
+                        <div style="display: inline-block;color: #88B8FF;border-radius: 2px;text-align: center;height: 20px;line-height: 18px;border:1px solid;padding: 0 5px;" title="{{info.node_info.logical_node_name}}">{{info.node_info.logical_node_name}}</div>
+                    </div>
+                    <div ng-repeat="file in single.checked_files" style="height: 20px;width: 100%;color: #808080;margin-top: 5px">
+                        <div class="col-sm-11 col-sm-offset-1" style="padding:0">
+                            <span style="float: left;"><i class="fa fa-file-text-o"></i></span>
+                            <span style="position: relative;display: inline-block;font-size: 12px; max-width: 140px;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;margin-left: 10px;padding-right: 28px" title="{{file.file}}">
+                                {{file.file}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--按钮-->
+    <div style="margin-top:30px;margin-bottom: 40px;text-align: center;">
+        <button  class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+        <button ng-show="!btnBus_loading" class="save-btn btn-xl" ng-click="saveData()">确认</button>
+        <button ng-show="btnBus_loading" disabled="disabled" class="save-btn btn-xl">
+            <i style="color: white" class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>

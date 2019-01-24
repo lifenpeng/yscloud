@@ -1,0 +1,21 @@
+<style>
+    .ecm_newCmptGroup_btn:hover > .fa{
+        color: #FC9E22;
+    }
+</style>
+<div class="container-fluid cmpt">
+    <div class="row">
+        <div class="col-sm-5 cmpt-cpmts-switch-btn">
+            <ul class="nav nav-pills">
+                <li role="presentation" ng-class="info.current_route_name == 'cmpt.cmpt_new' ? 'cmpt-tab-choosed':'cmpt-tab-leave'">
+                    <a  ui-sref="cmpt.cmpt_new" ng-click="changeTabStyle('cmpt.cmpt_new')">新增组件</a>
+                </li>
+                <li role="presentation" ng-class="info.current_route_name == 'cmpt.cmpts_new' ? 'cmpt-tab-choosed':'cmpt-tab-leave'">
+                    <a  ui-sref="cmpt.cmpts_new" ng-click="changeTabStyle('cmpt.cmpts_new')">新增组件组</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+  <div ui-view></div>
+</div>
+

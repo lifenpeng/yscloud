@@ -1,0 +1,723 @@
+<style>
+    @media (min-width: 992px){
+        .modal-lg {
+            width: 1080px;
+        }
+    }
+    .modal-lg {
+        min-width: 800px;
+    }
+    .modal-header{
+        overflow: hidden;
+    }
+    .modal-header .notification{
+        position: absolute;
+        left: 50%;
+        top: -100px;
+        transform: translateX(-50%);
+        display: inline-block;
+        min-width: 150px;
+        height: 30px;
+        border-radius: 4px;
+        box-shadow: 0 0 3px #000;
+        padding: 2px 10px;
+    }
+    .modal-header .notification > span{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .modal-header .notification  .error-icon{
+        width: 20px;
+        height: 20px;
+        background: url("./img/publish/error_icon.png") no-repeat 0 0/20px;
+    }
+    .modal-header .notification  .finish-icon{
+        width: 20px;
+        height: 20px;
+        background: url("./img/publish/exe_finish.png") no-repeat 0 0/20px;
+    }
+    .modal-header .notification  .error-msg{
+        color: #E9416E;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 10px;
+        max-width: 280px;
+    }
+    .modal-header .notification-animate-enter{
+        animation: notificationEnter 0.5s linear;
+        -moz-animation: notificationEnter 0.5s linear;	   /* Firefox */
+        -webkit-animation: notificationEnter 0.5s linear;  /* Safari 和 Chrome */
+        -o-animation: notificationEnter 0.5s linear;	   /* Opera */
+        top: 4px;
+    }
+    @keyframes notificationEnter {
+        0%{
+            top: -100px;
+        }
+        100%{
+            top: 4px;
+        }
+    }
+    .modal-header .notification-animate-leave {
+        animation: notificationLeave 0.5s linear;
+        -moz-animation: notificationLeave 0.5s linear;	   /* Firefox */
+        -webkit-animation: notificationLeave 0.5s linear;  /* Safari 和 Chrome */
+        -o-animation: notificationLeave 0.5s linear;	   /* Opera */
+     }
+    @keyframes notificationLeave {
+        0% {
+            opacity: 1;
+            top: 4px;
+        }
+        100% {
+            top: -20px;
+            opacity: 0;
+        }
+    }
+    .interactive-container {
+        min-height: 360px;
+        padding: 0 10px 10px;
+    }
+    .interactive-container .nav-tabs::after{
+        border-bottom: 1px solid rgba(68, 220, 253, 0.2);
+    }
+    .interactive-container .interactive-node-tab .tab-content{
+        background: transparent;
+        padding: 0;margin: 0;
+    }
+    .interactive-node-tab .node-container{
+        margin: 0;
+        padding-top: 10px;
+    }
+    .node-container .node-container-left{
+        padding: 0;
+        background: #192331;
+        overflow: hidden;
+    }
+    /*文件导航*/
+    .node-container .node-container-left  .file-tabset{
+        display: flex;
+    }
+    .node-container .node-container-left  .file-tabset .nav-stacked{
+        width: 80px;
+        border-right: 1px solid rgba(68, 220, 253, 0.2) !important;
+        background: #192331;
+    }
+    .node-container .node-container-left  .file-tabset .nav-stacked >li{
+        width: 80px;
+    }
+    .node-container .node-container-left  .file-tabset .nav-stacked::after{
+        border-bottom: none;
+    }
+    .node-container .node-container-left  .file-tabset .nav-stacked > li.active{
+        border-bottom: none;
+    }
+    .node-container .node-container-left  .file-tabset .nav-stacked > li.active > a{
+        color: #FC9E22 !important;
+    }
+    .node-container .node-container-left  .file-tabset .nav-stacked > li > a{
+        padding: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #61A1B8 !important;
+    }
+    .node-container .node-container-left  .file-tabset .tab-content{
+        width: calc(100% - 80px);
+    }
+    /*文件文本区域*/
+    .node-container .node-container-left .file-area-container{
+        position: relative;
+    }
+    .node-container .node-container-left .config-icon{
+        position: absolute;
+        right: 8px;
+        top: 9px;
+        z-index: 10;
+        color: #61a1b8;
+        font-size: 16px;
+    }
+    .node-container .node-container-left .config-icon:hover{
+        cursor: pointer;
+        color: #44dcfd;
+    }
+
+    /*显示分隔符动画*/
+    .node-container .node-container-left .show-theme{
+        animation: splitflag 0.5s;
+        -moz-animation: splitflag 0.5s;	    /* Firefox */
+        -webkit-animation: splitflag 0.5s;	/* Safari 和 Chrome */
+        -o-animation: splitflag 0.5s;	    /* Opera */
+    }
+    @keyframes splitflag {
+        from {right:-197px;}
+        to {right:-97px;}
+    }
+    /*显示编码动画*/
+    .node-container .node-container-left .show-encoding{
+        animation: scriptencode 0.5s;
+        -moz-animation: scriptencode 0.5s;	   /* Firefox */
+        -webkit-animation: scriptencode 0.5s;  /* Safari 和 Chrome */
+        -o-animation: scriptencode 0.5s;	   /* Opera */
+    }
+    @keyframes scriptencode {
+        from {right:-297px;}
+        to {right:-97px;}
+    }
+    .node-container .node-container-left .theme-style,
+    .node-container .node-container-left .encode-style {
+        position: absolute;
+        right: -97px;
+        z-index: 10;
+        cursor: default;
+    }
+    .node-container .node-container-left .theme-style{
+        top: 36px;
+    }
+    /* .node-container .node-container-left .encode-style{
+        top: 65px;
+    } */
+    .node-container .node-container-left .setting .theme-style:after,
+    .node-container .node-container-left .setting .encode-style:after{
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .node-container .node-container-left .left-triangle{
+        float: left;
+        border: 13px solid transparent;
+        border-right-color:rgba(68, 220, 253,0.5);
+    }
+    .node-container .node-container-left .title{
+        float: left;
+        width: 40px;
+        text-align: center;
+        background-color: rgba(68, 220, 253,0.5);
+        padding: 5px 4px 5px 0;
+        color: #fff;
+    }
+    .node-container .node-container-left .right-btn-group{
+        float: left;
+        padding: 0 0 3px 5px;
+        border-bottom: 2px solid rgba(68, 220, 253,0.5);
+    }
+    .node-container .node-container-left .right-btn-group .group-list {
+        width: 92px;
+        background-color: #192331;
+    }
+    .node-container .node-container-left .right-btn-group .group-list
+    .btn-group button{
+        padding: 2px;
+        font-size: 12px;
+        width: 46px;
+        border-color: #44dcfd;
+    }
+    .node-container .node-container-left .right-btn-group .group-list
+    .btn-group .button-unselect{
+        background-color: #1e1e20;
+    }
+    .node-container .node-container-left .right-btn-group .group-list
+    .btn-group .button-unselect:hover{
+        opacity: 0.85;
+    }
+    .node-container .node-container-left .right-btn-group .group-list
+    .btn-group .button-selected{
+        background-color: #44dcfd;
+    }
+    .node-container .node-container-left .right-btn-group .group-list
+    .btn-group i{
+        margin-right: 2px;
+    }
+    .node-container .node-container-left .file-content-header{
+        padding-left: 10px;
+        padding-right: 10px;
+        border-bottom: 1px solid #243247;
+    }
+    .node-container .node-container-left .file-content-header
+    ul{
+        margin-bottom: 0;
+    }
+    .node-container .node-container-left .file-content-header
+    ul > li{
+        display: inline-block;
+        width: 60px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        color: #61a1b8;
+        cursor: pointer;
+    }
+    .node-container .node-container-left .file-content-header
+    .file-area-btn-active{
+        cursor: default;
+        border-bottom: 1px solid #44dcfd;
+        color: #44dcfd;
+    }
+    .node-container .node-container-left .file-content-main
+    .CodeMirror {
+        height: 405px;
+        color: #d2f1fe;
+        background-color: transparent;
+        border-color: transparent;
+    }
+    .node-container .node-container-left .file-content-main
+    .CodeMirror .CodeMirror-gutters{
+        background-color: transparent;
+        border-color: transparent;
+    }
+    .node-container .node-container-left .file-content-main
+    .CodeMirror .CodeMirror-linenumber{
+        color: #6D7183;
+    }
+    .node-container .node-container-left .file-content-main
+    .CodeMirror .update-background{
+        background-color: rgba(250, 216, 55,0.15);
+    }
+    .node-container .node-container-left .file-content-main .encoding-loading-container{
+        position: absolute;
+        top:0;left:0;
+        z-index: 9;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+    }
+    .node-container .node-container-left .file-content-main .encoding-loading{
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        font-size: 30px;
+        color: #44dcfd;
+    }
+    .node-container .node-container-left .file-content-footer{
+        border-top: 1px solid #243247;
+    }
+    .node-container .node-container-left .file-content-footer
+    .exe-button{
+        width: 140px;
+        height: 47px;
+        line-height: 47px;
+        text-align: center;
+        color: #44dcfd;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    .node-container .node-container-left .file-content-footer
+    .exe-button .exe-img{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url("./img/publish/interactive_sql_exe_active.png") no-repeat;
+        vertical-align: middle;
+    }
+    .node-container .node-container-left .file-content-footer
+    .exe-button .exe-text{
+        padding-left: 5px;
+    }
+    .node-container .node-container-left .file-content-footer
+    .exe-button:hover{
+        background: #2C3C54;
+        color: #fff;
+    }
+    .node-container .node-container-left .file-content-footer
+    .exe-button:hover .exe-img{
+        background-image: url("./img/publish/interactive_sql_exe_default.png");
+    }
+    /*右侧执行区域*/
+    .node-container .node-container-right {
+        padding-left: 10px;padding-right: 0;
+        position: relative;
+    }
+    .node-container .node-container-right .node-container-right-block{
+        background-color: #192331;
+        height: 486px;
+        max-width: 580px;
+        /* overflow: hidden */
+    }
+    .node-container .node-container-right .sql-exe-single{
+        padding: 10px;
+    }
+   .node-container .node-container-right .sql-type-img{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+       background: url("./img/publish/interactive_sql_type.png") no-repeat;
+    }
+    /*增*/
+    .node-container .node-container-right .sql-type-3{
+        background-position: 0 -40px;
+    }
+    /*删除*/
+    .node-container .node-container-right .sql-type-4{
+        background-position: 0 -80px;
+    }
+    /*改*/
+    .node-container .node-container-right .sql-type-2{
+        background-position: 0 -20px;
+    }
+    /*查*/
+    .node-container .node-container-right .sql-type-1{
+        background-position: 0 0;
+    }
+    /*未知*/
+    .node-container .node-container-right .sql-type-5{
+        background-position: 0 -60px;
+    }
+    .node-container .node-container-right .sql-statement{
+        word-break: break-all;
+        overflow: hidden;
+        max-height: 40px;
+        cursor: default;
+        font-weight: 500;
+        font-size: 14px;
+        color: #44dcfd;
+    }
+    .node-container .node-container-right .sql-statement-content{
+        padding-left: 5px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .node-container .node-container-right .no-data-container{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 110px;
+        height: 130px;
+    }
+    .node-container .node-container-right .no-data-container .no-data-icon{
+        background: url('./img/publish/exec_none_node_new.png') no-repeat;
+        width: 110px;height: 130px;text-align: center;
+    }
+    .node-container .node-container-right .no-data-container .no-data-icon-font{
+        display: inline-block;
+        color: #6d7183;
+        vertical-align: bottom;
+        margin-top: 105px;
+    }
+    .node-container .node-container-right .sql-exe-single{
+        border-bottom: 1px solid #243247;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-block{
+        height: 24px;overflow: hidden;position: relative;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-block:hover .sql-angle-icon{
+        opacity: 1;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-angle-icon{
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        color: #44dcfd;
+        font-size: 18px;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-angle-icon:hover{
+        color: #fff;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-exe-status{
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        background: url("./img/publish/prod_list_status_img.png") no-repeat;
+     }
+    .node-container .node-container-right .sql-exe-single .sql-exe-status-1{
+        background-position: 0 0;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-exe-status-2{
+        background-position: 0 -24px;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-exe-status-3{
+        background-position: 0 -48px;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-exe-status-1color{
+       color: #44dcfd;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-exe-status-2color{
+        color: #3DE27E;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-exe-status-3color{
+        color: #D33B63;
+    }
+    .node-container .node-container-right .sql-exe-single .list-inline{
+        margin-bottom: 5px;
+    }
+    .node-container .node-container-right .sql-exe-single .list-inline li{
+        position: relative;
+        height: 24px;
+    }
+    .node-container .node-container-right .sql-exe-single .list-inline li > span{
+        vertical-align: middle;
+    }
+    .node-container .node-container-right .sql-exe-single .list-inline li:first-child{
+       padding-right: 15px;
+    }
+    .node-container .node-container-right .sql-exe-single .list-inline li:first-child::after,
+    .node-container .node-container-right .sql-exe-single .list-inline li:nth-child(2)::after{
+        content: '|';
+        color: #1E3D4F;
+        position: absolute;
+        top: 3px;
+        right: -3px;
+    }
+    .node-container .node-container-right .sql-exe-single .list-inline li:nth-child(2)::after{
+        top: 1px;
+    }
+    .node-container .node-container-right .sql-exe-single .list-inline li:nth-child(2),
+    .node-container .node-container-right .sql-exe-single .list-inline li:nth-child(3){
+        padding-left:10px;
+        padding-right: 10px;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group{
+        width: 80px;
+        height: 28px;
+        border-radius: 3px;
+        cursor: pointer;
+        text-align: center;
+        background: transparent;
+        border: none;
+        color: #44dcfd;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group > span{
+        vertical-align: middle;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group > span:first-child{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-default .rollback-img{
+        background: url("./img/publish/interactive_sql_rollback_active.png") no-repeat;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-default .submit-img{
+        background: url("./img/publish/interactive_sql_submit_active.png") no-repeat;
+        background-position-y: -1px;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-default:hover{
+        background-color: #19b7ec;
+        color: #fff;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-default:active{
+        background-color: #0084ad;
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-default:hover .rollback-img,
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-disabled .rollback-img{
+        background-image: url("./img/publish/interactive_sql_rollback_default.png");
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-default:hover .submit-img,
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-disabled .submit-img{
+        background-image: url("./img/publish/interactive_sql_submit_default.png");
+    }
+    .node-container .node-container-right .sql-exe-single .sql-btn-group-disabled{
+        opacity: 0.6;
+        color: #fff;
+        cursor: not-allowed !important;
+    }
+    .node-container .node-container-right .sql-exe-single .select-table-data{
+        padding-bottom: 10px;
+    }
+    .node-container .node-container-right .sql-exe-single .select-table-data .primary-key-icon{
+        display: inline-block;
+        width:16px;
+        height: 16px;
+        margin-bottom: 2px;
+        vertical-align: middle;
+        background: url('./img/fault/key.png') no-repeat;
+    }
+    .node-container .node-container-right .sql-exe-single .select-table-data .mCSB_horizontal > .mCSB_container{
+        margin-bottom: 0;
+    }
+    .node-container .node-container-right .sql-exe-single .pagination-container .pagination{
+        margin: 0;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">{{info.phase_name}}</h3>
+    <div ng-click="cancel()"></div>
+    <span class="notification" ng-class="{'notification-animate-enter':control.add_enter_class,'notification-animate-leave':control.add_leave_class}">
+        <span class="error-icon"></span>
+        <span class="error-msg" title="{{msg_notification}}">{{msg_notification}}</span>
+    </span>
+</div>
+<div class="modal-body interactive-container">
+    <!--节点tabset-->
+    <tabset class="interactive-node-tab commonTabs">
+        <tab ng-repeat="node in info.phase_info.node_list" active="node.active" select="changeTab(node)">
+            <tab-heading>{{node.node_ip}}</tab-heading>
+            <!--文件tabset-->
+            <div class="row node-container">
+                <div class="col-sm-6 node-container-left">
+                    <tabset class="file-tabset" vertical="true">
+                        <tab ng-repeat="file in node.file_list" select="changeTab(node,$index)">
+                            <tab-heading title="{{file.file_name}}">{{file.file_name}}</tab-heading>
+                            <div class="file-area-container">
+                                <!--配置按钮-->
+                                <i class="fa fa-cog config-icon" title="配置" ng-click="control.show_setting = !control.show_setting"></i>
+                                <!--配置选项-->
+                                <div ng-if="control.show_setting" ng-click="$event.stopPropagation();">
+                                    <!-- <div class="encode-style" ng-class="control.show_setting ? 'show-encoding' : ''"
+                                        ng-mouseenter="showAnimate('encode-style')" ng-mouseleave="hiddenAnimate('encode-style')">
+                                        <div style="float: left;">
+                                            <div class="left-triangle"></div>
+                                            <div class="title">编码</div>
+                                        </div>
+                                        <div class="right-btn-group">
+                                            <div class="group-list">
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-default" ng-repeat="encode in data.encoding"
+                                                        ng-class="file.encoding_type == encode ? 'button-selected':'button-unselect'"
+                                                        ng-click="changeCoding(encode,file)">{{encode}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="theme-style" ng-class="control.show_setting ? 'show-theme' : ''"
+                                        ng-mouseenter="showAnimate('theme-style')" ng-mouseleave="hiddenAnimate('theme-style')"
+                                        ng-if="!file.is_original_area">
+                                        <div style="float: left;">
+                                            <div class="left-triangle"></div>
+                                            <div class="title">分隔符</div>
+                                        </div>
+                                        <div class="right-btn-group">
+                                            <div class="group-list">
+                                                <div class="btn-group" role="group">
+                                                    <input type="text" class="sub-form-control text-center" style="height: 22px"
+                                                        ng-model="file.delimiter" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="file-content-header">
+                                    <ul class="list-unstyled" ng-click="hidenGroupList()">
+                                        <li ng-class="{'file-area-btn-active':file.is_original_area}" ng-click="file.is_original_area = true">原始</li>
+                                        <li ng-class="{'file-area-btn-active':!file.is_original_area}" ng-click="file.is_original_area = false">工作区</li>
+                                    </ul>
+                                </div>
+                                <div class="file-content-main" ng-click="hidenGroupList()">
+                                    <div class="file-container" ng-if="file.is_original_area">
+                                        <textarea name="file_content" ui-codemirror="config.fileReadOnlyLoaded"
+                                            ui-refresh="control.refresh_codemirror" ng-model="file.file_content" class="form-control">
+                                         </textarea>
+                                    </div>
+                                    <div class="file-container" ng-if="!file.is_original_area">
+                                        <textarea name="file_edit_content" ui-codemirror="{onLoad:config.fileEditLoaded}"
+                                            ui-refresh="control.refresh_codemirror" ng-model="file.file_edit_content"
+                                            class="form-control">
+                                         </textarea>
+                                    </div>
+                                    <div class="encoding-loading-container" ng-if="file.change_encoding_loading">
+                                        <span class="fa fa-spinner encoding-loading" ng-class="{'fa-spin' : file.change_encoding_loading}"></span>
+                                    </div>
+                                </div>
+                                <div class="file-content-footer text-right" ng-if="!file.is_original_area">
+                                    <button type="button" class="exe-button" ng-click="exeSql(node)">
+                                        <span class="exe-img"></span>
+                                        <span class="exe-text">执行</span>
+                                    </button>
+                                </div>
+                                <div style="height: 48px" ng-if="file.is_original_area"></div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="col-sm-6 node-container-right">
+                    <div class="node-container-right-block" custom-scroll custom-config="config.scroll_bar">
+                        <div class="sql-exe-single" ng-repeat="exe_info in node.exe_info_list">
+                            <div class="sql-block" id="sql-block-{{$index}}" ng-style="{'cursor':exe_info.hide_more_btn ? 'default':'pointer'}"
+                                ng-click="exe_info.hide_more_btn || expandOrCollapseMoreSql(exe_info,$index)">
+                                <div class="row" ng-repeat="sql in exe_info.sql_statement_list" ng-class="firstSqlHeight(exe_info)">
+                                    <div class="col-sm-1">
+                                        <span class="sql-type-img {{'sql-type-'+sql.sql_type}}"></span>
+                                    </div>
+                                    <div class="col-sm-11 sql-statement-content">
+                                        <p style="margin: 0;padding-right: 5px">{{sql.sql_text}}</p>
+                                    </div>
+                                </div>
+                                <span class="sql-angle-icon fa" ng-class="exe_info.show_sql_more ? 'fa-angle-up':'fa-angle-down'"
+                                    ng-show="!exe_info.hide_more_btn"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <ul class="list-inline">
+                                        <li title="{{exe_info.exe_msg}}">
+                                            <span class="sql-exe-status" ng-class="(exe_info.exe_status ==2 ||exe_info.exe_status ==4||exe_info.exe_status ==5 ) ?'sql-exe-status-2': exe_info.exe_status ==3 ?'sql-exe-status-3':'sql-exe-status-1 rotate-img'"></span>
+                                            <span ng-class="(exe_info.exe_status ==2 ||exe_info.exe_status ==4||exe_info.exe_status ==5) ?'sql-exe-status-2color': exe_info.exe_status ==3 ?'sql-exe-status-3color':'sql-exe-status-1color'">{{exeStatusToCn(exe_info.exe_status)}}</span>
+                                        </li>
+                                        <li>
+                                            <span ng-bind="exe_info.exe_affect_num ? exe_info.exe_affect_num + '条' : '0条'"></span>
+                                        </li>
+                                        <li><span ng-bind="exe_info.exe_timeused_cn"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--查询表格-->
+                            <div class="row select-table-data" ng-if="exe_info.theads && exe_info.theads.length">
+                                <div class="col-sm-12" style="max-height: 188px;max-width: 550px;" custom-scroll custom-config="exe_info.scroll_x">
+                                    <table class="sub-table">
+                                        <thead>
+                                            <tr>
+                                                <td style="min-width: 60px;">行号</td>
+                                                <td style="min-width: 200px;" ng-repeat="head in exe_info.theads">
+                                                    <i ng-show="head.primary_key" title="主键" class="primary-key-icon"></i>
+                                                    <span ng-bind="head.value ? head.value : head.key"></span>&nbsp;
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-show="!exe_info.page_tbodys || exe_info.page_tbodys.length==0"
+                                                class="tbl-odd">
+                                                <td colspan="{{exe_info.theads.length + 1}}" style="text-align: center;">暂无数据</td>
+                                            </tr>
+                                            <tr ng-repeat="tr in exe_info.page_tbodys">
+                                                <td style="font-size: 15px;text-align: center;">
+                                                    <span>{{tr.rownumber}}</span>
+                                                </td>
+                                                <td ng-repeat="head in exe_info.theads">
+                                                    <span>{{tr[head.key]}}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--按钮-->
+                            <div class="row">
+                                <!--分页导航-->
+                                <div class="col-sm-6">
+                                    <div class="pagination-container" ng-if="exe_info.theads && exe_info.tbodys && exe_info.page_option.all_recd > 5">
+                                        <table-pagination page-option="exe_info.page_option"></table-pagination>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="sql-btn-group" ng-class="exe_info.disbaled_operate_btn ? 'sql-btn-group-disabled': 'sql-btn-group-default'"
+                                            ng-click="exe_info.disbaled_operate_btn || sqlOperate(exe_info,2)">
+                                            <span class="rollback-img"></span>
+                                            <span>回滚</span>
+                                        </button>
+                                        <button type="button" class="sql-btn-group" ng-class="exe_info.disbaled_operate_btn ? 'sql-btn-group-disabled': 'sql-btn-group-default'"
+                                            ng-click="exe_info.disbaled_operate_btn || sqlOperate(exe_info,1)">
+                                            <span class="submit-img"></span>
+                                            <span>提交</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-data-container" ng-if="node.exe_info_list.length == 0">
+                        <div class="no-data-icon">
+                            <span class="no-data-icon-font">无执行信息</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+
+</div>

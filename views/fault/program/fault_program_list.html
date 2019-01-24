@@ -1,0 +1,21 @@
+<div class="container-fluid program_list">
+    <div class="table-search">
+        <div class="table-search-input">
+            <input type="text"
+                   ng-model="search_key_word"
+                   class="form-control"
+                   placeholder="请输入方案编号或名称关键字"
+                   ng-enter="searchProgramByKeyword()">
+        </div>
+        <div class="table-search-btn">
+            <span class="table-clear-logol" ng-if="search_key_word" ng-click="clear()"></span>
+            <span class="table-search-logol"></span>
+        </div>
+    </div>
+    <!--列表-->
+    <div class="row" style="margin-top:20px;">
+        <div class="col-md-12">
+            <program-list></program-list>
+        </div>
+    </div>
+</div>

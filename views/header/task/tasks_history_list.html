@@ -1,0 +1,12 @@
+<div class="container-fluid tasks-list">
+    <div class="row" style="min-height: 300px;padding-bottom: 100px">
+        <div class="col-sm-12 commonTabs">
+            <ul class="nav nav-tabs nav-justified" style="width: 50%;">
+                <li role="presentation" ng-class="control.tab_flag == 1 ? 'active':''"><a href="" ng-click="selectHisTaskTab(1,'submit_his')">提交历史<span class="badge task-title"></span></a></li>
+                <li role="presentation" ng-class="control.tab_flag == 2 ? 'active':''"><a href="" ng-click="selectHisTaskTab(2,'review_his')">复核历史<span class="badge task-title"></span></a></li>
+                <li role="presentation" ng-class="control.tab_flag == 3 ? 'active':''"><a href="" ng-click="selectHisTaskTab(3,'auth_his')">授权历史<span class="badge task-title"></span></a></li>
+            </ul>
+            <his-task tab-state="control.tab_flag" class="tabCont"></his-task>
+        </div>
+    </div>
+</div>

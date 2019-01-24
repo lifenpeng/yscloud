@@ -1,0 +1,255 @@
+<style>
+    .datepick .btn-sm, .btn-group-sm > .btn  {
+        padding:9px 10px;
+    }
+    .autoBtn{
+        width: 80px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    .circleBtn{
+        width: 80px;
+        margin-left: -4px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    .btnBackNul{
+        color: #59a8f9;
+        background: #fff;
+        border:1px solid;
+    }
+    .btnBack{
+        background: #59a8f9;
+        color:white;
+    }
+
+
+    .left{
+        width: 360px;
+        height: 320px;
+        border:2px solid #eeeeee;
+        border-radius: 4px 0px 0px 4px;
+        float: left;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .right{
+        width: 300px;
+        height: 320px;
+        border:2px solid #eeeeee;
+        border-radius: 0px 4px 4px 0px;
+        display: inline-block;
+        margin-left: -2px;
+    }
+
+    .nulBack{
+        background-color: #FFFFFF;
+    }
+    .eeeBack{
+        background-color: #eee;
+    }
+    .autoStyle{
+        height: 46px;
+        width: 356px;
+        line-height: 46px;
+        padding:0px 10px;
+        position: relative;
+    }
+    .autoStyle .fa-trash-o{
+        font-size: 18px;
+        position: relative;
+        right: -94px;
+    }
+    .autoStyle input {
+        width: 22px;
+        height: 24px;
+        border-radius: 0px;
+        border:0px;
+        border-bottom: 1px solid #999;
+        text-align: center;
+        margin: 0px 6px;
+    }
+    .datepick{
+        display:inline-block;
+        min-height:290px;
+        position: absolute;
+    }
+
+</style>
+
+<div class="modal-header">
+    <h3 class="modal-title" ng-if="jobData.view_flag == 1">作业信息查看</h3>
+    <h3 class="modal-title" ng-if="jobData.view_flag == 2">作业信息设置</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all;>
+    <form name=">
+    <form name="form.jobForm" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: #336699;">作业中文名</label>
+                <div class="col-sm-5">
+                    <input type="text"
+                           name="job_cn_name"
+                           ng-model="jobData.job_cn_name"
+                           class="form-control"
+                           style="min-width: 200px;"
+                           placeholder="作业中文名"
+                           required
+                           ng-minlength=2
+                           ng-maxlength=100 ng-disabled="jobData.view_flag == 1">
+                    <validate-msg tag-cn-name="作业中文名" name="job_cn_name"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: #336699;">作业描述</label>
+                <div class="col-sm-5">
+                    <textarea name="job_bk_desc"
+                              ng-model="jobData.job_bk_desc"
+                              class="form-control"
+                              placeholder="作业描述（最多50个字）"
+                              style="min-width: 260px; resize:none;"
+                              required
+                              ng-maxlength=50 ng-disabled="jobData.view_flag == 1">
+                            </textarea>
+                    <validate-msg tag-cn-name="作业描述" name="job_bk_desc"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: #336699;">超时时间</label>
+                <div class="col-sm-5">
+                    <input type="number"
+                           name="over_time"
+                           ng-model="jobData.over_time"
+                           class="form-control"
+                           style="min-width: 200px;"
+                           placeholder="单位：秒"
+                           required ng-disabled="jobData.view_flag == 1">
+                    <validate-msg tag-cn-name="超时时间" name="over_time"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: #336699;">组件</label>
+                <div class="col-sm-5">
+                    <bs-select width=200 name="comp_id"
+                               items="jobData.cmpt_list"
+                               my-select="jobData.comp_id"
+                               option-labal="cn_name"
+                               select-val="getCmptName()"
+                               option-key="id" required disable="jobData.view_flag == 1"></bs-select>
+                    <validate-msg tag-cn-name="组件" type="select" name="comp_id" model="jobData.comp_id"></validate-msg>
+                </div>
+            </div>
+            <div class="form-group" ng-if="jobData.comp_id != ''">
+                <label class="col-sm-3 control-label" style="color: #336699;">组件参数</label>
+                <div class="col-sm-9">
+                    <table class="sub-table table" style="background: #fafafa;color: #ccc">
+                        <thead>
+                        <tr class="cursor_default">
+                            <td>
+                                参数名
+                            </td>
+                            <td>
+                                中文名
+                            </td>
+                            <td>
+                                参数值
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr style="background: #fafafa;" ng-repeat="param in jobData.param_list">
+                            <td >
+                                <div>
+                                    <div class="param-name" style="text-align: left;">{{param.param_name}}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="param-name" style="text-align: left;">{{param.param_cn_name}}</div>
+                            </td>
+                            <td style="text-align: left;" ng-if="jobData.view_flag == 2">
+                                <textarea name="param_value{{$id}}"
+                                          ui-codemirror="{ onLoad : paramShellLoaded}"
+                                          ui-refresh="true"
+                                          ng-model="param.param_value"
+                                          ng-maxlength="250"
+                                          class="sub-form-control">
+                                </textarea>
+                                <validate-msg style="font-size: 10px;" tag-cn-name="默认值"  name="param_value{{$id}}"></validate-msg>
+                            </td>
+                            <td style="text-align: left;" ng-if="jobData.view_flag == 1">
+                                <div class="param-name" style="text-align: left;">{{param.param_value}}</div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: #336699;">数据源</label>
+                <div class="col-sm-9">
+                    <table  ng-if="jobData.view_flag == 2" class="sub-table table" row-plus="addSoc()"  tbl-Data="jobData.soc_list" style="background: #fafafa;">
+                        <thead>
+                        <tr class="cursor_default">
+                            <td>
+                                节点
+                            </td>
+                            <td>
+                                数据源
+                            </td>
+                            <td>
+                                操作
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in jobData.soc_list">
+                            <td style="text-align:center;">
+                                <bs-select items="jobData.node_ip_list" width="140" my-select="tr.exe_ip" select-val="getSocByServer(tr)" no-border init-label loading=""></bs-select>
+                                <validate-msg tag-cn-name="服务器ip" type="select" name="exe_ip{{$index}}" model="tr.exe_ip"></validate-msg>
+                            </td>
+                            <td style="width: 170px">
+                                <bs-select items="tr.exe_soc_list" width="140" my-select="tr.exe_soc_name"  no-border init-label loading="tr.soc_list_loading"></bs-select>
+                                <validate-msg tag-cn-name="数据源" type="select" name="exe_soc_name{{$index}}" model="tr.exe_soc_name"></validate-msg>
+                            </td>
+                            <td>
+                                <div ng-click="removeOneSoc($index,step,1)" style="text-align: center;">
+                                    <i class="fa fa-trash-o"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="sub-table table"   ng-if="jobData.view_flag == 1" style="background: #fafafa;">
+                        <thead>
+                        <tr class="cursor_default">
+                            <td>
+                                节点
+                            </td>
+                            <td>
+                                数据源
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tr in jobData.soc_list" ng-if="jobData.view_flag == 1">
+                            <td style="text-align:center;">
+                                <span>{{tr.exe_ip}}</span>
+                            </td>
+                            <td style="width: 170px">
+                                <span>{{tr.exe_soc_name}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div style="text-align: center;margin-top: 40px;margin-bottom: 14px;">
+        <button class="cancel-btn btn-xl" ng-if="jobData.view_flag == 1" ng-click="formCancel()">返回</button>
+        <button class="cancel-btn btn-xl" ng-if="jobData.view_flag == 2" type="button" ng-click="formCancel()" style="width: 60px;">取消</button>
+        <button class="save-btn btn-xl" ng-if="jobData.view_flag == 2" ng-click="ok()">确定</button>
+    </div>
+</div>
+

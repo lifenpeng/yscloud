@@ -1,0 +1,179 @@
+<div class="container-fluid project-application pub-window">
+        <div dyna-height init-bottom="{{control.view_proj_app_flag ? 210 : 160}}" style="min-height: 300px;" ng-if="!control.his_list_flag">
+                <!--ng-if="!control.project_list_loading && info.project_list.length!=0 && !info.error_msg"-->
+                <div class="row" ng-if="!control.project_list_loading && info.apply_release_list.length!=0 && !info.error_msg">
+                    <div class="col-sm-6" style="min-height: 450px;" custom-scroll custom-config="config.project_scroll" ng-style="syncHeight()">
+                        <div class="project-block-style" ng-class="{'project-block-active': control.active_index == $index}" ng-click="chooseProject($index,true)" ng-repeat="apply in info.apply_release_list">
+                            <!--图片-->
+                            <div class="project-img-style"></div>
+                            <!--圆圈样式-->
+                            <div class="project-circle-style"></div>
+                            <!--外圈圆环-->
+                            <!--<div class="inner-circle"></div>-->
+                            <div class="project-name-published">
+                                <span ng-bind="apply.pjpublish_name"></span>
+                            </div>
+                            <div class="project-publish-time">
+                              {{apply.pjpublish_date}} &nbsp;&nbsp;&nbsp; {{apply.pjpublish_time.substring(0,apply.pjpublish_time.pjpublish_time.lastIndexOf(':'))}}   &nbsp;&nbsp;申请人：{{apply.pjpublish_cn_managers ? apply.pjpublish_cn_managers : apply.pjpublish_managers}}
+                            </div>
+                            <!--状态-->
+                            <div class="proj-status" title="{{apply.pjpublish_status == 1 ? '待发布' :  apply.pjpublish_status == 2 ? '发布中' : apply.pjpublish_status == 3 ? '发布完成' : '已关闭'}}" ng-class="apply.pjpublish_status == 1 ? 'proj-pre-publish' : apply.pjpublish_status == 2 ? 'proj-publish-ing' : apply.pjpublish_status == 3 ? 'proj-publish-finish' : 'proj-publish-close'"></div>
+                            <!--链接线样式-->
+                            <div class="project-line-style" ng-if="!$last"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="proj-content" ng-style="syncHeight()" style="padding-top: 10px">
+                            <div class="analysis-tab">
+                                <!--申请名称-->
+                                <div class="row form-style row-distance">
+                                    <label class="col-sm-3 label-key text-right" style="width: 120px;">
+                                        申请编号</label>
+                                    <div class="col-sm-6 label-value">
+                                        {{info.project_info.pjpublish_id}}
+                                    </div>
+                                </div>
+                                <!--发布说明-->
+                                <div class="row form-style row-distance">
+                                    <label class="col-sm-3 label-key text-right" style="width: 120px;">发布说明</label>
+                                    <div class="col-sm-6 label-value">
+                                        {{info.project_info.pjpublish_desc ? info.project_info.pjpublish_desc : '--'}}
+                                    </div>
+                                </div>
+                                <!--系统列表区域-->
+                                <div class="row row-distance" custom-scroll custom-config="config.sys_scroll" ng-style="syncSysHeight(100)" style="padding-left: 20px;padding-right: 20px;overflow-y: auto">
+                                    <div class="row proj-block-style" ng-repeat="proj in info.project_info.pjpublish_project_list">
+                                            <div class="proj-block-head">
+                                                <p class="proj-block-name" ng-bind="proj.project_name"></p>
+                                                <p class="proj-block-number" ng-bind="proj.project_id"></p>
+                                            </div>
+                                            <div class="proj-sys-content col-sm-6" ng-repeat="sys in proj.business_sys_list">
+                                                <div class="sys-item" ng-bind="sys.business_cn_name">
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--操作按钮-->
+                            <div class="operation-wrap" style="padding: 0 20px" ng-if="!control.view_proj_app_flag">
+                                <!--<div style="border-top: 2px solid #333"></div>-->
+                                <div class="operation-btn-style" ng-class="(info.project_info.is_compile_flag==1 && ((info.project_info.pjpublish_project_list.length>1) || (info.project_info.pjpublish_project_list.length==1 && info.project_info.pjpublish_project_list[0].business_sys_list.length>1))) ? 'operation-used' : 'operation-disable-btn'" ng-click="(info.project_info.is_compile_flag==0 || (info.project_info.pjpublish_project_list.length==1 && info.project_info.pjpublish_project_list[0].business_sys_list.length <=1)) || goToPlanSys(info.project_info.pjpublish_id)">
+                                    <div style="font-size: 18px;padding-top: 15px;;"><i class="fa fa-code-fork"></i></div>
+                                    <div>编列</div>
+                                </div>
+                                <div class="operation-btn-style" ng-class="info.project_info.pjpublish_status==1 ? 'operation-used' : 'operation-disable-btn'" ng-click="info.project_info.pjpublish_status >1 || updateApplication(info.project_info.pjpublish_id)">
+                                    <div style="font-size: 18px;padding-top: 15px;"><i class="fa fa-pencil-square-o"></i></div>
+                                    <div>修改申请</div>
+                                </div>
+                                <div class="operation-btn-style" ng-class="info.project_info.pjpublish_status==1 ? 'operation-used' : 'operation-disable-btn'" ng-click="info.project_info.pjpublish_status >1 || deleteApplication(info.project_info.pjpublish_id)">
+                                    <div style="font-size: 18px;padding-top: 15px;;"><i class="fa fa-repeat"></i></div>
+                                    <div>撤销申请</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="none-content-font-color font-14 text-center" ng-if="info.apply_release_list.length==0">暂无数据</div>
+                </div>
+                <div class="loading-font-color text-center" style="font-size: 14px" ng-if="control.project_list_loading">
+                    正在加载中 <i class="fa fa-spin fa-spinner"></i>
+                </div>
+                <div class="error-font-color text-center" style="font-size: 14px" ng-if="!control.project_list_loading && info.error_msg">
+                    <span ng-bind="info.error_msg"></span>
+                </div>
+                <div class="none-content-font-color font-14 text-center" ng-if="!control.project_list_loading && info.apply_release_list.length==0 && !info.error_msg">暂无数据</div>
+            </div>
+        <div dyna-height init-bottom="160" style="min-height: 300px;" ng-if="control.his_list_flag">
+            <div class="row" ng-if="!control.project_history_list_loading && info.apply_release_history_list.length!=0 && !info.error_his_msg">
+                <div class="col-sm-6" style="min-height: 450px;" custom-scroll custom-config="config.project_scroll" ng-style="syncHeight()">
+                    <div class="project-block-style" style="height:50px" ng-class="{'project-block-active': control.active_his_index == $index}" ng-click="chooseProject($index,false)" ng-repeat="apply in info.apply_release_history_list">
+                        <!--图片-->
+                        <div class="project-img-style" style="transform:scale(0.8);margin-top: -5px;left: 0px;"></div>
+                        <!--圆圈样式-->
+                        <div class="project-circle-style"></div>
+                        <!--外圈圆环-->
+                        <!--<div class="inner-circle"></div>-->
+                        <div class="project-name-published" style="padding-top: 12px;" title="{{apply.pjpublish_name}}">
+                            <span ng-bind="apply.pjpublish_name"></span>
+                        </div>
+                        <!--<div class="project-publish-time">
+                            {{apply.pjpublish_date}} &nbsp;&nbsp;&nbsp; {{apply.pjpublish_time.substring(0,apply.pjpublish_time.pjpublish_time.lastIndexOf(':'))}}   &nbsp;&nbsp;申请人：{{apply.pjpublish_cn_managers ? apply.pjpublish_cn_managers : apply.pjpublish_managers}}
+                        </div>-->
+                        <!--状态-->
+                        <div class="proj-status" style="transform:scale(0.8);top: 8px;" title="{{apply.pjpublish_status == 1 ? '待发布' :  apply.pjpublish_status == 2 ? '发布中' : apply.pjpublish_status == 3 ? '发布完成' : '已关闭'}}" ng-class="apply.pjpublish_status == 1 ? 'proj-pre-publish' : apply.pjpublish_status == 2 ? 'proj-publish-ing' : apply.pjpublish_status == 3 ? 'proj-publish-finish' : 'proj-publish-close'"></div>
+                        <!--链接线样式-->
+                        <div class="project-line-style" style="top: 20px;" ng-if="!$last"></div>
+                    </div>
+                    <!--自定义指令分页-->
+                    <div style="text-align: right;">
+                        <table-pagination page-option="config.page_option"></table-pagination>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="proj-content" ng-style="syncHeight()" style="padding-top: 10px">
+                        <div class="analysis-tab">
+                            <!--申请名称-->
+                            <div class="row form-style row-distance">
+                                <label class="col-sm-3 label-key text-right" style="width: 120px;">
+                                    申请编号</label>
+                                <div class="col-sm-6 label-value">
+                                    {{info.project_info_his.pjpublish_id}}
+                                </div>
+                            </div>
+                            <!--申请时间-->
+                            <div class="row form-style row-distance">
+                                <label class="col-sm-3 label-key text-right" style="width: 120px;">
+                                    申请时间</label>
+                                <div class="col-sm-6 label-value">
+                                    {{info.project_info_his.pjpublish_date}}&nbsp;&nbsp;{{info.project_info_his.pjpublish_time.substring(0,info.project_info_his.pjpublish_time.pjpublish_time.lastIndexOf(':'))}}
+                                </div>
+                            </div>
+                            <!--申请人-->
+                            <div class="row form-style row-distance">
+                                <label class="col-sm-3 label-key text-right" style="width: 120px;">
+                                    申请人</label>
+                                <div class="col-sm-6 label-value">
+                                    {{info.project_info_his.pjpublish_cn_managers ? info.project_info_his.pjpublish_cn_managers : info.project_info_his.pjpublish_managers}}
+                                </div>
+                            </div>
+
+                            <!--发布说明-->
+                            <div class="row form-style row-distance">
+                                <label class="col-sm-3 label-key text-right" style="width: 120px;">发布说明</label>
+                                <div class="col-sm-6 label-value">
+                                    {{info.project_info_his.pjpublish_desc ? info.project_info_his.pjpublish_desc : '--'}}
+                                </div>
+                            </div>
+                            <!--系统列表区域-->
+                            <div class="row row-distance" custom-scroll custom-config="config.sys_scroll" ng-style="syncSysHeight(0)" style="padding-left: 20px;padding-right: 20px;overflow-y: auto">
+                                <div class="row proj-block-style" ng-repeat="proj in info.project_info_his.pjpublish_project_list">
+                                    <div class="proj-block-head">
+                                        <p class="proj-block-name" ng-bind="proj.project_name"></p>
+                                        <p class="proj-block-number" ng-bind="proj.project_id"></p>
+                                    </div>
+                                    <div class="proj-sys-content col-sm-6" ng-repeat="sys in proj.business_sys_list">
+                                        <div class="sys-item"  ng-click="goToPubDetail(sys)">
+                                            <span ng-bind="sys.business_cn_name" style="width:88%;display:inline-block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"></span>
+                                            <span style="width:10%;display:inline-block;text-align: center;overflow: hidden;"><i class="fa fa-eye"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="operation-wrap" style="padding: 0 20px" ng-if="!control.view_proj_app_flag && control.his_list_flag">
+                            <div class="operation-btn-style operation-used" ng-click="reBootPublish(info.project_info_his.pjpublish_id)">
+                                <div style="font-size: 18px;padding-top: 15px;;"><i class="fa fa-power-off"></i></div>
+                                <div>重启</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="loading-font-color text-center" style="font-size: 14px" ng-if="control.project_history_list_loading">
+                正在加载中 <i class="fa fa-spin fa-spinner"></i>
+            </div>
+            <div class="error-font-color text-center" style="font-size: 14px" ng-if="!control.project_history_list_loading && info.error_his_msg">
+                <span ng-bind="info.error_his_msg"></span>
+            </div>
+            <div class="none-content-font-color font-14 text-center" ng-if="!control.project_history_list_loading && info.apply_release_history_list.length==0 && !info.error_his_msg">暂无数据</div>
+        </div>
+</div>

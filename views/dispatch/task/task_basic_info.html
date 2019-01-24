@@ -1,0 +1,59 @@
+<div class="form-horizontal task-basic-info">
+    <div class="row" collapse="!control.basic_info_expand">
+        <div class="col-sm-5">
+            <div class="form-group form-style">
+                <div class="col-sm-3  label-key">任务名称</div>
+                <div class="col-sm-9  label-value">
+                    <label ng-bind="info.task_cn_name"></label>
+                </div>
+            </div>
+            <div class="form-group form-style">
+                <div class="col-sm-3  label-key">任务类型</div>
+                <div class="col-sm-9  label-value">
+                    <label ng-bind="info.task_type_cn ? info.task_type_cn : '--'"></label>
+                </div>
+            </div>
+            <div class="form-group form-style">
+                <div class="col-sm-3  label-key">操作方式</div>
+                <div class="col-sm-9">
+                    <label >
+                        <input type="radio"
+                               name="radio"
+                               i-check
+                               value="1"
+                               ng-disabled="true"
+                               ng-model="info.exe_types"/>
+                        <span class="label-value">手动</span>
+                    </label>
+                    <label  style="margin-left: 15px">
+                        <input type="radio"
+                               name="radio"
+                               i-check
+                               value="2"
+                               ng-disabled="true"
+                               ng-model="info.exe_types"/>
+                        <span class="label-value">自动</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div class="form-group form-style">
+                <div class="col-sm-3  label-key">任务编号</div>
+                <div class="col-sm-9  label-value" style="word-break: break-all;padding-right: 30px" ng-bind="info.task_id"></div>
+            </div>
+           <!-- <div class="form-group form-style">
+                <div class="col-sm-3  label-key">任务状态</div>
+                <div class="col-sm-9  label-value"  style="word-break: break-all;">
+                    <span ng-bind="info.task_state_cn ? info.task_state_cn : '&#45;&#45;'"></span>
+                </div>
+            </div>-->
+            <div class="form-group form-style">
+                <div class="col-sm-3  label-key">执行人</div>
+                <div class="col-sm-9  label-value">
+                    <label ng-bind="info.exe_user_name"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

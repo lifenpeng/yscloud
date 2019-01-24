@@ -1,0 +1,24 @@
+
+<div class="container-fluid log-analysis-keyword-chart">
+    <div class="row">
+        <div ng-repeat="log in data.keyword_report_list">
+            <div class="form-group">
+                <div class="back-btn-position">
+                    <div class="ordinary-btn" ng-click="backLogAnalysis()">
+                        <span class="fa fa-angle-left font-15"></span>
+                    </div>
+                </div>
+                <div class="col-sm-12 text-center">
+                    <span class="font-30">关键字分析图表</span>
+                    <div> <span>{{log.start_date}}至{{log.end_date}}查询结果</span></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 text-center">
+                    <highchart class="padding-top-10" config="log.err_table" ng-if="control.genetate_pie"></highchart>
+                    <highchart class="padding-top-10" config="log.chart_config"></highchart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

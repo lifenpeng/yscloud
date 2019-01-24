@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <h3 class="modal-title">导入SQL</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body">
+    <!-- 输入SQL-->
+    <form name="info.form.sql_handle_form" ng-submit="formSubmit()"  novalidate autocomplete="off" onKeyPress="if(event.keyCode==13)return false">
+        <div class="modal-body">
+            <!--应用系统-->
+            <div class="row form-style">
+                <label class="control-label col-sm-2 label-key" style="padding-top: 8px">应用系统</label>
+                <div class="col-sm-8 label-value">
+                    <pro-bs-select width="240" name="select_database" items="data.busy_sys_list"
+                               select-val="selectSys(selectKey)"
+                               option-key="business_sys_name" option-labal="business_cn_name"
+                               my-select="info.sql_info.sys_name"
+                               disable="btn_loading"
+                               required></pro-bs-select>
+                    <validate-msg type="select" name="select_database" tag-cn-name="应用系统" model="info.sql_info.sys_name"></validate-msg>
+                </div>
+            </div>
+            <!--数据库-->
+            <div class="row form-style" style="padding-top: 20px;">
+                <label class="control-label col-sm-2 label-key" style="padding-top: 8px">数据库</label>
+                <div class="col-sm-8 label-value">
+                    <div ng-if="info.error_message" ng-bind="info.error_message" style="padding-top:8px;color:#d9534f"></div>
+                    <div ng-if="!info.error_message">
+                        <pro-bs-select width="240" name="select_soc_name" items="data.sql_soc_list"
+                                   my-select="info.sql_info.soc_name"
+                                   disable="btn_loading"
+                                   loading="control.soc_btn_loading"
+                                   required></pro-bs-select>
+                    </div>
+                    <validate-msg type="select" name="select_soc_name" tag-cn-name="数据库" model="info.sql_info.soc_name"></validate-msg>
+                </div>
+            </div>
+            <!--sql语句-->
+            <div class="row form-style" style="padding-top: 20px;">
+                <label class="control-label col-sm-2 label-key">SQL</label>
+                <div class="col-sm-9" style="border: 1px solid #ddd;margin-left: 15px;padding-bottom: 5px;padding-top: 5px">
+                    <div ng-if="info.handleData.sql_msg_list.length == 0" style="text-align: center;">
+                        暂无数据
+                    </div>
+                    <div class="row" style="margin-top:5px;" ng-repeat="one in info.handleData.sql_msg_list">
+                        <label class="col-sm-1" style="text-align: right; margin-top: 20px;padding-left: 0" >
+                            <input type="radio" name="agree" value="{{$index}}" i-check ng-change="changeSysNameAndSoc(one)" ng-model="info.handleData.checkFlag">
+                        </label>
+                        <div class="col-sm-10 text-left control-label" style="padding-top: 2px;padding-bottom: 2px;padding-left: 0">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label style="color:#336699" ng-bind="one.sys_name_text"></label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label style="color:#808080;word-break: break-all" ng-bind="one.sql_text"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--按钮-->
+            <!-- 表单提交按钮-->
+            <div class="row" style="margin-top: 40px">
+                <div class="col-sm-12 text-center">
+                    <button class="cancel-btn btn-md" type="button" ng-click="cancel()" style="margin-left: 0;">取消</button>
+                    <button ng-show="info.handleData.sql_msg_list.length != 0" class="save-btn btn-md" type="button" ng-click="saveAddSql()">添加</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+

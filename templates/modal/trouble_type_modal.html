@@ -1,0 +1,56 @@
+<form name="info.form.trouble_type_form"  ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 ng-if="!control.edit_flag" class="modal-title">新增故障类型</h3>
+        <h3 ng-if="control.edit_flag" class="modal-title">修改故障类型</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body" >
+        <div class="form-group form-style" ng-show="control.edit_flag">
+            <label class="col-sm-4 text-right label-key">故障编号</label>
+            <div class="col-sm-6 label-value">
+                <label ng-bind="info.trouble_type_info.trouble_key" ></label>
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-4 control-label label-key">故障代码</label>
+            <div class="col-sm-6">
+                <input type="text"
+                       class="form-control label-value"
+                       name="trouble_code"
+                       ng-model="info.trouble_type_info.trouble_code"
+                       placeholder="输入限制10个字符"
+                       ng-maxlength="10"
+                       required
+                       ng-model-options="{updateOn: 'blur'}"/>
+                <validate-msg tag-cn-name="故障代码" name="trouble_code" model="info.trouble_type_info.trouble_code"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-4 control-label label-key" >故障描述</label>
+            <div class="col-sm-6">
+            <textarea type="text"
+                      class="form-control label-value"
+                      name="trouble_bk_desc"
+                      style="resize:none;"
+                      ng-model="info.trouble_type_info.trouble_bk_desc"
+                      placeholder="输入限制50个字符"
+                      ng-maxlength="50"
+                      required
+                      ng-model-options="{updateOn: 'blur'}"
+                    >
+                </textarea>
+            <validate-msg tag-cn-name="故障描述" name="trouble_bk_desc" model="info.trouble_type_info.trouble_bk_desc"></validate-msg>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-center" style="margin-top: 10px;">
+                <button ng-if="!control.save_btn_loading" type="button" ng-click="formCancel()" class="cancel-btn btn-xl">取消</button>
+                <button ng-if="control.save_btn_loading" disabled="disabled"  class="disabled-btn btn-xl">取消</button>
+                <button ng-if="!control.save_btn_loading" type="submit" class="save-btn btn-xl">保存</button>
+                <button ng-if="control.save_btn_loading" type="button" class="save-btn btn-xl">
+                    <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

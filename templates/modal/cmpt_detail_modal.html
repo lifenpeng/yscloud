@@ -1,0 +1,237 @@
+<div class="modal-header">
+    <h3 class="modal-title">查看组件详细</h3>
+    <div ng-click="closeModal()"></div>
+</div>
+<!--详细的信息-->
+<div class="modal-body cmpt fontSize12">
+    <!--正在获取信息-->
+    <div class="row" ng-show="!control.cmpt_detail_loading">
+        <div class="col-sm-12 text-center modal-loading">
+            <div class="cmpt-detail-modal-loading">
+                <span class="loading-font-color"><i style="font-size: 24px;" class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;正在获取详细信息</span>
+            </div>
+        </div>
+    </div>
+    <div ng-if="control.cmpt_detail_loading">
+    <!-- 详细信息内容-->
+        <div ng-if="!control.error_message">
+            <div class="form-style">
+                <div class="cmpt-detail-modal-quote" ng-if="info.cmpt_info.ref_flag">
+                    该组件被引用
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label label-key">组件名</label>
+                        <label class="col-sm-9 label-value" style="padding-top: 7px;">
+                            {{info.cmpt_info.cn_name}}
+                            <div class="detail-publish-tag cmpt-not-publish" ng-show="info.cmpt_info.publish_state == 2">未发布</div>
+                            <div class="detail-publish-tag cmpt-publish-ok" ng-show="info.cmpt_info.publish_state == 1"><i class="fa fa-check"></i>已发布</div>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label label-key">描述</label>
+                        <label class="col-sm-10 label-value cmpt-detail-desc" ng-bind="info.cmpt_info.bk_desc"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label label-key">执行类别</label>
+                        <label class="col-sm-10 label-value" ng-bind="info.cmpt_info.impl_type_cn" style="padding-top: 7px;"></label>
+                    </div>
+                    <div class="form-group" ng-if="info.cmpt_info.impl_type==14">
+                        <label class="col-sm-2 control-label label-key">JAVA版本</label>
+                        <label class="col-sm-10 label-value" ng-if="info.cmpt_info.language_version" ng-bind="info.cmpt_info.language_version" style="padding-top: 7px;"></label>
+                        <label class="col-sm-10 label-value none-content-font-color" ng-if="!info.cmpt_info.language_version"  style="padding-top: 7px;">--</label>
+                    </div>
+                    <!--关联组件-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label label-key">校验组件</label>
+                        <label ng-if="info.cmpt_info.check_comp_name" class="col-sm-10 label-value" ng-bind="info.cmpt_info.check_comp_name" style="padding-top: 7px;"></label>
+                        <label ng-if="!info.cmpt_info.check_comp_name" class="col-sm-10 none-content-font-color" style="padding-top: 7px;">--</label>
+                    </div>
+                    <!--标签-->
+                    <div class="form-group form-style" style="margin-bottom: 5px" ng-if="info.cmpt_info.tag_list.length!=0">
+                        <div class="col-sm-2 text-right">
+                            <label class="control-label label-key">分类标签</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="cmpt-label-tag" ng-repeat="tag in info.cmpt_info.tag_list" ng-bind="tag"></div>
+                        </div>
+                    </div>
+                    <!--执行命令-->
+                    <div class="form-group" ng-if="info.cmpt_info.impl_type == 15 || info.cmpt_info.impl_type == 17">
+                        <label class="col-sm-2 control-label label-key">执行命令</label>
+                        <div class="col-sm-8">
+                <textarea
+                        ui-codemirror="config.view_sh_options"
+                        ui-refresh="true"
+                        placeholder="执行命令"
+                        ng-model="info.cmpt_info.command.exec_script"
+                        >
+                </textarea>
+                        </div>
+                    </div>
+                    <!--执行脚本-->
+                    <div class="form-group" ng-if="info.cmpt_info.impl_type != 15">
+                        <label class="col-sm-2 control-label label-key">执行脚本</label>
+                        <div class="col-sm-10">
+                            <tabset class="cmpt-script-tab">
+                                <tab active="script.active" select="selectScript($index)" style="cursor:pointer;" ng-repeat="script in info.cmpt_info.script_list">
+                                    <tab-heading>
+                                    <span title="{{script.script_type=='default'? '缺省': script.script_type}}" class="dcm_queSheng label-key" style="color:#808080 !important;">{{script.script_type=='default'? '缺省': script.script_type}}</span>&nbsp;
+                                    </tab-heading>
+                                    <textarea name="exec_script{{$index}}"
+                                              ui-codemirror="info.cmpt_info.impl_type == 6 ? config.view_sql_options : (info.cmpt_info.impl_type == 7 || info.cmpt_info.impl_type == 8) ? config.view_py_options : info.cmpt_info.impl_type == 14 ? config.view_java_options : config.view_sh_options "
+                                              ui-refresh="script.code_mirror_control"
+                                              ng-model="script.exec_script"
+                                              class="form-control"
+                                              required>
+                                    </textarea>
+                                    <div class="row script_msg" ng-if="info.cmpt_info.script_msg">
+                                        <div class="col-sm-12">{{info.cmpt_info.script_msg}}</div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+
+                    <!--参数表-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label label-key">参数表</label>
+                        <div  class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table sub-table text-center cmpt-param-table">
+                                        <thead>
+                                        <tr>
+                                            <td>
+                                                参数名
+                                            </td>
+                                            <td>
+                                                参数中文名
+                                            </td>
+                                            <td>
+                                                默认值
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in info.cmpt_info.param_list"  style="font-size: 12px;text-align: left;" ng-show="info.cmpt_info.param_list.length != 0">
+                                            <td >
+                                                <div class="detail-param-cn-name">{{tr.param_name}}</div>
+                                            </td>
+                                            <td>
+                                                <span class="detail-param-cn-name" title="{{tr.param_cn_name}}" ng-show="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                <span ng-show="!tr.param_cn_name">--</span>
+                                            </td>
+                                            <td>
+                                                <span class="detail-param-cn-name" title="{{tr.param_value}}"  ng-show="tr.param_value && !tr.sensitive_flag">{{tr.param_value}}</span>
+                                                <span class="detail-param-cn-name"   ng-show="tr.param_value && tr.sensitive_flag">******</span>
+                                                <span class="none-content-font-color" ng-show="!tr.param_value">--</span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="info.cmpt_info.param_list.length == 0">
+                                            <td colspan="3" class="table-no-data">
+                                                <span class="none-content-font-color">暂无数据</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--输出参数列表-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label label-key">输出参数表</label>
+                        <div  class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table sub-table text-center output-param-table">
+                                        <thead>
+                                        <tr>
+                                            <td>
+                                                参数名
+                                            </td>
+                                            <td>
+                                                参数中文名
+                                            </td>
+                                            <td>
+                                                参数描述
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tr in info.cmpt_info.out_param_list"  style="font-size: 12px;" ng-show="info.cmpt_info.out_param_list.length != 0">
+                                            <td>
+                                                <span class="detail-param-name" style="display: block"  title="{{tr.param_name}}" ng-show="tr.param_name">{{tr.param_name}}</span>
+                                                <span ng-show="!tr.param_name">--</span>
+                                            </td>
+                                            <td>
+                                                <span class="detail-param-name" style="display: block;width:85%;" title="{{tr.param_cn_name}}" ng-show="tr.param_cn_name">{{tr.param_cn_name}}</span>
+                                                <span class="none-content-font-color" ng-show="!tr.param_cn_name">--</span>
+                                            </td>
+                                            <td style="min-width: 200px;">
+                                                <span class="cmpt-text-ellipsis" style="display: block;width: 85%;"  title="{{tr.param_bk_desc}}" ng-show="tr.param_bk_desc">{{tr.param_bk_desc}}</span>
+                                                <span class="none-content-font-color" ng-show="!tr.param_bk_desc">--</span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="info.cmpt_info.out_param_list.length == 0">
+                                            <td colspan="3" class="table-no-data">
+                                                <span class="none-content-font-color">暂无数据</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--插件列表-->
+                    <div class="form-group" ng-if="info.cmpt_info.plugin_list.length !=0">
+                        <div class="col-sm-2 text-right">
+                            <label class="control-label label-key">插件列表</label>
+                        </div>
+                        <div class="col-sm-10">
+                            <table class="sub-table table text-center cmpt-plugin-table" tbl-Data="info.cmpt_info.plugin_list">
+                                <thead>
+                                <tr>
+                                    <td  style="width: 170px;min-width: 170px;max-width: 170px;">插件名</td>
+                                    <td  width="200px">插件类型</td>
+                                    <td>插件描述</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr  ng-repeat="tr in info.cmpt_info.plugin_list">
+                                    <td>
+                                        <div style="text-align: left;">
+                                            <span>{{tr.plugin_name}}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span>{{getPluginTypeCnName(tr.plugin_type)}}</span>
+                                    </td>
+                                    <td style="max-width: 200px;overflow: hidden;white-space: nowrap">
+                                        <span>{{tr.plugin_bk_desc}}</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        </div>
+    <!-- 获取信息异常-->
+        <div class="row" ng-show="control.error_message">
+            <div class="col-sm-12 text-center">
+                <div class="cmpt-detail-modal-error">
+                    <span class="error-font-color">获取详细信息异常</span>
+                    <div class="cmpt-detail-modal-error-msg" ng-bind="subgroup_detail_btn.error_message"></div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="save-cancel-btn cancel-btn btn-xl " ng-click="closeModal()">关闭</button>
+        </div>
+    </div>
+
+</div>

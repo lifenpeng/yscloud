@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html ng-app="PDFModule">
+<head>
+    <meta charset="UTF-8">
+  <!--  <link href="../../css/bootstrap.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/comm.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="../../css/cl.min.css"/>
+
+    <script src="../../js/components/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../js/components/angularjs/angular.min.js"></script>
+    <script src="../../js/components/other/highcharts.js"></script>
+    <script src="../../js/components/other/highcharts-ngv0.0.12.js"></script>
+    <script src="../../js/components/boostrap/bootstrap.min.js"></script>
+    <script src="../../js/components/boostrap/ui-bootstrap-tpls-0.11.0.js"></script>
+   <!-- <script src="../../js/services/GlobalData.js"></script>
+    <script src="../../js/services/CvService.js"></script>
+    <script src="../../js/services/ChartsService.js"></script>
+    <script src="../../js/services/http/CommHttpSrv.js"></script>
+    <script src="../../js/services/http/InspectionHttpSrv.js"></script>
+    <script src="../../js/controllers/common/CommController.js"></script>
+    <script src="../../js/controllers/common/ModalCtrl.js"></script>
+    <script src="../../js/controllers/inspection/PDF.js"></script>-->
+    <!--第一种方案-->
+    <script src="../../js/cl.min.js"></script>
+
+    <style>
+    </style>
+</head>
+<style>
+    body,.container-fluid{
+        background-color: #172230;
+        padding: 15px;
+    }
+    .log-name-container{
+        display: inline-block;
+        width: 85px;
+        vertical-align: top;
+        margin-top: 27px;
+    }
+    .log-name-span{
+        cursor: default;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        white-space: nowrap;
+        margin-top: 2px;
+        padding-left: 0px;
+    }
+    .log-name-container .log-name-font{
+        font-size: 20px;margin-top: -8px;
+    }
+    .log-inspt-lg-icon{
+        background: url("../../img/inspection/log_loggle.png") no-repeat;
+        width: 73px;
+        height: 74px;
+        position: relative;
+        top:6px;
+        margin-top: 10px;
+    }
+    .log-report-loading-container{
+        padding-left: 0px;
+        padding-right: 0px;
+        text-align: center;
+        margin-top: 240px;
+        border-top:0px;
+        position: relative;
+    }
+    .display-inblock{
+        display: inline-block;
+    }
+    .log-export-btn{
+        height: 25px;
+        margin-top: 20px;
+    }
+    .font-30{
+        font-size: 30px; 
+    }
+</style>
+<body>
+<div class="container-fluid form-horizontal" ng-controller="LogReportCtrl">
+    <div ng-if="!control.loading_all" class="row" id="mainLog">
+        <div ng-repeat="one_log in data.wordCountBeanList" style="margin-bottom: 20px;">
+            <div class="form-group form_style">
+                <div class="col-sm-1 text-right" style="color:#999;">{{$index+1}}/{{data.wordCountBeanList.length}}</div>
+                <div class="col-sm-10 text-center">
+                    <span class="font-30">{{one_log.report_name}}</span>
+                    <div> <span>{{one_log.start_date}}至{{one_log.end_date}}查询结果</span></div>
+                </div>
+                <div class="col-sm-1">
+                    <button ng-if="control.export_loading && $index==0"  title="正在导出" class="cancel-btn log-export-btn">
+                        <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <div class="col-sm-3 text-center">
+                    <div class="log-inspt-lg-icon display-inblock"></div>
+                    <div class="log-name-container">
+                        <span class="log-name-span log-name-font">{{one_log.log_name}}</span>
+                        <span class="log-name-span">
+                            <label style="font-size: 16px;">错误总数</label>
+                            <label class="font-30" style="color:#A40000;">{{one_log.total_count}}</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <div class="col-sm-12 text-center">
+                    <table class="sub-table table text-center">
+                        <thead>
+                        <tr class="ecm_paramsTb_cursor" style="text-align: left">
+                            <td style="text-align: left;">
+                                错误码
+                            </td>
+                            <td style="text-align: left;">
+                                错误数
+                            </td>
+                            <td style="text-align: left;">
+                                占比
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="one_error in one_log.err_table" style="font-size: 12px;text-align: left;">
+                            <td>
+                                <div class="param-group-style">
+                                    <div class="param-name">{{one_error.key_word}}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="param-group-style">
+                                    <div class="param-name">{{one_error.error_count}}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="param-group-style">
+                                    <div class="param-name">{{one_error.scale}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-if="one_log.err_table.length==0 || !one_log.err_table">
+                            <td colspan="3" style="text-align: center;">
+                                <label class="none-content-font-color">暂无数据</label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <div class="col-sm-12 text-center">
+                    <highchart config="one_log.chart_config"></highchart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="control.loading_all">
+        <div  class="col-sm-12 log-report-loading-container">
+            <div>
+                <span class="loading-font-color">
+                    <i class="fa fa-spinner fa-spin font-30"></i>
+                </span>
+            </div>
+            <div style="margin-top: 20px;">
+                <span class="loading-font-color">正在获取信息</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

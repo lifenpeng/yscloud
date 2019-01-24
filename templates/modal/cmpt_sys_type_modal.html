@@ -1,0 +1,31 @@
+<form name="form.cmptSysType" ng-submit="formSubmit()" class="form-horizontal cmpt" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">脚本类型</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body" style="height:180px;">
+        <div class="row">
+            <div class="col-sm-11 col-sm-offset-1" style="padding-top: 4px;">
+                <div class="sys-type form-style" ng-repeat="sys_type in data.sys_list">
+                    <input type="radio" name="sys_type" i-check ng-model="info.script_type" ng-change="selectScriptType(true)"  value={{sys_type.value}} /><span class="label_value">{{sys_type.value}}</span>
+                </div>
+                <div class="other-type" style="line-height: normal">
+                    <input type="radio" name="sys_type" i-check ng-model="info.script_type" ng-change="selectScriptType(false)"  value={{info.other_script_type}} /><span style="font-size: 12px;" ng-if="!control.other_flag">&nbsp;&nbsp;其他</span>
+                    <input type="text" name="sys_type" ng-model="info.other_script_type" class="sub-form-control modal-add-label" ng-if="control.other_flag"></div>
+                </div>
+                <!-- 表单提交按钮-->
+                <div class="col-sm-12 text-center" style="margin-top: 40px;margin-bottom: 40px;">
+                    <button  class="save-cancel-btn cancel-btn btn-xl" type="button" ng-click="cancel()">取消</button>
+                    <button  class="save-cancel-btn save-btn btn-xl"  type="submit">确认</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-9">
+                <validate-msg tag-cn-name="系统类型" type="text" name="sys_type" model="info.sys_type"></validate-msg>
+            </div>
+        </div>
+    </div>
+
+
+</form>

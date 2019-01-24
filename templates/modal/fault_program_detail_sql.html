@@ -1,0 +1,146 @@
+<div class="modal-header">
+    <h3 class="modal-title">方案查看</h3>
+    <div  ng-click="cancel()"></div>
+</div>
+<!--模态框内容-->
+<div class="modal-body">
+    <div class="row" ng-if="!control.sql_detail_loading">
+        <div ng-if="!control.sql_detail_error">
+            <div class="row form-horizontal" style="margin-top:10px;">
+                <div class="col-sm-1 text-center" style="color: #61a1b8;">
+                    {{info.step_seq}}-{{info.sql_index}}
+                    <span class="fa fa-bookmark"></span>
+                </div>
+                <div class="col-sm-11">
+                    <span>{{info.sql_detail_info.sql_text}}</span>
+                </div>
+            </div>
+            <div class="row form-horizontal form-style"  style="margin-top:-7px;margin-bottom:0;">
+                <div class="col-sm-11 col-sm-offset-1">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <label class="control-label col-sm-3 label-key" style="margin-top: -7px;text-align: left;">系统节点</label>
+                                <div class="col-sm-4 label-value" style="text-align: left;margin-left: -25px;">{{info.sql_detail_info.sys_cn_name}}</div>
+                            </div>
+                            <div class="row" style="margin-top: 8px;">
+                                <label class="control-label col-sm-3 label-key" style="margin-top: -7px;text-align: left;">操作类型</label>
+                                <div class="col-sm-4 label-value" style="text-align: left;margin-left: -25px;">{{info.sql_detail_info.sql_type_cn}}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <label class="control-label col-sm-3 label-key" style="margin-top: -7px;padding-right:0;">表名</label>
+                                <div class="col-sm-9 label-value">
+                                    <div class="row" ng-repeat="table in info.sql_detail_info.tbl_name_list">
+                                        <div class="col-sm-7" style="word-break: break-all;padding-right: 0">{{table}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 8px;" ng-show="info.sql_detail_info.sql_type == 1 || info.sql_detail_info.sql_type == 2">
+                                <label class="control-label col-sm-3 label-key" style="margin-top: -7px;padding-right:0;">查询约束条件</label>
+                                <div class="col-sm-9 label-value" style="word-break: break-all" ng-bind="info.sql_detail_info.sql_where ? info.sql_detail_info.sql_where:'--'"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-horizontal form-style">
+                <div class="col-sm-11 col-sm-offset-1">
+                    <label class="control-label label-key" ng-show="info.sql_detail_info.sql_type == 1">查询数据</label>
+                    <label class="control-label label-key" ng-show="info.sql_detail_info.sql_type == 2">更新数据</label>
+                    <label class="control-label label-key" ng-show="info.sql_detail_info.sql_type == 3">插入数据</label>
+                    <label class="control-label label-key" ng-show="info.sql_detail_info.sql_type == 4">删除数据</label>
+                </div>
+            </div>
+            <div class="row form-horizontal" >
+                <div  class="col-sm-11 col-sm-offset-1 text-left" style="padding-right: 50px;">
+                    <!-- 查询数据列表-->
+                    <table class="sub-table"  style="text-align: center;font-size: 12px;" ng-if="info.sql_detail_info.sql_type == 1">
+                        <thead>
+                        <tr>
+                            <td>
+                                字段名
+                            </td>
+                            <td>
+                                字段描述
+                            </td>
+                            <td>
+                                表达式
+                            </td>
+                            <td>
+                                源字段
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-class="$index % 2 == 0 ? 'tbl-even' : ''" ng-if="info.sql_detail_info.select_parse_list.length!=0"  ng-repeat="tr in info.sql_detail_info.select_parse_list">
+                            <td>
+                                {{tr.field_name}}
+                            </td>
+                            <td>
+                                {{tr.field_bk_desc}}
+                            </td>
+                            <td style="color:#D10F0F">
+                                <span>{{tr.select_express}}</span>
+                            </td>
+                            <td>
+                                <span >{{tr.src_field}}</span>
+                            </td>
+                        </tr>
+                        <tr ng-if="info.sql_detail_info.select_parse_list.length==0">
+                            <td colspan="4" style="color: #6D7183;">暂无参数</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- 非查询数据列表-->
+                    <table class="sub-table"  style="text-align: center;font-size: 12px;" ng-if="info.sql_detail_info.sql_type != 1">
+                        <thead>
+                            <tr >
+                                <td >
+                                    字段名
+                                </td>
+                                <td >
+                                    字段描述
+                                </td>
+                                <td >
+                                    值
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  ng-if="info.sql_detail_info.modify_parse_list.length!=0" ng-repeat="tr in info.sql_detail_info.modify_parse_list">
+                                <td>{{tr.field_name}}</td>
+                                <td>{{tr.field_bk_desc}}</td>
+                                <td>{{tr.field_value}}</td>
+                            </tr>
+                            <tr ng-if="info.sql_detail_info.modify_parse_list.length==0" >
+                                <td colspan="3" style="color: #6D7183;">暂无参数</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div ng-if="control.sql_detail_error">
+            <div class="col-sm-12 text-center" style="margin-top: 50px;margin-bottom: 50px">
+                <div style="margin:0 auto;font-size: 20px;height:200px;line-height:100px;width:320px;border-radius: 4px;">
+                    <span class="error-font-color">获取详细信息异常</span>
+                    <div class="error-font-color" style=";font-size: 12px;height: 20px;line-height: 20px;word-break: break-all;" ng-bind="info.sql_detail_info.errorMessage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="control.sql_detail_loading">
+        <div class="col-sm-12 text-center" style="margin-top: 60px;margin-bottom: 60px">
+            <div style="margin:0 auto;font-size: 20px;color:#CCC;height:100px;line-height:100px;width:320px;border-radius: 4px;">
+                <span class="loading-font-color">正在获取详细信息&nbsp;&nbsp;<i style="font-size: 24px;" class="fa fa-spinner fa-spin"></i></span>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin: 20px 0 ;">
+        <div class="col-sm-12 text-center">
+            <button  class="cancel-btn btn-xl"  ng-click="cancel()">关闭</button>
+        </div>
+    </div>
+</div>

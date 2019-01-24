@@ -1,0 +1,110 @@
+<style>
+    .nav_list {
+        display: inline-block;
+        margin-left: 40px;
+        padding: 0px;
+    }
+
+    .nav_prece {
+        width: 125px;
+        height: 140px;
+        padding: 0px;
+        margin: 0px;
+        list-style-type: none;
+        cursor: pointer;
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .n_p {
+        width: 115px;
+        height: 130px;
+        padding: 0px;
+        margin: 0 auto;
+        border: 1px solid red;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .n_p:hover {
+        width: 125px;
+        height: 140px;
+    }
+
+    .nav_name {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        bottom: 25px;
+        left:50%;
+        transform: translate(-50%);
+        font-size: 12px;
+    }
+
+    .nav_name_s {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        bottom: 10px;
+        left:50%;
+        transform: translate(-50%);
+        font-size: 12px;
+    }
+
+    .tit .piece {
+        float: left;
+        width: 50px;
+        height: 50px;
+    }
+
+    .tit .h1 {
+        display: block;
+        float: left;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        margin-left: 25px;
+        line-height: 50px;
+    }
+
+
+    .green-s {
+        background: #4AD5EA;
+    }
+
+    .apps {
+        background: url("../app/img/public/ide.png") no-repeat center 5px;
+    }
+
+    .load_msg {
+        width: 150px;
+        height: 30px;
+        font-size: 14px;
+        margin: 30px auto;
+        text-align: center;
+    }
+
+
+</style>
+<div class="load_msg">{{load_msg}}</div>
+<ul class="nav_list">
+    <li ng-if="type==5" class="nav_prece apps" ng-click="aps()">
+        <div class="n_p" style="border: 1px solid #4AD5EA;">
+            <div style="color: #4AD5EA;" class="nav_name">智能排程</div>
+            <div style="color: #4AD5EA;" class="nav_name_s">(APS)</div>
+            <div class="b-prece green-s"></div>
+        </div>
+    </li>
+    <li class="nav_prece apps" ng-repeat="item in app_list">
+        <div class="n_p" style="border: 1px solid #4AD5EA;" ng-click="goToSysPage(item)">
+            <div style="color: #4AD5EA;" class="nav_name">{{item.sdflow_cn_name}}</div>
+            <div style="color: #4AD5EA;" class="nav_name_s">({{item.sdflow_bk_desc}})</div>
+            <div class="b-prece green-s"></div>
+        </div>
+    </li>
+</ul>

@@ -1,0 +1,56 @@
+
+<form  class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">故障单审批流程</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body order-approval-process">
+        <div class="form-group container-fluid form-style" custom-scroll custom-config="config.scroll_y_info" style="height:300px;">
+            <div class="row" ng-repeat="step in info.pgDetailList" style="margin-bottom: 20px;">
+                <div class="col-sm-3 text-right">
+                    <span>{{step.deal_user_cname}}</span>
+                </div>
+                <div class="col-sm-8" style="padding-left: 50px;">
+                    <div style="background-color: #141d29" class="container-fluid">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-sm-4 text-right label-key">时间</div>
+                            <div class="col-sm-6 label-value" style="padding: 0;">{{(step.deal_bk_date ? step.deal_bk_date : '-')+" "+(step.deal_bk_time ? step.deal_bk_time : '-')}}</div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-sm-4 text-right label-key" ng-if="$first">提交人</div>
+                            <div class="col-sm-4 text-right label-key" ng-if="$last">执行人</div>
+                            <div class="col-sm-4 text-right label-key" ng-if="!$last && !$first">授权人</div>
+                            <div class="col-sm-6 label-value" style="padding: 0;">{{step.deal_user_cname}}</div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;" ng-if="!$first && !$last">
+                            <div class="col-sm-4 text-right label-key" >授权条件</div>
+                            <div class="col-sm-6 label-value" style="padding: 0;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{step.condition_text ? step.condition_text : '--'}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 text-right label-key" ng-if="$first">申请说明</div>
+                            <div class="col-sm-4 text-right label-key" ng-if="!$first">处理说明</div>
+                            <div class="col-sm-6 label-value" style="padding: 0;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{step.deal_bk_desc ? step.deal_bk_desc : '--'}}</div>
+                        </div>
+                        <!--线-->
+                        <div ng-if="!$last" class="approval-line-style" ng-class="$first ? 'approval-line-apply-done' : step.run_state == 3 ? 'approval-line-authorize-done' :'approval-line-unExec'"></div>
+                    </div>
+                    <!--圆圈-->
+                    <div style="position: absolute;top: 0;left: 0;">
+                        <div class="approval-wrap-circle-style" >
+                            <span ng-if="$first" class="approval-font-style approval-font-default">申</span>
+                            <span ng-if="!$first && !$last" class="approval-font-style" ng-class="step.run_state == 2 ? 'approval-font-running' : 'approval-font-default'">授</span>
+                            <span ng-if="$last" class="approval-font-style" ng-class="step.run_state == 2 ? 'approval-font-running' : 'approval-font-default'">执</span>
+                            <div class="approval-circle-style" ng-class="$first ? 'approval-line-apply-done' : step.run_state == 3 ? 'approval-line-authorize-done' : step.run_state == 2 ? 'loading': 'approval-line-unExec'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 表单提交按钮-->
+        <div class="row" style="margin: 40px 0 20px 0;text-align: center">
+            <div class="col-sm-12 text-center">
+                <button  class="save-btn btn-xl text-center" type="button" ng-click="formCancel()">关闭</button>
+            </div>
+        </div>
+    </div>
+</form>

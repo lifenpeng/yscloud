@@ -1,0 +1,64 @@
+
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <form class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+            <div class="form-group form-horizontal form-style">
+                <div class="col-sm-1 text-right" style="width: 75px;padding-right: 0px;padding-left: 0px;margin-left:10px;">
+                    <label class="control-label label-key">日期选择：</label>
+                </div>
+                <div class="col-sm-3 pick-date-common" style="padding-left: 10px;padding-right: 10px;width: 240px;">
+                    <input type="text" name="startDate" class="form-control" style="min-width: 210px;"
+                           ng-click="open($event)"
+                           max-date="{{control.maxDate}}"
+                           ng-model="info.startDate"
+                           show-button-bar="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           show-weeks="false"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           close-on-date-selection="false"
+                           is-open="control.datepicker.opened"
+                           readonly="true"/>
+                </div>
+                <div class="col-sm-3 pick-date-common" style="width: 240px;margin-left: 40px;">
+                    <input type="text"
+                           name="endDate"
+                           ng-click="open($event)"
+                           max-date="{{maxDate}}"
+                           ng-model="info.endDate"
+                           class="form-control"
+                           show-button-bar="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           close-on-date-selection="false"
+                           is-open="control.datepicker.opened"
+                           show-weeks="false"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           required
+                           style="min-width: 210px;"
+                           readonly="true"/>
+                </div>
+                <div class="col-sm-1 text-right" style="width: 75px;padding-right: 0px;padding-left: 0px;margin-left:10px;">
+                    <label class="control-label label-key">应用系统：</label>
+                </div>
+                <div class="col-sm-1" style="width: 190px;padding-left: 0px;padding-right:10px;line-height: 0px;margin-left: 10px">
+                    <bs-select width=180 name="busiSys"
+                               style="margin-left:10px;"
+                               items="data.bslist"
+                               my-select="info.busiSys"
+                               option-labal="business_cn_name"
+                               option-key="business_sys_name" required
+                               empty-option="暂不选择"></bs-select>
+                    <validate-msg tag-cn-name="应用系统" type="select" name="business_sys_name" model="info.busiSys"></validate-msg>
+
+                </div>
+                <div class="col-sm-1" style="text-align: center;margin-top: 2px;">
+                    <div class="ordinary-btn" type="button"  ng-click="doSearch()">搜索</div>
+                </div>
+            </div>
+        </form>
+        <table bs-table-control="finishControl" class="table lg-table"></table>
+    </div>
+</div>

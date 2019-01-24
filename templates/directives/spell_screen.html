@@ -1,0 +1,140 @@
+<style>
+    .sys-screen-content{
+        border: 1px solid #205468;
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
+    }
+    .sys-screen-content .no-search-data{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        color: #6d7183;
+        font-size: 14px;
+    }
+    .letter-title{
+        height: 20px;
+        line-height: 20px;
+        background-color: #253449;
+    }
+    .sys-letter{
+        padding-left: 10px;
+        padding-right: 7px;
+    }
+    .sys-check-count{
+        color: #61a1b8;
+    }
+    .letter-content{
+        display: inline-block;
+        width: 100%;
+        padding: 10px 0 0 10px;
+        margin-bottom: -4px;
+        color: #D2F1FE;
+        background-color: #0b1017;
+    }
+    .letter-content .sys-name-container{
+        position: relative;
+        float: left;
+        width: 120px;
+        height: 28px;
+        margin: 0 10px 10px 10px;
+        padding: 0 5px;
+        line-height: 25px;
+        text-align: center;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        border-radius: 2px;
+        border: 1px solid #205468;
+        background-color: #0d1a22;
+    }
+    .letter-content .sys-name-container:hover{
+        cursor: pointer;
+    }
+    .letter-content .sys-checked-disabled:hover{
+        cursor: not-allowed;
+    }
+    .letter-content .sys-checked{
+        border-color: #44dcfd;
+    }
+    .letter-content .sys-checked-disabled{
+        border-color: #6d7183;
+    }
+    .letter-content .sys-checked-disabled .user-check-style{
+        border-bottom: 18px solid #6d7183;
+    }
+    .letter-content .sys-checked-disabled .user-check-style i{
+        color: #0d1a22;
+    }
+    .sys-screen-content .mCSB_scrollTools{
+        right: -7px;
+    }
+    .nav-letter-ul{
+        position: absolute;
+        right: 3px;
+        margin-bottom:0;
+        text-align: center;
+        font-size: 10px;
+    }
+    .nav-letter-ul-center{
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+    .nav-letter-ul-top{
+        top: 20px;
+        -webkit-transform: none;
+        -moz-transform: none;
+        -ms-transform: none;
+        -o-transform: none;
+        transform: none;
+    }
+    .nav-letter-li{
+        padding: 1px 2px;
+        cursor: pointer;
+        border-radius: 50%;
+        color: #61a1b8;
+    }
+    .nav-letter-ul .active{
+        background-color: #44dcfd;
+        color: #0b1017;
+        transition: all .3s ease-in-out;
+    }
+    .nav-letter-ul .active:hover{
+        color: #0b1017;
+    }
+    .nav-letter-li:hover{
+        color: #44dcfd;
+    }
+    .nav-letter-ul .nav-disabled{
+        cursor: default;
+    }
+    .nav-letter-ul .nav-disabled:hover{
+        color: #61a1b8;
+    }
+</style>
+<div class="sys-screen-content" id="sys-screen-content" >
+    <div ng-style="resetSysContainerHeight()" style="min-height: 200px;position: relative" custom-scroll  callbacks="scoll_callbacks" func="{scroll:'sysScrollTo'}" custom-config="sys_screen_scroll">
+        <div class="letter-container" ng-repeat="sys_letter in data" ng-show="search_results.length !== 0">
+            <div class="letter-title" id="{{'-' + sys_letter.letter}}">
+                <span class="sys-letter" ng-bind="sys_letter.letter"></span>
+                <span class="sys-check-count" ng-bind="sys_letter.checked_count ? sys_letter.checked_count + '个':'' "></span>
+            </div>
+            <ul class="list-unstyled letter-content">
+                <li class="sys-name-container" ng-repeat="sys in sys_letter.list | filter:{sys_cn_name: keyword} as search_results" ng-click="sys.checked_disabled || checkVal(sys_letter,sys)"
+                    ng-class="{'sys-checked':sys.checked,'sys-checked-disabled':sys.checked_disabled}" title="{{sys.checked_disabled ? '该系统已存在发布申请' : sys.sys_cn_name}}">
+                    <span ng-bind="sys.sys_cn_name" title="{{sys.sys_cn_name}}"></span>
+                    <div ng-if="sys.checked || sys.checked_disabled" class="user-check-style"><i class="fa fa-check"></i></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ul class="list-unstyled nav-letter-ul" ng-class="{'nav-letter-ul-center':!control.letter_nav_top,'nav-letter-ul-top':control.letter_nav_top}">
+        <li class="nav-letter-li" ng-repeat="item in data" ng-bind="item.letter" ng-click="item.nav_disabled || scrollToId(item.letter,$index)" ng-mouseenter="mouseEnter(item)" ng-mouseleave="mouseLeave(item)" ng-class="{'nav-disabled':item.nav_disabled}"></li>
+    </ul>
+    <span class="no-search-data" ng-show="control.show_no_search_data">暂无搜索数据</span>
+</div>

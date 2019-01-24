@@ -1,0 +1,102 @@
+<div class="container-fluid">
+    <!--查看执行明细-->
+    <div class="row">
+        <div class="col-sm-12" style="text-align: center;height: 32px;line-height: 32px;color: #61a1b8;font-size:14px;">
+            <div class="" ng-click="showDetail()" style="position: absolute;">
+                <div class="ordinary-btn" style="min-width: 32px;height: 32px;"><i class="fa fa-chevron-left"></i></div>
+            </div>
+            方案执行明细
+        </div>
+    </div>
+    <div class="row">
+        <div class="proj_history_detail" style="margin-bottom: 10px;margin-top: 20px;" ng-if="info.publish_info.pro_cmd_list.length !=0">
+            <div class="container-fluid" style="padding: 0;">
+                <div  style="height: 48px;line-height: 48px;">
+                        <div class="col-sm-4" style="background-color: #5a90f8;color: #d2f1fe;">
+                            <span style="margin-right: 5px;">发布步骤</span>
+                            <span  style="display: inline-block; background: rgba(0, 0, 0, 0) url('img/proj_detail/user_time.png') no-repeat scroll 0px 0px ;height: 26px;line-height: 26px;padding-left:30px;color: white;"  ng-if="publish_info.public_step_time_used">用时{{publish_info.public_step_time_used}}</span>
+                        </div>
+                        <div class="col-sm-3 " style="background: #182736;height: 48px;">
+                            <span  style="display: inline-block; background: rgba(0, 0, 0, 0) url('img/proj_detail/u514.png') no-repeat scroll 0px 0px ;height: 26px;line-height: 26px;padding-left:30px;color:#def1fe;margin-top: 14px;"  ng-if="publish_info.public_step_time_used">{{publish_info.pro_start_time}}</span>
+                        </div>
+                        <div class="col-sm-3" style="background: #182736;height: 48px;">
+                            <span  style="display: inline-block; background: rgba(0, 0, 0, 0) url('img/proj_detail/u487.png') no-repeat scroll 0px 0px ;height: 26px;line-height: 26px;padding-left:30px;color:#def1fe;margin-top: 14px;"  ng-if="publish_info.public_step_time_used">{{publish_info.pro_end_time}}</span>
+                        </div>
+                        <div class="col-sm-2" style="background: #182736;height: 48px;" ng-click="pubBtnState = !pubBtnState">
+                            <i ng-if="pubBtnState" class="glyphicon glyphicon-chevron-up proj_pubState_upDown" ng-class="{'glyphicon glyphicon-chevron-up': pubBtnState, 'glyphicon glyphicon-chevron-down': !pubBtnState}" style="padding-top: 20px;color: #d2f1fe;"></i>
+                            <i ng-if="!pubBtnState" class="glyphicon glyphicon-chevron-down proj_pubState_upDown" ng-class="{'glyphicon glyphicon-chevron-up': pubBtnState, 'glyphicon glyphicon-chevron-down': !pubBtnState}" style="padding-top: 20px;color: #d2f1fe;"></i>
+                        </div>
+                    </div>
+                <div collapse="pubBtnState">
+                    <!--所有发布步骤信息-->
+                    <div style="border-bottom: 1px solid #555f76;background-color: #182736;font-size:12px;" class="row step-line"  ng-repeat="step in info.publish_info.pro_cmd_list">
+                        <div class="col-sm-1 col-xs-1" style="text-align: center;">
+                            <div ng-bind="step.step_id == 0 ? ' ' : step.step_id"></div>
+                        </div>
+                        <div class="col-sm-9 col-xs-9" style="word-break:break-all;">
+                            <div ng-if="step.step_id == 0" ng-bind="'#'+step.phase_bk_desc"></div>
+                            <div ng-if="step.step_id != 0" class="step-word" ng-bind-html="step.bk_cmd_content"></div>
+                        </div>
+                        <div class="col-sm-1 col-xs-1 text-right" style="padding-right: 0;">
+                            <div style="padding-left: 20px;" >
+                                <i class="glyphicon glyphicon-ok" ng-if="step.step_id != 0 && step.cmd_status == 5"></i>
+                                <i class="glyphicon glyphicon-stop" style="color: #FF2F2F;" ng-if="step.step_id != 0 && step.cmd_status == 4"></i>
+                                <i class="glyphicon glyphicon-remove" style="color: #FF2F2F;" ng-if="step.step_id != 0 && step.cmd_status == 3"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-1 col-xs-1 " ng-if="step.cmd_status != 6">
+                            <span ng-show="step.cmd_status > 2 || step.step_id == 0 && step.time_used != 0" ng-bind="'['+ (step.time_used < 1 ? '<1' : step.time_used) +'s]'"></span>&nbsp;&nbsp;
+                        </div>
+                        <div class="col-sm-1 col-xs-1" ng-if="step.cmd_status == 6">
+                            <span ng-if="step.step_id != 0" style="color: #999;">[跳过]</span>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--回退步骤-->
+        <div class="proj_history_detail" ng-if="info.publish_info.rollback_cmd_list">
+            <div class="container-fluid" style="padding: 0;">
+                <div  style="height: 48px;line-height: 48px;">
+                    <div class="col-sm-4" style="background-color: #5a90f8;color: #fff;">
+                        <span style="margin-right: 5px;">回退步骤</span>
+                        <span  style="display: inline-block; background: rgba(0, 0, 0, 0) url('img/proj_detail/user_time.png') no-repeat scroll 0px 0px ;height: 26px;line-height: 26px;padding-left:30px;color: white;"  ng-if="publish_info.rollback_step_time_used">用时{{publish_info.rollback_step_time_used}}</span>
+                    </div>
+                    <div class="col-sm-3 " style="background: #182736;height: 48px;">
+                        <span  style="display: inline-block; background: rgba(0, 0, 0, 0) url('img/proj_detail/u514.png') no-repeat scroll 0px 0px ;height: 26px;line-height: 26px;padding-left:30px;color:#def1fe;margin-top: 14px;"  ng-if="publish_info.rollback_step_time_used">{{publish_info.rollback_start_time}}</span>
+                    </div>
+                    <div class="col-sm-3" style="background: #182736;height: 48px;">
+                        <span  style="display: inline-block; background: rgba(0, 0, 0, 0) url('img/proj_detail/u487.png') no-repeat scroll 0px 0px ;height: 26px;line-height: 26px;padding-left:30px;color:#def1fe;margin-top: 14px;"  ng-if="publish_info.rollback_step_time_used">{{publish_info.rollback_end_time}}</span>
+                    </div>
+                    <div class="col-sm-2" style="background: #182736;height: 48px;" ng-click="rollBtnState = !rollBtnState">
+                        <i ng-if="rollBtnState" class="glyphicon glyphicon-chevron-up proj_pubState_upDown" ng-class="{'glyphicon glyphicon-chevron-up': rollBtnState, 'glyphicon glyphicon-chevron-down': !rollBtnState}" style="padding-top: 20px;color: #def1fe;"></i>
+                        <i ng-if="!rollBtnState" class="glyphicon glyphicon-chevron-down proj_pubState_upDown" ng-class="{'glyphicon glyphicon-chevron-up': rollBtnState, 'glyphicon glyphicon-chevron-down': !rollBtnState}" style="padding-top: 20px;color: #def1fe;"></i>
+                    </div>
+                </div>
+                <div collapse="rollBtnState">
+                    <!--回退步骤信息-->
+                    <div style="border-bottom: 1px solid #555f76;background-color: #182736;font-size:12px;" class="row step-line" ng-class="step.step_id == 0 ? 'phase-bg' : (curr_rollback_phase == step.phase_id && curr_rollback_step == step.step_id) && publish_info.project_status < 4 ? 'step-run-bg' : 'step-bg'" ng-repeat="step in info.publish_info.rollback_cmd_list">
+                            <div class="col-sm-1 col-xs-1" style="text-align: center;">
+                                <div ng-bind="step.step_id == 0 ? ' ' : step.step_id"></div>
+                            </div>
+                            <div class="col-sm-9 col-xs-9" style="word-break:break-all;">
+                                <div ng-if="step.step_id == 0" ng-bind="'#'+step.phase_bk_desc"></div>
+                                <div ng-if="step.step_id != 0" class="step-word" ng-bind="step.bk_cmd"></div>
+                            </div>
+                            <div class="col-sm-1 col-xs-1 text-right" style="padding-right: 0;">
+                                <div style="padding-left: 20px;" >
+                                    <i class="glyphicon glyphicon-ok" ng-if="step.step_id != 0 && step.cmd_status == 5"></i>
+                                    <i class="glyphicon glyphicon-stop" style="color: #FF2F2F;" ng-if="step.step_id != 0 && step.cmd_status == 4"></i>
+                                    <i class="glyphicon glyphicon-remove" style="color: #FF2F2F;" ng-if="step.step_id != 0 && step.cmd_status == 3"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 col-xs-1 ">
+                                <span ng-show="step.cmd_status > 2 || step.step_id == 0 && step.time_used != 0" ng-bind="'['+ (step.time_used < 1 ? '<1' : step.time_used) +'s]'"></span>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

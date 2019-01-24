@@ -1,0 +1,56 @@
+<div class="task-execute">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="exe_bar">
+                <div class="col-sm-1"></div>
+                <span class="col-sm-3 exe-btn onekey_exe_img" ng-class="!control.one_exec_btn ? 'operate-hover':''"
+                      ng-click="control.one_exec_btn || oneClickExe()" title="一键执行"></span>
+                <span class="col-sm-3 exe-btn exe_img" ng-class="!control.step_exec_btn ? 'operate-hover':''"
+                      ng-click="control.step_exec_btn || singleStepExe()" title="单步执行"></span>
+                <span class="col-sm-3 exe-btn middle_stop" ng-class="control.middle_stop ? 'operate-hover':''"
+                      ng-click="!control.middle_stop || meddleTask(5)" title="中止"></span>
+                <span class="col-sm-3 exe-btn pause_img" ng-class="control.suspend_task ? 'operate-hover':''"
+                      ng-click="!control.suspend_task || meddleTask(2)" title="暂停"></span>
+                <span class="col-sm-3 exe-btn stop_exec" ng-class="control.close_task ? 'operate-hover':''"
+                      ng-click="!control.close_task || meddleTask(1)" title="关闭"></span>
+                 <span class="operate-hover" ng-click="downloadExecLog()" title="下载日志"
+                       ng-show="info.exe_log_path && (info.task_status == 4 || info.task_status == 5)">
+                     <span class="logDownLoad download_log" title="下载日志"></span>
+                 </span>
+                <div class="time-label-position">开始时间：</div>
+                <div class="time-value-size">
+                    <label ng-if="!info.start_bk_datetime">--</label>
+                    <label ng-if="info.start_bk_datetime" ng-bind="info.start_bk_datetime"></label>
+                </div>
+                <div class="time-label-position">结束时间：</div>
+                <div class="time-value-size">
+                    <label ng-if="!info.end_bk_datetime">--</label>
+                    <label ng-if="info.end_bk_datetime" ng-bind="info.end_bk_datetime"></label>
+                </div>
+                <!--任务状态-->
+                <div class="flow-task-status form-style">
+                    <span class="label-key" style="margin-right: 20px;">任务状态</span>
+                    <span class="label-value" style="vertical-align: top;" ng-bind="info.task_state_cn ? info.task_state_cn : '--'"></span>
+                </div>
+                <span class="expand-collapse-bg" ng-class="control.basic_info_expand ? 'expand-icon': 'collapse-icon'"
+                      ng-click="(control.basic_info_expand = !control.basic_info_expand)"
+                      title="{{control.basic_info_expand ? '点击收起':'点击展开'}}"></span>
+            </div>
+        </div>
+        <!--执行start-->
+        <div class="form-group" ng-if="info.flow_diagram_info.nodeDataArray.length>0">
+            <div class="col-sm-12 dragMid" style="padding: 0;top: -6px;" cus-flow-task-exe
+                 go-model="info.flow_diagram_info" config="viewSingleJob(key)"
+                 node-selected="control.clear_click_event">
+                <div id="myDiagramDiv" class="diagram_div" dyna-height init-bottom="180"></div>
+            </div>
+        </div>
+        <div ng-if="!info.flow_diagram_info.nodeDataArray || info.flow_diagram_info.nodeDataArray.length == 0">
+            <div class="col-sm-12" style="padding: 0;margin-top: -5px">
+                <div class="default-info-style">
+                    暂无作业信息
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<script type="text/ng-template" id="nodes_renderer.html">
+    <div ui-tree-handle class="tree-node tree-node-content" data-nodrag style="cursor: default;white-space: nowrap">
+        <div ng-click="(node.nodes && node.nodes.length==0) && collapsed || getMoreFile(this)" ng-if="node.dir" ng-class="(node.nodes && node.nodes.length==0 && collapsed) ? 'ui-tree-fold-bg-disabed':'ui-tree-fold-bg'">
+            <a style="padding: 1px 5px;display: inline-block;width: 25px;vertical-align: top;position: relative;z-index: 2" data-nodrag>
+                <span class="fa" ng-class="{
+              'fa-folder': collapsed,
+              'fa-folder-open': !collapsed
+            }" style="font-size: 14px;vertical-align: top;margin-top: 4px">
+                </span>
+            </a>
+             <span style="font-size: 12px;font-weight: 400;display: inline-block;white-space: nowrap;">{{node.file}}</span>
+        </div>
+        <div ng-if="!node.dir" style="cursor: pointer;display: inline-block;" ng-click="getFileTarget(this)">
+            <a class="btn btn-xs" data-nodrag>
+            <span class="fa fa-file-text-o" style="font-size: 14px;color: #d2f1fe"></span>
+            </a>
+            <span style="font-size: 12px;color: #d2f1fe;font-weight: 400;display: inline-block;white-space: nowrap;" ng-if="!control.alter_flag">{{node.file}}</span>
+            <span style="font-size: 12px;color: #d2f1fe;font-weight: 400;display: inline-block;white-space: nowrap;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;vertical-align: middle;margin-top: -2px" ng-if="control.alter_flag" title="{{node.file}}">{{node.file}}</span>
+            <span style="font-size: 12px;color: #ccc;padding-left: 20px;font-weight: 400;display: block;white-space: nowrap;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;vertical-align: middle;margin-left: 12px;" ng-if="control.alter_flag" title="{{'../'+node.file_path.split('/').slice(8).join('/')}}">{{'../'+node.file_path.split('/').slice(8).join('/')}}</span>
+        </div>
+    </div>
+    <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" style="position: relative;">
+        <div style="position: absolute;height: 100%;border-left: 1px dotted #0f1721;width: 1px;left: -10px;top: -10px;" ng-if="$last"></div>
+        <div style="position: absolute;height: 100%;border-left: 1px dotted #808080;width: 1px;left: 10px;top: -10px;" ng-if="!node.loading"></div>
+        <div class="loading-font-color" ng-if="node.loading" style="font-size: 12px;white-space: nowrap;">
+            目录加载中...
+        </div>
+        <div  class="error-font-color" ng-if="node.err_msg && !node.loading" style="font-size: 12px">{{node.err_msg}}</div>
+        <li ng-repeat="node in node.nodes track by $index" ui-tree-node ng-include="'nodes_renderer.html'" class="sub-li-node">
+        </li>
+    </ol>
+</script>
+<script type="text/ng-template" id="nodes_compare.html">
+    <div ui-tree-handle class="tree-node tree-node-content" compare-tree="{{node.path1 ?node.path1 :node.path2}}" data-nodrag style="cursor: default;white-space: nowrap">
+        <div class="ui-tree-file-name" ng-click="control.data_more || getcompareFiles(this)" ng-if="(node.status=='same' || node.status==tree_config.status || node.status=='diff') && !node.isfile" ng-class="{'angular-ui-tree-diff':node.status=='diff' || node.status==tree_config.status}">
+            <a style="padding: 1px 5px;display: inline-block;width: 25px;vertical-align: top;position: relative;z-index: 2" data-nodrag>
+                <span class="fa ui-tree-file-icon" ng-class="{
+              'fa-folder': collapsed,
+              'fa-folder-open': !collapsed
+            }">
+                </span>
+            </a>
+            <span class="ui-tree-file-text">{{node.name}}</span>
+        </div>
+        <div ng-if="(node.status=='same'|| node.status==tree_config.status || node.status=='diff') && node.isfile" style="cursor: pointer;display: inline-block;" ng-click="getFileTarget(this)" ng-dblclick="fileDbClick(this)" ng-class="{'angular-ui-tree-diff':node.status=='diff'|| node.status==tree_config.status}">
+            <a class="btn btn-xs" data-nodrag>
+            <span class="fa fa-file-text-o ui-tree-text-icon" style="font-size: 14px">
+            </span>
+            </a>
+            <span class="ui-tree-file-text">{{node.name}}</span>
+        </div>
+        <div ng-if="node.status!='same' && node.status!=tree_config.status && node.status!='diff'" style="height: 22px;"></div>
+    </div>
+    <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" style="position: relative" tree-line="{{tree_config.status}}">
+        <div class="ui-tree-cover" style="position: absolute;height: 100%;border-left: 1px dotted #0f1721;width: 1px;z-index: 1;left: -10px;top: -10px;"></div>
+        <div ng-if="node.loading &&(tree_config.status=='left' && files.compare_path1 || tree_config.status=='right' && files.compare_path2)" style="font-size: 12px;white-space: nowrap;height: 22px;line-height: 22px">
+            目录加载中...
+        </div>
+        <li ng-repeat="node in node.nodes track by $index" ui-tree-node ng-include="'nodes_compare.html'" ng-style="{'display':node.status=='same' && control.diff_flag ?'none':'block'}" class="sub-li-node" ng-class="{'sub-li-none':(node.status!='same' && node.status!=tree_config.status && node.status!='diff')}" repeat-finish>
+        </li>
+    </ol>
+    <div class="ui-tree-fold-line"></div>
+</script>
+<ol ng-show="files.loading" style="padding-left: 0px; margin: 30px auto;">
+    <li style="list-style: none; text-align: center; font-size: 20px;">
+        <i class="fa fa-spinner fa-spin loading-font-color" style="font-size: 30px;"></i>
+    </li>
+</ol>
+<ol ng-if="files.err_msg && !files.loading" style="padding-left: 0px; margin: 30px auto;">
+    <li style="list-style: none; text-align: center; font-size: 18px;">
+        <span style="color: #E9416E;" ng-bind="node.err_msg"></span> ',
+    </li>
+</ol>
+<ol ng-if="!files.err_msg && !files.loading && data.length ==0" style="padding-left: 0px; margin: 30px auto;">
+    <li style="text-align: center; color: #6D7183;height: 140px;line-height: 140px;font-size: 16px;list-style: none">暂无文件</li>
+</ol>
+<div ui-tree="treeOptions" class="tree-option" ng-if="!node.loading && data.length!=0" ng-class="{'angular-ui-compare':tree_config.compare_mode}">
+    <div class="tree-content" ng-if="tree_config.compare_mode"></div>
+    <ol ui-tree-nodes="" ng-model="data" id="tree-root">
+        <li ng-repeat="node in data track by $index" ui-tree-node ng-include="'nodes_renderer.html'" ng-if="!tree_config.compare_mode"></li>
+        <li ng-repeat="node in data track by $index" ui-tree-node ng-include="'nodes_compare.html'" ng-if="tree_config.compare_mode" ng-style="{'display':node.status=='same' && control.diff_flag ? 'none':'block'}"></li>
+    </ol>
+</div>

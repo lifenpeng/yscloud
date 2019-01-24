@@ -1,0 +1,49 @@
+<div>
+    <div ng-if="!fileupload.filename">
+        <!-- 新增 -->
+        <div style="padding-left: 0px;" >
+            <a href="javascript:;" class="a-upload upload-btn">
+                选择上传文件<input type="file" nv-file-select="" multiple="true" uploader="uploader" title=""/>
+            </a>
+        </div>
+        <label ng-show="fileupload.suffixs" style="color:#6d7183;font-size: 12px;">允许上传 {{fileupload.suffixs}} 格式文件</label>
+    </div>
+    <div ng-if="fileupload.filenames && exsit_package" class="" style="margin-top: 30px;display: inline-block;" ng-repeat="filename in fileupload.filenames">
+        <div style="margin-top: -28px;">
+            <div ng-if="fileupload.filetype == 'EXCEL'" style="background: url(img/publish/xlsxfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'TAR'"  style="background: url(img/publish/tarfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="!fileupload.filetype"  style="background: url(img/publish/pacfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'SQL'"  style="background: url(img/fault/sql_file_img.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'XML'"  style="background: url(img/publish/xmlfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'SHELL'"  style="background: url(img/publish/shfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'PYTHON'"  style="background: url(img/publish/shfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+        </div>
+        <div style="margin-left: 40px;margin-top: -38px;text-align: left; ">
+            <a class="" style="color:#44dcfb;text-decoration:blink;" ng-bind="filename"></a>
+        </div>
+        <div style="margin-left: 32px;margin-top: -6px;" ng-show="fileupload.candelete || fileupload.candown">
+            <a ng-click="downfiles(filename)"  class="ac-upload" style="margin-right: 12px;" ng-show="fileupload.candown">下载</a>
+            <span  style="margin-right: 12px;color:#CCCCCC;height: 18px;line-height: 18px;margin-top: 8px;display: inline-block;overflow: hidden;" ng-show="fileupload.candelete && fileupload.candown">|</span>
+            <a ng-click="deletefiles(filename)" class="ac-upload" ng-show="fileupload.candelete">删除</a>
+        </div>
+    </div>
+    <div ng-if="!exsit_package && fileupload.filename" class="" style="margin-top: 30px;">
+        <div style="margin-top: -28px;">
+            <div ng-if="fileupload.filetype == 'EXCEL'" style="background: url(img/publish/xlsxfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'TAR'"  style="background: url(img/publish/tarfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="!fileupload.filetype"  style="background: url(img/publish/pacfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'SQL'"  style="background: url(img/fault/sqlfile.png) no-repeat; margin: 0 auto ;height: 40px;"></div>
+            <div ng-if="fileupload.filetype == 'XML'"  style="background: url(img/publish/xmlfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'SHELL'"  style="background: url(img/publish/shfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+            <div ng-if="fileupload.filetype == 'PYTHON'"  style="background: url(img/publish/shfile.png) no-repeat; margin: 0 auto ;height: 32px;"></div>
+        </div>
+        <div style="margin-left: 40px;margin-top: -38px;text-align: left; ">
+            <a class="" style="color:#44dcfb;text-decoration:blink;" ng-bind="fileupload.filename"></a>
+        </div>
+        <div style="margin-left: 32px;margin-top: -6px;" ng-show="fileupload.candelete || fileupload.candown">
+            <a ng-click="downfile()"  class="ac-upload" style="margin-right: 12px;" ng-show="fileupload.candown">下载</a>
+            <span  style="margin-right: 12px;color:#CCCCCC;height: 18px;line-height: 18px;margin-top: 8px;display: inline-block;overflow: hidden;" ng-show="fileupload.candelete && fileupload.candown">|</span>
+            <a ng-click="deletefile()" class="ac-upload" ng-show="fileupload.candelete">删除</a>
+        </div>
+    </div>
+</div>

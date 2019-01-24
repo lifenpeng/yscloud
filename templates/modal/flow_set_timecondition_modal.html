@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <span> 时间条件</span>
+    </h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body time-condition-modal">
+    <form name="form.setTime" ng-submit="formSubmit()" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="row">
+            <div datepicker class="well well-lg cus-date-plugin" ng-model="cus_date.date" min-date="cus_date.minDate"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 text-right">
+                <span class="fa fa-clock-o time-icon"></span>
+            </div>
+            <div class="col-sm-4" style="padding-right: 0">
+                <input type="text"
+                       name="hh_condition"
+                       ng-model="cus_date.hh"
+                       class="form-control hour-input"
+                       placeholder="时"
+                       ng-pattern="/^(([01]?[0-9])|(2[0-3])){1}$/"
+                       required>&nbsp;：
+                <validate-msg tag-cn-name="时"  name="hh_condition" ></validate-msg>
+            </div>
+            <div class="col-sm-4" style="padding: 0">
+                <input type="text"
+                       name="minute_condition"
+                       ng-model="cus_date.mm"
+                       class="form-control minutes-input"
+                       ng-pattern="/^[0-5]?[0-9]{1}$/"
+                       placeholder="分"
+                       required>
+                <validate-msg tag-cn-name="分"  name="minute_condition" style="position: absolute;left: -102px;bottom: -30px"></validate-msg>
+            </div>
+
+        </div>
+        <div style="text-align: center;margin-top: 40px;">
+            <button class="save-cancel-btn cancel-btn btn-xl" type="button" ng-click="formCancel()">取消</button>
+            <button class="save-cancel-btn save-btn btn-xl" type="submit">保存</button>
+        </div>
+    </form>
+</div>
+

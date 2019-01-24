@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h3 class="modal-title">批量导入方案步骤</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body">
+    <div class="form-group" style="height: 32px">
+        <div  class="col-sm-12">
+            <file-upload fileupload="config.program_step_fileupload" downfile="downLoadExcel()"  successthen="uploadSuccessThen();" deletefile="deleteExcel()"></file-upload>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="col-sm-12 text-center">
+        <button  class="cancel-btn btn-xl" type="button" ng-click="cancel()" style="margin-left: 20px;">取消</button>
+        <button  class="save-btn btn-xl" ng-click="saveProgramStep()" type="button">确认</button>
+    </div>
+</div>

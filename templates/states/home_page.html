@@ -1,0 +1,560 @@
+<style>
+    .top-bar .bread-crumb-block {
+        left: 240px;
+    }
+    .table-w {
+        width: 340px;
+        height: 150px;
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 25px;
+    }
+    .left {
+        float: left;
+    }
+    .m-right {
+        margin-right: 15px;
+    }
+    .pie_header {
+        font-size: 16px;
+    }
+    .def-color {
+        color: #4EAFFF;
+    }
+    .yellow-color {
+        color: #F9D938;
+    }
+    .red-color {
+        color: #EE406D;
+    }
+    .index_left {
+        width: 650px;
+        height: 640px;
+        float: left;
+    }
+    .index_left-t {
+        width: 640px;
+        height: 310px;
+        border: 2px solid #66ADFD;
+        margin-left: 40px;
+        background: url("../app/img/public/b-line.png") no-repeat;
+        background-position: 600px 130px;
+        background-color: rgba(102,173,253,0.1);
+    }
+
+    .index_left-b {
+        width: 640px;
+        height: 310px;
+        border: 2px solid #F8D74A;
+        margin-left: 40px;
+        background: url("../app/img/public/y-line.png") no-repeat;
+        background-position: 615px 140px;
+        background-color: rgba(248,215,47,0.1);
+        margin-top: 20px;
+    }
+
+
+
+    .index_right {
+        width: 1020px;
+        height: 640px;
+        float: right;
+    }
+
+    .i_r_top {
+        width: 100%;
+        height: 310px;
+    }
+
+    .i_r_top .t-l {
+        float: left;
+        width: 345px;
+        height: 100%;
+        border: 2px solid #FA3554;
+        background-color: rgba(250,53,84,0.1);
+    }
+
+    .i_r_top .t-r {
+        float: right;
+        width: 648px;
+        height: 100%;
+        border: 2px solid #2AF5C9;
+        background: url("../app/img/public/g-line.png") no-repeat;
+        background-position: 610px 140px;
+        background-color: rgba(24,245,201,0.1);
+    }
+
+    .i_r_bottom {
+        width: 100%;
+        height: 310px;
+        float: left;
+        border: 2px solid #4AD5EA;
+        margin-top: 20px;
+        background: url("../app/img/public/g-line.png") no-repeat;
+        background-color: rgba(74,213,234,0.1);
+        background-position: 980px 140px;
+    }
+
+    .tit {
+        width: 100%;
+        margin-left: 40px;
+        display: inline-block;
+        margin-top: 35px;
+    }
+
+    .tit .piece {
+        float: left;
+        width: 50px;
+        height: 50px;
+    }
+
+    .tit .h1 {
+        display: block;
+        float: left;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        margin-left: 25px;
+        line-height: 50px;
+    }
+
+    .yellow {
+        background: #F8D74A;
+    }
+
+    .red {
+        background: #FA3554;
+    }
+
+    .green {
+        background: #2AF5C9;
+    }
+
+    .green-s {
+        background: #4AD5EA;
+    }
+
+    .blue {
+        background: #66ADFD;
+    }
+
+    .nav_list {
+        display: inline-block;
+        margin-top: 50px;
+        margin-left: 40px;
+        padding: 0px;
+    }
+
+    .nav_prece {
+        width: 125px;
+        height: 140px;
+        padding: 0px;
+        margin: 0px;
+        list-style-type: none;
+        cursor: pointer;
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .n_p {
+        width: 115px;
+        height: 130px;
+        padding: 0px;
+        margin: 0 auto;
+        border: 1px solid red;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .n_p:hover {
+        width: 125px;
+        height: 140px;
+    }
+
+    .nav_name {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        bottom: 25px;
+        left:50%;
+        transform: translate(-50%);
+        font-size: 12px;
+    }
+
+    .nav_name_s {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        bottom: 10px;
+        left:50%;
+        transform: translate(-50%);
+        font-size: 12px;
+    }
+
+    .pm {
+        background: url("../app/img/public/pm.png") no-repeat center 15px;
+    }
+
+
+    .libaray {
+        background: url("../app/img/public/libaray.png") no-repeat center 15px;
+    }
+
+
+    .ide {
+        background: url("../app/img/public/ide.png") no-repeat center 5px;
+    }
+
+
+    .appmanage {
+        background: url("../app/img/public/appmanage.png") no-repeat center 5px;
+    }
+
+
+    .aimodal {
+        background: url("../app/img/public/aimodal.png") no-repeat center 15px;
+    }
+
+
+    .plugin {
+        background: url("../app/img/public/plugin.png") no-repeat center 5px;
+    }
+
+
+    .devwiki {
+        background: url("../app/img/public/devwiki.png") no-repeat center 5px;
+    }
+
+
+    .uiframe {
+        background: url("../app/img/public/uiframe.png") no-repeat center 15px;
+    }
+
+
+    .ipc {
+        background: url("../app/img/public/ipc.png") no-repeat center 15px;
+    }
+
+
+    .iec {
+        background: url("../app/img/public/iec.png") no-repeat center 15px;
+    }
+
+
+    .did {
+        background: url("../app/img/public/did.png") no-repeat center 15px;
+    }
+
+
+    .cd {
+        background: url("../app/img/public/cd.png") no-repeat center 15px;
+    }
+
+
+    .cm {
+        background: url("../app/img/public/cm.png") no-repeat center 15px;
+    }
+
+
+    .msm {
+        background: url("../app/img/public/msm.png") no-repeat center 15px;
+    }
+
+
+    .Analysis {
+        background: url("../app/img/public/Analysis.png") no-repeat center 15px;
+    }
+
+
+    .Enterpris2 {
+        background: url("../app/img/public/Enterpris2.png") no-repeat center 15px;
+    }
+
+
+    .Achieve1 {
+        background: url("../app/img/public/Achieve1.png") no-repeat center 15px;
+    }
+
+    .Resources3 {
+        background: url("../app/img/public/Resources3.png") no-repeat center 15px;
+    }
+
+
+    .plan3 {
+        background: url("../app/img/public/plan3.png") no-repeat center 15px;
+    }
+
+
+    .plan2 {
+        background: url("../app/img/public/plan2.png") no-repeat center 15px;
+    }
+
+
+
+
+    .b-prece {
+        position: absolute;
+        bottom: -35px;
+        right: -35px;
+        width: 50px;
+        height: 50px;
+        transform:rotate(20deg);
+        -ms-transform:rotate(20deg); 	/* IE 9 */
+        -moz-transform:rotate(20deg); 	/* Firefox */
+        -webkit-transform:rotate(37deg); /* Safari 和 Chrome */
+        -o-transform:rotate(20deg); 	/* Opera */
+    }
+
+    .ide-text {
+        font-family: "PangMenZhengDao";
+        color: #fff;
+        display: block;
+        font-size: 24px;
+        line-height: 50px;
+        font-weight: bold;
+        margin-left: -10px;
+        text-shadow:5px 2px 6px #000;
+    }
+
+    .dos-text {
+        font-family: "PangMenZhengDao";
+        color: #fff;
+        display: block;
+        font-size: 24px;
+        line-height: 50px;
+        font-weight: bold;
+        margin-left: -20px;
+        text-shadow:5px 2px 6px #000;
+    }
+
+    .msc-text {
+        font-family: "PangMenZhengDao";
+        color: #fff;
+        display: block;
+        font-size: 24px;
+        line-height: 50px;
+        font-weight: bold;
+        margin-left: -25px;
+        text-shadow:5px 2px 6px #000;
+    }
+
+    .app-text {
+        font-family: "PangMenZhengDao";
+        color: #fff;
+        display: block;
+        font-size: 24px;
+        line-height: 25px;
+        font-weight: bold;
+        margin-left: -20px;
+        text-shadow:5px 2px 6px #000;
+    }
+
+    .store-text {
+        font-family: "PangMenZhengDao";
+        color: #fff;
+        display: block;
+        font-size: 20px;
+        line-height: 30px;
+        font-weight: bold;
+        margin-left: -5px;
+        text-shadow:5px 2px 6px #000;
+    }
+
+
+
+</style>
+<div class="container-fluid home-page" style="height: 660px; padding: 0px; padding-top: 50px;">
+   <div class="index_left">
+       <div class="index_left-t">
+           <div class="tit">
+               <div class="piece blue"><span class="ide-text">IDE</span></div>
+               <h1 class="h1">应用开发环境</h1>
+           </div>
+           <ul class="nav_list">
+               <li class="nav_prece ide" ng-click="indexGoToUrl('dispatch_flow_new')">
+                   <div class="n_p" style="border: 1px solid #66ADFD;">
+                       <div style="color: #66ADFD;" class="nav_name">AppDev</div>
+                       <div style="color: #66ADFD;" class="nav_name_s">(IDE)</div>
+                       <div class="b-prece blue"></div>
+                   </div>
+               </li>
+               <li class="nav_prece appmanage" ng-click="indexGoToUrl('dispatch_flow_list')">
+                   <div class="n_p" style="border: 1px solid #66ADFD;">
+                       <div style="color: #66ADFD;" class="nav_name">App管理</div>
+                       <div style="color: #66ADFD;" class="nav_name_s">(AppManage)</div>
+                       <div class="b-prece blue"></div>
+                   </div>
+               </li>
+               <li class="nav_prece plugin" ng-click="indexGoToUrl('plugin_list')">
+                   <div class="n_p" style="border: 1px solid  #66ADFD;">
+                       <div style="color: #66ADFD;" class="nav_name">开发者套件</div>
+                       <div style="color: #66ADFD;" class="nav_name_s">(Plugin)</div>
+                       <div class="b-prece blue"></div>
+                   </div>
+               </li>
+               <li class="nav_prece devwiki" ng-click="indexGoToUrl('resources_list')">
+                   <div class="n_p" style="border: 1px solid #66ADFD;">
+                       <div style="color: #66ADFD;" class="nav_name">开发者指导</div>
+                       <div style="color: #66ADFD;" class="nav_name_s">(DevWiki)</div>
+                       <div class="b-prece blue"></div>
+                   </div>
+               </li>
+           </ul>
+       </div>
+       <div class="index_left-b">
+           <div class="tit">
+               <div class="piece yellow"><span class="ide-text">IML</span></div>
+               <h1 class="h1">智能模型库</h1>
+           </div>
+           <ul class="nav_list">
+               <li class="nav_prece pm"  ng-click="indexGoToUrl('flow_factmode_devzone')">
+                   <div class="n_p" style="border: 1px solid #F8D74A;">
+                       <div style="color: #F8D74A;" class="nav_name">物理建模</div>
+                       <div style="color: #F8D74A;" class="nav_name_s">(PM)</div>
+                       <div class="b-prece yellow"></div>
+                   </div>
+               </li>
+               <li class="nav_prece libaray" ng-click="indexGoToUrl('dispatch_scene_list')">
+                   <div class="n_p" style="border: 1px solid #F8D74A;">
+                       <div style="color: #F8D74A;" class="nav_name">物理模型库</div>
+                       <div style="color: #F8D74A;" class="nav_name_s">(Libaray)</div>
+                       <div class="b-prece yellow"></div>
+                   </div>
+               </li>
+               <li class="nav_prece aimodal" ng-click="indexGoToUrl('dispatch_scene_list')">
+                   <div class="n_p" style="border: 1px solid #F8D74A;">
+                       <div style="color: #F8D74A;" class="nav_name">AI模型库</div>
+                       <div style="color: #F8D74A;" class="nav_name_s">(AIModal)</div>
+                       <div class="b-prece yellow"></div>
+                   </div>
+               </li>
+               <li class="nav_prece uiframe" ng-click="indexGoToUrl('dispatch_scene_list')">
+                   <div class="n_p" style="border: 1px solid #F8D74A;">
+                       <div style="color: #F8D74A;" class="nav_name">UI框架库</div>
+                       <div style="color: #F8D74A;" class="nav_name_s">(UIFrame)</div>
+                       <div class="b-prece yellow"></div>
+                   </div>
+               </li>
+           </ul>
+       </div>
+   </div>
+    <div class="index_right">
+        <div class="i_r_top">
+           <div class="t-l">
+               <div class="tit">
+                   <div class="piece red"><span class="dos-text">DOS</span></div>
+                   <h1 class="h1" style="">数字运营空间</h1>
+               </div>
+               <ul class="nav_list">
+                   <li class="nav_prece ipc" ng-click="indexGoToUrl('sys_news')">
+                       <div class="n_p" style="border: 1px solid #FA3554;">
+                           <div style="color: #FA3554;" class="nav_name">智能处理中心</div>
+                           <div style="color: #FA3554;" class="nav_name_s">(IPC)</div>
+                           <div class="b-prece red"></div>
+                       </div>
+                   </li>
+                   <li class="nav_prece iec" ng-click="indexGoToUrl('')">
+                       <a href="http://115.159.160.211:8899/views/publish/monitor/">
+                       <div class="n_p" style="border: 1px solid #FA3554;">
+                           <div style="color: #FA3554;" class="nav_name">智能预警中心</div>
+                           <div style="color: #FA3554;" class="nav_name_s">(IEC)</div>
+                           <div class="b-prece red"></div>
+                       </div>
+                       </a>
+                   </li>
+               </ul>
+           </div>
+            <div class="t-r">
+                <div class="tit">
+                    <div class="piece green"><span class="msc-text">MSC</span></div>
+                    <h1 class="h1">微服务组件</h1>
+                </div>
+                <ul class="nav_list">
+                    <li class="nav_prece did" ng-click="indexGoToUrl('dispatch_scene_new')">
+                        <div class="n_p" style="border: 1px solid #2AF5C9;">
+                            <div style="color: #2AF5C9;" class="nav_name">微服务开发</div>
+                            <div style="color: #2AF5C9;" class="nav_name_s">(DID)</div>
+                            <div class="b-prece green"></div>
+                        </div>
+                    </li>
+                    <li class="nav_prece cd"  ng-click="indexGoToUrl('cmpt.cmpt_new')">
+                        <div class="n_p" style="border: 1px solid #2AF5C9;">
+                            <div style="color: #2AF5C9;" class="nav_name">组件开发</div>
+                            <div style="color: #2AF5C9;" class="nav_name_s">(CD)</div>
+                            <div class="b-prece green"></div>
+                        </div>
+                    </li>
+                    <li class="nav_prece cm" ng-click="indexGoToUrl('cmpt_list')">
+                        <div class="n_p" style="border: 1px solid #2AF5C9;">
+                            <div style="color: #2AF5C9;" class="nav_name">组件管理</div>
+                            <div style="color: #2AF5C9;" class="nav_name_s">(CM)</div>
+                            <div class="b-prece green"></div>
+                        </div>
+                    </li>
+                    <li class="nav_prece msm" ng-click="indexGoToUrl('sys_list')">
+                        <div class="n_p" style="border: 1px solid #2AF5C9;">
+                            <div style="color: #2AF5C9;" class="nav_name">微系统管理</div>
+                            <div style="color: #2AF5C9;" class="nav_name_s">(MSM)</div>
+                            <div class="b-prece green"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="i_r_bottom">
+            <div class="tit">
+                <div class="piece green-s"><span class="app-text">App</span><span class="store-text">Store</span></div>
+                <h1 class="h1">应用商店</h1>
+            </div>
+            <ul class="nav_list">
+                <li class="nav_prece Analysis"  ng-click="app_Url(3)">
+                    <div class="n_p" style="border: 1px solid #4AD5EA;">
+                        <div style="color: #4AD5EA;" class="nav_name">组织优化</div>
+                        <div style="color: #4AD5EA;" class="nav_name_s">(Peopleplus)</div>
+                        <div class="b-prece green-s"></div>
+                    </div>
+                </li>
+                <li class="nav_prece Enterpris2"  ng-click="app_Url(5)">
+                    <div class="n_p" style="border: 1px solid #4AD5EA;">
+                        <div style="color: #4AD5EA;" class="nav_name">精益生产</div>
+                        <div style="color: #4AD5EA;" class="nav_name_s">(Production)</div>
+                        <div class="b-prece green-s"></div>
+                    </div>
+                </li>
+                <li class="nav_prece Achieve1"  ng-click="app_Url(1)">
+                    <div class="n_p" style="border: 1px solid #4AD5EA;">
+                        <div style="color: #4AD5EA;" class="nav_name">企业资源</div>
+                        <div style="color: #4AD5EA;" class="nav_name_s">(Resource)</div>
+                        <div class="b-prece green-s"></div>
+                    </div>
+                </li>
+                <li class="nav_prece Resources3"  ng-click="app_Url(2)">
+                    <div class="n_p" style="border: 1px solid #4AD5EA;">
+                        <div style="color: #4AD5EA;" class="nav_name">企业瓶颈</div>
+                        <div style="color: #4AD5EA;" class="nav_name_s">(Bottleneck)</div>
+                        <div class="b-prece green-s"></div>
+                    </div>
+                </li>
+                <li class="nav_prece plan3"  ng-click="app_Url(6)">
+                    <div class="n_p" style="border: 1px solid #4AD5EA;">
+                        <div style="color: #4AD5EA;" class="nav_name">反馈回路</div>
+                        <div style="color: #4AD5EA;" class="nav_name_s">(LDDC)</div>
+                        <div class="b-prece green-s"></div>
+                    </div>
+                </li>
+                <li class="nav_prece plan2"  ng-click="app_Url(4)">
+                    <div class="n_p" style="border: 1px solid #4AD5EA;">
+                        <div style="color: #4AD5EA;" class="nav_name">质量改进</div>
+                        <div style="color: #4AD5EA;" class="nav_name_s">(Improvement)</div>
+                        <div class="b-prece green-s"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

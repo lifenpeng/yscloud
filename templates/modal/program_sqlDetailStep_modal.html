@@ -1,0 +1,204 @@
+<div class="sql-detail-step">
+    <div ng-if="control.sqldetail_loading">
+        <div ng-show="!control.sqldetail_error">
+            <!--模态框头部提示信息-->
+            <div class="row bg-header warn-bg-header" ng-if="info.priv_yn_flag == 1 && info.exp_bk_num > 100">
+                <span>警告：有较大风险，数据超过100条!</span>
+            </div>
+            <div class="row bg-header no-permission-bg-header" ng-if="info.priv_yn_flag == 2" >
+                <span>权限不足!</span>
+            </div>
+            <div class="row bg-header less-risk-bg-header" ng-if="info.priv_yn_flag == 1 && info.exp_bk_num <= 100">
+                <span>风险较小!</span>
+            </div>
+            <!--模态框内容-->
+            <div class="modal-body" style="font-size: 14px;">
+                <div class="row">
+                    <div class="col-sm-1 text-center" style="font-size: 16px">{{info.sql_seq}}</div>
+                    <div class="col-sm-11" style="font-size: 16px">
+                        <span>{{info.sql_text}}</span>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-sm-11 col-sm-offset-1">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row form-style">
+                                    <label class="col-sm-3 label-key" style="padding-right: 0;text-align: left;">系统节点</label>
+                                    <div class="col-sm-4 label-value" style="text-align: left;padding-left: 0;">{{info.sys_cn_name}}</div>
+                                    <div class="col-sm-1">
+                                        <!-- 权限程度--图标-->
+                                        <span class="fault-status-img fault-success-status-position" ng-show="info.soc_priv == 1"></span>
+                                        <span class="fault-status-img fault-warn-status-position "  ng-show="info.soc_priv == 2"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-style" style="margin-top: 10px;">
+                                    <label class="col-sm-3 label-key" style="padding-right: 0;text-align: left;">操作类型</label>
+                                    <div class="col-sm-4 label-value" style="text-align: left;padding-left: 0">{{info.sql_type_cn}}</div>
+                                    <div class="col-sm-1">
+                                        <!-- 权限程度--图标-->
+                                        <span class="fault-status-img fault-success-status-position" ng-show="info.priv_yn_flag == 1"></span>
+                                        <span class="fault-status-img fault-warn-status-position "  ng-show="info.priv_yn_flag == 2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row form-style">
+                                    <label class="col-sm-3 label-key" style="padding-right: 0;text-align: left;">表名</label>
+                                    <div class="col-sm-9">
+                                        <div class="row" ng-repeat="table in info.stp_info_list">
+                                            <div class="col-sm-8 label-value" style="word-break: break-all;padding-right: 0">{{table.tbl_name}}&nbsp;({{table.tbl_bk_desc ?  table.tbl_bk_desc : '--'}})</div>
+                                            <div class="col-sm-1">
+                                                <!-- 权限程度--图标-->
+                                                <span class="fault-status-img fault-success-status-position" ng-show="table.priv_yn_flag == 1"></span>
+                                                <span class="fault-status-img fault-warn-status-position "  ng-show="table.priv_yn_flag == 2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-style" style="margin-top: 10px;" ng-show="info.sql_where">
+                                    <label class="col-sm-3 label-key" style="padding-right: 0;text-align: left;">查询约束条件</label>
+                                    <div class="col-sm-9 label-value" style="word-break: break-all;padding-right: 0">{{info.sql_where }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row  form-style">
+                    <div class="col-sm-11 col-sm-offset-1">
+                        <label class="control-label label-key" ng-show="info.sql_type == 1">查询数据</label>
+                        <label class="control-label label-key" ng-show="info.sql_type == 2">更新数据</label>
+                        <label class="control-label label-key" ng-show="info.sql_type == 3">插入数据</label>
+                        <label class="control-label label-key" ng-show="info.sql_type == 4">删除数据</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  class="col-sm-11 col-sm-offset-1 text-left">
+                        <!-- 查询数据列表-->
+                        <table class="sub-table"  style="text-align: center" ng-if="info.sql_type == 1">
+                            <tr style="font-size: 12px;">
+                                <td>
+                                    字段名
+                                </td>
+                                <td>
+                                    字段描述
+                                </td>
+                                <td>
+                                    表达式
+                                </td>
+                                <td>
+                                    源字段
+                                </td>
+                                <td>
+                                    权限
+                                </td>
+                            </tr>
+                            <tr style="font-size: 12px;" ng-repeat="tr in info.scp_info_list">
+                                <td>
+                                    {{tr.col_name}}
+                                </td>
+                                <td>
+                                    {{tr.col_bk_desc}}
+                                </td>
+                                <td style="color:#D10F0F">
+                                    <span ng-show="tr.select_express">{{tr.select_express}}</span>
+                                    <span ng-show="!tr.select_express">无</span>
+                                </td>
+                                <td>
+                                    <!-- 源字段暂无-->
+                                </td>
+                                <td>
+                                    <span class="fa fa-check-square" ng-show="tr.priv_yn_flag == 1" style="color: #379339;font-size: 24px;"></span>
+                                    <span class="fa fa-warning " ng-show="tr.priv_yn_flag == 2" style="color: #E79032;font-size: 24px;"></span>
+                                </td>
+                            </tr>
+                            <tr ng-show="info.scp_info_list.length == 0 || !info.scp_info_list">
+                                <td colspan="5">
+                                    <span style="color: #808080">暂无数据</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- 非查询数据列表-->
+                        <table class="sub-table"  style="text-align: center" ng-if="info.sql_type != 1 && info.scp_info_list.length != 0">
+                            <tr style="font-size: 12px;">
+                                <td>
+                                    字段名
+                                </td>
+                                <td>
+                                    字段描述
+                                </td>
+                                <td>
+                                    值
+                                </td>
+                                <td>
+                                    权限
+                                </td>
+                            </tr>
+                            <tr style="font-size: 12px;" ng-repeat="tr in info.scp_info_list">
+                                <td>
+                                    {{tr.col_name}}
+                                </td>
+                                <td>
+                                    {{tr.col_bk_desc}}
+                                </td>
+                                <td>
+                                    <span ng-show="tr.col_value"> {{tr.col_value}}</span>
+                                    <span ng-show="!tr.col_value">无</span>
+                                </td>
+                                <td>
+                                    <span class="fa fa-check-square" ng-show="tr.priv_yn_flag == 1" style="color: #379339;font-size: 24px;"></span>
+                                    <span class="fa fa-warning " ng-show="tr.priv_yn_flag == 2" style="color: #E79032;font-size: 24px;"></span>
+                                </td>
+                            </tr>
+                            <tr ng-show="info.scp_info_list.length == 0 || !info.scp_info_list">
+                                <td collspan="4">
+                                    <span style="color: #999">暂无数据</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row " style="margin-top: 10px;">
+                    <div class="col-sm-11 col-sm-offset-1">
+                        <div class="row form-style">
+                            <div class="col-sm-3">
+                                <span class="label-key">预计影响条数</span>
+                                <span class="label-value" style="padding-left: 20px;">{{info.exp_bk_num}}条</span>
+                            </div>
+                            <div class="col-sm-4">
+                                <span class="label-key">预计执行时间</span>
+                                <span class="label-value" style="padding-left: 20px;">{{info.exp_exec_time}}秒</span>
+                            </div>
+                            <div class="col-sm-3" style="margin-left: -35px;">
+                                <span class="label-key">时段</span>
+                                <span style="padding-left: 20px;" ng-class="info.bucket_type  == 1 ? 'sql-time-low' : 'sql-time-high'">{{info.bucket_cn_type}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="control.sqldetail_error">
+            <div class="col-sm-12 text-center" style="margin-top: 80px;margin-bottom: 80px">
+                <div style="margin:0 auto;font-size: 20px;border:1px dashed #44dcfd;height:200px;line-height:100px;width:320px;border-radius: 4px;">
+                    <div style="color: #E9416E;font-size: 12px;height: 20px;line-height: 20px;word-break: break-all;" ng-bind="control.sqldetail_error_message"></div>
+                </div>
+            </div>
+        </div>
+        <!--模态框按钮-->
+        <div class="row" style="margin-bottom: 40px">
+            <div class="col-sm-12 text-center">
+                <!-- 查看详细SQL步骤--关闭按钮-->
+                <button class="cancel-btn btn-xl" ng-click="closeModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="!control.sqldetail_loading">
+        <div class="col-sm-12 text-center" style="margin-top: 120px;margin-bottom: 120px">
+            <div style="margin:0 auto;font-size: 20px;border:1px dashed #44dcfd;height:100px;line-height:100px;width:320px;border-radius: 4px;">
+                <span style="color:#44dcfd;"><i style="font-size: 24px;" class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;正在获取详细信息</span>
+            </div>
+        </div>
+    </div>
+</div>

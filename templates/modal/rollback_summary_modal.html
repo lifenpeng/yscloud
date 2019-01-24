@@ -1,0 +1,86 @@
+<form name="form.rollback_form" class="form-horizontal" ng-submit="formSubmit()" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div class="modal-header">
+        <h3 class="modal-title">回退评价</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all;">
+        <div class="form-group form-horizontal form-style">
+            <label class="col-sm-3 control-label label-key" style="margin-top: -7px;">回退结果</label>
+            <div class="col-sm-7 label-value">
+                <span ng-show="rollback_summary.rollback_flag == 7">成功</span>
+                <span ng-show="rollback_summary.rollback_flag == 8">失败</span>
+                <span ng-show="rollback_summary.rollback_flag < 7">--</span>
+            </div>
+        </div>
+        <div class="form-group form-horizontal form-style"   ng-if="rollback_summary.assess_bk_seq >= 1">
+            <label class="col-sm-3 control-label label-key" style="margin-top: -6px;">评价人</label>
+            <div class="col-sm-7 label-value">
+                <div style="padding-bottom: 5px;width: 300px" ng-bind="rollback_summary.evaluate_user_cn_name"></div>
+            </div>
+        </div>
+        <div class="form-group form-horizontal form-style" ng-if="rollback_summary.assess_bk_seq >= 1">
+            <label class="col-sm-3 control-label label-key" style="margin-top: -6px;">评价时间</label>
+            <div class="col-sm-7 label-value">
+                <div style="margin-top: 2px">{{rollback_summary.assess_bk_date}}&nbsp;{{rollback_summary.assess_bk_time}}</div>
+            </div>
+        </div>
+        <div class="form-group form-horizontal form-style">
+            <label class="col-sm-3 control-label label-key" style="margin-top: -12px;color:#999">回退评价</label>
+            <div class="col-sm-8">
+                <textarea placeholder="250字以内" type="text" class="form-control"  ng-model="rollback_summary.project_bk_evaluate"
+                    style="resize:none;color: #d2f1fe"
+                    name = "project_bk_evaluate"
+                    ng-model-options="{updateOn: 'blur'}" 
+                    ng-maxlength="125"
+                    required></textarea>
+                <validate-msg tag-cn-name="发布评价" name="project_bk_evaluate" ></validate-msg>
+            </div>
+        </div>
+        <div class="row form-horizontal form-style">
+            <label class="col-sm-3 control-label label-key" style="font-size: 12px;margin-top: 4px;">回退反馈</label>
+            <div class="col-sm-8">
+                <div class="form-group checkbox label-value">
+                    <div style="display: inline-block;margin-right: 40px" ng-repeat="i in  data.feedback_type_list">
+                        <input type="checkbox" name="upload_flag" i-check ng-model="i.state"  ng-change="chooseFeedBackType(i)"  ng-disabled="i.key == 2">
+                        <span style="position: relative; top: 1px;">{{i.value}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-style" ng-if="control.show_user_flag" style="margin-top: 20px;">
+            <div class="col-sm-3 control-label label-key" style=";font-size: 12px;">
+                邮件收件人
+            </div>
+            <div class="col-sm-5">
+                <bs-select
+                           name="notice_users"
+                           class="label-value"
+                           items="data.select_person"
+                           my-select="rollback_summary.user_cn_name"
+                           select-val="addEmailAddress(selectKey)"
+                           option-labal="user_cn_name,email_add"
+                           option-key="user_cn_name"
+                           required></bs-select>
+                <div style="color: #a40000;" ng-if="control.user_is_none && rollback_summary.notice_users.length == 0">请至少选择一个收件人</div>
+            </div>
+        </div>
+        <div class="row form-horizontal" ng-if="control.show_user_flag" style="margin-top:10px;">
+            <div class="col-sm-offset-3 col-sm-8" ng-if="rollback_summary.notice_users.length!=0">
+                <div class="data-source-btn" ng-repeat="user in rollback_summary.notice_users"  style="text-align: center;margin-right:10px;margin-bottom: 10px;position: relative;display: inline-block;" title="{{user.user_cn_name}}">
+                    <span style="font-size: 12px; border-radius: 4px;color:#88B8FE;padding: 0 8px;">{{user.user_cn_name}}</span>
+                    <span>{{user.email_add}}</span>
+                    <div  class="data-source-delete-btn" ng-click="deleteSingleUser($index)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 20px;text-align: center;">
+        <div class="col-sm-12">
+            <button class="cancel-btn btn-xl" type="button" ng-click="formCancel()">取消</button>
+            <button ng-show="!control.btnBus_loading" class="save-btn btn-xl" type="submit">保存</button>
+            <button ng-show="control.btnBus_loading" disabled="disabled" class="save-btn btn-xl" type="button" >
+                <i style="color: white" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</form>

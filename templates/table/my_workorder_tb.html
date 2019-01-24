@@ -1,0 +1,11 @@
+<div class="row" style="background-color: white;padding-top:16px;">
+    <div class="col-sm-12" style="padding:10px;" ng-if="tabState == 'create'">
+        <table bs-table-control="workOrderCreateTableControl" class="table lg-table"></table>
+    </div>
+    <div class="col-sm-12" style="padding:10px;" ng-if="tabState == 'pending'">
+        <table bs-table-control="workOrderPendingTableControl" class="table lg-table"></table>
+    </div>
+    <div class="col-sm-12" style="padding:10px;" ng-if="tabState == 'processed'">
+        <table bs-table-control="workOrderProcessedTableControl" class="table lg-table"></table>
+    </div>
+</div>

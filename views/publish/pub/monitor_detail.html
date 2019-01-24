@@ -1,0 +1,342 @@
+<!--改造-->
+<div class="container-fluid prod_detail" style="font-size: 12px;padding: 0">
+    <div  ng-class="control.is_quick_publish == 2 ?  'proj_exec' :'proj_quick_exec'">
+        <!--头部导航条-->
+        <div id="first_scroll" class="proj_exec_header_nav">
+            <div class="col-sm-3 col-xs-3 proj_exec_pub"  style="padding-right: 40px;" ng-style="{'background-color': control.show_prod_error ? '#a40000' : control.is_quick_publish == 1 ? '#44dcfd' : '#5A90F8'} ">
+                <span style="padding-left: 10px" ng-if="info.exec_type == 1 && control.is_quick_publish == 2">发布系统:</span>
+                <span style="padding-left: 10px" ng-if="info.exec_type == 2 && control.is_quick_publish == 2">回退系统:</span>
+                <span ng-if="control.is_quick_publish == 1" class="quick_proj_img quick_flag"></span>
+                <span style="padding-left: 20px;" ng-if="control.is_quick_publish == 2" title="{{info.proj_info.business_cn_name}}">{{info.proj_info.business_cn_name}}</span>
+                <span style="padding-left: 60px;color: #000;" ng-if="control.is_quick_publish == 1" title="{{info.proj_info.business_cn_name}}">{{info.proj_info.business_cn_name}}</span>
+                <div class="quick_proj_img quick_back_img" ng-if="control.is_quick_publish == 1 && info.proj_info.project_status <=2"  ng-click="backToQuickProj()"></div>
+            </div>
+            <div class="col-sm-offset-4 col-sm-2 col-xs-2">
+                <div class="row">
+                    <div class="col-sm-12 text-left show_time" ng-show="!control.can_exec">
+                        <span class="proj_exec_clock"  title="服务器时间"><i class="fa fa-clock-o"></i></span>
+                        <div ng-hide="!control.show_plan_time" class="proj_exec_nowTime" ng-mouseleave="resetTime()" >{{info.nowDate}}&nbsp;{{info.nowTime}}</div>
+                        <div ng-hide="control.show_plan_time">
+                            <div ng-show="!control.can_exec" class="proj_exec_remainTime" ng-mouseenter="changeTime()">距离发布:&nbsp;{{info.remainTime}}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-center" ng-show="control.can_exec">
+                        <div ng-if="info.proj_info.project_status >2">
+                            <span ng-if="info.proj_info.project_status == 3" style="color:#5F9DE4;">正在执行</span>
+                            <span ng-if="info.proj_info.project_status == 4" style="color:#339900;">自动结束</span>
+                            <span ng-if="info.proj_info.project_status == 5" style="color:#339900;">手动结束</span>
+                            <span ng-if="info.proj_info.project_status == 6" style="color:#5F9DE4;">回退中</span>
+                            <span ng-if="info.proj_info.project_status == 7" style="color:#339900;">回退成功</span>
+                            <span ng-if="info.proj_info.project_status == 8" style="color:#cc0000;">回退失败</span>
+                        </div>
+                        <div ng-if="info.proj_info.project_status <=2">
+                            <div ng-if="!control.show_plan_time" class="proj_exec_canExec" ng-mouseenter="changeTime()">可执行</div>
+                            <div ng-if="control.show_plan_time" title="服务器时间">
+                                <span class="proj_exec_clock" style="float: left;"><i class="fa fa-clock-o"></i></span>
+                                <div  class="proj_exec_nowDataTime"  ng-mouseleave="resetTime()">{{info.nowDate}}&nbsp;{{info.nowTime}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="control.is_Exec"  class="col-sm-3 col-xs-3" style="padding-right: 25px;padding-left: 0;">
+                <div class="row">
+                    <div class="col-sm-12" style="padding: 0;">
+                        <div  class="col-sm-1 proj_exec_seperator" style="float: right;">|</div>
+                        <div style="float: right;" id="prod_download" class="prod_download_position prod_img dropdown col-sm-1"  dropdown-toggle title="下载">
+                            <ul id="download_li_style" class="dropdown-menu dropdown-user pull-right text-left proj_exec_ul">
+                                <li class="proj_exec_li" ng-click="downloadFile(info.proj_info.proreport_path);" ng-show="info.proj_info.proreport_path && info.exec_type == 1"><a class="proj_exec_liBook" href=""><i class="fa fa-book"></i>&nbsp;发布报告下载&nbsp;[DOC]</a><b style="display: none" class="fa fa-arrow-down"></b></li>
+                                <li class="proj_exec_li"  ng-click="downloadFile(info.proj_info.proreport_pdf_path);" ng-show="info.proj_info.proreport_pdf_path && info.exec_type == 1"><a class="proj_exec_liBook"  href=""><i class="fa fa-book"></i>&nbsp;发布报告下载&nbsp;[PDF]</a><b style="display: none" class="fa fa-arrow-down"></b></li>
+                                <li class="proj_exec_li"  ng-click="downloadFile(info.proj_info.prolog_path);" ng-show="info.proj_info.prolog_path"><a class="proj_exec_liBook"  href=""><i class="fa fa-book"></i>&nbsp;执行日志下载&nbsp;&nbsp;&nbsp;</a><b style="display: none" class="fa fa-arrow-down"></b></li>
+                                <li class="proj_exec_li"  ng-click="downloadFile(info.proj_info.promanual_path);" ng-show="info.proj_info.promanual_path && info.exec_type == 1"><a class="proj_exec_liBook"  href=""><i class="fa fa-book"></i>&nbsp;发布手册下载&nbsp;[DOC]</a><b style="display: none" class="fa fa-arrow-down"></b></li>
+                                <li class="proj_exec_li"  ng-click="downloadFile(info.proj_info.promanual_pdf_path);" ng-show="info.proj_info.promanual_pdf_path && info.exec_type == 1"><a class="proj_exec_liBook" href=""><i class="fa fa-book"></i>&nbsp;发布手册下载&nbsp;[PDF]</a><b style="display: none" class="fa fa-arrow-down"></b></li>
+                            </ul>
+                        </div>
+                        <div  class="col-sm-1 proj_exec_seperator" style="float: right;">|</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="" class="content_wrap">
+            <!-- 内容-->
+            <div id="codePanel" ng-style="caculateHeight()" custom-scroll custom-config="config.scroll_code_info" func="{scroll:'inscrollTo'}" class="item_wrap" style=";margin-right: 20px; margin-top: 10px; background-color: rgb(16, 23, 32);">
+                <div class="container-fluid" >
+                    <div class="row"  ng-repeat="group in info.instance_info.steps track by $index">
+                        <div class="header_group" >
+                            <div class="pub_exe_code_header_group_name">
+                                {{group.group_cn_name}}
+                            </div>
+                            <div>
+                                <toggle-button checked="group.expand_flag"></toggle-button>
+                            </div>
+                        </div>
+                        <div ng-repeat="phase in group.phase_list track by $index">
+                            <div class="phase_style"  id="phase_{{phase.phase_no}}" ng-click="chooseNodeConfig($parent.$index,$index,phase,info.instance_info.steps)" ng-class="(control.curr._phase  == phase.phase_no) && phase.phase_status <=2 ? 'phase_execing_style': phase.is_check ?  'phase_checked_style' : 'phase_default_style'">
+                                <div class="exec-phase-type-img" ng-class="((control.curr._phase  == phase.phase_no) && phase.phase_status <=2 || phase.is_check ) ? 'execing-header-cmpt':'exec-header-cmpt'" ng-show="(phase.phase_type==1 || phase.phase_type==2 || phase.phase_type==3) && !phase.interactor_flag"></div>
+                                <div class="exec-phase-type-img" ng-class="((control.curr._phase  == phase.phase_no) && phase.phase_status <=2  || phase.is_check ) ? 'execing-interact-config':'exec-interact-config'" ng-show="(phase.phase_type==1 || phase.phase_type==2 || phase.phase_type==3) && phase.interactor_flag"></div>
+                                <div class="exec-phase-type-img" ng-class="((control.curr._phase  == phase.phase_no) && phase.phase_status <=2  || phase.is_check ) ? 'execing-header-custom-config':'exec-header-custom-config'" ng-show="phase.phase_type==5 || phase.phase_type==4"></div>
+                                <div class="exec-phase-type-img" ng-class="((control.curr._phase  == phase.phase_no) && phase.phase_status <=2  || phase.is_check ) ? 'execing-header-handle-phase':'exec-header-handle-phase'" ng-show="phase.phase_type==6"></div>
+                                {{phase.phase_bk_desc}}
+                                <div ng-if="phase.phase_status == 2 && control.curr._load" style="width:30px;height: 30px;position: absolute;right: 120px;top: -2px;color: #fff;font-size: 16px;text-align: center;"><span><i class="fa fa-spinner fa-spin"></i></span></div>
+                                <div ng-if="phase.phase_status == 5" class="node_status_relate_img node_exe_success" style="right: 120px;top: 0"></div>
+                                <div ng-if="phase.phase_status == 4 || phase.phase_status == 3" class="node_status_relate_img node_exe_fail" style="right: 120px;top: 0"></div>
+                                <div ng-if="phase.phase_status == 6" class="node_status_relate_img node_exe_skip" style="right: 120px;top: 0"></div>
+                                <div class="pub_exe_cmd_status_7" ng-if="phase.phase_status == 7"><span><i class="fa fa-dot-circle-o" style="color: #FF2F2F;" ></i></span></div>
+                                <div class="pub_exe_cmd_status_6" ng-if="phase.phase_status != 6 && phase.phase_status !=10">
+                                    <span ng-show="phase.phase_status > 2 && phase.time_used != 0" ng-bind="'['+ (phase.time_used < 1 ? '<1' : phase.time_used) +'s]'"></span>&nbsp;&nbsp;
+                                </div>
+                            </div>
+                            <div collapse="!group.expand_flag">
+                                <!--组件 脚本 校验组件-->
+                                <div ng-if="phase.phase_type <=3" style="padding-left: 20px">
+                                    <textarea
+                                            name="script_name"
+                                            ui-codemirror = "config.view_options"
+                                            ui-refresh="control.code_mirror_control"
+                                            ng-model="phase.exe_script"
+                                            class="form-control"
+                                    ></textarea>
+                                </div>
+                                <!--固化配置-->
+                                <div ng-if="phase.phase_type == 4" class="pub_exe_phase_type_456">
+                                    <div ng-repeat="node in phase.node_list">
+                                        <div class="phase-soc-title">
+                                            <span class="soc-detail">
+                                                <span style="display: inline-block;width: 100%;overflow: hidden;cursor: default" title="{{getProtocolTypeCnName(node.exec_protocol_type)}}">{{getProtocolTypeCnName(node.exec_protocol_type)}}</span>
+                                            </span>{{node.exec_soc_name}}
+                                        </div>
+                                        <div class="config-files-list">
+                                            <div class="file-list" ng-repeat="file in node.file_list track by $index" title="{{file}}">
+                                                <i class="fa fa-file-text-o"></i> {{file.substring(file.lastIndexOf('/')+1,file.length)}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--自定义配置-->
+                                <div ng-if="phase.phase_type == 5" class="pub_exe_phase_type_456">
+                                    <div ng-if="!phase.node_list">暂无修改的配置文件</div>
+                                    <div ng-repeat="node in phase.node_list">
+                                        <div class="phase-soc-title">
+                                            <span class="soc-detail">
+                                                <span style="display: inline-block;width: 100%;overflow: hidden;cursor: default" title="{{getProtocolTypeCnName(node.exec_protocol_type)}}">{{getProtocolTypeCnName(node.exec_protocol_type)}}</span>
+                                            </span>{{node.exec_soc_name}}
+                                        </div>
+                                        <div class="config-files-list">
+                                            <div class="file-list" ng-repeat="file in node.file_list" title="{{file}}">
+                                                <i class="fa fa-file-text-o"></i> {{file.substring(file.lastIndexOf('/')+1,file.length)}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--人工阶段-->
+                                <div ng-if="phase.phase_type == 6" class="pub_exe_phase_type_456">
+                                    <div style="word-break: break-all;" ng-bind-html="phase.url_detail"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-offset-4 col-sm-4">
+                            <div class="row" style="padding-bottom: 10px;">
+                                <div class="col-sm-4 proj_exec_end"></div>
+                                <div class="col-sm-4 text-center" style="padding-top: 6px; color: #666;">END</div>
+                                <div class="col-sm-4 proj_exec_end"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--节点栏-->
+            <div id="monitorNodeDesk" class="monitor_node_wrap">
+                <ul class="nav nav-pills">
+                    <li class="tab-nav-style" ng-class="control.tab_type ? 'tab-nav-active-style' : ''" ng-click="changeMontiorType(1)">
+                        执行节点
+                    </li>
+                    <li class="tab-nav-style" ng-class="control.tab_type ?  '' : 'tab-nav-active-style'" ng-click="changeMontiorType(2)">
+                        日志监控
+                    </li>
+                </ul>
+                <div dyna-height init-bottom="200">
+                    <div class="container-fluid" ng-if="control.tab_type"  custom-scroll custom-config="config.scroll_node_info" style="position: relative;height: 100%">
+                        <div ng-if="control.get_nodes_loading" dyna-height init-bottom="230" style="display:flex;justify-content:center;align-items:center;">
+                            <div style="color: #44dcfd;">
+                                正在获取阶段节点信息 <span><i class="fa fa-spinner fa-spin" ></i></span>
+                            </div>
+                        </div>
+                        <div ng-if="!control.get_nodes_loading">
+                            <!--header头部操作栏-->
+                            <div class="row" style="height: 32px;line-height: 32px;" ng-if="!info.phase_node_info.nodes_flag">
+                                <div  style="color: #6D7183;width: 40%;float: left;padding-left: 20px;position: relative;">
+                                    全部节点 <div ng-if="info.phase_node_info.nodes_info.parallel_flag" class="node_status_relate_img parallel_flag_position" title="并行"></div>
+                                </div>
+                                <!--分割线-->
+                                <div style="width: 1px;height: 15px;position: absolute;background: #6D7183;top: 10px;left: 40%"></div>
+                                <div  style="width: 30%;float: right;padding-top: 2px;">
+                                    <div class="togglebutton " style="line-height: 24px;">
+                                        <label style="font-size: 12px; color: #777;">
+                                            <input type="checkbox" ng-model="info.phase_node_info.expand_flag" ng-if="info.phase_node_info.nav_show_flag == 0 || info.phase_node_info.nav_show_flag == 1 " ng-click="expandAllNode(info.phase_node_info)">
+                                            <input type="checkbox" ng-model="info.phase_node_info.expand_flag" ng-if="info.phase_node_info.nav_show_flag == 2 " ng-click="closeAllNode(info.phase_node_info)">
+                                            <span class="toggle" style="vertical-align: middle;"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--节点部分-->
+                            <div class="row" style="min-height: 80px;margin-bottom: 10px;" ng-style="{'margin-top': $first ? '10px' : '0'}" ng-repeat="node in  info.phase_node_info.nodes_info.node_list | orderBy:'node_exec_seq'" ng-if="node.is_show && !info.phase_node_info.nodes_flag">
+                                <div class="col-sm-12" style="height: 100%;">
+                                    <div class="node_wrap">
+                                        <div class="node_default_style" ng-class="((info.phase_node_info.phase_no == control.curr._phase) && (control.curr._node == node.exec_node_ip )) || node.node_status == 2 ? 'node_execting_style' : (node.is_exec && node.node_status != 6) ? '' : 'node_unecheck_style'" ng-click="toggleNodeExecInfo(node,info.phase_node_info)">
+                                            <div class="node_img" ng-class="(info.phase_node_info.phase_no == control.curr._phase) && node.node_status == 2 ? 'node_Execing_img' : (node.is_exec && node.node_status != 6) ?  '': 'node_unExec_img'" style="position: absolute;top: 20px;left: 15px;"></div>
+                                            <div style="width: 80%;padding-left: 68px;padding-top: 18px;">
+                                                <div style="font-size: 16px;"><b>{{node.exec_node_ip}}</b></div>
+                                                <div class="source_style">
+                                                    <span class="soc_font_color" style="width: 45px;color:#88B8FE;display: inline-block;overflow: hidden;padding: 0 8px;" title="{{getProtocolTypeCnName(node.exec_protocol_type)}}">{{getProtocolTypeCnName(node.exec_protocol_type)}}</span>
+                                                    <span class="soc_font_color" style="width: 55px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;display: inline-block;" title="{{node.exec_soc_name}}">{{node.exec_soc_name}}</span>
+                                                </div>
+                                            </div>
+                                            <!--节点执行状态-->
+                                            <!--node_status 1 未执行 2 执行中 3 执行出错 4 验证失败 5 执行成功 6 执行跳过 7 执行停止 8 手动修改执行成功-->
+                                            <div ng-if="node.node_status == 2" style="width:24px;height: 24px;  position: absolute;right: 15px;top: 20px;font-size: 24px; "><span><i class="fa fa-spinner fa-spin"></i></span></div>
+                                            <!--成功-->
+                                            <div ng-if="node.node_status == 5 || node.node_status == 4 " class="node_status_relate_img node_exe_success"></div>
+                                            <!--失败-->
+                                            <div ng-if="node.node_status == 3" class="node_status_relate_img node_exe_fail"></div>
+                                            <!--手动改为成功-->
+                                            <div ng-if="node.node_status == 8" class="node_status_relate_img node_exe_handle_success"></div>
+                                            <!--执行跳过-->
+                                            <div ng-if="node.node_status == 6" class="node_status_relate_img node_exe_skip"></div>
+                                            <!--执行停止-->
+                                            <div ng-if="node.node_status == 7" style="width: 24px;height: 24px;position: absolute;right: 10px;top: 30px"><span><i class="fa fa-dot-circle-o" style="color: #FF2F2F;" ></i></span></div>
+                                        </div>
+                                        <div collapse="!node.show_detail">
+                                            <!--应用状态-->
+                                            <div  style="height: 30px;line-height: 30px;;color: #6d7183;position: relative;padding-left: 40px;">
+                                                <div class="node_status_relate_img app_status_position" style="left: 10px;"></div>应用状态
+                                                <div style="position: absolute;top: 0;right: 45px;" ng-if="!node.node_monitor_msg || node.node_monitor_msg.length ==0">暂无</div>
+                                            </div>
+                                            <div ng-if="node.node_monitor_msg && node.node_monitor_msg.length !=0">
+                                                <div style="height: 20px;line-height: 20px;" ng-repeat=" msg in node.node_monitor_msg track by $index">
+                                                    <div style="width: 52%;font-size: 12px;padding-left: 40px;display: inline-block;color: #61a1b8;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" title="{{msg.item_name}}">{{msg.item_name}}</div>
+                                                    <div style="width: 40%;font-size: 12px;display: inline-block;white-space: nowrap;overflow: hidden;margin-left: 10px;text-overflow: ellipsis;color: #def1fe;" title="{{msg.result}}">{{msg.result}}</div>
+                                                </div>
+                                            </div>
+                                            <!--执行信息-->
+                                            <div style="height: 30px;line-height: 30px;;color: #6d7183;position: relative;padding-left: 40px;">
+                                                <div class="node_status_relate_img exec_status_position" style="left: 10px;"></div>执行信息
+                                                <div style="position: absolute;top: 0;right: 45px;color: #6d7183;" ng-if="!node.exe_msg">暂无</div>
+                                            </div>
+                                            <div ng-if="node.exe_msg || node.file_list">
+                                                <div style="height: 20px;line-height: 20px;">
+                                                    <div style="width: 35%;font-size: 12px;padding-left: 40px;display: inline-block;color: #61a1b8;">结果&nbsp;:</div>
+                                                    <div style="width: 35%;font-size: 12px;display: inline-block;color: #a40000;" ng-if="node.node_status == 4 || node.node_status == 3">失败</div>
+                                                    <div style="width: 35%;font-size: 12px;display: inline-block;color: #6d7183;" ng-if="node.node_status == 1">暂无</div>
+                                                    <div style="width: 35%;font-size: 12px;display: inline-block;color: #6d7183;" ng-if="node.node_status == 6">跳过</div>
+                                                    <div style="width: 35%;font-size: 12px;display: inline-block;color: #a40000;" ng-if="node.node_status == 7">停止</div>
+                                                    <div style="width: 35%;font-size: 12px;display: inline-block;color: #39B54A;" ng-if="node.node_status == 5 || node.node_status == 8">成功</div>
+                                                    <div class="change_result_style" ng-if="node.node_status == 4 || node.node_status == 3" ng-click="changeResult(node ,info.phase_node_info)"><span><i class="fa fa-pencil-square-o"></i></span></div>
+                                                </div>
+                                                <div style="margin-bottom: 5px;">
+                                                    <div style="width: 90%;padding-left: 40px;text-align: left;word-break: break-all;color: #def1fe" ng-if="node.exe_msg">
+                                                        {{node.exe_msg}}
+                                                    </div>
+                                                    <div style="width: 90%;padding-left: 40px;" ng-if="node.file_list">
+                                                        <div style="width:100%;height: 26px;line-height: 26px;font-size: 12px;color: #999;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-repeat="file in node.file_list" title="{{file}}">
+                                                            <i class="fa fa-file-text-o"></i> {{file.substring(file.lastIndexOf('/')+1,file.length)}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--无执行节点-->
+                            <div dyna-height init-bottom="230" class="log_none_style"  ng-if="info.phase_node_info.nodes_flag">
+                                <div class="none_exec_node_style"></div>
+                                <div style="color: #666;text-align: center;">人工阶段</div>
+                                <div style="color: #666;text-align: center;">无执行节点信息</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" ng-show="!control.tab_type" custom-scroll custom-config="config.scroll_log_files_info" style="position: relative;" >
+                        <div ng-if="!control.show_monitor_log" dyna-height init-bottom="230">
+                            <!--添加日志监控文件-->
+                            <div class="row" style="margin-top: 15px;padding: 0 25px">
+                                <div class="add_monitor_log_btn" ng-click="addMonitorContent()">
+                                    <span><i class="fa fa-wrench" style=""></i></span> 监控文件
+                                </div>
+                            </div>
+                            <!--暂无文件-->
+                            <div class="log_none_style" style="height: calc(100% - 50px)" ng-if="info.log_info.monitor_log_list.length == 0">
+                                <div class="monitor_none_log_style"></div>
+                                <div style="color: #6d7183;text-align: center;">暂无监控文件</div>
+                            </div>
+                            <!--文件列表-->
+                            <div  style="padding: 0 5px;" ng-if="info.log_info.monitor_log_list.length != 0" ng-repeat="node in info.log_info.monitor_log_list">
+                                <div style="height: 20px;padding-left: 5px;margin-top: 10px;color: #999;">{{node.label}}</div>
+                                <div class="monitor_log_style" ng-repeat="file in node.checked_files" ng-click="chooseMonitorFile(file , node)">
+                                    <div style="text-align: center"><span style="font-size: 48px;margin-top: 20px;color: #A9C4F8;" class="fa fa-file-text-o"></span></div>
+                                    <div style="text-align: center;margin-top: 10px;font-size: 16px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;padding: 0 5px;" title="{{file.file}}">{{file.file}}</div>
+                                    <div  class="data-source-delete-btn"  ng-click="deleteMonitorLog($event,$index,node,$parent.$index)"><i class="fa fa-times" style="color: #fff;"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="control.show_monitor_log" >
+                            <div class="return_monitor_log_style" ng-click="returnMonitorList()">
+                                <span style="margin-right: 5px;" ><i class="fa fa-chevron-left"></i></span>返回文件列表
+                            </div>
+                            <!--监控日志内容-->
+                            <div  class="row" style="margin: 0;background-color: #182736;padding-top: 5px;" ng-style="caculateMonitorHeight()">
+                                <!--文件头部执行部分-->
+                                <div style="height: 60px;position: relative;padding-left: 55px;border-bottom: 1px solid #555f76;">
+                                    <!--文件图标-->
+                                    <div style="width: 40px;height: 40px;position: absolute;top: 5px;left: 5px;">
+                                        <span style="font-size: 48px;color: #A9C4F8;" class="fa fa-file-text-o"></span>
+                                    </div>
+                                    <div style="padding-top: 5px;font-size: 16px;width: 75%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{info.exe_log_info.file}}</div>
+                                    <div style="padding-top: 5px;color: #999;">
+                                        <span ng-bind="info.exe_log_info.node_ip"></span>
+                                        <span style="margin-left: 10px;" ng-bind="info.exe_log_info.word_coding"></span>
+                                    </div>
+                                    <!--开始 暂停图标-->
+                                    <div ng-if="!control.monitor_flag " ng-click="startFileMonitor(info.exe_log_info)" style="right: 10px;top: 10px;" class="monitor_operation_btn monitor_start_img"></div>
+                                    <div ng-if="control.monitor_flag " ng-click="stopNodeMonitor(info.exe_log_info)" style="right: 10px;top: 10px;" class="monitor_operation_btn monitor_stop_img"></div>
+                                </div>
+                                <!--中间操作按钮-->
+                                <div style="height: 40px;position: relative;margin-top: 4px;">
+                                    <div class="log_lcm_search" ng-if="control.show_key_word_search_input">
+                                        <div class="log_lcm_search_input">
+                                            <input type="text"
+                                                   placeholder="输入关键字"
+                                                   class="form-control"
+                                                   ng-model="info.log_info.search_key_word"
+                                                   style="height: 30px;"
+                                                   ng-focus = "control.show_start_search = true"
+                                            >
+                                            <span ng-click="showKeyWordLine(info.log_info.search_key_word)" ng-if="control.show_start_search" class="log_search"><i class="fa fa-check" style="padding-top: 7px;"></i></span>
+                                        </div>
+                                    </div>
+                                    <!--关键字筛选-->
+                                    <div class="monitor_operation_btn monitor_filter_img" ng-if="!control.show_key_word_search_input" ng-click="showSearchInput()" title="关键字筛选"></div>
+                                    <div class="monitor_operation_btn monitor_filter_active_img" ng-if="control.show_key_word_search_input" ng-click="cancelKeyWordLine()" title="关键字筛选"></div>
+                                    <!--锁定按钮-->
+                                    <div class="monitor_operation_btn monitor_unlock_img" ng-if="!control.scroll_is_lock" ng-click="lockLogScroll()" title="锁定当前页面"></div>
+                                    <div class="monitor_operation_btn monitor_lock_img" ng-if="control.scroll_is_lock" ng-click="lockLogScroll()" title="解锁当前页面"></div>
+                                </div>
+                                <!--日志显示区域-->
+                                <div style="padding: 0 10px;overflow: auto;position: relative;height: calc(100% - 102px)"  custom-scroll custom-config="config.scroll_log_content_info" func="{scroll:'logscrollToBottom',stop:'instop'}">
+                                    <div style="white-space: nowrap;height: 20px;line-height: 20px;" ng-repeat="line in  info.exe_log_info.log_text track by $index" class="common_top">
+                                        <span>{{line}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--控制台-->
+        <div ui-view></div>
+    </div>
+</div>

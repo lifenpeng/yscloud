@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h3 class="modal-title">导入SQL文件</h3>
+    <div ng-click="cancel()"></div>
+</div>
+
+<div class="modal-body">
+    <div  class="form-group" style="height: 32px">
+        <div class="col-sm-12 form-style">
+            <div class="col-sm-4 text-right label-key">
+                SQL文件
+            </div>
+            <div class="col-sm-6">
+                <file-upload fileupload="config.sql_fileupload" successthen="uploadSqlSuccessThen();" downfile="downloadSqlFile()" deletefile="removeSqlFile();"></file-upload>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center" style="margin:40px 0 20px;">
+            <button  class="cancel-btn btn-xl" type="button" ng-click="cancel()" >取消</button>
+            <button  class="save-btn btn-xl" type="button"  ng-click="submit()" >确认</button>
+        </div>
+    </div>
+</div>

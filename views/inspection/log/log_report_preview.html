@@ -1,0 +1,135 @@
+
+<div class="form-horizontal log-report-preview">
+    <div class="row loading-container" ng-if="control.loading">
+        <div class="col-sm-4 col-sm-offset-4 text-center">
+            <div class="loading-font-color">
+                <span class="fa fa-spinner fa-spin font-30"></span>
+            </div>
+            <div class="margin-top-10">
+                <span class="loading-font-color">正在获取信息</span>
+            </div>
+        </div>
+    </div>
+    <div  ng-if="!control.loading">
+        <div class="form-group form_style" style="margin-bottom: 0">
+            <div ng-click="backReportNew()"  class="ordinary-btn back-btn-left-position">
+                <span class="fa fa-angle-left" style="font-size: 15px;"></span>
+            </div>
+            <label class="col-sm-2 control-label label_key">报告名称</label>
+            <div class="col-sm-3 label_value margin-top-8">
+                <span>{{info.basic_info.report_name}}</span>
+            </div>
+            <!--收起展开-->
+            <div class="col-sm-1 col-sm-offset-5 expand-collspse-btn-container">
+                <div class="expand-collspse-btn-position" ng-class="{'fa fa-angle-down':control.toggle_basic_info,'fa fa-angle-up':!control.toggle_basic_info}" ng-click="toggleBasicInfo()"></div>
+            </div>
+        </div>
+        <div collapse="control.toggle_basic_info">
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">应用系统</label>
+                <div class="col-sm-8 label_value margin-top-8">
+                    <span>{{info.basic_info.sys_name}}</span>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">时间范围</label>
+                <div class="col-sm-8 label_value margin-top-8">
+                    <span>{{info.basic_info.start_date}}--{{info.basic_info.end_date}}</span>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">报告模板</label>
+                <div class="col-sm-8 label_value margin-top-8">
+                    <span>{{info.basic_info.time_interval_type_cn}}</span>
+                </div>
+            </div>
+            <div class="form-group form_style">
+                <label class="col-sm-2 control-label label_key">错误识别码</label>
+                <div class="col-sm-8 label_value margin-top-8">
+                    <span>{{info.basic_info.error_release}}</span>
+                </div>
+            </div>
+        </div>
+        <!--分割线-->
+        <div class="log-vertical-split-line"></div>
+        <!--图标展示-->
+        <div class="form-group form_style">
+            <div class="col-sm-1" style="float: left;">
+                <span ng-click="getPreReport()" class="log-report-prev-btn" ng-if="data.report_preview_list.length > 1"></span>
+            </div>
+            <div class="col-sm-10" id="mainLog">
+                <div class="form-group form_style">
+                    <div class="col-sm-1 text-right" style="color:#999999; ">{{control.curr_page+1}}/{{data.report_preview_list.length}}</div>
+                    <div class="col-sm-10 text-center">
+                        <span style="font-size: 30px;">{{info.report_info.report_name}}</span>
+                        <div> <span>{{info.report_info.start_date}}至{{info.report_info.end_date}}查询结果</span></div>
+                    </div>
+
+                </div>
+                <div class="form-group form_style">
+                    <div class="col-sm-3 text-center">
+                        <div class="log-lg-img"></div>
+                        <div class="log-title-container">
+                            <span class="font-block log-report-name">{{info.report_info.log_name}}</span>
+                            <span class="font-block">
+                            <label style="font-size: 16px;">错误总数</label>
+                            <label class="log-report-total-count">{{info.report_info.total_count}}</label>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form_style">
+                    <div class="col-sm-12 text-center">
+                        <table class="sub-table table">
+                            <thead>
+                            <tr class="ecm_paramsTb_cursor" style="text-align: left">
+                                <td style="text-align: left;">
+                                    错误码
+                                </td>
+                                <td style="text-align: left;">
+                                    错误数
+                                </td>
+                                <td style="text-align: left;">
+                                    占比
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="one_error in data.error_list" style="font-size: 12px;text-align: left;">
+                                <td>
+                                    <div class="param-group-style">
+                                        <div class="param-name">{{one_error.key_word}}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="param-group-style">
+                                        <div class="param-name">{{one_error.error_count}}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="param-group-style">
+                                        <div class="param-name">{{one_error.scale}}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-if="data.error_list.length ==0">
+                                <td colspan="3" style="text-align: center;">
+                                    <label class="no-data-font">暂无数据</label>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group form_style">
+                    <div class="col-sm-12 text-center" style="background-color: #2b3b53">
+                        <highchart config="config.chart_config"></highchart>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1" style="float:right;">
+                <span ng-click="getNextReport()" class="log-report-prev-btn log-report-btn-transform"  ng-if="data.report_preview_list.length > 1"></span>
+            </div>
+        </div>
+    </div>
+</div>

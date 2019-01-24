@@ -1,0 +1,51 @@
+<div ng-if="has_noborder">
+    <label class="control-label" ng-if="loading" style="color: #44dcfd;padding-top: 8px;">数据加载中&nbsp;&nbsp;<i style="color: #44dcfd;" class="fa fa-spinner fa-spin"></i></label>
+    <div class="btn-group" ng-if="(!loading) && (items.length != 0)">
+        <button type="button" class="btn btn-default sub-bsselect dropdown-toggle" ng-disabled="isDisable"  data-toggle="dropdown" ng-style="widthStyle()" style="overflow: hidden;cursor:pointer;background-color: #091016;">
+            <span class="button-label" title="{{init_label}}">{{init_label}}</span>
+            <span class="caret" style="color: #999; margin-left: 10px;"></span>
+        </button>
+        <ul class="dropdown-menu" ng-style="changeUlStyle();" style="min-width: 80px;" custom-scroll custom-config="scroll_config_info">
+            <li ng-repeat="item in realItems" ng-click="selectVal(item)">
+                <a style="cursor: pointer;position: relative;padding-left:24px;white-space: nowrap;padding-right: 15px;">{{item.value}}
+                    <span ng-if="item.flag == 0" style="cursor: pointer; border: 1px solid rgb(204, 204, 204); color: rgb(255, 102, 102); text-align: center; position: absolute; left: 0px; width: 16px; border-radius: 4px; height: 18px; line-height: 15px; top: 4px;margin-left: 4px;margin-top:-3px;">包</span>
+                    <span ng-if="item.is_merge_flag" style="cursor: pointer; border: 1px solid rgb(204, 204, 204); color: rgb(255, 102, 102); text-align: center; position: absolute; left: 0px; width: 16px; border-radius: 4px; height: 18px; line-height: 15px; top: 4px;margin-left: 4px;margin-top:-3px;">合</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--//暂无可选项搞个空的bs-select-->
+    <div class="btn-group" ng-if="(!loading) && (items.length === 0)">
+        <button type="button" class="btn btn-default sub-bsselect dropdown-toggle" ng-disabled="isDisable"  data-toggle="dropdown" ng-style="widthStyle()" style="text-overflow: ellipsis; overflow: hidden;cursor:auto; color: #999;background-color: #091016;">
+            <span class="button-label">暂无可选项</span><span class="caret" style="margin-left: 10px;"></span>
+        </button>
+    </div>
+</div>
+<div ng-if="!has_noborder">
+    <label class="control-label" ng-if="loading" style="color: #44dcfd;padding-top: 8px">数据加载中&nbsp;&nbsp;<i style="color: #44dcfd" class="fa fa-spinner fa-spin"></i></label>
+    <!--有可选项则显示正常下拉菜单-->
+    <div class="btn-group" ng-style="opacityStyle()" ng-if="!loading && items.length != 0">
+        <button type="button" class="btn btn-default button-label btn-select" ng-class="has_opacity ? 'sub-bsselect' : ''" ng-disabled="isDisable"  data-toggle="dropdown" ng-style="widthStyle()" title="{{init_label}}" style="background-color: #091016;" >{{init_label}}</button>
+        <button type="button" class="btn btn-default dropdown-toggle" ng-class="has_opacity ?  'sub-bsselect' : ''" ng-disabled="isDisable" data-toggle="dropdown" style="background-color: #091016;border-left: none;">
+            <!--<span class="caret" style="color: #999;"></span>-->
+            <span ><i style="color: #26515c;" class="fa fa-angle-down"></i></span>
+        </button>
+        <ul class="dropdown-menu" ng-style="changeUlStyle();" custom-scroll custom-config="scroll_config_info">
+            <li ng-repeat="item in realItems" ng-click="selectVal(item)">
+                <a style="cursor: pointer;position: relative;padding-left:24px;white-space: nowrap;padding-right: 15px">{{item.value}}
+                    <span ng-if="item.flag == 0" style="cursor: pointer; border: 1px solid rgb(204, 204, 204); color: rgb(255, 102, 102); text-align: center; position: absolute; left: 0px; width: 16px; border-radius: 4px; height: 18px; line-height: 15px; top: 4px;margin-left: 4px;">包</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--暂无可选项搞个空的bs-select-->
+    <div class="btn-group" ng-if="!loading && items.length === 0">
+        <button type="button" class="btn btn-default button-label btn-select" ng-class="has_opacity ? 'sub-bsselect' : '' " ng-disabled="isDisable" title="" ng-style="widthStyle()" style="background-color: #091016;">暂无可选项</button>
+        <button type="button" class="btn btn-default dropdown-toggle" ng-class="has_opacity ? 'sub-bsselect' : '' " ng-disabled="isDisable" data-toggle="dropdown" style="background-color: #091016;border-left: none;">
+            <!--<span class="caret" style="color: #999;"></span>-->
+            <span ><i style="color: #26515c;" class="fa fa-angle-down"></i></span>
+        </button>
+    </div>
+</div>
+
+

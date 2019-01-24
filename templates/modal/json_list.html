@@ -1,0 +1,88 @@
+<style>
+    .json-table-thead{
+
+    }
+    .json-table-tbody{
+
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">接口信息</h3>
+    <div ng-click="close()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all; overflow:auto; ">
+    <!--接口-->
+    <div ng-if="control.aprov_type == 1">
+        <div ng-repeat="one in interface_info.interface_list">
+            <div  ng-if="one.shtype=='String'">
+                <div class="row form-style">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label label-key" ng-bind="one.fcname" ></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="control-label label-value" ng-bind="one.fval"></label>
+                    </div>
+                </div>
+            </div>
+            <div  ng-if="one.shtype=='Array'">
+                <div class="row form-style">
+                    <label class="col-sm-4 control-label text-right label-key" ng-bind="one.fcname" ></label>
+                    <div class="col-md-8">
+                        <ul class="input-group">
+                            <li style="display: inline;float: left;padding-right: 25px;">
+                                <input type="checkbox">
+                            </li>
+                        </ul>
+                        <label class="control-label label-value" ng-repeat="value in one.fval" ng-bind="value" style="height: 34px;line-height: 34px;background-color: #1A1F27;padding-left: 5px;padding-right: 5px;border-radius: 4px;margin-left: -5px;margin-right: 10px;"></label>
+                    </div>
+                </div>
+            </div>
+            <div  ng-if="one.shtype =='List'">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table lg-table" id="table2" style="background:#1A1F27;table-layout:fixed;word-break:break-all">
+                            <thead>
+                            <tr>
+                                <td ng-repeat="arry in one.field_list[0].field_list" ng-bind="arry.fcname" style="padding:8px 1px;text-align: center;"></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="arry in one.field_list">
+                                <td ng-repeat="one in arry.field_list" ng-bind="one.fval" style="text-align: center;padding:0px;border-color: #262e3b"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="interface_info.extra_list.length != 0">
+            <div class="col-sm-12">
+                <div class="row form-style">
+                    <div class="col-sm-3 text-right" >
+                        <label class="control-label label-key">附件</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row" ng-repeat="extra_data in interface_info.extra_list">
+                            <div class="col-sm-12" ng-if="extra_data.type == 'file'">
+                                <div class="row">
+                                    <div class="col-sm-8" style="padding:0 16px;">
+                                        <a ng-bind="extra_data.name" ng-click="downloadAccessoryFile(extra_data.value)" title="下载" style="cursor: pointer;"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--定制-->
+    <div ng-if="control.aprov_type == 3">
+        <div ng-if="control.url == 'execute_program_step'" ng-include="'templates/custom/execute_program_custom.html'"></div>
+    </div>
+    <div style="text-align: center;margin-bottom: 20px;margin-top: 30px;">
+        <button class="save-btn btn-xl" ng-click="close()">确定</button>
+    </div>
+</div>
+

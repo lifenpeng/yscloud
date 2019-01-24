@@ -1,0 +1,202 @@
+<div class="container-fluid  wo-all-list" style="margin-top: 15px;min-height: 600px;">
+    <div class="table-search">
+        <div class="table-search-input">
+            <input type="text"
+                   ng-model="info.nomarlKeyWord"
+                   class="form-control"
+                   placeholder="请输编号或标题关键字"
+                   ng-enter = "normalSearch()">
+        </div>
+        <div class="table-search-btn" >
+            <span class="table-clear-logol" ng-if="info.nomarlKeyWord" ng-click="clear()"></span>
+            <span class="table-search-logol"></span>
+            <button type="button" ng-click="control.searchSeniorFlag = !control.searchSeniorFlag" ng-class="control.searchSeniorFlag ? 'search-checked-flag' : 'search-unchecked-flag'" class="senior-btn-style" style="margin-left: -1px;">高级搜索</button>
+        </div>
+    </div>
+    <div ng-show="control.searchSeniorFlag" class="row form-horizontal senior-search-div" custom-scroll custom-config="config.scroll_config" style="margin-top: -15px;">
+        <div class="col-sm-12">
+            <div class="row" style="margin-top:20px;">
+                <div class="col-sm-12">
+                    <div class="tablecss tag-md checked-tag" title="{{one.value}}" style="margin-left: 0;" ng-repeat="one in data.senior_header_list">
+                        {{one.value}}
+                        <div>
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:20px;">
+                <label class="col-sm-2 control-label label-key" >关键字</label>
+                <div class="col-sm-5 label-value">
+                    <input type="text"
+                           name="key_word"
+                           ng-model="info.hightSearchObj.key_word"
+                           class="form-control"
+                           placeholder="2-50个字符（不允许输入汉字）"
+                           ng-model-options="{updateOn: 'blur'}"
+                           >
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:12px;" ng-if="info.hightSearchObj.system_list.length != 0">
+                <label class="col-sm-2 control-label label-key" >系统</label>
+                <div ng-if="!control.systemFlag">
+                    <div class="col-sm-7">
+                        <div class="tablecss tag-md" ng-class="one.flag ? 'checked-tag':'check-tag'" ng-repeat="one in info.hightSearchObj.system_list | limitTo : 3 " ng-click = "one.flag = !one.flag" style="margin-left: 0;" title="{{one.value.business_cn_name}}">
+                            {{one.value.business_cn_name}}
+                            <div>
+                                <i class="fa fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" ng-show="info.hightSearchObj.system_list.length > 3 "  style="text-align: left;">
+                        <label class="control-label" style="cursor: pointer;" ng-click="control.systemFlag = true">更多</label>
+                    </div>
+                </div>
+                <div ng-if="control.systemFlag">
+                    <div class="col-sm-7">
+                        <div ng-repeat="one in info.hightSearchObj.system_list" ng-class="one.flag ? 'checked-tag':'check-tag'" class="tablecss tag-md" ng-click = "one.flag = !one.flag" title="{{one.value.business_cn_name}}" style="margin-left: 0px;">
+                            {{one.value.business_cn_name}}
+                            <div>
+                                <i class="fa fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="text-align: left;">
+                        <label class="control-label" ng-show="info.hightSearchObj.system_list.length > 3" ng-click="control.systemFlag = false" style=";cursor: pointer;">收起</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;">
+                <label class="col-sm-2 control-label label-key">工单类型</label>
+                <div class="col-sm-5">
+                    <div class="tablecss tag-xl" style="margin-left: 0;"  ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = !one.flag" ng-repeat="one in info.hightSearchObj.workorder_type">
+                        {{one.value}}
+                        <div>
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-style" style="">
+                <label class="col-sm-2 control-label label-key" >工单状态</label>
+                <div class="col-sm-10">
+                    <div class="tablecss tag-md" style="margin-left: 0;" ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = !one.flag" ng-repeat="one in info.hightSearchObj.workorder_status">
+                        {{one.value}}
+                        <div>
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-style" style="">
+                <label class="col-sm-2 control-label label-key" >创建人</label>
+                <div class="col-sm-5">
+                    <bs-select width="200"
+                               items="data.create_user_list"
+                               option-labal = "user_cn_name"
+                               option-key = "user_id"
+                               my-select="info.hightSearchObj.crt_user_id"
+                    >
+                    </bs-select>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;">
+                <label class="col-sm-2 control-label label-key" >处理人</label>
+                <div class="col-sm-5">
+                    <bs-select width="200"
+                               option-labal = "user_cn_name"
+                               option-key = "user_id"
+                               items="data.handler_user_list"
+                               my-select="info.hightSearchObj.deal_user_id"
+                    >
+                    </bs-select>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;">
+                <label class="col-sm-2 control-label label-key" >创建日期</label>
+                <div class="col-sm-3 senior-crt-date-style pick-date-common">
+                    <input type="text" name="crt_start_date" class="form-control" style="min-width: 220px;"
+                           ng-click="open($event)" is-open="control.crt_opened"
+                           ng-model="info.hightSearchObj.crt_start_date"
+                           show-button-bar="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           close-on-date-selection="false"
+                           date-disabled="disabled(date, mode)"
+                           max-date="{{config.datepicker.maxDate}}"
+                           show-weeks="false"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           required  readonly="true"/>
+                </div>
+                <div class="col-sm-3 pick-date-common" style="width: 220px;">
+                    <input type="text"
+                           name="crt_end_date"
+                           ng-click="open($event)" is-open="control.crt_opened"
+                           ng-model="info.hightSearchObj.crt_end_date"
+                           class="form-control"
+                           show-button-bar="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           close-on-date-selection="false"
+                           date-disabled="disabled(date, mode)"
+                           max-date="{{config.datepicker.maxDate}}"
+                           show-weeks="false"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           required
+                           style="min-width: 290px;"
+                           readonly="true"/>
+                </div>
+            </div>
+            <div class="row form-style" style="margin-top:10px;">
+                <label class="col-sm-2 control-label label-key" >处理日期</label>
+                <div class="col-sm-3 senior-crt-date-style pick-date-common">
+                    <input type="text" name="deal_start_date" class="form-control" style="min-width: 220px;"
+                           ng-click="dealOpen($event)" is-open="control.deal_opened"
+                           ng-model="info.hightSearchObj.deal_start_date"
+                           show-button-bar="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           close-on-date-selection="false"
+                           show-weeks="false"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           max-date="{{config.datepicker.maxDate}}"
+                           date-disabled="disabled(date, mode1)"
+                           required  readonly="true"/>
+                </div>
+                <div class="col-sm-3 pick-date-common" style="width: 220px;">
+                    <input type="text"
+                           name="deal_end_date"
+                           ng-click="dealOpen($event)" is-open="control.deal_opened"
+                           ng-model="info.hightSearchObj.deal_end_date"
+                           class="form-control"
+                           show-button-bar="false"
+                           datepicker-popup="yyyy年MM月dd日"
+                           close-on-date-selection="false"
+                           max-date="{{config.datepicker.maxDate}}"
+                           date-disabled="disabled(date, mode1)"
+                           show-weeks="false"
+                           close-text="关闭"
+                           current-text="今天"
+                           clear-text="清除"
+                           required
+                           style="min-width: 290px;"
+                           readonly="true"/>
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px;">
+                <div class="col-sm-12 text-center" ng-style="{'marginTop':(control.crt_opened || control.deal_opened ) ? '250px':'0'}">
+                    <button type="button" ng-click="control.searchSeniorFlag = false" class="cancel-btn btn-md">取消</button>
+                    <button type="button" class="save-btn btn-md" ng-click="seniorSearch();">搜索</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+        <div class="col-md-12">
+            <all-workorder-list></all-workorder-list>
+        </div>
+    </div>
+</div>

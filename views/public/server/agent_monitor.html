@@ -1,0 +1,236 @@
+<div class="container-fluid agent_monitor panel-min-width" >
+    <div class="table-search" ng-show="!control.view_node">
+        <div class="table-search-input">
+            <input type="text"
+                   ng-model="info.search_key_word"
+                   class="form-control"
+                   placeholder="请输入组件名"
+                   ng-enter="searchNode(info.search_key_word)">
+        </div>
+        <div class="table-search-btn">
+            <span class="table-clear-logol" ng-if="info.search_key_word" ng-click="clear()"></span>
+            <span class="table-search-logol"></span>
+        </div>
+    </div>
+    <!--节点列表-->
+    <div ng-show="!control.view_node" class="row">
+        <div ng-repeat="one_node in data.node_basic_list" class="col-sm-4" style="display: inline-block;position: relative;" >
+            <div class="node-block" ng-click="viewNode($index)">
+                <!-- left-->
+                <div class="node-block-left">
+                    <div class="sever-bg"></div><div class="sever-icon"></div>
+                    <span class="node-ip" ng-bind="one_node.ip"></span>
+                </div>
+                <!-- 竖线-->
+                <div class="node-block-verline"></div>
+                <!-- right-->
+                <div class="node-block-right">
+                    <div style="margin-top: 25px;margin-bottom:15px;padding-left: 8px">
+                        <span class="node-block-opsys-icon" ng-style="operationSysIcon(one_node.machineBasicBean.machine_soft_bean.op_system_flag,20)"></span>
+                        <span class="node-block-opversion" title="{{one_node.machineBasicBean.machine_soft_bean.op_system}}">
+                            {{one_node.machineBasicBean.machine_soft_bean.op_system ? one_node.machineBasicBean.machine_soft_bean.op_system : '未知'}}
+                        </span>
+                    </div>
+                    <!--cpu信息-->
+                    <div class="node-hardware-block">
+                        <span class="node-block-hardware-icon cpu-icon" title="cpu信息"></span>
+                        <span class="info-font-style" title="{{one_node.machineBasicBean.machine_hard_bean.cpu}}"
+                              ng-bind="one_node.machineBasicBean.machine_hard_bean.cpu ? one_node.machineBasicBean.machine_hard_bean.cpu : '--'"></span>
+                    </div>
+                    <!--内存信息-->
+                    <div class="node-hardware-block">
+                        <span class="node-block-hardware-icon mem-icon" title="内存信息"></span>
+                        <span class="info-font-style" title="{{one_node.machineBasicBean.machine_hard_bean.mem}}"
+                              ng-bind="one_node.machineBasicBean.machine_hard_bean.mem ? one_node.machineBasicBean.machine_hard_bean.mem :'--'"></span>
+                    </div>
+                    <!--硬盘信息-->
+                    <div class="node-hardware-block">
+                        <span class="node-block-hardware-icon hard-disk-icon" title="硬盘信息"></span>
+                        <span class="info-font-style" ng-bind="one_node.machineBasicBean.machine_hard_bean.disk ? one_node.machineBasicBean.machine_hard_bean.disk :'--'"></span>
+                    </div>
+                    <!--网络信息-->
+                    <div class="node-hardware-block">
+                        <span class="node-block-hardware-icon network-icon" title="网络信息"></span>
+                        <span class="info-font-style"  title="{{one_node.machineBasicBean.machine_hard_bean.network}}"
+                              ng-bind="one_node.machineBasicBean.machine_hard_bean.network ? one_node.machineBasicBean.machine_hard_bean.network :'--'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看节点-->
+    <div class="container-fluid node-detail-container" ng-show="control.view_node">
+        <div class="node-tabs">
+            <div class="node-tab" ng-class="node.active ? 'tab_checked' : 'normal'" ng-repeat="node in data.choosed_node_list" ng-click="tabOne($index);">
+                <div ng-class="node.active ? 'checked-cover' : 'normal-cover'">
+                    <div class="view-node-srv view-node-srvbg-icon" ng-class="node.active ? 'view-node-srvbg-spin-icon bg-spin':''"></div>
+                    <div class="view-node-srv view-node-srv-icon"></div>
+                    <div class="view-node-ip" ng-bind="node.ip"></div>
+                </div>
+            </div>
+        </div>
+        <div class="node-content" ng-style="{'min-height' : (data.choosed_node_list.length + 1) * 128}">
+            <div class="close-view-node-icon" ng-click="closeNodeView()" title="关闭"></div>
+            <div class="container-fluid">
+                <div class="row node-basic-info">
+                    <label class="control-label col-sm-2">硬件配置</label>
+                    <div class="col-sm-8" style="padding-left: 0">
+                        <table class="table-bordered">
+                            <tbody>
+                            <tr>
+                                <td width="80">服务器名</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_hard_bean.server_name}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">机器配置 </td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_hard_bean.machine_cfg}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">CPU</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_hard_bean.cpu}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">内存</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_hard_bean.mem}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">硬盘</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_hard_bean.disk}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">网络</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_hard_bean.network}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row node-basic-info">
+                    <label class="control-label col-sm-2">软件配置</label>
+                    <div class="col-sm-8" style="padding-left: 0">
+                        <table class="table-bordered">
+                            <tbody>
+                            <tr>
+                                <td width="80">操作系统</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_soft_bean.op_system ? info.node_info.basic_info.machineBasicBean.machine_soft_bean.op_system : '--'}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">JRE </td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_soft_bean.jre ? info.node_info.basic_info.machineBasicBean.machine_soft_bean.jre : '--'}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">中间件</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_soft_bean.middleware ? info.node_info.basic_info.machineBasicBean.machine_soft_bean.middleware : '--'}}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">数据库</td>
+                                <td>{{info.node_info.basic_info.machineBasicBean.machine_soft_bean.database ? info.node_info.basic_info.machineBasicBean.machine_soft_bean.database : '--'}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row node-sys-info">
+                    <label class="control-label col-sm-2">系统信息</label>
+                    <div class="col-sm-10" style="padding-left: 0">
+                        <ul class="list-unstyled"  ng-if="!info.node_info.err_msg">
+                            <li>
+                                <span class="node-block-bottom-icon cpu-monitor-icon" title="CPU占用率"></span>
+                                <div class="hardware-progress-block" ng-if="info.node_info.sys_info">
+                                    <div class="hardware-progress-font">CPU占用率( {{info.node_info.sys_info.cpu_rate}}% )</div>
+                                    <progressbar class="hardware-progress-bar" max="100"
+                                                 value="info.node_info.sys_info.cpu_rate ? info.node_info.sys_info.cpu_rate : 0" ></progressbar>
+                                </div>
+                                <span class="no_rate_data" ng-if="!info.node_info.sys_info">暂无CPU占用率</span>
+                            </li>
+                            <li>
+                                <span class="node-block-bottom-icon net-monitor-icon" title="网络流量"></span>
+                                <div class="hardware-progress-block" ng-if="info.node_info.sys_info">
+                                    <div style="color: #EE7231;font-size: 12px">
+                                        <span class="net-icon-com net-up-icon"></span>
+                                        <span style="padding-right: 10px">{{info.node_info.sys_info.network_up}}</span>
+                                        <span>{{info.node_info.sys_info.network_up_rate}}%</span>
+                                    </div>
+                                    <div class="hardware-progress-font">
+                                        <span class="net-icon-com net-down-icon" style="opacity: 1"></span>
+                                        <span style="padding-right: 10px">{{info.node_info.sys_info.network_down}}</span>
+                                        <span>{{info.node_info.sys_info.network_down_rate}}%</span>
+                                    </div>
+                                </div>
+                                <span class="no_rate_data" ng-if="!info.node_info.sys_info">暂无网络流量</span>
+                            </li>
+                            <li>
+                                <span class="node-block-bottom-icon hard-disk-monitor-icon" title="磁盘占用率"></span>
+                                <div class="hardware-progress-block" ng-if="info.node_info.sys_info">
+                                    <div class="hardware-progress-font">磁盘占用率( {{info.node_info.sys_info.disk_rate}}% )</div>
+                                    <progressbar class="hardware-progress-bar" max="100"
+                                                 value="info.node_info.sys_info.disk_rate ? info.node_info.sys_info.disk_rate : 0 " ></progressbar>
+                                </div>
+                                <span class="no_rate_data" ng-if="!info.node_info.sys_info">暂无磁盘占用率</span>
+                            </li>
+                            <li>
+                                <span class="node-block-bottom-icon hard-IO-monitor-icon" title="磁盘IO使用率"></span>
+                                <div class="hardware-progress-block" ng-if="info.node_info.sys_info">
+                                    <div class="hardware-progress-font">磁盘IO( {{info.node_info.sys_info.io_rate}}% )</div>
+                                    <progressbar class="hardware-progress-bar" max="100"
+                                                 value="info.node_info.sys_info.io_rate ? info.node_info.sys_info.io_rate : 0" ></progressbar>
+                                </div>
+                                <span class="no_rate_data" ng-if="!info.node_info.sys_info">暂无磁盘IO使用率</span>
+                            </li>
+                        </ul>
+                        <span ng-if="info.node_info.err_msg" style="color: #E9416E;display: inline-block;margin-top: 7px;">{{info.node_info.err_msg}}</span>
+                    </div>
+                </div>
+                <!-- <div class="row node-progress-info">
+                     <label class="control-label col-sm-2">进程信息</label>
+                     <div class="col-sm-10" style="padding-left: 0">
+                         <table class="table-bordered">
+                             <thead>
+                             <tr>
+                                 <td width="44px">序号</td>
+                                 <td width="80px">用户ID</td>
+                                 <td>进程ID</td>
+                                 <td>父进程ID</td>
+                                 <td>CPU占用</td>
+                                 <td>启动时间</td>
+                                 <td>运行时间</td>
+                                 <td>状态</td>
+                                 <td style="min-width:190px">命令</td>
+                             </tr>
+                             </thead>
+                             <tbody>
+                             <tr ng-repeat="pres in info.node_info.single_node.process_list track by $index">
+                                 <td>{{$index + 1}}</td>
+                                 <td><span ng-bind="pres.user_id ? pres.user_id : '&#45;&#45;'"></span></td>
+                                 <td><span ng-bind="pres.pid ? pres.pid : '&#45;&#45;'"></span></td>
+                                 <td><span ng-bind="pres.ppid ? pres.ppid : '&#45;&#45;'"></span></td>
+                                 <td><span ng-style="{'color': pres.cpu_rate >= 50 ? '#FF7974':'#B0F85D'}"><span  ng-bind="pres.cpu_rate ? pres.cpu_rate : '0'"></span>%</span></td>
+                                 <td><span ng-bind="pres.start_time ? pres.start_time : '&#45;&#45;'"></span></td>
+                                 <td title="{{pres.time_used}}" >
+                                     <span ng-bind="pres.time_used ? pres.time_used : '&#45;&#45;'" style="white-space: nowrap;overflow: hidden"></span>
+                                 </td>
+                                 <td>
+                                     &lt;!&ndash;<span class="fa fa-circle-o" style="color: #B0F85D;font-size: 20px" ng-if="pres.progerss_status == 1"></span>&ndash;&gt;
+                                     &lt;!&ndash;<span class="exe-fail-transparent-icon" style="color: #FF7974;font-size: 20px" ng-if="pres.progerss_status == 3"></span>&ndash;&gt;
+                                     <span class="fa fa-spinner fa-pulse" style="color: #00B8FE;font-size: 20px" ng-if="pres.progerss_status == 1" title="运行"></span>
+                                     <span class="fa fa-pause-circle" style="color: #FFA350;font-size: 20px" ng-if="pres.progerss_status > 1 && pres.progerss_status < 5" title="{{pres.progerss_status == 4 ? '暂停':'睡眠'}}"></span>
+                                     <span class="fa-stack" style="top: 5px" ng-if="pres.progerss_status == 5" title="僵死">
+                                                 <i class="fa fa-spinner fa-stack-2x" style="font-size: 19px;color: #999"></i>
+                                                 <i class="fa fa-ban fa-stack-1x" style="font-size: 15px;left: 1px;top:-3px;transform: rotate(90deg);color: #FF7974"></i>
+                                             </span>
+                                 </td>
+                                 <td title="{{pres.cmd}}">
+                                     <div style="max-height: 100px;overflow: hidden;text-overflow: ellipsis">{{pres.cmd}}</div>
+                                 </td>
+                             </tr>
+                             <tr ng-if="info.node_info.single_node.process_list.length == 0">
+                                 <td colspan="9" style="text-align: center;color: rgba(225,225,225,0.8)">暂无数据</td>
+                             </tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>-->
+            </div>
+        </div>
+    </div>
+</div>

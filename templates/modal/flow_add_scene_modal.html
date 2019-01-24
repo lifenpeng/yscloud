@@ -1,0 +1,66 @@
+<form name="form.scene_form" ng-submit="formSubmit()" class="form-horizontal add-scene-modal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+    <div  class="modal-header">
+        <h3 class="modal-title">场景</h3>
+        <div ng-click="formCancel()"></div>
+    </div>
+    <div class="modal-body">
+        <!-- 正在加载-->
+        <div class="row" ng-show="control.scene_loading">
+            <div class="col-sm-12 text-center" style="margin-top: 90px;margin-bottom: 90px">
+                <div class="info-loading" ng-show="!control.error_message">
+                    <span style="color:#4cae4c;">正在获取信息&nbsp;&nbsp;<i style="font-size: 24px;color:#4cae4c;" class="fa fa-spinner fa-spin"></i></span>
+                </div>
+                <div ng-show="control.error_message" style="height:170px;line-height:100px;width:260px;border-radius: 4px;margin:0 auto;font-size: 20px;color:#CCC;border:1px dashed #CCC;">
+                    <span style="color:#d9534f;">获取信息异常</span>
+                    <div style="color: #666;font-size: 12px;height: 20px;line-height: 20px;word-break: break-all;" ng-bind="control.error_message"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 加载成功-->
+        <div ng-show="!control.scene_loading">
+            <!-- 添加组件-->
+            <div class="row">
+                <div class="col-md-12 lg_table">
+                    <table class="table table-no-bordered  tbody_height" >
+                        <thead class="fixedThead">
+                        <tr>
+                            <td style="width: 50px">选择</td>
+                            <td style="width: 290px">场景名</td>
+                            <td style="width: 130px">创建人</td>
+                            <td style="width: 185px">创建时间</td>
+                        </tr>
+                        </thead>
+                        <tbody class="scrollTbody">
+                        <tr ng-repeat="tr in scene_info.scene_list" class="tbl-odd" ng-click="(tr.is_ref) || (tr.checked = !tr.checked)">
+                            <td style="width: 50px">
+                                <input type="checkbox" name="checked" ng-model="tr.checked" i-check value={{$index}} ng-disabled="tr.is_ref">
+                            </td>
+                            <td style="width:300px" ng-class="tr.checked ? 'checked_style' : ''">
+                                <div style="word-break: break-all" ng-bind="tr.scene_name ? tr.scene_name : '--'"></div>
+                            </td>
+                            <td style="width:130px" ng-class="tr.checked ? 'checked_style' : ''">
+                                <div ng-bind="tr.crt_user_name ? tr.crt_user_name : '--'"></div>
+                            </td>
+                            <td style="width:160px" ng-class="tr.checked ? 'checked_style' : ''">
+                                <div ng-show="tr.crt_bk_time" >{{tr.crt_bk_date}}&nbsp;{{tr.crt_bk_time}}</div>
+                                <div ng-show="!tr.crt_bk_time">--</div>
+                            </td>
+                        </tr>
+                        <tr class="no_data">
+                            <td style="text-align: center;border: none;" ng-if="scene_info.scene_list.length == 0">暂无数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- 保存按钮-->
+        <div style="text-align: center ;margin-top: 30px;margin-bottom: 20px;" >
+            <button class="save-cancel-btn cancel-btn btn-xl" ng-if="!btn_loading" type="button" ng-click="formCancel()" >取消</button>
+            <button class="save-cancel-btn save-btn btn-xl" ng-if="!btn_loading && !control.error_message && scene_info.scene_list.length" type="submit">确定</button>
+            <button class="save-cancel-btn save-btn btn-xl" ng-if="btn_loading" type="button" >
+                <i style="color: white" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,19 @@
+<div class="node-tabs">
+    <div class="node-tab" ng-class="control.active_log_i == -1 ? 'tab-checked' : 'normal'"  ng-if="control.modify_type != 3" ng-click="changeCurLog(1)">
+        <div ng-class="control.active_log_i == -1 ? 'checked-cover' : 'normal-cover'">
+            <div class="add-img new-img"></div>
+            <div class="new-text">新增日志</div>
+        </div>
+    </div>
+    <!-- 已有节点TAB -->
+    <div class="node-tab" ng-class="log.active ? 'tab-checked' : 'normal'" ng-repeat="log in data.logs" ng-click="changeCurLog(control.modify_type,log);">
+        <div ng-class="log.active ? 'checked-cover' : 'normal-cover'">
+            <div class="img log-img" style="margin-left: 50px;"></div>
+            <div class="node-ip" ng-bind="log.log_name"></div>
+        </div>
+    </div>
+</div>
+<!-- 节点编辑&查看页面--节点内容 -->
+<div class="node-content" ng-style="{'min-height' : (data.nodes.length + 1) * 128}">
+    <div ui-view></div>
+</div>

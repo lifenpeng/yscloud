@@ -1,0 +1,345 @@
+<div class="container-fluid scene-module scene-new">
+	<form name="new_element_form" class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+		<div class="form-group form-style" style="margin-bottom: 10px">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label class="col-sm-4 control-label label-key">服务名</label>
+					<div class="col-sm-8 label-value" style="padding-top: 7px" ng-show="control.is_update">
+						<label ng-bind="info.scene_name ? info.scene_name : ''"></label>
+					</div>
+					<div class="col-sm-7" ng-show="!control.is_update">
+						<input type="text"
+							   class="form-control label-value"
+							   name="scene_name"
+							   ng-model="info.scene_name"
+							   placeholder="输入限制20个字符"
+							   ng-maxlength="20"
+							   ng-model-options="{updateOn: 'blur'}"
+							   ensure-unique="se_CheckSceneNameAction.do"
+							   required/>
+						<validate-msg tag-cn-name="场景名" name="scene_name"></validate-msg>
+					</div>
+				</div>
+				<div class="row">
+					<label class="col-sm-4 control-label label-key">服务元素</label>
+					<div class="col-sm-8 label-value">
+						<div class="add-Element-btn" ng-click="control.config_element || addElement()" ng-class="{'pointer-default': control.config_element}">
+							<span class="scene-element-icon ele-icon-style"></span>
+							<span>新增元素</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-3 control-label label-key" >服务描述</label>
+				<div class="col-sm-9 label-value">
+                <textarea type="text"
+						  class="form-control"
+						  name="scene_desc"
+						  style="resize:none;min-height: 80px;color: #d2f1fe;"
+						  ng-model="info.scene_desc"
+						  placeholder="输入限制25个字符"
+						  ng-maxlength="25"
+						  ng-model-options="{updateOn: 'blur'}">
+                    </textarea>
+					<validate-msg tag-cn-name="场景描述" name="scene_desc" model="info.scene_desc"></validate-msg>
+				</div>
+			</div>
+		</div>
+		<div class="form-group element-list" ng-if="!control.config_element">
+			<div class="col-sm-10 col-sm-offset-2">
+				<ul class="list-unstyled" ng-repeat="category in info.category_list">
+					<li ng-show="category.element_list.length">
+                        <span class="ele-category" ng-bind="category.category ? categoryTOCn(category.category) : '--'"></span>
+                    </li>
+					<li>
+						<span class="single-element" ng-repeat="ele in category.element_list" ng-click="configElement(category.category,ele,$index)">
+							<span class="element-icon" ng-style="ele.element_info.config ? elementHightIcon(ele.type) : elementOriginalIcon(ele.type)"></span>
+							<span class="element-text-name" ng-bind="ele.element_info.sdwork_cn_name ? ele.element_info.sdwork_cn_name : ele.text" title="{{ele.element_info.sdwork_cn_name}}"></span>
+							<span class="glyphicon glyphicon-trash del-btn" title="删除" ng-click="removeElement(category.element_list,$index,ele,$event)"></span>
+						</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--元素配置-->
+		<div class="form-group" ng-if="control.config_element" style="padding-top: 5px">
+			<div class="col-sm-10 col-sm-offset-2">
+				<form class="form-horizontal" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+					<div class="container-fluid ele-config-container">
+						<div class="node-tabs">
+							<div class="node-tab" ng-class="element.active ? 'tab_checked' : 'normal'" ng-repeat="element in control.tem_element_list" ng-click="tabOne($index);">
+								<div ng-class="element.active ? 'checked-cover' : 'normal-cover'" style="padding-top: 3px;">
+									<span class="element-icon" ng-style="element.element_info.config ? elementHightIcon(element.type) : elementOriginalIcon(element.type)"></span>
+									<span class="element-text-name" ng-bind="element.element_info.sdwork_cn_name ? element.element_info.sdwork_cn_name : element.text" title="{{element.element_info.sdwork_cn_name}}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="node-content" ng-style="{'min-height' : (control.tem_element_list.length + 1) * 80}">
+						<div class="close-icon" ng-click="removeCurrConfigElement()" title="删除"></div>
+						<div class="container-fluid">
+							<div class="row ele-type-block">
+								<div class="ele-type-icon" ng-style="elementIcon()"></div>
+								<div class="ele-type-font">元素类型</div>
+								<div class="ele-type-font ele-type-cn" ng-bind="curr_ele_type ? eleTypeTOCn(curr_ele_type) : '--'"></div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group form-style">
+										<label class="control-label col-sm-4 label-key text-right">元素名称</label>
+										<div class="col-sm-8 label-value">
+											<input type="text"
+												   name="sdwork_cn_name"
+												   ng-model="data.element_data.sdwork_cn_name"
+												   class="form-control"
+												   placeholder="输入元素名"
+												   ng-maxlength=20
+												   required>
+											<validate-msg tag-cn-name="元素名称" name="sdwork_cn_name"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style">
+										<label class="control-label col-sm-4 label-key text-right">元素描述</label>
+										<div class="col-sm-8 label-value">
+											<textarea name="job_bk_desc"
+												 ng-model="data.element_data.job_bk_desc"
+												 class="form-control"
+												 placeholder="输入不超过250个字符或汉字"
+												 style="resize:none;color: #d2f1fe;"
+												 ng-maxlength=250
+												 ng-model-options="{updateOn: 'blur'}">
+												</textarea>
+										</div>
+									</div>
+									<div class="form-group form-style" ng-if="curr_ele_category == 6">
+										<label class="col-sm-4 control-label label-key">服务名称</label>
+										<div class="col-sm-8 label-value">
+											<input type="text"
+												   name="service_name"
+												   ng-model="data.element_data.service_name"
+												   class="form-control"
+												   placeholder="输入服务名称"
+												   ng-model-options="{updateOn: 'blur'}"
+												   ng-maxlength=100
+												   required>
+										<!--	placeholder="输入xxx.do"
+											ng-pattern="/^\S.*\.do+$/"-->
+											<validate-msg tag-cn-name="服务名称" name="service_name"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style" ng-if="curr_ele_category == 7">
+										<label class="control-label col-sm-4 label-key text-right">轮询间隔</label>
+										<div class="col-sm-8 label-value">
+											<input type="text"
+												   name="polling_interval"
+												   ng-model="data.element_data.polling_interval"
+												   class="form-control"
+												   placeholder="单位为秒"
+												   ng-pattern="/^[0-9]+$/"
+												   ng-maxlength=3>
+											<validate-msg tag-cn-name="轮询间隔" name="polling_interval"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style" ng-if="curr_ele_category == 7">
+										<label class="control-label col-sm-4 label-key text-right">最大次数</label>
+										<div class="col-sm-8 label-value">
+											<input type="text"
+												   name="polling_max_times"
+												   ng-model="data.element_data.polling_max_times"
+												   class="form-control"
+												   placeholder="单位为次"
+												   ng-pattern="/^[0-9]+$/"
+												   ng-maxlength=3>
+											<validate-msg tag-cn-name="最大次数" name="polling_max_times"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style" ng-if="curr_ele_category != 7">
+										<label class="control-label col-sm-4 label-key text-right">超时时间(s)</label>
+										<div class="col-sm-8 label-value">
+											<input type="text"
+												   name="timeout"
+												   ng-model="data.element_data.timeout"
+												   class="form-control"
+												   placeholder="单位秒"
+												   ng-pattern="/^[\d]+$/"
+												   ng-maxlength=5>
+											<validate-msg tag-cn-name="超时时间" name="timeout"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style" ng-if="curr_ele_category != 6 && curr_ele_category != 7">
+										<label class="control-label col-sm-4 label-key text-right">执行预时(s)</label>
+										<div class="col-sm-8 label-value">
+											<input type="text"
+												   name="timeused"
+												   ng-model="data.element_data.timeused"
+												   class="form-control"
+												   placeholder="单位秒"
+												   ng-pattern="/^[\d]+$/"
+												   ng-maxlength=5>
+											<validate-msg tag-cn-name="执行预时" name="timeused"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style" ng-if="curr_ele_category == 2">
+										<label class="control-label col-sm-4 label-key text-right">数据库类型</label>
+										<div class="col-sm-8 label-value">
+											<bs-select name="database_type" items="data.database_type_list" my-select="data.element_data.dataBase_type"></bs-select>
+											<validate-msg tag-cn-name="数据库类型" type="select" name="database_type" model="data.element_data.dataBase_type"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style">
+										<label class="col-sm-4 control-label label-key">出错处理</label>
+										<div class="col-sm-8 label-value">
+											<bs-select  items="data.error_handle_list"
+														my-select="data.element_data.error_handle"
+														option-labal="value"
+														option-key="key"
+														select-val="selectErrorHandle(selectKey)"></bs-select>
+											<validate-msg tag-cn-name="出错处理" type="select" name="error_handle" model="data.element_data.error_handle"></validate-msg>
+										</div>
+									</div>
+									<div class="form-group form-style" ng-if="data.element_data.error_handle == 3">
+										<label class="col-sm-2 col-sm-offset-4 control-label label-key" style="padding-left: 0;width: 40px;padding-top: 5px">次数</label>
+										<div class="col-sm-2 label-value">
+											<input type="text"
+												   style="height: 25px;width: 45px;padding: 0 2px"
+												   name="retry_times"
+												   ng-model="data.element_data.retry_times"
+												   class="form-control"
+												   placeholder="次(1-9)"
+												   ng-pattern="/^[1-9]{1}$/"
+												   title="重试次数(1-9)"
+												   required/>
+											<validate-msg tag-cn-name="次数" name="retry_times"></validate-msg>
+										</div>
+										<label class="col-sm-2 control-label label-key" style="width: 55px;padding-left: 0;padding-top: 5px">间隔(s)</label>
+										<div class="col-sm-2 label-value">
+											<input type="text"
+												   name="retry_interval"
+												   style="height: 25px;width: 45px;padding: 0 5px"
+												   ng-model="data.element_data.retry_interval"
+												   class="form-control"
+												   placeholder="秒"
+												   ng-pattern="/^[0-9]{1,3}$/"
+												   title="重试间隔"
+												   required/>
+											<validate-msg tag-cn-name="间隔" name="retry_interval"></validate-msg>
+										</div>
+									</div>
+
+									<div class="form-group form-style">
+										<label class="col-sm-4 control-label label-key" >内容类型</label>
+										<div class="col-sm-8 label-value">
+											<div class="set-btn-common set-btn" ng-if="!data.element_data.job_method" ng-click="setJobMethod()">
+												<span class="fa fa-cog"></span>&nbsp;&nbsp;设置
+											</div>
+											<div class="set-btn-common time-condition" ng-if="data.element_data.job_method" ng-click="setJobMethod()" ng-style="{'width':data.element_data.job_method == 2 ? '110px':''}">
+												<div ng-if="data.element_data.job_method == 1" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{jobData.comp_cn_name}}">
+													<span class="fa fa-cube" style="font-size: 16px;vertical-align: middle"></span>
+													<span ng-bind="data.element_data.comp_cn_name ? data.element_data.comp_cn_name : '--'"></span>
+												</div>
+												<div ng-if="data.element_data.job_method == 2">
+													<span class="fa fa-pencil-square-o" style="font-size: 18px;vertical-align: middle;"></span>
+													<span style="padding-left:4px;">[自定义]</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="row form-style">
+										<label class="control-label col-sm-3 label-key text-right">结果判定</label>
+										<div class="col-sm-9 label-value">
+											<textarea name="result_judge"
+													  style="resize: none;color: #d2f1fe;"
+													  rows="13"
+													  placeholder="输入java表达式"
+													  ng-model="data.element_data.result_judge"
+													  class="form-control">
+											</textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--输入输出参数-->
+							<div class="form-group form-style" ng-if="data.element_data.input.length || data.element_data.output.length">
+								<label class="col-sm-2"></label>
+								<div class="col-sm-6 label-value" ng-if="data.element_data.input.length">
+									<table class="sub-table cus-param-table">
+										<thead>
+											<tr>
+												<td width="150px" style="text-align: left">输入参数名</td>
+												<td width="70px" style="text-align: left">值来源</td>
+												<td style="text-align: left">默认值</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="tr in data.element_data.input">
+												<td style="text-align: left" title="{{tr.param_cn_name}}">
+													<span ng-bind="tr.param_name"></span>
+												</td>
+												<td>
+													<bs-select items="data.param_source_list"
+															   my-select="tr.param_source"
+															   option-labal="value"
+															   option-key="key"
+															   no-border></bs-select>
+												</td>
+												<td style="text-align: left">
+													<input type="text" class="sub-form-control" ng-model="tr.param_value" ng-if="tr.param_source == 1"/>
+													<span ng-if="tr.param_source == 2">--</span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-sm-4 label-value" ng-if="data.element_data.output.length">
+									<table class="sub-table cus-param-table">
+										<thead>
+											<tr>
+												<td width="100px">输出参数名</td>
+												<td>参数中文名</td>
+											</tr>
+										</thead>
+										<tbody>
+										<tr ng-repeat="tr in data.element_data.output">
+											<td>
+												<span ng-bind="tr.param_name ? tr.param_name : '--'"></span>
+											</td>
+											<td>
+												<span ng-bind="tr.param_cn_name ? tr.param_cn_name : '--'"></span>
+											</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<!--保存配置按钮-->
+							<div class="form-group">
+								<div class="col-md-12 text-center">
+									<button type="button" ng-click="closeElementConfig()" class="save-cancel-btn cancel-btn btn-md">取消</button>
+									<button type="button" ng-click="formSubmit(2)" class="save-cancel-btn save-btn btn-md">保存</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!--表单按钮-->
+		<div class="form-group" ng-if="!control.config_element">
+			<div class="col-md-12 text-center">
+				<button ng-if="!control.btn_loading" type="button" ng-click="formCancel()" class="save-cancel-btn cancel-btn btn-md">取消</button>
+				<button ng-if="control.btn_loading" type="button" class="save-cancel-btn btn-md disabled-btn cancel_button_marginRight">取消</button>
+				<button ng-if="!control.btn_loading" type="button" ng-click="formSubmit(1)" class="save-cancel-btn save-btn btn-md">保存</button>
+				<button ng-if="control.btn_loading" type="button" class="save-cancel-btn save-btn btn-md">
+					<i style="color: white" class="fa fa-spinner fa-spin"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>   
+      

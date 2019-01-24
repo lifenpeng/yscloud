@@ -1,0 +1,51 @@
+<div class="container-fluid strategy-detail">
+    <div class="row form_style">
+        <label class="control-label col-sm-2 label_key text-right">策略组名称</label>
+        <div class="col-sm-10 label_value" ng-bind="info.sdstrategy_name"></div>
+    </div>
+
+    <div class="row form_style">
+        <label class="control-label col-sm-2 label_key text-right">策略组描述</label>
+        <div class="col-sm-10 label_value" ng-bind="info.sdstrategy_desc ? info.sdstrategy_desc : '--'"></div>
+    </div>
+
+
+    <div class="row form_style">
+        <label class="control-label col-sm-2 label_key text-right">策略组类型</label>
+        <div class="col-sm-10 label_value" ng-bind="info.strategy_type_cn ? info.strategy_type_cn : '--'"></div>
+    </div>
+
+    <div class="row form_style" ng-if="info.sdstrategy_type == 3">
+        <label class="control-label col-sm-2 label_key text-right">优先级范围</label>
+        <div class="col-sm-10 label_value">1 - 10</div>
+    </div>
+
+    <div class="row form_style" ng-if="info.sdstrategy_type == 2">
+        <label class="control-label col-sm-2 label_key text-right">并发度</label>
+        <div class="col-sm-10 label_value" ng-bind="info.sdstrategy_concurrent ? info.sdstrategy_concurrent : '--'"></div>
+    </div>
+
+    <div class="row form_style">
+        <label class="control-label col-sm-2 label_key text-right">流程</label>
+        <div class="col-sm-10 label_value">
+            <div ng-if="!info.flow_list.length">--</div>
+            <ul class="list-unstyled flow_ul" ng-repeat="flow in info.flow_list">
+                <li>
+                    <div class="flow_name" ng-bind="flow.sdflow_cn_name ? flow.sdflow_cn_name : '--'" title="{{flow.sdflow_cn_name}}"></div>
+                </li>
+                <li style="padding-bottom: 3px">
+                    <span class="flow_crt_user_icon" title="创建人"></span>
+                    <span ng-bind="flow.crt_user_name ? flow.crt_user_name :'--'" style="padding-top: 7px"></span>
+                </li>
+                <li>
+                    <span class="flow_exe_type_icon" title="执行类型"></span>
+                    <span ng-bind="flow.sddispatch_type == 1 ? '手工' :'定时'"></span>
+                </li>
+                <li class="flow_status" ng-if="flow.sdflow_status" title="{{flow.sdflow_status==1 ? '未发布':flow.sdflow_status==2 ? '已发布':'挂起'}}">
+                    <span class="dispatch_flow_icon" ng-if="flow.sdflow_status < 3" ng-class="{'dis_no_publish_icon':flow.sdflow_status==1,'dis_published_icon':flow.sdflow_status==2}"></span>
+                    <span class="dispatch_task_icon dis_hangup_icon" ng-if="flow.sdflow_status == 3" style="background-position: 0 -149px"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

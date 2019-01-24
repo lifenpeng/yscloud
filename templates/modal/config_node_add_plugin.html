@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-if="!plugin_control.is_update">部署插件</h3>
+    <div ng-click="cancel()"></div>
+</div>
+
+<div class="modal-body config-plugin-modal" style="padding-top: 0">
+    <form name="form.deployForm"  novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="row plugin-modal-border-bottom">
+            <div class="col-sm-6 plugin-input-wrap">
+               <div class="row plugin-modal-border-bottom" style="margin-bottom: 8px">
+                   <div class="col-sm-9" style="padding-left: 5px;margin-bottom: 8px">
+                    <input type="text" class="form-control" ng-model="info.search" placeholder="请输入插件名"
+                           style="padding-right: 30px">
+                    <div class="search-btn">
+                        <i class="fa fa-search"></i>
+                    </div>
+                   </div>
+               </div>
+               <div custom-scroll custom-config="config.plugin_list_scroll" style="min-height: 100px;max-height: 200px;">
+                   <div ng-if="!controls.loading && data.plugin_list.length != 0" class="plugin-type form-style" ng-repeat="plugin in data.plugin_list | filter:filterPluginNmae">
+                     <input type="checkbox" name="plugin_type" i-check ng-model="plugin.is_deploy"/>&nbsp;&nbsp;<span class="label-value" title="{{plugin.plugin_name}}" style="display: inline-block;width: 70px;overflow-x: hidden;">{{plugin.plugin_name}}</span>
+                    </div>
+                   <div ng-if="!controls.loading && data.plugin_list.length == 0 ">
+                       <div class="no-plugin">
+                           暂无可部署插件
+                       </div>
+                   </div>
+                   <div ng-if="controls.loading">
+                       <div class="loading-font-color" style="text-align: center;font-size: 14px;margin-top: 34px;">
+                           正在加载插件 <i class="fa fa-spinner"></i>
+                       </div>
+                   </div>
+               </div>
+            </div>
+            <!--已选区域-->
+            <div class="col-sm-6" style="padding-top: 8px;">
+                <div class="row plugin-modal-border-bottom" style="text-align: center;height: 43px;">
+                    <div class="text-center" ng-if="data.user_info.user_loading" style="color: rgb(0, 171, 237)">用户获取中&nbsp;<i class="fa fa-spinner fa-spin"></i></div>
+                    <div ng-if="!data.user_info.user_loading">
+                        <div class="error-font-color" ng-if="data.user_info.user_msg" style="text-align: center;padding-top: 8px;">获取用户信息异常</div>
+                        <div ng-if="!data.user_info.user_msg">
+                            <bs-select width=200 name="data_soc" class="label-value"
+                                       items="data.user_info.user_list"
+                                       my-select="info.server_user"
+                                       required>
+                            </bs-select>
+                            <validate-msg tag-cn-name="用户" type="select" name="data_soc" model="info.server_user"></validate-msg>
+                        </div>
+                    </div>
+                </div>
+                <div custom-scroll custom-config="config.choosed_plugin_scroll" style="max-height: 200px;overflow-y: auto;min-height: 100px;padding-top: 10px">
+                    <div class="choose-item" ng-repeat="plugin in data.plugin_list | filter:{is_deploy:true}">
+                        <span style="display: inline-block;overflow: hidden;width: 67px;" title="{{plugin.plugin_name}}">{{plugin.plugin_name}}</span>
+                        <i style="position: absolute; top: 9px; right: 5px;" class="fa fa-close delete-env" ng-click="deleteChoosedPlugin(plugin)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div style="text-align: center;margin-top: 40px;margin-bottom: 20px;">
+        <div class="text-center">
+            <button class="cancel-btn btn-xl" type="button" ng-click="cancel()">取消</button>
+            <button class="save-btn btn-xl" ng-click="deploy()">部署</button>
+        </div>
+    </div>
+</div>

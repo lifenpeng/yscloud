@@ -1,0 +1,24 @@
+<div class="container-fluid server-list ce-panel-table panel-min-width padding-left-right-5">
+    <form name="doSearchForm"  novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="table-search">
+            <div class="table-search-input">
+                <input type="text" name="server_ip"
+                       ng-model="srv.server_ip"
+                       ng-pattern="/^[0-9\.]*$/"
+                       class="form-control"
+                       ng-keypress="doSearch($event)"
+                       placeholder="请输入服务器IP地址"/>
+                <validate-msg tag-cn-name="服务器地址" name="server_ip"></validate-msg>
+            </div>
+            <div class="table-search-btn">
+                <span class="table-clear-logol"  ng-if="srv.server_ip" ng-click="clearIp()"></span>
+                <span class="table-search-logol"></span>
+            </div>
+        </div>
+    </form>
+    <div class="row row_spacing">
+        <div class="col-sm-12">
+            <server-list></server-list>
+        </div>
+    </div>
+</div>

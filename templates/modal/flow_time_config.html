@@ -1,0 +1,200 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <span ng-bind="dateObj.view_flag == 2 ? '执行时间查看':'执行时间设置'"></span>
+    </h3>
+    <div ng-click="close()"></div>
+</div>
+<div class="modal-body config-time-modal">
+    <div class="form-horizontal" style="padding:6px 90px;">
+        <div class="form-group " ng-if="dateObj.view_flag == 1">
+            <div class="col-sm-1" style="width: 75px;padding-right: 0px;padding-left: 5px;margin-left:10px;">
+                <label class="control-label">时间范围</label>
+            </div>
+            <div class="col-sm-3 pick-date-common" style="padding-left: 10px;padding-right: 10px;width: 260px;" >
+                <input type="text" name="startDate" class="form-control" style="min-width: 260px;"
+                       ng-click="open($event)"
+                       min-date="{{dateObj.minDate}}"
+                       ng-model="dateObj.start_bk_datetime"
+                       show-button-bar="true"
+                       datepicker-popup="yyyy年MM月dd日"
+                       close-on-date-selection="false"
+                       placeholder="开始时间"
+                       is-open="datepicker.opened"
+                       readonly="true" required/>
+                <span ng-if="control.startTimeFlag" style="color: #e9416e">请输入开始时间</span>
+            </div>
+            <div class="col-sm-3 pick-date-common" style="width: 260px;margin-left: 40px;">
+                <input type="text"
+                       name="endDate"
+                       ng-click="open($event)"
+                       min-date="{{dateObj.minDate}}"
+                       ng-model="dateObj.end_bk_datetime"
+                       class="form-control"
+                       show-button-bar="true"
+                       datepicker-popup="yyyy年MM月dd日"
+                       close-on-date-selection="false"
+                       is-open="datepicker.opened"
+                       placeholder="结束时间"
+                       style="min-width: 260px;"
+                       readonly="true"/>
+                <!--<span ng-if="!dateObj.end_bk_datetime" style="color: #e9416e">请输入结束时间</span>-->
+            </div>
+        </div>
+        <div class="form-group " ng-if="dateObj.view_flag == 2">
+            <div class="col-sm-1" style="width: 75px;padding-right: 0px;padding-left: 5px;margin-left:10px;">
+                <label class="control-label">时间范围</label>
+            </div>
+            <div class="col-sm-3" style="padding-left: 10px;padding-right: 10px;width: 260px;" >
+                <input type="text"  class="form-control" style="min-width: 260px;"
+                       ng-model="dateObj.start_bk_datetime"
+                       placeholder="开始时间"
+                       readonly="true" required disabled/>
+            </div>
+            <div class="col-sm-3" style="width: 260px;margin-left: 40px;">
+                <input type="text"
+                       ng-model="dateObj.end_bk_datetime"
+                       class="form-control"
+                       style="min-width: 260px;" disabled/>
+            </div>
+        </div>
+        <div class="form-group" ng-if="dateObj.view_flag == 1">
+            <div class="col-sm-5">
+                <button class="btn autoBtn" ng-class="{'btnBack':dateObj.cycle_type == 1,'btnBackNul':dateObj.cycle_type != 1}" ng-click="changeOpexeType(1)" style="border-right: 0px none;">自定义</button>
+                <button class="btn circleBtn" ng-class="{'btnBackNul':dateObj.cycle_type != 2,'btnBack':dateObj.cycle_type == 2}" ng-click="changeOpexeType(2)" style="border-radius: 0px;">周期</button>
+                <button class="btn circleBtn" ng-class="{'btnBackNul':dateObj.cycle_type != 3,'btnBack':dateObj.cycle_type == 3}" ng-click="changeOpexeType(3)">循环</button>
+            </div>
+        </div>
+        <div class="form-group" ng-if="dateObj.view_flag == 2">
+            <div class="col-sm-5">
+                <button class="btn autoBtn" ng-class="{'btnBack':dateObj.cycle_type == 1,'btnBackNul':dateObj.cycle_type != 1}" style="border-right: 0px none;">自定义</button>
+                <button class="btn circleBtn" ng-class="{'btnBackNul':dateObj.cycle_type != 2,'btnBack':dateObj.cycle_type == 2}"  style="border-radius: 0px;">周期</button>
+                <button class="btn circleBtn" ng-class="{'btnBackNul':dateObj.cycle_type != 3,'btnBack':dateObj.cycle_type == 3}">循环</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="left">
+                    <div ng-if="dateObj.cycle_type == 1" class="autoStyle" ng-class="{'nulBack':$odd,'eeeBack':$even}" ng-repeat="td in dateObj.cycles">
+                        <span>{{td.date_str}}</span>
+                        <input type="text" ng-model="td.hh" cus-time-val name="hour" error-mes="dateObj.errorM" ng-disabled="dateObj.view_flag == 2" required>
+                        <span>时</span>
+                        <input type="text" cus-time-val name="minute" error-mes="dateObj.errorM" ng-model="td.mi" ng-disabled="dateObj.view_flag == 2" required>
+                        <span>分</span>
+                        <i class="fa fa-trash-o" ng-if="dateObj.view_flag == 1" ng-click="removeAutoTime($index)" style="cursor:pointer;position: absolute; right: 34px;top: 14px"></i>
+                    </div>
+                    <div ng-if="dateObj.cycle_type == 1 && dateObj.cycles.length == 0" style="text-align: center;">
+                        <div style="background: url(img/dispatch/Model_no_auto_time.png) no-repeat 0px 0px;width: 140px;height: 90px;position: relative; left: 106px;top: 81px;"></div>
+                        <div style="position: relative; top: 80px;color:#999;font-size: 16px;">暂无自定义时间</div>
+                    </div>
+                    <div ng-if="dateObj.cycle_type == 2" class="autoStyle">
+                        <label style="margin-bottom: 0px;position: relative; top: 2px;">周期选择：</label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="time_unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(1)" value="1">
+                            年
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="time_unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(2)" value="2">
+                            月
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="time_unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(4)" value="4">
+                            日
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="time_unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(5)" value="5">
+                            时
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="time_unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(3)" value="3">
+                            周
+                        </label>
+                    </div>
+                    <div ng-if="dateObj.cycle_type == 2" class="autoStyle" ng-class="{'nulBack':$odd,'eeeBack':$even}" ng-repeat="td in dateObj.cycles">
+                        <span ng-if="td.unit == 3">周</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="week" error-mes="dateObj.errorM"  ng-if="td.unit == 3" ng-model="td.ww" required>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="mouth" error-mes="dateObj.errorM" ng-if="td.unit == 1" ng-model="td.mm" required>
+                        <span ng-if="td.unit == 1">月</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="day" error-mes="dateObj.errorM"  ng-if="td.unit <= 2" ng-model="td.dd" required>
+                        <span ng-if="td.unit <= 2 ">日</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="hour" error-mes="dateObj.errorM" ng-model="td.hh" ng-if="td.unit <= 4" required>
+                        <span ng-if="td.unit <= 4 ">时</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="minute" error-mes="dateObj.errorM" ng-model="td.mi" ng-if="td.unit <= 5" required>
+                        <span ng-if="td.unit <= 5">分</span>
+                        <i class="fa fa-trash-o" ng-if="dateObj.view_flag == 1" ng-click="removeAutoTime($index)" style="position: absolute; right: 34px;top: 14px;cursor: pointer;"></i>
+                    </div>
+                    <div ng-if="dateObj.cycle_type == 3" class="autoStyle">
+                        <label style="margin-bottom: 0px;position: relative; top: 2px;">循环单位：</label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(2)" value="2">
+                            月
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(4)" value="4">
+                            日
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(5)" value="5">
+                            时
+                        </label>
+                        <label style="margin-left:12px;margin-bottom: 0px;">
+                            <input type="radio" ng-disabled="dateObj.view_flag == 2" name="unit" i-check ng-model="dateObj.time_unit" ng-change="changeTimeUnitType(6)" value="6">
+                            分
+                        </label>
+                    </div>
+
+                    <div ng-if="dateObj.cycle_type == 3" class="autoStyle" ng-class="{'nulBack':$odd,'eeeBack':$even}" ng-repeat="td in dateObj.cycles">
+                        <span ng-if="td.unit == 2">月(间隔)</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="mouthtep" error-mes="dateObj.errorM" ng-model="td.mm" ng-if="td.unit == 2" required>
+                        <span ng-if="td.unit == 4">日(间隔)</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="daytep" error-mes="dateObj.errorM" ng-model="td.dd" ng-if="td.unit == 4" required>
+                        <span ng-if="td.unit == 5">时(间隔)</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="hourtep" error-mes="dateObj.errorM" ng-model="td.hh" ng-if="td.unit == 5" required>
+                        <span ng-if="td.unit == 6">分钟(间隔)</span>
+                        <input type="text" ng-disabled="dateObj.view_flag == 2" cus-time-val name="minutep" error-mes="dateObj.errorM" ng-model="td.mi" ng-if="td.unit == 6" required>
+                        <i class="fa fa-trash-o" ng-if="dateObj.view_flag == 1" ng-click="removeAutoTime($index)" style="position: absolute; right: 34px;top: 14px;cursor: pointer;"></i>
+                    </div>
+                    <div ng-show="(dateObj.cycle_type == 3 && dateObj.cycles.length ==0 && dateObj.time_unit > 0)" class="autoStyle">
+                        <div ng-click="addCirlTime()" style="background: url(img/dispatch/Model_adding_cirlTime.png) no-repeat 0px 13px;width: 20px;height: 38px;cursor: pointer;"> </div>
+                    </div>
+                    <div ng-show="(dateObj.cycle_type == 2 && dateObj.view_flag == 1 && dateObj.time_unit > 0)" class="autoStyle">
+                        <div ng-click="addCirlTime()" style="background: url(img/dispatch/Model_adding_cirlTime.png) no-repeat 0px 13px;width: 20px;height: 38px;cursor: pointer;"> </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <div ng-if="dateObj.cycle_type == 1" class="datepick" ng-style="{'pointer-events': dateObj.view_flag == 2 ? 'none':''}">
+                        <div datepicker ng-model="cus_date.date" class="well well-sm"  min-date="cus_date.minDate" style="border:0px;background-color: transparent;padding-top: 14px;"></div>
+                    </div>
+                    <div ng-if="dateObj.cycle_type > 1 && dateObj.period_list_str.length == 0">
+                        <div style="text-align: center;" ng-show="!control.viewtime_error">
+                            <div ng-click="getCirclePeriod()" style="cursor:pointer;background: url(img/dispatch/get_period.png) no-repeat 0px 0px;width: 140px;height: 90px;position: relative; left: 78px;top: 81px;"></div>
+                            <div style="position: relative; top: 80px;color:#59a8f9;font-size: 16px;">获取执行时间</div>
+                        </div>
+                        <div style="text-align: center;color: #CF000E;padding: 10px;margin-top:40px" ng-show="control.viewtime_error">
+                            <div>执行时间获取异常</div>
+                            <span ng-bind="control.viewtime_error"></span>
+                        </div>
+                    </div>
+                    <div ng-if="dateObj.view_flag !=2 && dateObj.cycle_type > 1 && dateObj.period_list_str.length != 0"
+                         ng-click="getCirclePeriod()" style="cursor:pointer;color: #59a8f9;height: 20px;line-height: 30px;margin-left: 40px;">
+                        刷新执行时间
+                    </div>
+                    <div style="height: 283px;position: relative;" ng-if="dateObj.cycle_type > 0  && dateObj.period_list_str.length != 0">
+                        <div  ng-repeat="str in dateObj.period_list_str track by $index" style="position: relative;height: 28px;line-height: 28px;">
+                            <div style="width: 9px;height: 9px;border-radius: 11px;background-color: #59a8f9;position: absolute;left: 16px;top: 10px;"></div>
+                            <div ng-if="!$last" style="width: 1px;height: 20px;background-color: #CCCCCC;position: absolute; left: 20px;top: 18px;"></div>
+                            <div style="position: absolute; top: 0px;left: 40px;">{{str.substring(0,19)}}</div>
+                        </div>
+                        <span style="position: absolute;bottom: -20px;left: 21px;transform:rotate(90deg);font-size: 26px;color: #CCC;"
+                              ng-show="dateObj.period_list_str.length >= 10 ">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;margin-top: 40px;">
+        <button class="save-cancel-btn cancel-btn btn-xl" ng-click="close()" ng-if="dateObj.view_flag == 1">取消</button>
+        <button class="save-cancel-btn save-btn btn-xl" ng-click="ok()" ng-if="dateObj.view_flag == 1">保存</button>
+        <button class="save-cancel-btn cancel-btn btn-xl" ng-click="close()" ng-if="dateObj.view_flag == 2">关闭</button>
+    </div>
+</div>
+

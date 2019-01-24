@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <h3 class="modal-title">方案授权任务申请--{{authdprl_bk_expl}}</h3>
+    <div ng-click="cancel()"></div>
+</div>
+<div class="modal-body" style="font-size: 14px; table-layout:fixed; word-break: break-all; overflow:hidden;">
+    <div class="form-horizontal col-sm-12" style="margin-top: 0;">
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 6px;padding-left: 0px;">工单名：</label>
+            <label class="col-md-9 control-label label-value" style="text-align: left;" ng-bind="order_bk_title"></label>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 6px;padding-left: 0px;">引用方案：</label>
+            <label class="col-md-9 control-label label-value" style="text-align: left;" ng-bind="program_name"></label>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 6px;padding-left: 0px;">授权条件：</label>
+            <label class="col-md-9 control-label label-value" style="text-align: left;" ng-bind="condition_text"></label>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 6px;padding-left: 0px;">当前步骤：</label>
+            <label class="col-md-9 control-label label-value" style="text-align: left;color: #999;" ng-bind="step_bk_title"></label>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 6px;padding-left: 0px;">用户名：</label>
+            <div class="col-sm-5">
+                <input type="text" placeholder="用户名" ng-model="u.userId" class="form-control label-value">
+            </div>
+        </div>
+        <div class="form-group form-style">
+            <label class="col-sm-3 control-label label-key" style="text-align: right; padding-right: 0px;padding-top: 12px;padding-left: 0px;">密码：</label>
+            <div class="col-sm-5" style="margin-top: 6px;">
+                <input type="password" placeholder="密码" ng-model="u.userPwd" class="form-control label-value">
+            </div>
+        </div>
+    <div style="text-align: center;margin: 40px 0 20px 0;">
+        <button class=" cancel-btn btn-xl text-center" ng-click="cancel()">取消</button>
+        <button ng-show="!btnBus_loading" class=" save-btn btn-xl text-center" ng-click="ok()">授权</button>
+        <button ng-show="btnBus_loading" disabled="disabled" class=" save-btn btn-xl text-center">
+            <i style="color: white" class="fa fa-spinner fa-spin"></i>
+        </button>
+    </div>
+</div>
+</div>

@@ -1,0 +1,102 @@
+<div class="container-fluid proj_plan_list">
+    <div class="commonTabs">
+        <ul  class="nav nav-tabs">
+            <li class="analysis-tab " heading="计划">
+                <a ng-click="changeTabState('proj_plan_list')">计划</a>
+            </li>
+            <li class="analysis-tab " heading="前置">
+                <a ng-click="changeTabState('proj_pre_list')">前置</a>
+            </li>
+            <li class="analysis-tab active" heading="分组">
+                <a>分组</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <!-- 新增分组-->
+            <div class="row">
+                <div class="col-sm-12 text-right" style="padding-bottom:20px;">
+                    <div style="text-align: center" class="ordinary-btn" type="button"  ng-click="newGroup()"> 新增分组</div>
+                </div>
+            </div>
+            <!-- 无分组提示-->
+            <div class="row" ng-show="info.group_items.length == 0" style="padding:10px;margin-top: -10px;height: 280px;position: relative;">
+                <div style="position: absolute;top:21%;left:45%;">
+                    <div class="plan_empty_img group_empty_position">
+                        <div style="position: absolute;bottom: 0;left:47px;color: #a0a0a0">暂无分组</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 分组列表-->
+            <div class="prod_plan_list">
+                <accordion close-others="false">
+                    <accordion-group ng-class="item.show ? 'focus_heading':'common_heading'"  is-open="item.show" ng-repeat="item in info.group_items">
+                        <accordion-heading>
+                            <div class="row">
+                                <div class="col-md-2 plan-panel-date"> 组名:&nbsp;{{item.group_cn_name}}</div>
+                                <div class="col-md-8" style="margin-left: 15px;margin-top: 3px;text-align: right">
+                                    <div>
+                                        <div class="wait_plan" style="margin-right: 40px;height: 0;padding-top: 3px;">
+                                            <a ng-if="item.diagram_flag" href="javascript:void(0);" ng-click="editProcess($event, item.group_id, $index, item)" class="plan_group_edit changeColor"><i class="fa fa-sitemap"></i></a>
+                                        </div>
+                                        <div class="wait_plan" style="height: 0;padding-top: 3px;">
+                                            <a ng-if="!item.process_flag" href="javascript:void(0);" ng-click="editGroup($event, item.group_id,item.group_cn_name)" class="plan_group_edit changeColor"><i class="glyphicon glyphicon-edit"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1" style="font-size: 14px;margin-top: 6px" >
+                                    <span style="font-size: 14px;">共{{item.group_count}}项</span>
+                                </div>
+                                <div class="plan-panel-head-ico" style="margin-right: 18px;">
+                                    <i style="font-size: 14px;" ng-if="item == items[0]" class="glyphicon glyphicon-chevron-up" ng-class="{'glyphicon glyphicon-chevron-up': item.show, 'glyphicon glyphicon-chevron-down': !item.show}"></i>
+                                    <i style="font-size: 14px;" ng-if="item != items[0]" class="glyphicon glyphicon-chevron-down" ng-class="{'glyphicon glyphicon-chevron-up': item.show, 'glyphicon glyphicon-chevron-down': !item.show}"></i>
+                                </div>
+                            </div>
+                        </accordion-heading>
+                        <div class="row" ng-show="item.show">
+                            <div class="col-md-12">
+                                <!-- 分组表格 -->
+                                <prodplan history="false" tab-state="control.tab_type" group-id="item.group_id"  date="info.group_date"></prodplan>
+                                <!--&lt;!&ndash; 流程定制 &ndash;&gt;-->
+                                <div class="col-sm-12" ng-if="item.group">
+                                    <div class="col-sm-12"  style="position: absolute;width:124px;" ng-style="projStyle($index)" ng-repeat="proj in item.group.proj_list">
+                                        <span>
+                                            <i style="background:url(../app/img/new_img/u819.png) no-repeat ; height: 60px;width: 60px;position: absolute;background-size: 60px;top: 20px;left: 30px;"></i>
+                                        </span>
+                                        <span title="{{proj.proj_cn_name}}" style="text-overflow:ellipsis;;white-space: nowrap;overflow: hidden; position: relative;display: block;top: 80px;height: 24px;line-height: 24px; text-align: center;">{{proj.proj_cn_name}}</span>
+                                        <span title="{{proj.business_cn_name}}" style="text-overflow:ellipsis;;white-space: nowrap;overflow: hidden; position: relative;display: block;top: 80px;height: 22px;line-height: 22px; text-align: center;color:#999;">{{proj.business_cn_name}}</span>
+                                        <span style="position: relative;display: block;top: 80px;height: 22px;line-height: 22px; text-align: center;color:#999;">
+                                            <i style="background:url(../app/img/gm/u336.png) no-repeat ; height: 20px;width: 20px;position: absolute;background-size: 20px;top: 5px;left: 2px"></i>
+                                        {{proj.start_time}}</span>
+                                    </div>
+                                    <div style="width: 100%;padding-left: 124px;" ng-if="item.loadingData">
+                                        <div drag-monitor go-model="item.nodeLinkData" style="margin-top: 24px;width: 100%;" group-data="item.group" node-length="item.node_length" read-only="control.read_only">
+                                            <div id="myEditDiagramDiv{{$index}}" style="width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="height: 300px;text-align: center; line-height: 300px;font-size: 16px;color: #ccc" ng-if="!item.loadingData">
+                                        <i class="fa fa-spinner fa-spin" style="font-size: 34px;position: absolute; top: 60px;padding: 40px;color: #ccc;"></i>数据正在加载中...
+                                    </div>
+                                    <div style="height: 300px;text-align: center; line-height: 300px;font-size: 16px;color: #ccc" ng-if="!item.group && item.loading_error">
+                                        <i  style="font-size: 34px;position: absolute; top: 60px;padding: 40px;color: #ccc;"></i>数据正在加载失败
+                                    </div>
+                                </div>
+                                <!-- 流程定制保存按钮 -->
+                                <div ng-if="item.loadingData" class="row" style="margin: 20px 0;">
+                                    <div class="form-group" >
+                                        <div class="col-sm-12 text-center btnStyle">
+                                            <button ng-if="!item.process_loading" class="save-btn btn-md" ng-click="saveProcess(item,$index)">保存流程</button>
+                                            <button ng-if="item.process_loading" disabled="disabled" class="save-btn btn-md">
+                                                <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+
+        </div>
+        </div>
+    </div>
+</div>

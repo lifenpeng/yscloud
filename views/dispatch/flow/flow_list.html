@@ -1,0 +1,19 @@
+<div class="container-fluid flow-list searchBox">
+    <div class="custom-tab row">
+        <ul>
+            <li ng-class="{active:control.active_tab == 'handle'}" ng-click="switchTab('handle')"><a>手工驱动</a></li>
+            <li ng-class="{active:control.active_tab == 'auto'}" ng-click="switchTab('auto')"><a>数据驱动</a></li>
+            <li ng-class="{active:control.active_tab == 'attention'}" ng-click="switchTab('attention')"><a>我关注的</a></li>
+        </ul>
+    </div>
+    <div class="row" style="position: relative;">
+        <div class="col-sm-7" ng-style="calculateFlowListHeight()"  custom-scroll custom-config="flow_list_scroll">
+            <article-flow-list ng-if="control.active_tab == 'handle'"></article-flow-list>
+            <article-flow-list ng-if="control.active_tab == 'auto'"></article-flow-list>
+            <article-flow-list ng-if="control.active_tab == 'attention'"></article-flow-list>
+        </div>
+        <div class="col-sm-5 padding-left-0">
+            <div ui-view="flow_info_view" class="flow-info-view" ng-style="calculateFlowinfoHeight()"></div>
+        </div>
+    </div>
+</div>

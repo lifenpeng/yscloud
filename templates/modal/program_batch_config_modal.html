@@ -1,0 +1,309 @@
+<style>
+    .modal-dialog{
+        width:702px !important;
+    }
+</style>
+<div class="batch-config">
+    <div class="modal-header">
+        <h3 class="modal-title">批量操作</h3>
+        <div ng-click="cancel()"></div>
+    </div>
+    <div class="modal-body" style="padding: 12px" ng-if="!controls.step_flag">
+        <div class="step-first" custom-scroll custom-config="scroll_config_info">
+            <div class="batch-group" ng-repeat="group in program_info.group_list">
+                <div class="batch-group-top">
+                    <div class="group-top-icon">
+                    </div>
+                    <div class="group-title" ng-bind="group.group_name">
+                    </div>
+                    <div style="display: inline-block">
+                        <input i-check type="checkbox" ng-disabled="group.phase_list.length==0" ng-change="selectAllCheck(group,group.state)"  ng-model="group.state"/><span style="margin-left: 7px;display: inline-block;color: #61a1b8;">全选</span>
+                    </div>
+                </div>
+                <div class="list-container" style="padding-left: 7px">
+                    <div class="batch-cmpt-list" ng-repeat="phase in group.phase_list" ng-click="phase.select_flag =!phase.select_flag" ng-class="phase.select_flag ? 'phase-active' :'batch-phase-style'">
+                        <div class="batch-cmpt-index" ng-bind="phase.phase_no"></div>
+                        <div class="batch-cmpt-name" ng-bind="phase.phase_name" title="{{phase.phase_name}}"></div>
+                        <div ng-if="phase.type_cn" class="batch-cmpt-index batch-exec-type" title="{{phase.type_cn}}">{{phase.type_cn.substring(0,1).toLocaleUpperCase()}}</div>
+                    </div>
+                    <div class="default-group-empty" ng-if="group.phase_list.length==0"></div>
+                </div>
+            </div>
+        </div>
+        <!--按钮-->
+        <div style="margin-top:30px;margin-bottom: 40px;text-align: center;">
+            <button  class="cancel-btn btn-xl" ng-click="cancel()">取消</button>
+            <button ng-show="!btnBus_loading" class="save-btn btn-xl" ng-click="nextStep()">下一步</button>
+            <button ng-show="btnBus_loading" disabled="disabled" class="save-btn btn-xl">
+                <i style="color: white" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+    </div>
+    <div class="modal-body" style="padding: 0;height: 475px;" ng-if="controls.step_flag">
+        <div class="step-second batch-config-modal" ng-if="!controls.deal_loading" style="overflow: hidden;zoom: 1;color: #555F76;">
+            <div class="step-second-left"  custom-scroll custom-config="scroll_config_info">
+                <div ng-repeat="group in program_info.group_list">
+                    <div class="batch-cmpt-list" style="display: block;margin: 0 auto 7px auto;" ng-repeat="phase in group.phase_list | filter:{'select_flag':true}">
+                        <div class="batch-cmpt-index" ng-bind="phase.phase_no"></div>
+                        <div class="batch-cmpt-name" ng-bind="phase.phase_name" title="{{phase.phase_name}}"></div>
+                        <div ng-if="phase.type_cn" class="batch-cmpt-index batch-exec-type" title="{{phase.type_cn}}">{{phase.type_cn.substring(0,1).toLocaleUpperCase()}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step-second-right" custom-scroll custom-config="scroll_config_info">
+                <div class="second-operate-btn" style="margin-top:7px;padding-left: 20px">
+                    <div ng-click="checkUsage(1)" ng-class="{'btn-batch-copy-active':controls.operate_btn==1,'bacth-operate-btn':controls.copy_flag,'btn-batch-disabled':!controls.copy_flag}">
+                        <span class="operate-btn-batch btn-batch-copy"></span> 复制
+                    </div>
+                    <div class="bacth-operate-btn" ng-click="checkUsage(2)" ng-class="{'btn-batch-remove-active':controls.operate_btn==2}">
+                        <span class="operate-btn-batch btn-batch-remove"></span> 移动
+                    </div>
+                   <!-- <div ng-click="checkUsage(3)" ng-class="{'btn-batch-config-active':controls.operate_btn==3,'bacth-operate-btn':controls.soc_flag,'btn-batch-disabled':!controls.soc_flag}">
+                        <span class="operate-btn-batch btn-batch-config"></span> 配置数据源
+                    </div>-->
+                    <div class="bacth-operate-btn" ng-click="checkUsage(4)" ng-class="{'btn-batch-delete-active':controls.operate_btn==4}">
+                        <span class="operate-btn-batch btn-batch-delete"></span> 删除
+                    </div>
+                </div>
+                <form name="form.batch_from">
+                    <div class="batch-copy-content" ng-if="controls.operate_btn==1 || controls.operate_btn==2" style="margin-top: 40px;min-height: 200px;">
+                        <div class="row form-style" style="margin-bottom: 7px">
+                            <lable class="col-sm-2 label-key" style="margin-top: 7px;padding-right: 0">分组</lable>
+                            <div class="col-sm-8 label-value">
+                                <bs-select
+                                        width="220"
+                                        name="group_name"
+                                        items="program_info.group_list"
+                                        select-val="getPhaseItem(selectKey)"
+                                        my-select="data_deal_info.group_index"
+                                        option-labal="group_name"
+                                        option-key="group_index"
+                                        required
+                                        ></bs-select>
+                                <validate-msg tag-cn-name="分组" type="select" name="group_name" model="data_deal_info.group_index"></validate-msg>
+                            </div>
+                        </div>
+                        <div class="row form-style">
+                            <lable class="col-sm-2 label-key" style="margin-top: 7px;padding-right: 0">阶段</lable>
+                            <div class="col-sm-8 label-value">
+                                <bs-select
+                                        width="220"
+                                        name="phase_name"
+                                        items="data.phase_item"
+                                        my-select="data_deal_info.phase_index"
+                                        option-labal="phase_name"
+                                        option-key="phase_index"
+                                        required
+                                        ></bs-select>
+                                <validate-msg tag-cn-name="阶段" type="select" name="phase_name" model="data_deal_info.phase_index"></validate-msg>
+                                <span class="label-value" style="position: absolute;top: 7px;right: 100px;">后</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--配置数据源-->
+                   <!-- <div class="batch-soc-config-content" ng-if="controls.operate_btn==3">
+                        <div class="row" style="font-size: 12px; margin-top: 10px;margin-bottom: 5px;color: #61a1b8">
+                            <div class="col-sm-3" style="padding-right: 0; width: 96px; margin-left: 100px;">
+                                <input type="radio" name="soc_config" i-check ng-model="controls.soc_config_type" ng-change="selectScriptType(true)"  value=1 />&nbsp;<span class="label-value">手动配置</span>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="radio" name="soc_config" i-check ng-model="controls.soc_config_type" ng-change="selectScriptType(true)"  value=2 />&nbsp;<span class="label-value">从其他阶段复制</span>
+                            </div>
+                        </div>
+                        <div ng-if="controls.soc_config_type==1">
+                            <div class="row" ng-if="!reqData.two_soc" style="margin: 14px 0 0 0;">
+                                <div class="col-sm-3" style="width: 124px;text-align: left;border-right: 1px solid #F7F8F7;padding: 0;">
+                                    <div style="font-size: 12px;color: #61a1b8;margin: 10px;text-align: center">
+                                        <span>执行节点</span>
+                                    </div>
+                                    <div style="width: 120px;margin: 6px auto 0 auto;">
+                                        <div ng-if="reqData.ip_data_list.length != 0 && !controls.ip_loading"  custom-scroll custom-config="config.scroll_info" style="height: 260px;padding-top: 5px">
+                                            <div ng-repeat="one_ip in reqData.normal_ip_list" ng-class="{'checked-node-ip':one_ip.is_show,'default-node-ip':!one_ip.is_show}" style="color: #d2f1fe">
+                                                <div style="padding: 5px 0px;cursor: pointer;font-size: 12px;text-align: center" ng-click="checkNodeIP(one_ip)" >
+                                                    <span>{{one_ip.exe_ip}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="controls.ip_loading" style="display: inline-block;margin-right: 10px;;margin-left:15px;margin-bottom: 5px;position: relative;">
+                                            <div style="display: inline-block;font-size: 12px;color: #44DCFD;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44DCFD;"></i>&nbsp;加载中</div>
+                                        </div>
+                                        <div ng-if="reqData.ip_data_list.length == 0 && !controls.ip_loading" style="color: #6d7183;font-size: 12px;text-align: center;">
+                                            暂无节点
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9" style="padding-right: 15px; padding-left: 10px;width: 375px;">
+                                    <div style="font-size: 12px;color: #61a1b8;margin-top: 6px;margin: 10px">
+                                        <span>选择数据源</span>
+                                    </div>
+                                    <div custom-scroll custom-config="config.scroll_info" style="height: 260px;">
+                                        <div ng-repeat="one_ip in reqData.normal_ip_list" ng-init="outer_index = $index" ng-if="one_ip.is_show" style="margin-bottom: 10px;"><div style="color:#d2f1fe;margin-bottom: 5px;font-size: 12px">{{one_ip.exe_ip}}</div>
+                                            <div>
+                                                <div ng-repeat="one_soc in one_ip.exe_soc_list" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;width: 140px;height: 28px">
+                                                    <div ng-click="click_dataSource(one_soc,one_ip.exe_ip,$index)" ng-class="one_soc.state ? 'data-source-selected' :'data-source'" style="font-size: 12px;padding: 0 15px 0 0;cursor: pointer;height: 100%;">
+                                                        <div class="protocol-type protocol-color" title="{{getProtocolTypeCnName(one_soc.protocol_type)}}"><div style="overflow: hidden">{{getProtocolTypeCnName(one_soc.protocol_type).toLowerCase()}}</div></div>
+                                                        <div class="soc-name" title="{{one_soc.exe_soc_name}}">{{one_soc.exe_soc_name}}</div>
+                                                        <div ng-if="one_soc.state" class="checked-div">
+                                                            <i class="fa fa-check checked-sign"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="one_ip.exe_soc_list.length == 0 && !one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;">
+                                                    <div style="display: inline-block;color: #6d7183;font-size: 12px;">暂无数据源</div>
+                                                </div>
+                                                <div ng-if="one_ip.exe_soc_list.length == 0 && one_ip.is_loading" style="display: inline-block;margin-right: 10px;margin-bottom: 5px;position: relative;margin-left: 10px">
+                                                    <div style="display: inline-block;font-size: 12px;color: #44DCFD;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44DCFD;"></i>&nbsp;加载中</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border-bottom: 1px solid #F1B442;margin-left: 0;margin-right:0;" ng-if="reqData.two_soc ">
+                                <div class="col-sm-3" style="border-right: 1px solid #F1B442;width: 124px;text-align: center;padding:10px 0;color: #F1B442">
+                                    执行节点
+                                </div>
+                                <div class="col-sm-3" style="border-right: 1px solid #F1B442;text-align: center;padding:10px 0;font-size: 12px;color: #F1B442;width: 124px;font-size: 12px;margin-top: 4px">执行数据源</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 3" style="border-right: 1px solid #F1B442;text-align: center;padding:9px 0;width: 124px;font-size: 12px;color: #F1B442">was节点</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 3" style="border-right: 1px solid #F1B442;text-align: center;padding:8px 0px;color: #F1B442;width: 124px;font-size: 12px;">was数据源</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 4" style="border-right: 1px solid #F1B442;text-align: center;padding:11px 0px;color: #F1B442;width: 124px;font-size: 12px;">svn节点</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 4" style="text-align: center;padding:8px 0px;color: #F1B442;width: 124px;font-size: 12px;">svn数据源</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 5" style="border-right: 1px solid #F1B442;text-align: center;padding:12px 0px;color: #F1B442;width: 124px;font-size: 12px;">weblogic节点</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 5" style="text-align: center;padding:8px 0px;color: #F1B442;width: 124px;font-size: 12px;">weblogic数据源</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 14 || reqData.imply_type == 15" style="border-right: 1px solid #F1B442;text-align: center;padding:7px 15px;color: #F1B442">上传节点</div>
+                                <div class="col-sm-3" ng-if="reqData.imply_type == 14 || reqData.imply_type == 15" style="text-align: center;padding:7px 15px;color: #F1B442">上传数据源</div>
+                            </div>
+                            <div class="row" style="margin-left: 0;margin-right: 0;" ng-if="reqData.two_soc">
+                                <div class="col-sm-3" style="height: 100%;padding-top: 10px;padding-left: 0;padding-right:0;width: 124px;">
+                                    <div class="search" style="margin-right: 5px;height: 32px;">
+                                        <div class="search-input" style="float: left;width: 106px;">
+                                            <input type="text" name="search_key_work"
+                                                   ng-model="reqData.search_key_work"
+                                                   typeahead="bs for bs in reqData.ip_data_list | filter:$viewValue | limitTo:10"
+                                                   typeahead-on-select = "selectTwo()"
+                                                   class="form-control label-value"
+                                                   placeholder="节点IP"
+                                                   style="width: 120px;padding-left: 6px;">
+                                        </div>
+                                        <div style="display: inline-block;width: 16px;position: absolute;top: 12px;right: 5px;cursor: pointer">
+                                            <div class="fa fa-times clear-logol" ng-click="reqData.search_key_work = ''"></div>
+                                        </div>
+                                    </div>
+                                    <div style="height: 220px;width: 120px;" custom-scroll custom-config="config.scroll_info" ng-if="reqData.ip_data_list.length!=0">
+                                        <div ng-repeat="one in reqData.extra_ip_list" ng-click="clickNodeIP(one,$index)" ng-class="one.is_show ? 'was-data-source-delete' : one.delete_flag ? 'was-data-source-delete': 'was-data-source'" style="cursor: pointer;font-size: 12px;color: #000;margin: 0 auto;">
+                                            <div style="display: inline-block;padding: 3px 3px 3px 6px;color:#d2f1fe" ng-style="one.delete_flag ? {'text-decoration':'line-through #F1B442'}:''">{{one.exe_ip}}</div>
+                                            <span ng-if="!one.is_show" ng-click="checkDeleteFlag(one,$event)"></span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="reqData.ip_data_list.length == 0" style="color: #6d7183;font-size: 12px;text-align: center;">
+                                        暂无节点
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="height: 100%;padding: 0">
+                                    <div ng-repeat="one_ip in reqData.extra_ip_list" ng-if="one_ip.is_show">
+                                        <div style="margin-top: 11px; height: 260px;" custom-scroll custom-config="config.scroll_info">
+                                            <div ng-repeat="one_soc in one_ip.exe_soc_list" ng-click="clickExeDataSource(one_soc,$index,$parent.$index)" ng-class="one_soc.state ? 'data-source-selected' :'data-source'" style="width:105px;position: relative;cursor: pointer;margin: 0 auto 8px auto">
+                                                <div style="font-size: 12px;">
+                                                    <div class="protocol-color" style="width: 34px;display: inline-block;height: 20px;line-height: 20px;font-size: 12px;padding: 0 6px;border-radius: 4px;margin-top: 4px" >
+                                                        <div style="overflow: hidden" title="{{getProtocolTypeCnName(one_soc.protocol_type)}}">{{getProtocolTypeCnName(one_soc.protocol_type).toLowerCase()}}</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 66px;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;color: #d2f1fe" title="{{one_soc.exe_soc_name }}">{{one_soc.exe_soc_name}}</div>
+                                                </div>
+                                                <div ng-if="one_soc.state" class="checked-div">
+                                                    <i class="fa fa-check checked-sign"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="height: 100%;padding-top: 10px;padding-left: 0;padding-right:0;width: 124px;">
+                                    <div class="search" style="margin-right: 5px;height: 32px;" ng-if="reqData.extra_ip_list.length != 0">
+                                        <div class="search-input">
+                                            <input type="text"
+                                                   ng-model="reqData.search_ver_key"
+                                                   class="form-control"
+                                                   placeholder="IP(模糊匹配)"
+                                                   style="padding-left: 7px;"
+                                                   ng-enter="locationVerword()">
+                                        </div>
+                                        <div style="position: absolute;top: 12px;right: 5px;cursor: pointer">
+                                            <span class="fa fa-times clear-logol" ng-click="clearVerIp()"></span>
+                                        </div>
+                                    </div>
+                                    <div style="height: 220px;width: 120px;" custom-scroll custom-config="config.scroll_info">
+                                        <div ng-repeat="one_ip in reqData.extra_ip_list" ng-if="one_ip.exe_ip == reqData.check_ip" >
+                                            <div  ng-repeat="one_ver in one_ip.ver_ip_list" ng-click="clickVerNode(one_ver,$index,$parent.$index)" ng-class="one_ver.is_check ? 'was-data-source-delete' :'was-data-source'" style="width:105px;padding: 3px 15px;cursor: pointer;font-size: 12px;margin: 0 auto;">
+                                                {{one_ver.ver_ip}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="height: 100%;padding: 10px 0 0 0;">
+                                    <div ng-repeat="one_ip in reqData.extra_ip_list" style="margin-top: 11px; height: 260px;" custom-scroll custom-config="config.scroll_info" ng-init="outer_index = $index" ng-if="one_ip.exe_ip == reqData.check_ip">
+                                        <div ng-repeat="one_soc in one_ip.ver_ip_list" ng-if="one_soc.is_check">
+                                            <div ng-repeat="soc in one_soc.ver_soc_list"  style="height: 28px;margin-bottom: 7px;font-size: 12px" >
+                                                <div ng-click="clickVerSource(soc,$index,$parent.$index,outer_index)" ng-class="soc.state ? 'data-source-selected' :'data-source'" style="width:105px;position: relative;cursor: pointer;margin: 0 auto;" >
+                                                    <div class="protocol-color" style="width: 34px;display: inline-block;height: 20px;line-height: 20px;padding: 0 6px;border-radius: 4px;margin-top: 3px"><div style="overflow: hidden">{{getProtocolTypeCnName(soc.protocol_type).toLowerCase()}}</div></div>
+                                                    <div style="display: inline-block;width: 64px;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;color: #d2f1fe" title="{{soc.ver_soc_name}}">{{soc.ver_soc_name}}</div>
+                                                    <div ng-if="soc.state" class="checked-div">
+                                                        <i class="fa fa-check checked-sign"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div  style="margin-right: 10px;" ng-if="one_soc.ver_soc_list.length == 0 && !reqData.tow_soc_loading">
+                                                <div  style="width:125px;position: relative;padding: 2px 15px 2px 0px;margin-bottom: 5px;">
+                                                    <span style="font-size: 12px;color: #6d7183;">无数据源</span>
+                                                </div>
+                                            </div>
+                                            <div  style="margin-right: 10px;" ng-if="one_soc.ver_soc_list.length == 0 && reqData.tow_soc_loading">
+                                                <div  style="width:125px;position: relative;padding: 2px 15px 2px 0px;margin-bottom: 5px;">
+                                                    <div style="display: inline-block;font-size: 12px;color: #44DCFD;"><i class="fa fa-spinner fa-spin" style="font-size: 12px;color: #44DCFD;"></i>&nbsp;加载中</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="controls.soc_config_type==2" style="margin-top: 20px">
+                            <label class="col-sm-2 label-key" style="margin-top: 7px;padding-right: 0;color: #61a1b8">阶段</label>
+                            <div class="col-sm-8 label-value">
+                                <div class="soc-select">
+                                    <bs-select
+                                            width="220"
+                                            items="data.copy_soc_list"
+                                            select-val="selectCopySoc(selectKey)"
+                                            init-label='从其他阶段拷贝'
+                                            option-labal="phase_name"
+                                            option-key="copy_index"
+                                            my-select="reqData.soc_index"
+                                            required
+                                            ></bs-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--删除-->
+                    <div class="batch-soc-config-content" ng-if="controls.operate_btn==4" style="text-align: center">
+                        <div class="batch-delete">
+
+                        </div>
+                        <span style="color: #6d7183;font-size: 12px">删除已选阶段</span>
+                    </div>
+                </form>
+            </div>
+            <!--按钮-->
+            <div style="clear: both"></div>
+            <div style="text-align: center;margin-top: 15px">
+                <button  class="cancel-btn btn-xl" ng-click="preStep()">上一步</button>
+                <button ng-show="!btnBus_loading" class="save-btn btn-xl" ng-click="saveData()">确定</button>
+                <button ng-show="btnBus_loading" disabled="disabled" class="save-btn btn-xl">
+                    <i style="color: white" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+        <div ng-if="controls.deal_loading" class="deal-loading">
+            正在处理中 <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    </div>
+</div>

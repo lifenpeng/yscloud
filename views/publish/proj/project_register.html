@@ -1,0 +1,126 @@
+
+<div class="container-fluid" style="margin-top:15px" ng-style="{'min-height': control.show_config_div ? '560px':''}">
+    <form name="proj_form" ng-submit="formSubmit()" class="form-horizontal project-register" novalidate autocomplete="off" onKeyPress="if(event.keyCode==13) return false">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-2">
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-4 control-label label-key">项目名称</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="project_name"
+                               ng-model="info.project_name"
+                               class="form-control label-value"
+                               style="min-width: 260px;"
+                               placeholder="项目简称（最多50个字）"
+                               required
+                               ng-pattern="/^[\u4E00-\u9FA5A-Za-z0-9_.-]+$/"
+                               ng-maxlength=50
+                               ng-model-options="{updateOn: 'blur'}">
+                        <validate-msg tag-cn-name="项目名称" name="project_name"></validate-msg>
+                    </div>
+                </div>
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-4 control-label label-key">项目描述</label>
+                    <div class="col-sm-8">
+                        <textarea name="project_bk_desc"
+                                  ng-model="info.project_desc"
+                                  class="form-control label-value"
+                                  placeholder="项目描述（最多50个字）"
+                                  style="min-width: 260px; resize:none;overflow:hidden"
+                                  ng-maxlength=50
+                                  ng-model-options="{updateOn: 'blur'}">
+                        </textarea>
+                        <validate-msg tag-cn-name="项目描述" name="project_bk_desc"></validate-msg>
+                    </div>
+                </div>
+                <div class="form-group form-horizontal form-style">
+                    <label class="col-sm-4 control-label label-key " >项目规模</label>
+                    <div class="col-sm-8 label-value">
+                        <label class="checkbox-inline padding-left-0">
+                            <input type="radio" i-check name="optionsRadiosinline"   ng-model="info.project_scale" value="1">&nbsp;&nbsp;&nbsp;一般发布
+                        </label>
+                        <label class="checkbox-inline" style="margin-left: 20px">
+                            <input type="radio" i-check name="optionsRadiosinline"   ng-model="info.project_scale" value="2">&nbsp;&nbsp;&nbsp;大型发布
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group form-horizontal form-style" style="position: relative">
+                    <label class="col-sm-4 control-label label-key" style="padding-top: 10px;">项目负责人</label>
+                    <div class="col-sm-8 label-value" style="padding-right: 0">
+                        <div class="ordinary-blue-btn" style="text-align: center;margin-top: 5px;margin-right: 5px;height: 34px;line-height: 34px;" ng-click="configProjectUser()"><span class="fa fa-cog" style="margin-right: 6px;"></span>&nbsp;配置</div>
+                        <div class="user-style" ng-repeat="user in data.user_list" title="{{user.dept_cn_name}} | {{user.user_cn_name}}">
+                            <div class="user-name-style">{{user.user_cn_name}}</div>
+                            <div class="delete-img" ng-click="deleteUser($index)"></div>
+                        </div>
+                        <div ng-if="control.user_exsit" style="color: #e9416e;padding-top: 7px;">责任人不能为空</div>
+
+                        <!--负责人浮窗-->
+                        <div ng-if="control.show_config_div" style="position: absolute;top: 2px;left:103px;z-index: 10;min-width: 610px;">
+                            <div class="leader-wrap">
+                                <div class="modal-header leader-header">
+                                    <span>项目负责人</span>
+                                    <div ng-click="hideConfig()"></div>
+                                </div>
+                                <div class="modal-body">
+                                    <div ng-if="data.dept_user_list.length != 0">
+                                        <div class="leader-dept-wrap" custom-scroll custom-config="config.dept_wrap_scroll">
+                                            <div ng-repeat="dept in data.dept_user_list" ng-click="switchDept(dept,data.dept_user_list)" ng-class="dept.is_check ? 'leader-dept-checked-style':'leader-dept-style'">
+                                                <span ng-class="dept.is_check ? 'leader-img-checked':'leader-img-default'"></span>
+                                                {{dept.dept_cn_name}}
+                                            </div>
+                                        </div>
+                                        <div class="leader-people-wrap" custom-scroll custom-config="config.people_wrap_scroll" ng-repeat="dept in data.dept_user_list" ng-if="dept.is_check">
+                                            <div ng-repeat="user in dept.user_list" class="user-style"  ng-style="user.check_flag ? {'border':'1px solid #44dcfd'}:{}" ng-click="user.check_flag = !user.check_flag">
+                                                <div class="user-name-style" title="{{user.user_cn_name}}">{{user.user_cn_name}}</div>
+                                                <div ng-if="user.check_flag" class="user-check-style"><i class="fa fa-check"></i></div>
+                                            </div>
+                                            <div class="none-content-font-color text-center" style="margin-top: 70px" ng-if="dept.user_list.length == 0">
+                                                暂无数据
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="data.dept_user_list.length == 0" class="error-font-color" style="width: 100%;height: 210px;text-align: center;line-height: 200px;">
+                                        {{info.error_message}}
+                                    </div>
+                                    <div style="text-align: center;margin-top: 20px;">
+                                        <button type="button" class="cancel-btn btn-xl" ng-click="hideConfig()">取消</button>
+                                        <button type="button" class="save-btn btn-xl" ng-click="saveResponseUser()">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-horizontal form-style">
+            <label class="col-sm-4 control-label label-key " >应用系统</label>
+            <div class="col-sm-6 label-value">
+                <div class="table-search" style="width: 100%;position: relative">
+                    <div class="table-search-input" style="width: 100%">
+                        <input type="text"
+                               name="sys_keyword"
+                               class="form-control"
+                               style="width: 100%"
+                               placeholder="搜索"
+                               ng-disabled="!data.screen_sys_list.length"
+                               ng-model="control.sys_keyword"/>
+                    </div>
+                    <span class="table-clear-logol" style="left: auto;right: 0" ng-if="control.sys_keyword" ng-click="control.sys_keyword = ''"></span>
+                    <span class="table-search-logol" style="left: 0"></span>
+                </div>
+                <spell-screen ng-if="data.screen_sys_list.length" data="data.screen_sys_list"  search-keyword="control.sys_keyword" check-Val="checkSys(parentObj,childrenObj)"></spell-screen>
+                <div class="text-center" style="color: #6d7183;font-size: 14px" ng-if="!data.screen_sys_list.length">暂无应用系统数据</div>
+            </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;position: fixed;bottom: 40px;left: 50%">
+            <div class="col-sm-12 text-center" >
+                <button ng-if="!control.sava_btn_loading" type="button"  ng-click="formCancel()" class="cancel-btn btn-md">取消</button>
+                <button ng-if="control.sava_btn_loading" disabled="disabled" type="button" class="btn-md disabled-btn" >取消</button>
+                <button ng-if="!control.sava_btn_loading " type="submit" class="save-btn btn-md">保存</button>
+                <button ng-if="control.sava_btn_loading" disabled="disabled" class="save-btn btn-md">
+                    <i style="color: white"  class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

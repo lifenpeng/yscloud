@@ -1,0 +1,263 @@
+<div class="container-fluid cmpt fontSize12">
+    <form name="cmpt_test_form"  class="form-horizontal" novalidate autocomplete="off">
+        <!--组件内容-->
+        <div class="form-group form-style">
+            <label class="col-sm-2 control-label label-key text-right">被测组件</label>
+            <label class="col-sm-10 label-value text-left" style="padding-top: 7px">
+                {{info.cmpt_basic_info.cn_name}}
+                <span class="fa fa-eye cmpt-test-detail-eye" ng-click="showCmptDetail()" title="详细"></span>
+            </label>
+        </div>
+        <!--版本选择-->
+
+        <div class="form-group form-style" ng-if="info.cmpt_test_info.impl_type==15 ||info.cmpt_test_info.impl_type==17 ">
+            <div class="col-sm-2 text-right" style="margin-top: 6px">
+                <label class="control-label label-key">执行程序</label>
+            </div>
+            <div class="col-sm-5">
+                <file-upload fileupload="config.cmpt_accessory_fileupload"  downfile="downloadAccessoryFile();"></file-upload>
+            </div>
+        </div>
+        <!--执行命令-->
+        <div class="form-group form-style" ng-if="info.cmpt_test_info.impl_type == 15 || info.cmpt_test_info.impl_type == 17">
+            <div class="col-sm-2 text-right">
+                <label class="control-label label-key">执行命令</label>
+            </div>
+            <div scroll-control class="col-sm-8">
+                <textarea
+                        ui-codemirror="config.view_options"
+                        ui-refresh="true"
+                        placeholder="执行命令"
+                        ng-model="info.cmpt_test_info.command.exec_script"
+                >
+                </textarea>
+            </div>
+        </div>
+        <!--执行脚本-->
+        <div class="form-group form-style" ng-if="info.cmpt_test_info.impl_type != 15">
+            <div class="col-sm-2 text-right">
+                <label class="control-label label-key">执行脚本</label>
+            </div>
+            <div class="col-sm-8">
+                <div class="cmpt-test-script-btn">
+                    <bs-select
+                            name="param_name{{$id}}"
+                            items="info.cmpt_test_info.script_list"
+                            option-key="script_type"
+                            option-labal="script_type_cn"
+                            select-val="selectScriptByScriptType(selectKey,info.cmpt_test_info)"
+                            no-border
+                            my-select="info.cmpt_test_info.script_type"
+                            required
+                    ></bs-select>
+                </div>
+                <textarea
+                        ui-codemirror="config.view_options"
+                        ui-refresh="true"
+                        placeholder="执行脚本"
+                        ng-model="info.cmpt_test_info.exec_script"
+                >
+                </textarea>
+            </div>
+        </div>
+        <!--参数配置-->
+        <div class="form-group form-style">
+            <label class="col-sm-2 label-key text-right">参数配置</label>
+            <div class="col-sm-8" >
+                <table class="sub-table  sub-table-striped text-center cmpt-param-table">
+                    <thead>
+                    <tr class="cursor-default">
+                        <td style="width: 200px;"><span>参数名</span></td>
+                        <td><span>参数值</span></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr  ng-repeat="tr in info.cmpt_test_info.param_list" ng-show="info.cmpt_test_info.param_list.length != 0">
+                            <td class="cursor-default">
+                                <span ng-if="tr.param_name" title="{{tr.param_name}}">{{tr.param_name}}</span>
+                                <span ng-if="!tr.param_name">--</span>
+                            </td>
+                            <td class="cmpt-test-param-value">
+                                <div style="text-align: left;" ng-if="tr.show_input">
+                                    <textarea name="param_value1{{$index}}"
+                                              ui-codemirror="{ onLoad : paramShellLoaded}"
+                                              ng-if="!tr.sensitive_flag"
+                                              ui-refresh="true"
+                                              ng-model="tr.param_value"
+                                              required
+                                              class="sub-form-control">
+                                    </textarea>
+                                    <!--只是为了兼容360浏览器阻止默认密码填写-->
+                                    <input type="password" style="display: none;" disabled autocomplete = "new-password"/>
+                                    <input type="password"
+                                           class="pass-input"
+                                           style="height: 26px;padding-left: 5px"
+                                           ng-model="tr.label_param_value"
+                                           disabled
+                                           autocomplete="new-password"
+                                           ng-if="tr.sensitive_flag"
+                                           ng-init="tr.label_param_value =  tr.param_value ?  '1111111111' : ''"
+                                    >
+                                    <div class="cmpt-test-password-eye">
+                                        <i ng-if="!tr.sensitive_flag" class="fa fa-eye" title="明文" ng-click="tr.sensitive_flag=true; tr.label_param_value = tr.param_value ? '1111111111' : ''"></i>
+                                        <i ng-if="tr.sensitive_flag" class="fa fa-eye-slash" title="密文" ng-click="tr.sensitive_flag=false"></i>
+                                    </div>
+                                    <validate-msg  tag-cn-name="参数值" name="param_value1{{$index}}"></validate-msg>
+                                </div>
+                                <div ng-if="!tr.show_input" class="tcm_tbParasConfig_showInput"  style="text-align: left;">
+                                    <span ng-if="!tr.sensitive_flag" title="{{tr.param_value}}">{{tr.param_value}}</span>
+                                    <span ng-if="tr.sensitive_flag" >******</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-show="info.cmpt_test_info.param_list.length == 0">
+                        <td colspan="2">
+                            <span>暂无数据</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--插件列表-->
+        <div class="form-group form-style" ng-if="info.cmpt_test_info.phase.plugin_list.length !=0">
+            <div class="col-sm-2 text-right">
+                <label class="control-label label-key text-right">插件列表</label>
+            </div>
+            <div class="col-sm-8">
+                <table class="sub-table table text-center cmpt-param-table" tbl-Data="info.cmpt_test_info.phase.plugin_list">
+                    <thead>
+                    <tr>
+                        <td  style="width: 170px;min-width: 170px;max-width: 170px;">插件名</td>
+                        <td  width="200px" >插件类型</td>
+                        <td>插件描述</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="tr in info.cmpt_test_info.phase.plugin_list">
+                        <td>
+                            <div style="text-align: left;">
+                                <span>{{tr.plugin_name}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span>{{getPluginTypeCnName(tr.plugin_type)}}</span>
+                        </td>
+                        <td style="max-width: 200px;overflow: hidden;white-space: nowrap">
+                            <span>{{tr.plugin_bk_desc}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--环境/插件部署配置-->
+        <div class="form-group form-style" ng-if="info.cmpt_test_info.phase.plugin_list.length !=0  || info.cmpt_test_info.impl_type == 14 || info.cmpt_test_info.impl_type == 7 || info.cmpt_test_info.impl_type == 8 || info.cmpt_test_info.impl_type == 15 || info.cmpt_test_info.impl_type == 17">
+            <label class="col-sm-2 label-key">部署节点配置</label>
+            <div class="col-sm-8 label-value" style="position: relative;">
+                <table class="sub-table table text-center">
+                    <thead>
+                    <tr>
+                        <td  style="width: 170px;min-width: 170px;max-width: 170px;">节点IP</td>
+                        <td  style="width: 200px;min-width: 200px;max-width: 200px;">执行数据源</td>
+                        <td  style="width: 200px;min-width: 200px;max-width: 200px;">部署数据源</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <bs-select class="label-value"
+                                       width=170
+                                       name="execute_ip"
+                                       items="data.ip_data_list"
+                                       my-select="info.cmpt_test_info.deploy_soc.execute_ip"
+                                       select-val="getExecuteSoc(selectKey)"
+                                       no-border
+                                       required></bs-select>
+                            <validate-msg tag-cn-name="执行节点" type="select" name="execute_ip" model="info.cmpt_test_info.deploy_soc.execute_ip"></validate-msg>
+                        </td>
+                        <td >
+                            <bs-select class="label-value"
+                                       width=170
+                                       name="execute_soc_name"
+                                       items="data.exec_soc_list"
+                                       my-select="info.cmpt_test_info.deploy_soc.execute_soc_name"
+                                       option-key="soc_name"
+                                       option-labal="soc_name"
+                                       loading="control.get_soc_loading"
+                                       no-border
+                                       required></bs-select>
+                            <validate-msg tag-cn-name="执行数据源" type="select" name="execute_soc_name" model="info.cmpt_test_info.deploy_soc.execute_soc_name"></validate-msg>
+                        </td>
+                        <td>
+                            <bs-select class="label-value"
+                                       width=170
+                                       name="support_soc_name"
+                                       items="data.support_soc_list"
+                                       my-select="info.cmpt_test_info.deploy_soc.support_soc_name"
+                                       option-key="soc_name"
+                                       option-labal="soc_name"
+                                       loading="control.get_support_soc_loading"
+                                       no-border
+                                       required></bs-select>
+                            <validate-msg tag-cn-name="部署数据源" type="select" name="support_soc_name" model="info.cmpt_test_info.deploy_soc.support_soc_name"></validate-msg>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--运行节点配置-->
+        <div class="form-group form-style" ng-if="info.cmpt_test_info.phase.plugin_list.length ==0 &&  info.cmpt_test_info.impl_type != 14 && info.cmpt_test_info.impl_type != 7 && info.cmpt_test_info.impl_type != 8 && info.cmpt_test_info.impl_type != 15  && info.cmpt_test_info.impl_type != 17">
+            <label class="col-sm-2 control-label label-key">运行节点配置</label>
+            <div class="col-sm-8 label-value" style="position: relative;">
+                <div class="ordinary-btn text-center" ng-hide="control.exec_loading" ng-click="configSoc(info.cmpt_test_info.impl_type)"><span class="fa fa-cog" style="margin-right: 6px;"></span>&nbsp;配置</div>
+                <div class="data-source-btn" ng-repeat="one in info.cmpt_test_info.phase.node_soc_list" ng-if="one.exe_soc_name && one.ver_soc_name && ((info.cmpt_test_info.impl_type >2 && info.cmpt_test_info.impl_type < 6) || info.cmpt_test_info.impl_type == 14)" title="{{one.exe_ip + ' | ' + one.ver_ip}}">
+                    <span class="data-source-procotol-type">{{getProtocolTypeCnName(one.exe_protocol_type)}}</span>
+                    <span>{{one.exe_soc_name}}</span>
+                    <span>|</span>
+                    <span class="data-source-procotol-type">{{getProtocolTypeCnName(one.ver_protocol_type)}}</span>
+                    <span>{{one.ver_soc_name}}</span>
+                    <div class="data-source-delete-btn"  ng-hide="control.exec_loading" ng-click="deleteSingleSoc($index,info.cmpt_test_info.phase.node_soc_list)"><i class="fa fa-times"></i></div>
+                </div>
+                <div class="data-source-btn" ng-repeat="one in info.cmpt_test_info.phase.node_soc_list" ng-if="one.exe_soc_name && ((info.cmpt_test_info.impl_type <= 2 || info.cmpt_test_info.impl_type >=6) && info.cmpt_test_info.impl_type !=14 && info.cmpt_test_info.impl_type !=15 && info.cmpt_test_info.impl_type !=17)" title="{{one.exe_ip}}">
+                    <span class="data-source-procotol-type">{{getProtocolTypeCnName(one.exe_protocol_type)}}</span>
+                    <span>{{one.exe_soc_name}}</span>
+                    <div  class="data-source-delete-btn" ng-hide="control.exec_loading" ng-click="deleteSingleSoc($index,info.cmpt_test_info.phase.node_soc_list)"><i class="fa fa-times"></i></div>
+                </div>
+            </div>
+        </div>
+        <!--执行测试-->
+        <div class="form-group form-style">
+            <label class="col-sm-2 label-key">执行测试</label>
+            <div class="col-sm-8">
+                <div class="wrapper">
+                    <div class="cmpt-test-exec-btn" ng-class="control.exec_flag ? 'cmpt-test-exec-disabled':'cmpt-test-exec-btn'" ng-disabled="control.exec_flag" ng-click="control.exec_flag || cmptExec()"></div>
+                    <div class="col-sm-offset-1 col-sm-9">
+                        <div class="progressbar-wraper">
+                            <progressbar max="100" value="control.items.dynamic" type='{{control.items.type}}' class="cmpt-test-progressbar"></progressbar>
+                            <div title="{{control.items.exec_message}}" class="cmpt-test-excuting loading-font-color" ng-if="control.items.dynamic !=0 && control.exec_flag ">执行中...</div>
+                            <div title="{{control.items.exec_message}}" class="cmpt-test-excuting cmpt-test-faild error-font-color" ng-if="(control.items.exec_status ==3 || control.items.exec_status ==4) && !control.exec_flag"><span style="margin-left: 20px;">执行出错</span></div>
+                            <div class="cmpt-test-excuting cmpt-test-faild error-font-color" ng-if="(control.items.exec_status ==6)&& !control.exec_flag"><span style="margin-left: 20px;">执行服务异常</span></div>
+                            <div class="cmpt-test-excuting cmpt-test-success success-font-color" ng-if="control.items.dynamic ==100 && control.items.exec_status ==5 && !control.exec_flag"><span style="margin-left: 22px;">测试成功</span></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="cmpt-test-download-log cursor-default" ng-if=" !control.items.exec_status ||(control.items.exec_status < 3) || control.items.exec_status ==6">
+                            <i class="fa fa-download"></i><span class="download-mention">测试日志</span>
+                        </div>
+                        <div class="cmpt-test-download-log cursor-pointer" ng-click="downloadTestMessage()" ng-if="control.items.exec_status >= 3 && control.items.exec_status !=6">
+                            <i class="fa fa-download"></i><span class="download-mention">测试日志</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--footer部分-->
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <button type="button" ng-disabled="control.exec_loading" class="save-cancel-btn cancel-btn btn-md" ng-click="control.exec_loading || cancel()">关闭</button>
+        </div>
+    </div>
+</div>

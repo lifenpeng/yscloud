@@ -1,0 +1,150 @@
+<style>
+    .none-scroll{
+        max-height: 233px;
+        overflow: auto;
+        width: 100%;;
+    }
+</style>
+<div class="modal-header">
+    <h3 ng-if="info.cmpt_type == 1" class="modal-title">添加组件</h3>
+    <h3 ng-if="info.cmpt_type == 2" class="modal-title">添加组件组</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body cmpt" style="min-height: 400px;">
+    <!-- 正在加载-->
+    <div class="row" ng-show="control.cmpt_list_loading">
+        <div class="col-sm-4 col-sm-offset-4 text-center cmpt-modal-loading-container">
+            <div class="cmpt-detail-modal-loading" ng-show="!info.error_message">
+                <span class="loading-font-color">正在获取信息&nbsp;&nbsp;<i style="font-size: 24px;color:#44dcfd;" class="fa fa-spinner fa-spin"></i></span>
+            </div>
+            <div ng-show="info.error_message" class="cmpt-detail-modal-error error-font-color" style="height:170px;">
+                <span>获取信息异常</span>
+                <div class="cmpt-detail-modal-error-msg" ng-bind="info.error_message"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 加载成功-->
+    <div ng-show="!control.cmpt_list_loading">
+        <!-- 添加组件-->
+        <div class="row" ng-if="info.cmpt_type == 1" style="position: relative">
+            <div class="col-md-12 lg-table">
+                <div class="table-search" style="width: 416px;">
+                    <div class="table-search-input">
+                        <input type="text"
+                               ng-model="search_key_word"
+                               class="form-control"
+                               placeholder="请输入组件名"
+                               ng-enter="searchSubgroupByKeyword()">
+                    </div>
+                    <div class="table-search-btn" style="width: 108px">
+                        <span class="table-clear-logol" ng-if="search_key_word" ng-click="clear()"></span>
+                        <span class="table-search-logol"></span>
+                        <button type="button" ng-click="changeSearchFlag($event)" ng-class="!control.search_flag ? 'search-checked-flag' : 'search-unchecked-flag'" class="senior-btn-style" style="margin-left: -1px;">高级搜索</button>
+                    </div>
+                </div>
+                <form ng-show="!control.search_flag" class="form-horizontal senior-search-div" style="margin-top: -15px;">
+                    <div class="col-sm-12">
+                        <div class="form-group form-style" style="margin-top: 20px">
+                            <label class="col-sm-2 control-label label-key">关键字</label>
+                            <div class="col-sm-6">
+                                <input type="text"
+                                       name="key_word"
+                                       ng-model="info.high_search_obj.key_word"
+                                       class="form-control"
+                                       placeholder="请输入关键字"
+                                       required
+                                       ng-model-options="{updateOn: 'blur'}">
+                            </div>
+                            <div class="col-sm-4" style="text-align: right">
+                                <div class="clear-icon" ng-click="clearData()"><i class="fa fa-trash-o" style="color: #b02323;" title="全部清空"></i></div>
+                            </div>
+                        </div>
+                        <div class="form-group form-style" style="margin-bottom: 0">
+                            <label class="col-sm-2 control-label label-key">执行类别</label>
+                            <div class="col-sm-8">
+                                <div class="tablecss senior-search-exec-type"  ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = ! one.flag" ng-repeat="one in info.high_search_obj.exec_type_list">
+                                    {{one.value}}
+                                    <div>
+                                        <i class="fa fa-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-style">
+                            <label class="col-sm-2 control-label label-key">分类</label>
+                            <div>
+                                <div class="col-sm-7 classify-close" style="width: 455px" ng-class="{'classify-expand':control.tags_more_flag}">
+                                    <div class="classify-tag-id" ng-style="countTagDivHeight()">
+                                        <div class="tablecss" style="width: auto;margin-left: 0px;"  ng-class="one.flag ? 'checked-tag':'check-tag'" ng-click = "one.flag = ! one.flag" ng-repeat="one in info.high_search_obj.classify_list">
+                                            {{one.value}}
+                                            <div>
+                                                <i class="fa fa-check"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1" style="text-align: left;width: 75px;">
+                                    <label ng-if="!control.tags_more_flag && control.classify_flag" class="control-label" style="color:#808080;cursor: pointer;" ng-click="control.tags_more_flag =true">更多</label>
+                                    <label ng-if="control.tags_more_flag && control.classify_flag" class="control-label" ng-click="control.tags_more_flag = false" style="color:#808080;cursor: pointer;">收起</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 text-center">
+                                <button type="button" ng-click="control.search_flag=true" class="cancel-btn btn-xl">取消</button>
+                                <button type="button" class="save-btn btn-xl" ng-click="seniorSearch();">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <program-cmpt-list></program-cmpt-list>
+            </div>
+            <div class="senior-search-shadow" ng-if="!control.search_flag" ng-click="control.search_flag = true"></div>
+        </div>
+        <!-- 添加组件组-->
+        <div class="row" ng-if="info.cmpt_type == 2">
+            <div class="col-md-12 lg-table">
+                <table class="table table-no-bordered" >
+                    <thead class="fixed-thead">
+                    <tr>
+                        <td style="width: 50px">选择</td>
+                        <td style="width: 190px">组件组名</td>
+                        <td style="width: 140px">创建人</td>
+                        <td style="width: 240px">创建时间</td>
+                        <td style="width: 230px">修改时间</td>
+                    </tr>
+                    </thead>
+                    <tbody  ng-class="info.cmpts_list.length > 0 ? 'scroll-tbody' : 'none-scroll'">
+                    <tr ng-repeat="tr in info.cmpts_list" ng-class="tbl-odd" ng-click="tr.checked == 1 ? tr.checked = 0 : tr.checked = 1">
+                        <td style="width: 50px">
+                            <input type="checkbox" ng-model="tr.checked" i-check ng-true-value="1" ng-false-value="0"  >
+                        </td>
+                        <td style="width: 190px" ng-class="tr.checked == 1 ? 'checked-style' :''">
+                            <div style="word-break: break-all" ng-bind="tr.cn_name ? tr.cn_name : '--'"></div>
+                        </td>
+                        <td style="width: 140px" ng-class="tr.checked == 1 ? 'checked-style' :''">
+                            <div  ng-bind="tr.crt_user_name ? tr.crt_user_name : '--'"></div>
+                        </td>
+                        <td style="width: 240px" ng-class="tr.checked == 1 ? 'checked-style' :''">
+                            <div ng-show="tr.crt_bk_time">{{tr.crt_bk_date}}&nbsp;{{tr.crt_bk_time}}</div>
+                            <div ng-show="!tr.crt_bk_time">--</div>
+                        </td>
+                        <td style="width: 247px" ng-class="tr.checked == 1 ? 'checked-style' :''">
+                            <div ng-show="tr.modify_bk_time">{{tr.modify_bk_date}}&nbsp;{{tr.modify_bk_time}}</div>
+                            <div ng-show="!tr.modify_bk_time">--</div>
+                        </td>
+                    </tr>
+                    <tr ng-if="info.cmpts_list.length == 0" class="table-no-data">
+                        <td  style="text-align: center;border: none">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center ;margin-top: 30px;margin-bottom: 20px;">
+            <button class="cancel-btn btn-xl"  ng-click="formCancel()">取消</button>
+            <button class="save-btn btn-xl"  ng-disabled="info.error_message" type="submit" ng-click="formSubmit()" >确定
+            </button>
+        </div>
+</div>

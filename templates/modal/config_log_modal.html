@@ -1,0 +1,214 @@
+<style>
+    .server_machine{
+        background-image: url("././img/inspection/user_machine.png");
+        background-position: -1px 1px;
+        background-size: 99%;
+        background-repeat: no-repeat;
+        width: 26px;
+        height: 25px;
+    }
+    .custom-container{
+        cursor: default;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        white-space: nowrap;
+        margin-top: 2px;
+        padding-left: 0px;
+    }
+    .div_block{
+        display: inline-block;
+    }
+    .breadcrumb > li + li::before{
+        color: #ccc;
+        content: "";
+        padding: 0 0px;
+    }
+    .custom-container{
+        cursor: default;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        white-space: nowrap;
+        margin-top: 2px;
+        padding-left: 0px;
+    }
+    .node-ip-container{
+        position: relative;
+        width:140px;
+        height: 30px;
+        line-height:25px;
+        background: #2E445E;
+        margin:0 10px 10px 0;
+        border-radius: 2px;
+        cursor: pointer;
+        text-align: left;
+    }
+    .checked-ip{
+        border: 1px solid #44Dcfd;
+    }
+    .unchecked-ip{
+        border: 1px solid #336c87;
+    }
+    .log-modal .nav-tabs{
+        padding: 0;
+    }
+    .log-modal .tab-content{
+        background: transparent;
+        border: 1px solid #26515c !important
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+        border: 1px solid #26515c;
+        color: #44Dcfd;
+    }
+    .nav-tabs li a{
+        color: #d2f1fd;
+    }
+    .time-format-container{
+        height: 30px;
+        line-height:30px;
+        border-bottom: 1px solid #26515c;
+        color: #53697b;
+        cursor: pointer;
+        background: #090f15;
+        padding: 0 10px;
+    }
+    .display-none{
+          display: none;
+    }
+    .display-block{
+        display: inline-block;
+    }
+</style>
+<div  class="modal-header">
+    <h3 ng-if="!control.next_step" class="modal-title">节点配置</h3>
+    <h3 ng-if="control.next_step" class="modal-title">日志选择</h3>
+    <div ng-click="formCancel()"></div>
+</div>
+<div class="modal-body inspection">
+    <!--第一步选择系统和节点-->
+    <div class="log-modal" ng-if="!control.next_step">
+        <div class="row">
+            <div class="col-sm-4" style="border-right: 1px solid #2f546f;padding-right: 0">
+                <div style="height: 300px;margin-left:-13px;" custom-scroll custom-config="config.scroll_config">
+                    <div class="row" style="margin-right: 8px;cursor: pointer" ng-repeat="one_busys in data.busys_list" ng-click="checkBysys(one_busys,$index)" ng-class="one_busys.checked ? 'sys-checked':'sys-unchecked'">
+                        <div class="inspet-log-icon" ng-class="{'log-default-icon':!one_busys.checked,'log-checked-icon':one_busys.checked}"></div>
+                        <span class="custom-container" style="margin-top:7px;margin-left:5px;cursor: pointer">{{one_busys.business_cn_name}}</span>
+                    </div>
+                    <div class="row text-center" ng-if="data.busys_list.length==0 && !control.loading_busys" style="margin-top: 150px;">
+                        <label style="color: #6D7183">暂无系统</label>
+                    </div>
+                   <div class="row"  ng-if="control.loading_busys"  style="position: relative;margin-left: 0">
+                    <div  class="col-sm-12" style="top:-8px;padding-left: 0px;padding-right: 0px;text-align: center;height:200px;line-height:200px;border-top:0px;position: relative;">
+                        <div style="height: 18px;">
+                            <span class="loading-font"><i class="fa fa-spinner fa-spin" style="fonr-weight: holder; font-size: 30px;"></i></span>
+                        </div>
+                        <div style="margin-top: 10px;height: 18px;">
+                            <span class="loading-font">正在获取系统信息&nbsp;&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-12" style="text-align: left;height: 300px;" custom-scroll custom-config="config.scroll_config">
+                        <div class="row" ng-if="data.node_ip_list.length>0" style="text-align: center;">
+                            <div class="col-sm-12" style="text-align: left;">
+                                <div class="node-ip-container" ng-repeat="one in data.node_ip_list" ng-class="one.checked ? 'checked-ip':'unchecked-ip'" ng-click="chooseCurIp(one,$index)" style=" float: left;">
+                                    <div class="server_machine div_block"></div>
+                                    <span style="cursor: pointer" class="custom-container monitor_width_90 monitor_font_size_12">{{one.soc_ip}}</span>
+                                    <div ng-if="one.checked" style=" background: transparent;border-bottom: 18px solid #44dcfd;border-left: 18px solid transparent;position: absolute;right: 0px;bottom: 0;">
+                                        <i class="fa fa-check" style="color: #fff;position: absolute;left: -11px;font-size: 10px;top: 8px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="!data.node_ip_list || data.node_ip_list.length==0 && !control.loading_node_ip">
+                            <div class="col-sm-11 text-center" style="padding-top: 75px">
+                                <div class="no-data-icon">
+                                    <span class="no-data-icon-font">暂无节点</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="control.loading_node_ip" class="row"  style="position: relative;margin-left: 0">
+                        <div  class="col-sm-12" style="top:-8px;padding-left: 0px;padding-right: 0px;text-align: center;height:200px;line-height:200px;border-top:0px;position: relative;">
+                            <div style="height: 18px;">
+                                <span class="loading-font"><i class="fa fa-spinner fa-spin" style="fonr-weight: holder; font-size: 30px;"></i></span>
+                            </div>
+                            <div style="margin-top: 10px;height: 18px;">
+                                <span class="loading-font">正在获取节点信息&nbsp;&nbsp;</span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--第二步-->
+    <div class="log-modal" ng-if="control.next_step">
+        <tabset>
+            <tab class="analysis-tab"  ng-repeat="node in log_info.choose_ip_list" heading="{{node.soc_ip ? node.soc_ip : 'ip不存在'}}" select="selectTab(node)" active="node.active">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <file-browse node="node" change-path="changePath(node);" check="2" allowmodify="1"></file-browse>
+                    </div>
+                    <!--已选择的文件-->
+                    <div class="col-sm-6">
+                        <div style="height:440px;" custom-scroll custom-config="config.scroll_config">
+                            <div style="width: 100%;height: 30px;background: #243245;line-height: 30px;color: #61A1B8;padding-left: 20px;">
+                                已选文件&nbsp;&nbsp;
+                            </div>
+                            <div class="no-data-icon" ng-if="node.checked_files.length ==0" style="margin-top: 70px;margin-left:140px">
+                                <span class="no-data-icon-font">暂无文件</span>
+                            </div>
+                            <div ng-if="node.checked_files.length !=0" style="min-height: 405px">
+                                <div ng-repeat="file in node.checked_files" style="height: 40px;width: 100%;margin-top: 5px;position: relative">
+                                    <div class="col-sm-3" style="padding:5px 0;">
+                                        <span style="float: left;"><i class="fa fa-file-text-o"></i></span>
+                                        <span style="display: inline-block; width: 72px;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;margin-left: 10px;" title="{{file.file}}">{{file.file}}</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <bs-select width=100 name="encode_type"
+                                                   items="data.encode_type_list"
+                                                   my-select="file.word_coding"
+                                                   select-val="selectFile(selectKey)"
+                                        ></bs-select>
+                                    </div>
+                                    <div class="col-sm-5" style="padding-right: 35px">
+                                        <div class="row">
+                                            <input type="text" class="form-control" ng-model="file.date_format_show"
+                                                   style="position: relative;color: #d2f1fe"
+                                                   name="file{{$id}}"
+                                                   placeholder="时间格式"
+                                                   ng-maxlength="25"
+                                                   ng-model-options="{updateOn: 'blur'}"
+                                            />
+                                            <span title="选择单个时间格式" class="fa fa-search first_span_choose" ng-click="showChooseTime($index)"  style="position: absolute; right: 0; top: 12px;cursor: pointer;z-index: 1"></span>
+                                        </div>
+                                        <div class="row">
+                                            <span style="display: inline-block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;width:160px;">{{file.timestamp_show_title}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-style="changeHeight()" class="target_log_choose display-none" style="position: absolute;right: 15px;z-index: 2">
+                                    <div class="time-format-container" ng-repeat="one in data.date_format_list" ng-click="chooseCurDateFormat(node.checked_files,one)">
+                                        <span class="monitor_width_90 monitor_font_size_12">{{one.value}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+    <div style="text-align: center ;margin-top: 30px;margin-bottom: 20px;">
+        <button class="cancel-btn btn-xl" ng-if="control.next_step"  ng-click="lastStep()">上一步</button>
+        <button ng-if="!control.next_step" class="save-btn btn-xl"   type="submit" ng-click="nextStep()" >下一步</button>
+        <button ng-if="control.next_step" class="save-btn btn-xl"   type="submit"  ng-click="saveLogList()" >确定</button>
+    </div>
+</div>

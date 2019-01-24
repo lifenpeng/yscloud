@@ -1,0 +1,50 @@
+
+<div class="container-fluid form-style">
+    <div  style=" padding: 20px;">
+        <form  class="form-horizontal" novalidate autocomplete="off">
+            <div class="form-group">
+                <label class="col-sm-3 control-label label-key">发送人</label>
+                <div class="col-sm-3 label-value">
+                    <input type="text"
+                           ng-disabled="true"
+                           ng-model="msg_info.crt_user_id"
+                           class="form-control"
+                           >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label label-key">主题</label>
+                <div class="col-sm-3 label-value">
+                    <input class="form-control"
+                           type="text"
+                           ng-disabled="true"
+                           ng-model="msg_info.msg_title">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label label-key">内容</label>
+                <div class="col-sm-3 label-value">
+                    <textarea class="form-control"
+                              type="text"
+                              ng-disabled="true"
+                              style="resize:none;color: #d2f1fe"
+                              ng-model="msg_info.msg_text">
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group" ng-if="msg_info.first_bk_fname">
+                <label class="col-sm-3 control-label label-key">附件</label>
+                <div class="col-sm-8 label-value" style="margin-top:6px;">
+                    <label class="ng-binding"><a ng-click="downloadAttachment(msg_info.first_bk_fname)" ng-bind="msg_info.first_bk_fname"></a></label><br>
+                    <label class="ng-binding"><a ng-click="downloadAttachment(msg_info.secd_bk_fname)"  ng-bind="msg_info.secd_bk_fname"></a></label><br>
+                    <label class="ng-binding"><a ng-click="downloadAttachment(msg_info.third_bk_fname)" ng-bind="msg_info.third_bk_fname"></a></label>
+                </div>
+            </div>
+            <div class="row" style="margin-top:40px;">
+                <div class="col-sm-12 text-center taskStyle">
+                    <button type="button" class="cancel-btn btn-md" ng-click="back()">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
